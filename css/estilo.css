@@ -28,8 +28,8 @@ body {
     height: 100%;
     margin: 20px auto;
     width: 90%;
-	/*background: url(../imagenes/contenedor2.png) repeat;*/
-	background-color:#FFF;
+	background: url(../imagenes/contenedor2.png) repeat;
+	/*background-color:#FFF;*/
 	border:1px solid #CCC;
 	-moz-border-radius: 0.6em;
     -webkit-border-radius: 0.6em;
