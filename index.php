@@ -81,8 +81,32 @@
     }
 </style>
 
-        
-        
+<link rel="stylesheet" href="css/responsiveslides.css">
+<script src="js/responsiveslides.min.js"></script>
+
+  <script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+
+
+      // Slideshow 4
+      $("#slider4").responsiveSlides({
+        auto: false,
+        pager: false,
+        nav: true,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+          $('.events2').append("<li>before event fired.</li>");
+        },
+        after: function () {
+          $('.events2').append("<li>after event fired.</li>");
+        }
+      });
+
+    });
+  </script>
+      
 </head>
 
 
@@ -90,43 +114,238 @@
 <body>
 
     <div class="clearfix content">
+    	<div class="row">
+        
+        </div>
     	<div class="header-container">
             <header class="wrapper clearfix">
                 <a href="index.php"><img src="../predio98/imagenes/marca.png"></a>
-                <nav>
-                    <ul>
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Reglamento</a></li>
-                        <li><a href="#">Desarrollo</a></li>
-                        <li><a href="#">Premios</a></li>
-                        <li><a href="#">Servicios</a></li>
-                        <li><a href="#">Fotos</a></li>
+                
+                <div class="infoPre alert alert-info">
+                	<ul>
+                    	<li><span class="glyphicon glyphicon-earphone"> </span> 221-15-6258871 – Nicolas (Solo sms y llamadas)</li>
+                        <li><span class="glyphicon glyphicon-envelope"> </span> predio.98@hotmail.com</li>
+                        <li><span class="icoface"></span><span class="espacioextra"></span> <a href="www.facebook.com/predio.98">Predio La Plata</a></li>
+                        <li><span class="glyphicon glyphicon-road"> </span> 98 Y 16 (Entrar por Avenida 13, única entrada)</li>
+                        <li><span class="icobus"></span><span class="espacioextra"></span> Linea ESTE: 12, 13 y 14 (el que va por 7 y 90). Estos micros, los deja en 13 y 98.</li>
                     </ul>
+                </div>
+                
+                <nav id="menu">
+                    <ul class="clearfix contenedorMenu">
+                        <li class="menuA"><a href="#">Inicio</a></li>
+                        <li class="torneoMenu"><a href="#">Torneos</a></li>
+                        <li class="menuA"><a href="#">Reglamento</a></li>
+                        <li class="menuA"><a href="#">Desarrollo</a></li>
+                        <li class="menuA"><a href="#">Premios</a></li>
+                        <li class="menuA"><a href="#">Servicios</a></li>
+                        <li class="menuA"><a href="#">Fotos</a></li>
+                    </ul>
+                    <a href="#" id="pull">Menú</a>
                 </nav>
             </header>
         </div>
     	
+        <div class="row" style=" background-color:#dadada; z-index:9999999px; display:block;">
+        	<div id="submenu" style="display:none; z-index:9999999px;">
+            <div style="height:auto; position:relative; ">
+            	<div class="col-md-4" style="padding-top:10px;">
+                	<div class="alert alert-danger alert-dismissible submenu" id="futbolco">
+                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;  margin-right:4%;"> Torneo de Fútbol 11 con Off-side</p> 
+                    </div>
+                    <div class="alert alert-info alert-dismissible submenu" id="futbolso">
+                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 11 sin Off-side</p> 
+                    </div>
+                    <div class="alert alert-success alert-dismissible submenu" id="futbol">
+                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 7</p> 
+                    </div>
+                </div>
+                <div class="col-md-4 foncecoE" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/estadisticas2.png">
+                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 foncesoE" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/estadisticas2.png">
+                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 fsieteE" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/estadisticas2.png">
+                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 foncecoI" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/datos2.png">
+                        <h4 class="textoTrazoTitulos"> Información</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
+                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 foncesoI" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/datos2.png">
+                        <h4 class="textoTrazoTitulos"> Información</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
+                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 fsieteI" style="display:none;">
+                	<div class="col-md-6" align="center">
+                    	<img src="imagenes/datos2.png">
+                        <h4 class="textoTrazoTitulos"> Información</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
+                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+            </div>
+        </div>
         
         <div class="main-container">
             <div class="main wrapper clearfix">
 
                 <article>
-                    <header>
-                        <h1>article header h1</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec.</p>
-                    </header>
+                    
                     <section>
-                        <h2>article section h2</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices. Proin in est sed erat facilisis pharetra.</p>
+                        <div class="col-md-7">
+                        
+                        <!-- Slideshow 4 -->
+                        	<div class="panel panel-primary" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Noticias</h3>
+                              </div>
+                              <div class="panel-body">
+                                <div class="callbacks_container">
+                                  <ul class="rslides" id="slider4">
+                                    <li>
+                                      <img src="imagenes/bg1.jpg" alt="">
+                                      <p class="caption">This is a caption</p>
+                                    </li>
+                                    <li>
+                                      <img src="imagenes/bg2.jpg" alt="">
+                                      <p class="caption">This is another caption</p>
+                                    </li>
+                                    <li>
+                                      <img src="imagenes/bg3.jpg" alt="">
+                                      <p class="caption">The third caption</p>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="help-block events">
+                            	
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="col-md-5">
+                        	<div class="panel panel-default" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Noticias de Predio</h3>
+                              </div>
+                              <div class="panel-body">
+                                <h5>In semper consequat</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                              </div>
+                            </div>
+                            
+                            <div class="panel panel-default" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Ultimo Momento</h3>
+                              </div>
+                              <div class="panel-body">
+                                <h5>In semper consequat</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
+                              </div>
+                            </div>
+                            
+                            
+                            <div class="panel panel-default" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Fixture</h3>
+                              </div>
+                              <div class="panel-body">
+                                <h5>In semper consequat</h5>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
+                              </div>
+                            </div>
+                            
+                            <div class="panel panel-default" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">Proxima Fecha</h3>
+                              </div>
+                              <div class="panel-body">
+                                <h5>In semper consequat</h5>
+                                <p>15-02-2015</p>
+                              </div>
+                            </div>
+                            
+                            
+                            <div class="panel panel-default" style="margin-top:20px;">
+                              <div class="panel-heading">
+                                <h3 class="panel-title">El tiempo en La Plata</h3>
+                              </div>
+                              <div class="panel-body">
+                                <div id="cont_56e6c96ebc37c4741354591bec3723d6">
+  <span id="h_56e6c96ebc37c4741354591bec3723d6">Tiempo La Plata</span>
+  <script type="text/javascript" async src="http://www.tiempo.com/wid_loader/56e6c96ebc37c4741354591bec3723d6"></script>
+</div>
+                              </div>
+                            </div>
+                            
+                        </div>
                     </section>
-                    <section>
-                        <h2>article section h2</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices. Proin in est sed erat facilisis pharetra.</p>
-                    </section>
-                    <footer>
-                        <h3>article footer h3</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor.</p>
-                    </footer>
+                    
                 </article>
 
                 <aside>
@@ -161,7 +380,79 @@
 
 
 	</footer>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	
+	$('.torneoMenu').hover(function(e) {
+        $('#submenu').show(600);
+		$('.torneoMenu').addClass('cambioT');
+    });
+	
+	$('#submenu').mouseover(function(e) {
+        
+    });
+	
+	$('#submenu').mouseleave(function(e) {
+		e.preventDefault();
+        $('#submenu').hide(500);
+    });
+	
+	$('#futbolco').hover(function(e) {
+        /*$('.foncecoI').removeClass('hidden');
+		$('.foncecoE').removeClass('hidden');*/
+		$('.foncecoI').show(430);
+		$('.foncecoE').show(460);
+		$('#futbolso').css('opacity','0.7');
+		$('#futbol').css('opacity','0.7');
+		$('.foncesoI').hide(300);
+		$('.foncesoE').hide(300);
+		$('.fsieteI').hide(300);
+		$('.fsieteE').hide(300);
+    });
+	
+	$('#futbolco').mouseleave(function(e) {
+        $('#futbolso').css('opacity','1');
+		$('#futbol').css('opacity','1');
+		
+    });
+	
+	
+	$('#futbolso').hover(function(e) {
+        $('.foncesoI').show(430);
+		$('.foncesoE').show(450);
+		$('#futbolco').css('opacity','0.7');
+		$('#futbol').css('opacity','0.7');
+		$('.foncecoI').hide(300);
+		$('.foncecoE').hide(300);
+		$('.fsieteI').hide(300);
+		$('.fsieteE').hide(300);
+    });
+	
+	$('#futbolso').mouseleave(function(e) {
+		$('#futbolco').css('opacity','1');
+		$('#futbol').css('opacity','1');
+    });
+	
+	$('#futbol').hover(function(e) {
+        $('.fsieteI').show(430);
+		$('.fsieteE').show(450);
+		$('#futbolso').css('opacity','0.7');
+		$('#futbolco').css('opacity','0.7');
+		$('.foncesoI').hide(300);
+		$('.foncesoE').hide(300);
+		$('.foncecoI').hide(300);
+		$('.foncecoE').hide(300);
+    });
+	
+	$('#futbol').mouseleave(function(e) {
+		$('#futbolso').css('opacity','1');
+		$('#futbolco').css('opacity','1');
+    });
+	
+	
+});
+</script>
 
 
 </body>
