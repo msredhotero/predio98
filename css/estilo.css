@@ -202,6 +202,12 @@ margin-right:6px;
 	font-size:1.5em;
 }
 
+.textoTrazoTitulosN {
+	color:#009;
+	text-shadow:1px 1px 1px #fff;
+	font-size:1.5em;
+}
+
 .submenu {
 	cursor:pointer;
 }
@@ -400,8 +406,101 @@ margin-right:6px;
     }
   }
 /* fin */
-	
-	
+
+
+/* para el los menues de la derecha */
+
+#calendario {
+	background:url(../imagenes/calendariofechas.png) no-repeat center center;
+	padding-top:40px;
+}
+
+#calendario h4 {
+	color:#FFF;
+	font-size:2.4em;
+	text-shadow:1px 1px 1px #003300;
+}
+
+#calendario p {
+	font-size:10em;
+	color:#060;
+	font-family:"Arial Black", Gadget, sans-serif;
+	text-align:center;
+	text-shadow:1px 1px 1px #FFFFFF; 
+}
+
+/* fin */
+
+
+/* para las noticias viejas */
+
+#noticias {
+	height:192px;
+	overflow:hidden;
+	width:100%;
+	position:relative;
+	background-color:#f8fbfc;
+	padding:15px;
+	border:1px solid #92bacc;
+}
+
+#noticias img {
+	width:100px;
+	height:100px;
+	border:1px solid #a9a9a9;
+	background-color:#CCC;
+	padding:3px;
+	float:left;
+	margin:0 10px;
+}
+@import url(http://fonts.googleapis.com/css?family=Arimo:400,400italic,700,700italic);
+#noticias #parrafo {
+	width:100%;
+	padding-left:10px;
+	padding-right:10px;
+	font-size:0.9em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight:200;
+	color:#353535;
+	text-align:justify;
+	text-shadow:1px 1px 1px #fff;
+	letter-spacing:1px;
+}
+
+#noticias .abajo {
+	position:absolute;
+	left:0;
+	top:160px;
+	height:32px;
+	width:100%;
+}
+
+#noticias .abajo_bg {
+	position:absolute;
+	background-color:#badff0;
+	height:100%;
+	width:100%;
+	left:0;
+	top:0;
+}
+
+#noticias .abajo_text {
+	position:relative;
+	z-index:500;
+	text-align:right;
+	padding-top:6px;
+}
+
+#noticias .abajo_text a {
+	color:#076590;
+	text-shadow:1px 1px 1px #fff;
+	padding-right:12px;
+	text-decoration:none;
+}
+
+
+
+/* fin */
 footer {
 	background-color:#06F;
 	border-top:1px solid #6B9FDE;
