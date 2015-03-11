@@ -266,21 +266,61 @@
                                 <div class="callbacks_container">
                                   <ul class="rslides" id="slider4">
                                     <li>
-                                      <img src="imagenes/bg1.jpg" alt="">
-                                      <p class="caption">This is a caption</p>
+                                      <img src="imagenes/FIXTURE NUEVO F7 - FECHA 2 - 2015.png" alt="">
+                                      <p class="caption">CERO TOLERANCIA / HORARIOS DE LA FECHA 2 
+                                      	<button type="button" class="btn btn-info" aria-label="Left Align">
+  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+										</button>
+									  </p>
                                     </li>
                                     <li>
-                                      <img src="imagenes/bg2.jpg" alt="">
-                                      <p class="caption">This is another caption</p>
+                                      <img src="imagenes/20150304_143131.jpg" alt="">
+                                      <p class="caption">COMIENZO DEL TORNEO ESTE SÁBADO 7-3 
+                                      <button type="button" class="btn btn-info" aria-label="Left Align">
+  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+										</button>
+                                      </p>
                                     </li>
                                     <li>
-                                      <img src="imagenes/bg3.jpg" alt="">
-                                      <p class="caption">The third caption</p>
+                                      <img src="imagenes/2015-02-04 20.39.18.jpg" alt="">
+                                      <p class="caption">CRONOGRAMA A SEGUIR 
+                                      <button type="button" class="btn btn-info" aria-label="Left Align">
+  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+									  </button>
+                                      </p>
                                     </li>
                                   </ul>
                                 </div>
+                                
+                              </div>
+                              <div class="panel-footer">
+                              <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lorem ipsum dolor sit</h5>
+                              <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Martes 10 de Marzo, 18:30:23</h6>
+                              	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in.</p>
                               </div>
                             </div>
+                            
+                            <div id="noticias">
+                            	<img src="imagenes/tarjeta-2013-ano-nuevo.jpg">
+                                <div class="textoTrazoTitulosN">
+                                	FELIZ AÑO NUEVO
+                                </div>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; font-style:italic; height:8px; margin-bottom:10px; ">Lunes 9 de Marzo, 12:00:41</h6>
+                                <div id="parrafo">
+                                	Estimados jugadores
+Les queremos agradecer por cumplir con nosotros nuestro primer año completo de trayectoria como organización de torneos. (Si bien el predio tiene 15 años, desde agosto del 2013 nos animamos a la organización).
+Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como somos nuevos tenemos miles de cosas que mejorar pero por otro lado sabemos que, con mucha buena onda, estamos marcando y vamos a seguir marcando una diferencia en la Ciudad de La Plata por la cantidad de cosas que nos diferencian del resto, con árbitros con mucha experiencia, que van a tener sus errores como todos, pero que no dejan de dar lo mejor de ellos en cada partido, con dos pelotas de Primera División de A.F.A
+                                </div>
+                              
+                            <div class="abajo">
+                                <div align="right" class="abajo_text">
+                                    <a href="#">Continuar leyendo</a>
+                                </div>
+                                <div class="abajo_bg"></div>
+                            </div>  
+                            </div>
+                            
+                            
                             
                             <div class="help-block events">
                             	
@@ -294,7 +334,8 @@
                                 <h3 class="panel-title">Noticias de Predio</h3>
                               </div>
                               <div class="panel-body">
-                                <h5>In semper consequat</h5>
+                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                               </div>
                             </div>
@@ -304,7 +345,8 @@
                                 <h3 class="panel-title">Ultimo Momento</h3>
                               </div>
                               <div class="panel-body">
-                                <h5>In semper consequat</h5>
+                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
                               </div>
                             </div>
@@ -315,8 +357,105 @@
                                 <h3 class="panel-title">Fixture</h3>
                               </div>
                               <div class="panel-body">
-                                <h5>In semper consequat</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
+                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
+                                
+                                
+
+                                <ul class="nav nav-pills">
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 11 c/ off-side <b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li><a href="#">Zona A</a></li>
+                            
+                                            <li><a href="#">Zona B</a></li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 11 s/ off-side <b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li><a href="#">Zona A</a></li>
+                            
+                                            <li><a href="#">Zona B</a></li>
+                                            
+                                            <li><a href="#">Zona C</a></li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 7 <b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li><a href="#">Zona A</a></li>
+                            
+                                            <li><a href="#">Zona B</a></li>
+                                            
+                                            <li><a href="#">Zona C</a></li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                </ul>
+                            	
+                                <table class="table table-responsive table-striped">
+                                	<tbody>
+                                    	<tr>
+                                        	<td>Equipo A</td>
+                                            <td align="center">0</td>
+                                            <td align="center">2</td>
+                                            <td align="right">Equipos B</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>Equipo C</td>
+                                            <td align="center">3</td>
+                                            <td align="center">2</td>
+                                            <td align="right">Equipos D</td>
+                                        </tr>
+                                        <tr>
+                                        	<td>Equipo E</td>
+                                            <td align="center">1</td>
+                                            <td align="center">4</td>
+                                            <td align="right">Equipos F</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+								<button type="button" class="btn btn-info btn-lg" aria-label="Left Align">
+                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Fecha 2
+                                </button>
+                                <ul class="list-inline" style="margin-top:15px;">
+                                	<li>
+                                    	<button type="button" class="btn btn-success" aria-label="Left Align">
+                                            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Posiciones
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-success" aria-label="Left Align">
+                                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Fixture
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="btn btn-success" aria-label="Left Align">
+                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Datos
+                                        </button>
+                                    </li>
+                                </ul>
                               </div>
                             </div>
                             
@@ -326,7 +465,14 @@
                               </div>
                               <div class="panel-body">
                                 <h5>In semper consequat</h5>
-                                <p>15-02-2015</p>
+                                <div align="center">
+                                <div id="calendario" align="center">
+                                	<h4>Marzo</h4>
+                                    <p>10</p>
+                                </div>
+                                </div>
+                                
+                                
                               </div>
                             </div>
                             
@@ -349,8 +495,13 @@
                 </article>
 
                 <aside>
-                    <h3>aside</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                    <ul class="list-inline">
+                    	<li><a href="#">Inicio</a></li>
+                        <li><a href="#">Reglamento</a></li>
+                        <li><a href="#">Servicios</a></li>
+                        <li><a href="#">Fotos</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
                 </aside>
 
             </div> <!-- #main -->
