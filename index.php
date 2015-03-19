@@ -119,7 +119,7 @@
         </div>
     	<div class="header-container">
             <header class="wrapper clearfix">
-                <a href="index.php"><img src="../predio98/imagenes/marca.png"></a>
+                <a href="index.php"><img src="imagenes/marca.png"></a>
                 
                 <div class="infoPre alert alert-info">
                 	<ul>
@@ -494,8 +494,14 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                     
                 </article>
 
-                <aside>
-                    <ul class="list-inline">
+                
+
+            </div> <!-- #main -->
+            <aside style=" text-align:center; font-size:1.2em; margin-left:5px; margin-bottom:-12px;
+" class="clearfix">
+                    <ul class="list-inline" style="background-color:#fff; padding-top:15px; padding-bottom:15px;-moz-border-radius: 0em 0em 0.6em 0.6em;
+-webkit-border-radius: 0em 0em 0.6em 0.6em;
+border-radius: 0em 0em 0.6em 0.6em;">
                     	<li><a href="#">Inicio</a></li>
                         <li><a href="#">Reglamento</a></li>
                         <li><a href="#">Servicios</a></li>
@@ -503,8 +509,6 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                         <li><a href="#">Contacto</a></li>
                     </ul>
                 </aside>
-
-            </div> <!-- #main -->
         </div> <!-- #main-container -->
         
         

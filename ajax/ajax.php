@@ -1,13 +1,11 @@
 <?php
 
 include ('../includes/funcionesUsuarios.php');
-include ('../includes/funcionesProductos.php');
-include ('../includes/funcionesVentas.php');
+
 
 
 $serviciosUsuarios  = new ServiciosUsuarios();
-$serviciosProductos  = new ServiciosProductos();
-$serviciosVentas  = new ServiciosVentas();
+
 
 $accion = $_POST['accion'];
 
@@ -29,41 +27,7 @@ switch ($accion) {
 		registrar($serviciosUsuarios);
         break;
 		
-	case 'modificarProducto':
-		modificarProducto($serviciosProductos);
-		break;
 
-	case 'traerProductoPorId':
-		traerProductoPorId($serviciosProductos);
-		break;
-
-
-	case 'eliminarProducto':
-		eliminarProducto($serviciosProductos);
-		break;
-		
-	case 'insertarProducto':
-		insertarProducto($serviciosProductos);
-		break;	
-	
-	case 'insertarCarrito':
-		insertarCarrito($serviciosVentas);
-		break;
-	case 'eliminarCarrito':
-		eliminarCarrito($serviciosVentas);
-		break;
-	case 'traerPedidosDetalle':
-		traerPedidosDetalle($serviciosVentas);
-		break;
-	case 'traerPedidosDetalleId':
-		traerPedidosDetalleId($serviciosVentas);
-		break;
-	case 'modificarPedido':
-		modificarPedido($serviciosVentas);
-		break;
-	case 'eliminarPedido':
-		eliminarPedido($serviciosVentas);
-		break;
 	case 'modificarCliente';
 		modificarCliente($serviciosUsuarios);
 		break;
@@ -80,112 +44,6 @@ function modificarCliente($serviciosUsuarios) {
 	
 	echo $serviciosUsuarios->modificarUsuario($id,$apellido,$password,'',$email,$nombre,'',$direccion,'','','','');
 }
-
-function traerPedidosDetalleId($serviciosVentas) {
-	$idfactura		=	$_POST['idfactura'];
-	$donde 			=	$_POST['donde'];
-	
-	$cad = 0;
-	$res = $serviciosVentas->traerPedidosDetalleId($idfactura);
-	
-	$totalImporte = 0;
-	
-	while ($row = mysql_fetch_array($res)) {
-		
-		$totalImporte = $totalImporte + ($row[3]*$row[4]);
-		
-		$cad = $cad."<tr>";
-		$cad = $cad."<td><img src='".$donde.$row[0]."'></td>";
-		$cad = $cad."<td>".utf8_encode($row[1])."</td>";
-		$cad = $cad."<td>".$row[2]."</td>";
-		$cad = $cad."<td>".$row[3]."</td>";
-		$cad = $cad."<td>".($row[3]*$row[4])."</td>";
-		$cad = $cad."</tr>";
-	}
-	
-	$cad = $cad.'<tr><td colspan="5" class="success">Importe Total:$ '.$totalImporte.'</td></tr>';
-	
-	echo $cad;
-}
-
-
-function traerPedidosDetalle($serviciosVentas) {
-	$idcliente		=	$_POST['idcliente'];
-	$idfactura		=	$_POST['idfactura'];
-	$donde 			=	$_POST['donde'];
-	
-	$cad = 0;
-	$res = $serviciosVentas->traerPedidosDetalle($idcliente,$idfactura);
-	
-	$totalImporte = 0;
-	
-	while ($row = mysql_fetch_array($res)) {
-		
-		$totalImporte = $totalImporte + ($row[3]*$row[4]);
-		
-		$cad = $cad."<tr>";
-		$cad = $cad."<td><img src='".$donde.$row[0]."'></td>";
-		$cad = $cad."<td>".utf8_encode($row[1])."</td>";
-		$cad = $cad."<td>".$row[2]."</td>";
-		$cad = $cad."<td>".$row[3]."</td>";
-		$cad = $cad."<td>".($row[3]*$row[4])."</td>";
-		$cad = $cad."</tr>";
-	}
-	
-	$cad = $cad.'<tr><td colspan="5" class="success">Importe Total:$ '.$totalImporte.'</td></tr>';
-	
-	echo $cad;
-}
-
-function eliminarPedido($serviciosVentas) {
-
-	$idfactura		=	$_POST['idfactura'];
-	
-	$resP = $serviciosVentas->eliminarPedido($idfactura);
-	$resF = $serviciosVentas->eliminarFactura($idfactura);
-	
-	if (($resP == '') && ($resF == '')) {
-		echo 'Se elimino correctamente el Pedido';	
-	} else {
-		echo 'Error al eliminar el Pedido';
-	}
-}
-
-
-function modificarPedido($serviciosVentas) {
-	$idpedido		=	$_POST['idpedido'];
-	$idfactura		=	$_POST['idfactura'];
-	$domicilio		=	$_POST['domicilio'];
-	$refestado		=	$_POST['refestado'];
-	$fechaentrega	=	$_POST['dtp_input2'];
-	
-	$resP = $serviciosVentas->modificarPedido($idpedido,$refestado,$fechaentrega);
-	$resF = $serviciosVentas->modificarFactura($idfactura,$domicilio);
-	
-	if (($resP == '') && ($resF == '')) {
-		echo 'Se modifico correctamente el Pedido';	
-	} else {
-		echo 'Error al modificar el Pedido';
-	}
-}
-
-
-function insertarCarrito($serviciosVentas) {
-	$refcliente		=	$_POST['refcliente'];
-	$refproducto	=	$_POST['refproducto'];
-	$precioventa	=	0;
-	$cantidad		=	$_POST['cantidad'];
-	$temporal		=	date('Y-m-d h:i:s');
-	$activo			=	1;
-	$ip 			=	$_SERVER['REMOTE_ADDR'];
-	echo $serviciosVentas->insertarCarrito($refcliente,$refproducto,$precioventa,$cantidad,$temporal,$activo,$ip);
-}
-
-function eliminarCarrito($serviciosVentas) {
-	$id		=	$_POST['id'];
-	echo $serviciosVentas->eliminarCarrito($id);
-}
-
 
 function entrar($serviciosUsuarios) {
 	$email		=	$_POST['email'];
@@ -248,83 +106,11 @@ function modificarUsuario($serviciosUsuarios) {
 }
 
 
-function existeCodigoMod($serviciosProductos) {
-	$id		=	$_POST['id'];
-	$codigo =	$_POST['codigo'];
-	echo	$serviciosProductos->existeCodigoMod($id,$codigo);
-}
-
-function existeCodigo($serviciosProductos) {
-	$codigo =	$_POST['codigo'];
-	echo	$serviciosProductos->existeCodigo($codigo);
-}
-
-
-function insertarProveedores($serviciosProductos) {
-	$proveedor	=	$_POST['proveedor'];
-	$direccion	=	$_POST['direccion'];
-	$telefono	=	$_POST['telefono'];
-	$cuit		=	$_POST['cuit'];
-	$nombre		=	$_POST['nombre'];
-	$email		=	$_POST['email'];
-	echo	$serviciosProductos->insertarProveedores($proveedor,$direccion,$telefono,$cuit,$nombre,$email);
-}
-
-
-function eliminarProveedores($serviciosProductos) {
-	$id			=	$_POST['id'];
-
-	echo	$serviciosProductos->eliminarProveedores($id);
-}
-
-function modificarProveedores($serviciosProductos) {
-	$id			=	$_POST['id'];
-	$proveedor	=	$_POST['proveedor'];
-	$direccion	=	$_POST['direccion'];
-	$telefono	=	$_POST['telefono'];
-	$cuit		=	$_POST['cuit'];
-	$nombre		=	$_POST['nombre'];
-	$email		=	$_POST['email'];
-	echo	$serviciosProductos->modificarProveedores($id,$proveedor,$direccion,$telefono,$cuit,$nombre,$email);
-}
-
-
-
 function enviarMail($serviciosUsuarios) {
 	$email		=	$_POST['email'];
 	$pass		=	$_POST['pass'];
 	echo $serviciosUsuarios->login($email,$pass);
 }
-
-function traerCodigo($serviciosProductos) {
-	$codigo =	$_POST['codigo'];
-	
-	$res 	= $serviciosProductos->traerCodigo($codigo);
-	echo $res;
-}
-
-
-function traerProductoPorId($serviciosProductos) {
-	$id 	=	$_POST['id'];
-	
-	$res 	= $serviciosProductos->traerProductoPorId($id);
-	echo $res;
-}
-
-function traerProductoPorCodigo($serviciosProductos) {
-	$codigo		=	$_POST['codigo'];
-	
-	$res 		= $serviciosProductos->traerProductoPorCodigo($codigo);
-	echo $res;
-}
-
-function traerProductoPorCodigoBarra($serviciosProductos) {
-	$codigobarra 	=	$_POST['$codigobarra'];
-	
-	$res			= $serviciosProductos->traerProductoPorCodigoBarra($codigobarra);
-	echo $res;
-}
-
 
 
 function devolverImagen($nroInput) {
@@ -412,47 +198,5 @@ function devolverImagen($nroInput) {
 	return array('tfoto' => $tfoto, 'type' => $type);	
 }
 
-function insertarProducto($serviciosProductos) {
-	
-	$producto		=	$_POST['producto'];
-	$precio_unit	=	$_POST['precio_unit'];
-	$precio_venta	=	$_POST['precio_venta'];
-	$peso			=	$_POST['peso']; 
-	$reftipoproducto=	$_POST['reftipoproducto'];
-	$observacion	=	$_POST['observacion'];
-	
-	$res 			= $serviciosProductos->insertarProducto($producto, $precio_unit, $precio_venta, $peso, '', '', $reftipoproducto, $observacion);
-	
-	$valor = 'imagen1';
-	
-	$serviciosProductos->subirArchivo($valor,$res);
-	
-	echo $res;
-}
-
-function modificarProducto($serviciosProductos) {
-	$id 			=	$_POST['id'];
-	$producto		=	$_POST['producto'];
-	$precio_unit	=	$_POST['precio_unit'];
-	$precio_venta	=	$_POST['precio_venta'];
-	$peso			=	$_POST['peso']; 
-	$reftipoproducto=	$_POST['reftipoproducto'];
-	$observacion	=	$_POST['observacion'];
-
-	$res 			= $serviciosProductos->modificarProducto($id,$producto, $precio_unit, $precio_venta, $peso, '', '', $reftipoproducto, $observacion);
-	
-	$valor = 'imagen1';
-	
-	$serviciosProductos->subirArchivo($valor,$res);
-	
-	echo $res;
-}
-
-function eliminarProducto($serviciosProductos) {
-	$id 			=	$_POST['id'];
-
-	$res 			= $serviciosProductos->eliminarProducto($id);
-	echo $res;
-}
 
 ?>

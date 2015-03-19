@@ -15,42 +15,12 @@ $serviciosUsuarios = new ServiciosUsuarios();
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<meta http-equiv='refresh' content='1000' />
-
-<meta name='title' content='Carnes de Primera Calidad' />
-
-<meta name='description' content='Carnes A Casa, somos una empresa abocada a la comercialización de productos cárnicos envasados al vació con los mas elevados Standars de calidad higiene y salubridad. Productos derivados de animales criados en los mejores establecimientos ganaderos del país. Nuestros productos llegan a su hogar por intermedio de transportes refrigerados cuidando celosamente la cadena de frió para mantener la máxima calidad del producto. Manipulados por personal habilitado con libreta sanitaria e indumentaria apropiada para la manipulación de alimentos. Nuestros productos están amparados por certificado de salubridad y establecimiento del SENASA (secretaria nacional de salubridad animal) desde el campo al frigorífico y del frigorífico a su mesa.' />
-
-<meta name='keywords' content='Carnes, Envio Gratis, Frigorifico, Novillo, Ternera' />
-
-<meta name='distribution' content='Global' />
-
-<meta name='language' content='es' />
-
-<meta name='identifier-url' content='http://www.carnesacasa.com.ar' />
-
-<meta name='rating' content='General' />
-
-<meta name='reply-to' content='' />
-
-<meta name='author' content='Webmasters' />
-
-<meta http-equiv='Pragma' content='no-cache/cache' />
-
-<link rel="carnesacasa" href="imagenes/carnesacasaicon.ico" />
-
-
-<meta http-equiv='Cache-Control' content='no-cache' />
-
-<meta name='robots' content='all' />
-
-<meta name='revisit-after' content='7 day' />
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 
 
-<title>Carnes A Casa</title>
+<title>Acceso Restringido: Predio98</title>
 
 
 
@@ -179,41 +149,13 @@ $serviciosUsuarios = new ServiciosUsuarios();
 
 
 <body>
-<div style="height:35px; background: none repeat scroll 0% 0% rgb(58, 64, 71); padding-top:6px;">
-	<div class="row">
-    	<div class="col-md-8">
-        
-        </div>
-        <div class="col-md-4">
-        	<p style="color:#FFF; font-family:'Courier New', Courier, monospace;">Carnes Victoria: <span style="color:#C00;">Login</span></p>
-        </div>
-    </div>
-</div><!-- para el login -->
+
 
 <div class="content">
 
-<div class="row" style="margin-top:-20px; font-family:Verdana, Geneva, sans-serif;">
-	<div class="col-md-6" align="center">
-		<img src="imagenes/logo.png">
-    </div>
-    <div class="col-md-6" align="right" style="padding-right:100px; padding-top:50px;">
-		 <div class="col-md-12" style="height:25px;text-shadow: 1px 1px #fff;">
-         	<p><span style="color: #009; font-weight:bold; font-size:16px;">Contáctenos</span></p>
-         </div>
-         <div class="col-md-12" style="height:25px;text-shadow: 1px 1px #fff;">
-         	<p><span style="color: #F00; font-weight:bold; font-size:18px;">(011) 4244 - 2092</span></p>
-         </div>
-         <div class="col-md-12" style="height:25px;text-shadow: 1px 1px #fff;">
-         	<p>info@carnesvictoria.com.ar - dsagasti@yahoo.com.ar</p>
-         </div>
-         <div class="col-md-12" style="height:25px;text-shadow: 1px 1px #fff;">
-         	<p><span style="color: #333; font-weight:bold; font-size:15px;">Av. 7 n° 71 1/2 Entre 33 y 34</span></p>
-         </div>
-         <div class="col-md-12" style="height:25px;text-shadow: 1px 1px #fff;">
-         	<p>Horarios de Atención, Lun a Vie de 10:00 a 18 hs</p>
-         </div>
-
-    </div>
+<div class="row" style="margin-top:10px; font-family:Verdana, Geneva, sans-serif;" align="center">
+		<img src="imagenes/logo.png" width="300" height="273">
+   
 </div>
 
 
@@ -286,13 +228,16 @@ $serviciosUsuarios = new ServiciosUsuarios();
             </form>
 
      </section>
+     <br>
+     <br>
+     <br>
 </div><!-- fin del content -->
 
 <footer>
 
 <div class="row">
 	<div class="col-md-12" align="center">
-    	<p style="text-shadow: 1px 1px #fff;"><strong>Copyright © 2014 Carnes Victoria. Diseño Web: Saupurein Marcos.</strong></p>
+    	<p style="text-shadow: 1px 1px #fff;"><strong>Copyright © 2015 Predio98. Diseño Web: Saupurein Marcos.</strong></p>
 
     </div>
 </div>
