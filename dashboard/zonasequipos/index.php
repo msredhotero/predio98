@@ -4,12 +4,12 @@ session_start();
 
 if (!isset($_SESSION['usua_predio']))
 {
-	header('Location: ../error.php');
+	header('Location: ../../error.php');
 } else {
 
 
-include ('../includes/funcionesUsuarios.php');
-include ('../includes/funcionesHTML.php');
+include ('../../includes/funcionesUsuarios.php');
+include ('../../includes/funcionesHTML.php');
 
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
@@ -17,7 +17,7 @@ $serviciosHTML = new ServiciosHTML();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Clientes",$_SESSION['refroll_predio']);
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Amonestados",$_SESSION['refroll_predio']);
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -45,20 +45,20 @@ if ($_SESSION['refroll_predio'] != 1) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<link href="../css/estiloDash.css" rel="stylesheet" type="text/css">
+<link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">
     
 
     
-    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
-    <link rel="stylesheet" href="../css/jquery-ui.css">
+    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+    <link rel="stylesheet" href="../../css/jquery-ui.css">
 
-    <script src="../js/jquery-ui.js"></script>
+    <script src="../../js/jquery-ui.js"></script>
     
 	<!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
 
 	<style type="text/css">
 		
@@ -67,10 +67,10 @@ if ($_SESSION['refroll_predio'] != 1) {
 	</style>
     
    
-   <link href="../css/perfect-scrollbar.css" rel="stylesheet">
+   <link href="../../css/perfect-scrollbar.css" rel="stylesheet">
       <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
-      <script src="../js/jquery.mousewheel.js"></script>
-      <script src="../js/perfect-scrollbar.js"></script>
+      <script src="../../js/jquery.mousewheel.js"></script>
+      <script src="../../js/perfect-scrollbar.js"></script>
       <script>
       jQuery(document).ready(function ($) {
         "use strict";
@@ -82,7 +82,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 <body>
 
  
-<?php echo str_replace('..','../dashboard',$resMenu); ?>
+<?php echo $resMenu; ?>
 
 <div id="content">
 
