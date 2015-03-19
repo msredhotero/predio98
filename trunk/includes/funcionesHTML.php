@@ -1,107 +1,204 @@
 <?php
 
-/**
- * @author www.intercambiosvirtuales.org
- * @copyright 2013
- */
+date_default_timezone_set('America/Buenos_Aires');
 
-function menu() {
-echo '<div id="menu">
-<ul class="jd_menu jd_menu_slate">
-			<li><a href="adminshowgol.php">Inicio</a></li>
-			<li>Torneo
 
-		  <ul>
-					<li><a href="tAgregar.php">Agregar</a></li>
-					<li><a href="tConsultar.php" >Consultar</a></li>
-					<li><a href="tCerrar.php">Cerrar Torneo</a></li>
-					
-				</ul>
-			</li>
-			<li>Grupos
-		  <ul>
-					<li><a href="gAgregar.php" >Agregar</a></li>
-					<li><a href="gConsultar.php" >Consultar</a></li>
+class ServiciosHTML {
 
-					
-				</ul>
-			</li>
-            
-            <li>Equipos
-		  <ul>
-					<li><a href="eAgregar.php" >Agregar</a></li>
-					<li><a href="eConsultar.php" >Consultar</a></li>
-					<li><a href="eImagenes.php" >Cargar Imagenes</a></li>
-					
-				</ul>
-			</li>
-            
-            
-            <li>Grupos-Equipos
-		  <ul>
-		  			<li><a href="geSeleccionarGrupo.php" >Seleccionar Grupo</a></li>
+function menu($usuario,$titulo,$rol) {
 	
-				</ul>
-			</li>
+	$sql = "select idmenu,url,icono, nombre, permiso from lcdd_menu where permiso like '%".$rol."%' order by orden";
+	$res = $this->query($sql,0);
+	
+	$cadmenu = "";
+	$cadhover= "";
+	
+	$cant = 1;
+	while ($row = mysql_fetch_array($res)) {
+		if ($titulo == $row['nombre']) {
+			$nombre = $row['nombre'];
+			$row['url'] = "index.php";	
+		}
+		
+		if (strpos($row['permiso'],$rol) !== false) {
+			if ($row['idmenu'] == 1) {
+				$cadmenu = $cadmenu.'<li class="arriba"><div class="'.$row['icono'].'"></div><a href="'.$row['url'].'">'.$row['nombre'].'</a></li>';
+				$cadhover = $cadhover.' <li class="arriba">
+											<div class="'.$row['icono'].'2" id="tooltip'.$cant.'"></div>
+											<div class="tooltip-dash">'.$row['nombre'].'</div>
+										</li>';	
+			} else {
+				$cadmenu = $cadmenu.'<li><div class="'.$row['icono'].'"></div><a href="'.$row['url'].'">'.$row['nombre'].'</a></li>';
+				$cadhover = $cadhover.'  <li>
+											<div class="'.$row['icono'].'2" id="tooltip'.$cant.'"></div>
+											<div class="tooltip-con">'.$row['nombre'].'</div>
+										</li>';
+			}
+		}
+		$cant+=1;
+	}
+	
+	
+	$menu = '<div id="navigation" >
+			<div class="todoMenu">
+				<div id="mobile-header">
+					Menu
+					<p>Usuario: <span style="color: #333; font-weight:900;">'.$usuario.'</span></p>
+					<p class="ocultar" style="color: #900; font-weight:bold; cursor:pointer; font-family:"Courier New", Courier, monospace; height:20px;">(Ocultar)</p>
+				</div>
 			
-			<li>Fixture
-		    <ul>
-		    		<li><a href="fixSeleccionarGrupo.php" >Seleccionar Grupo</a></li>
-	                        <li><a href="fixModificarMasivo.php" >Carga masiva</a></li>
-<li><a href="fixModificarMasivoPorZona.php" >Carga Nueva</a></li>
+				<nav class="nav">
+					<ul>
+						'.$cadmenu.'
+					</ul>
+				</nav>
+				
+				
+			 </div>
+			 <div class="menuHober">
+				<ul class="ulHober">
+						'.$cadhover.'
+					</ul>
+			 </div>
+		</div>';
+	
+	return $menu;
+	
+}
 
-				</ul>
-			</li>
-			<li>Noticias
-		    <ul>
-					<li><a href="notiAgregar.php" >Cargar</a></li>
-					<li><a href="notiConsultar.php" >Consultar</a></li>
-					<li><a href="fechasAgregar.php" >Cargar Resumen</a></li>
-					<li><a href="notiprincAgregar.php" >Cargar Noticias-Principales</a></li>
-					<li><a href="turAgregar.php" >Cargar Turnos</a></li>
-					<li><a href="seleccAgregar.php" >Cargar Selección</a></li>
-					<li><a href="premiosModificar.php" >Modificar Premios</a></li>
-					<li><a href="reglamentoModificar.php" >Modificar Reglamento</a></li>
-					<li><a href="serviciosModificar.php" >Modificar Servicios</a></li>
-                                        <li><a href="horarioprincAgregar.php" >Agregar Horario Principal</a></li>	
-				</ul>
-			</li>
-			<li>Tabla de Conducta
-		    <ul>
-		    		<li><a href="conAgregar.php" >Agregar</a></li>
-		    		<li><a href="conConsultar.php" >Consultar</a></li>
-		    		
-				</ul>
-			</li>
-			<li>Amonestados
-		    <ul>
-		    		<li><a href="amonestadosp.php" >Agregar</a></li>
-		    		<li><a href="amonestadosc.php" >Consultar</a></li>
-				</ul>
-			</li>
-			
-			<li>Goleadores
-		    <ul>
-		    		<li><a href="goleadoresp.php" >Agregar</a></li>
-		    		<li><a href="goleadoresc.php" >Consultar</a></li>
-				</ul>
-			</li>
-			
-			<li>Suspendidos
-		    <ul>
-		    		<li><a href="suspendidosp.php" >Agregar</a></li>
-		    		<li><a href="suspendidosc.php" >Consultar</a></li>
-				</ul>
-			</li>
-			<li>Jugadores
-		    <ul>
-		    		<li><a href="jAgregar.php" >Agregar</a></li>
-		    		<li><a href="jConsultar.php" >Consultar</a></li>
-				</ul>
-			</li>
-            <li><a href="Cerrar_login.php" >Cerrar Session</a></li>
-	</ul>
-</div>';
+
+
+function validacion($tabla) {
+	$sql	=	"show columns from ".$tabla;
+	$res 	=	$this->query($sql,0);
+	
+	$formJquery = '';
+	$formValidador = '';
+	
+	if ($res == false) {
+		return 'Error al traer datos';
+	} else {
+		
+		$jquery	=	'';
+		$cuerpoValidacion = '';
+		
+		while ($row = mysql_fetch_array($res)) {
+			if (($row[3] != 'PRI') && ($row[2] == 'NO')) {
+				if (strpos($row[1],"decimal") !== false) {
+					//debo validar que sea un numero
+					
+					$jquery	=	$jquery.'
+					
+					$("#'.$row[0].'").click(function(event) {
+						$("#'.$row[0].'").removeClass("alert-danger");
+						if ($(this).val() == "") {
+							$("#'.$row[0].'").attr("value","");
+							$("#'.$row[0].'").attr("placeholder","Ingrese el '.ucwords($row[0]).'...");
+						}
+					});
+				
+					$("#'.$row[0].'").change(function(event) {
+						$("#'.$row[0].'").removeClass("alert-danger");
+						$("#'.$row[0].'").attr("placeholder","Ingrese el '.ucwords($row[0]).'");
+					});
+					
+					';
+					
+					$cuerpoValidacion = $cuerpoValidacion.'
+					
+						if ($("#'.$row[0].'").val() == "") {
+							$error = "Es obligatorio el campo '.ucwords($row[0]).'.";
+							$("#'.$row[0].'").addClass("alert-danger");
+							$("#'.$row[0].'").attr("placeholder",$error);
+						}
+					
+					';
+					
+					
+				} else {
+					if ($row[0] == "refroll") {
+						$label = "Rol";
+						$campo = $row[0];
+						
+						$jquery	=	$jquery.'
+					
+						$("#'.$campo.'").click(function(event) {
+							$("#'.$campo.'").removeClass("alert-danger");
+							if ($(this).val() == "") {
+								$("#'.$campo.'").attr("value","");
+								$("#'.$campo.'").attr("placeholder","Ingrese el '.$label.'...");
+							}
+						});
+					
+						$("#'.$campo.'").change(function(event) {
+							$("#'.$campo.'").removeClass("alert-danger");
+							$("#'.$campo.'").attr("placeholder","Ingrese el '.$label.'");
+						});
+						
+						';
+						
+						
+						$cuerpoValidacion = $cuerpoValidacion.'
+					
+							if ($("#'.$campo.'").val() == "") {
+								$error = "Es obligatorio el campo '.$label.'.";
+								$("#'.$campo.'").addClass("alert-danger");
+								$("#'.$campo.'").attr("placeholder",$error);
+							}
+						
+						';
+						
+					} else {
+						$label = ucwords($row[0]);
+						$campo = $row[0];
+						
+						$jquery	=	$jquery.'
+					
+						$("#'.$campo.'").click(function(event) {
+							$("#'.$campo.'").removeClass("alert-danger");
+							if ($(this).val() == "") {
+								$("#'.$campo.'").attr("value","");
+								$("#'.$campo.'").attr("placeholder","Ingrese el '.$label.'...");
+							}
+						});
+					
+						$("#'.$campo.'").change(function(event) {
+							$("#'.$campo.'").removeClass("alert-danger");
+							$("#'.$campo.'").attr("placeholder","Ingrese el '.$label.'");
+						});
+						
+						';
+						
+						
+						$cuerpoValidacion = $cuerpoValidacion.'
+					
+							if ($("#'.$campo.'").val() == "") {
+								$error = "Es obligatorio el campo '.$label.'.";
+								$("#'.$campo.'").addClass("alert-danger");
+								$("#'.$campo.'").attr("placeholder",$error);
+							}
+						
+						';
+					}
+					
+					
+				}
+			}
+		}
+		
+		$formJquery = $formJquery.$jquery;
+		
+		$formValidador = $formValidador.'
+			function validador(){
+
+					$error = "";
+					'.$cuerpoValidacion.'
+					return $error;
+			}
+		';
+		
+		return $formJquery.$formValidador;
+	}	
 }
 
 
@@ -151,5 +248,36 @@ function footer() {
 </div><!--fin del footer-->";
 }
 
+Function query($sql,$accion) {
+		
+		require_once 'appconfig.php';
+
+		$appconfig	= new appconfig();
+		$datos		= $appconfig->conexion();
+		$hostname	= $datos['hostname'];
+		$database	= $datos['database'];
+		$username	= $datos['username'];
+		$password	= $datos['password'];
+		
+/*		$hostname = "localhost";
+		$database = "lacalder_diablo";
+		$username = "lacalderadeldiab";
+		$password = "caldera4415";
+		*/
+		
+		$conex = mysql_connect($hostname,$username,$password) or die ("no se puede conectar".mysql_error());
+		
+		mysql_select_db($database);
+		
+		$result = mysql_query($sql,$conex);
+		if ($accion && $result) {
+			$result = mysql_insert_id();
+		}
+		mysql_close($conex);
+		return $result;
+		
+	}
+
+}
 
 ?>
