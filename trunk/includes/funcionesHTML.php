@@ -7,7 +7,7 @@ class ServiciosHTML {
 
 function menu($usuario,$titulo,$rol) {
 	
-	$sql = "select idmenu,url,icono, nombre, permiso from lcdd_menu where permiso like '%".$rol."%' order by orden";
+	$sql = "select idmenu,url,icono, nombre, permiso from predio_menu where permiso like '%".$rol."%' order by orden";
 	$res = $this->query($sql,0);
 	
 	$cadmenu = "";
@@ -40,12 +40,7 @@ function menu($usuario,$titulo,$rol) {
 	
 	
 	$menu = '<div id="navigation" >
-			<div class="todoMenu">
-				<div id="mobile-header">
-					Menu
-					<p>Usuario: <span style="color: #333; font-weight:900;">'.$usuario.'</span></p>
-					<p class="ocultar" style="color: #900; font-weight:bold; cursor:pointer; font-family:"Courier New", Courier, monospace; height:20px;">(Ocultar)</p>
-				</div>
+			
 			
 				<nav class="nav">
 					<ul>
@@ -55,11 +50,7 @@ function menu($usuario,$titulo,$rol) {
 				
 				
 			 </div>
-			 <div class="menuHober">
-				<ul class="ulHober">
-						'.$cadhover.'
-					</ul>
-			 </div>
+
 		</div>';
 	
 	return $menu;
