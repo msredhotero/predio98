@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-03-2015 a las 21:52:36
--- Versión del servidor: 5.1.36-community-log
+-- Tiempo de generación: 19-03-2015 a las 06:23:26
+-- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -139,16 +139,9 @@ CREATE TABLE IF NOT EXISTS `dbcontactos` (
 CREATE TABLE IF NOT EXISTS `dbequipos` (
   `IdEquipo` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(50) NOT NULL,
-  `nombrecapitan` varchar(60) DEFAULT NULL,
-  `telefonocapitan` varchar(45) DEFAULT NULL,
-  `facebookcapitan` varchar(45) DEFAULT NULL,
-  `nombresubcapitan` varchar(60) DEFAULT NULL,
-  `telefonosubcapitan` varchar(45) DEFAULT NULL,
-  `facebooksubcapitan` varchar(45) DEFAULT NULL,
-  `emailcapitan` varchar(70) DEFAULT NULL,
-  `emailsubcapitan` varchar(70) DEFAULT NULL,
+  `refContacto` int(11) NOT NULL,
   PRIMARY KEY (`IdEquipo`),
-  KEY `idcontacto` (`nombrecapitan`)
+  KEY `idcontacto` (`refContacto`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1762 ;
 
 -- --------------------------------------------------------

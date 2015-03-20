@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 if (!isset($_SESSION['usua_predio']))
@@ -8,16 +9,58 @@ if (!isset($_SESSION['usua_predio']))
 } else {
 
 
+include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
+include ('../../includes/funcionesEquipos.php');
 
-$serviciosUsuario = new ServiciosUsuarios();
-$serviciosHTML = new ServiciosHTML();
+$serviciosFunciones = new Servicios();
+$serviciosUsuario 	= new ServiciosUsuarios();
+$serviciosHTML 		= new ServiciosHTML();
+$serviciosEquipos 	= new ServiciosE();
 
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
 $resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Amonestados",$_SESSION['refroll_predio']);
+
+
+
+/////////////////////// Opciones para la creacion del formulario  /////////////////////
+$tabla 			= "dbequipos";
+
+$lblCambio[] 	= "";
+$lblreemplazo[] = "";
+
+$cadRef = '';
+
+$refdescripcion = array(0 => "");
+$refCampo[] 	= ""; 
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+
+
+/////////////////////// Opciones para la creacion del view  /////////////////////
+$cabeceras 		= "	<th>Nombre</th>
+				<th>Nombre Capitán</th>
+				<th>Email Capitán</th>
+				<th>Telefono Capitán</th>
+				<th>Facebook Capitán</th>
+				<th>Nombre SubCapitán</th>
+				<th>Email SubCapitán</th>
+				<th>Telefono SubCapitán</th>
+				<th>Facebook SubCapitán</th>";
+
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+
+
+$formulario 	= $serviciosFunciones->camposTabla("insertarEquipo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosEquipos->TraerEquipos());
+
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -81,22 +124,43 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <body>
 
- 
-<?php echo $resMenu; ?>
+ <?php echo $resMenu; ?>
 
 <div id="content">
 
-<h3>Dashboard</h3>
+<h3>Equipos</h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">asdasdas</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Carga de Torneos</p>
         	
         </div>
     	<div class="cuerpoBox">
-    		
+        	<?php echo $formulario; ?>
+            
+            <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline" style="margin-top:15px;">
+                    <li>
+                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                    </li>
+                </ul>
+                </div>
+            </div>
     	</div>
     </div>
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Equipos Cargados</p>
+        	
+        </div>
+    	<div class="cuerpoBox">
+        	<?php echo $lstCargados; ?>
+    	</div>
+    </div>
+    
+    
 
     
     
@@ -106,11 +170,14 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 </div>
 
-
-
-
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	
+	<?php 
+		echo $serviciosHTML->validacion($tabla);
+	
+	?>
 	
 	 $( '#dialogDetalle' ).dialog({
 		autoOpen: false,

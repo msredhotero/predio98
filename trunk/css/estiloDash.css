@@ -126,6 +126,7 @@ padding-bottom: 10px;
 	color:#656565;
 	font-weight: bold;
 	text-shadow: -1px -1px white, 1px 1px #fff;
+
 }
 
 
@@ -182,8 +183,13 @@ padding-bottom: 10px;
 		}
 		
 		.nav ul li:hover {
-		background: #0e6390; /* Old browsers */
-
+			background: #0e6390; /* Old browsers */
+			text-indent:15px;
+			-webkit-transition:all 1s ease;
+		    -moz-transition:all 1s ease;
+		    -o-transition:all 1s ease;
+		    transition:all 1s ease;
+			text-shadow:1px 1px 1px #006;
 		}
 		
 		.triangulo {
@@ -592,6 +598,7 @@ padding-bottom: 10px;
 				z-index:-1;
 				overflow: hidden; 
 				position: relative; 
+				margin-right:15px;
 				/*opacity: 0.9;
   				filter:  alpha(opacity=90);
 				box-shadow: 2px 2px 5px #0e6390;
@@ -620,6 +627,14 @@ padding-bottom: 10px;
 	.btn-group {
 		width:120px;
 	}
+	
+
+.fontcheck p {
+	padding-top:7px;
+	font-size:1.2em;
+	color:#333;
+}
+  
   
 
 

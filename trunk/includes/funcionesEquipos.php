@@ -9,7 +9,16 @@ date_default_timezone_set('America/Buenos_Aires');
 class ServiciosE {
 	
 	function TraerEquipos() {
-		$sql = "select * from dbequipos order by nombre";
+		$sql = "select IdEquipo,
+				Nombre,
+				nombrecapitan,
+				emailcapitan,
+				telefonocapitan,
+				facebookcapitan,
+				nombresubcapitan,
+				emailsubcapitan,
+				telefonosubcapitan,
+				facebooksubcapitan from dbequipos order by nombre";
 		return $this-> query($sql,0);
 	}
 	
