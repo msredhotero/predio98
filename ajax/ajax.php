@@ -60,13 +60,13 @@ switch ($accion) {
 	
 	/* para los jugadores */
 	case 'insertarJugadores':
-		insertarTorneo($serviciosJugadores);
+		insertarJugadores($serviciosJugadores);
 		break;
 	case 'modificarJugadores':
-		modificarTorneo($serviciosJugadores);
+		modificarJugadores($serviciosJugadores);
 		break;
 	case 'eliminarJugadores':
-		eliminarTorneo($serviciosJugadores);
+		eliminarJugadores($serviciosJugadores);
 		break;
 	/* fin jugadores */
 	
