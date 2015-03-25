@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 if (!isset($_SESSION['usua_predio']))
@@ -8,16 +9,58 @@ if (!isset($_SESSION['usua_predio']))
 } else {
 
 
+include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
+include ('../../includes/funcionesGrupos.php');
 
-$serviciosUsuario = new ServiciosUsuarios();
-$serviciosHTML = new ServiciosHTML();
+$serviciosFunciones = new Servicios();
+$serviciosUsuario 	= new ServiciosUsuarios();
+$serviciosHTML 		= new ServiciosHTML();
+$serviciosGrupos 	= new ServiciosG();
 
 $fecha = date('Y-m-d');
 
-//$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Amonestados",$_SESSION['refroll_predio']);
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Zonas",$_SESSION['refroll_predio'],"Fútbol 7");
+
+
+/////////////////////// Opciones de la pagina  ////////////////////
+
+$lblTitulosingular	= "Zona";
+$lblTituloplural	= "Zonas";
+
+/////////////////////// Fin de las opciones /////////////////////
+
+
+/////////////////////// Opciones para la creacion del formulario  /////////////////////
+$tabla 			= "dbgrupos";
+
+$lblCambio	 	= array("");
+$lblreemplazo	= array("");
+
+$resTipoTorneo 	= '';
+
+$cadRef = '';
+
+$refdescripcion = array(0 => $cadRef);
+$refCampo[] 	= ""; 
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+
+
+/////////////////////// Opciones para la creacion del view  /////////////////////
+$cabeceras 		= "	<th>Nombre</th>";
+
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+
+
+$formulario 	= $serviciosFunciones->camposTabla("insertarGrupo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosGrupos->TraerGrupos(),1);
+
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -86,15 +129,37 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <div id="content">
 
-<h3>Dashboard</h3>
+<h3><?php echo $lblTituloplural; ?></h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">asdasdas</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Cargar <?php echo $lblTituloplural; ?></p>
         	
         </div>
     	<div class="cuerpoBox">
-    		
+    		<form class="form-inline formulario" role="form">
+        	<?php echo $formulario; ?>
+            
+            <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline" style="margin-top:15px;">
+                    <li>
+                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            </form>
+    	</div>
+    </div>
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Cargados</p>
+        	
+        </div>
+    	<div class="cuerpoBox">
+        	<?php echo $lstCargados; ?>
     	</div>
     </div>
 
@@ -125,18 +190,68 @@ $(document).ready(function(){
 		}
 	});
 
-	 $( '#dialog2' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
+	 <?php 
+		echo $serviciosHTML->validacion($tabla);
+	
+	?>
+	
+	//al enviar el formulario
+    $('#cargar').click(function(){
+		
+		if (validador() == "")
+        {
+			//información del formulario
+			var formData = new FormData($(".formulario")[0]);
+			var message = "";
+			//hacemos la petición ajax  
+			$.ajax({
+				url: '../../ajax/ajax.php',  
+				type: 'POST',
+				// Form data
+				//datos del formulario
+				data: formData,
+				//necesario para subir archivos via ajax
+				cache: false,
+				contentType: false,
+				processData: false,
+				//mientras enviamos el archivo
+				beforeSend: function(){
+					$("#load").html('<img src="../../imagenes/load13.gif" width="50" height="50" />');       
+				},
+				//una vez finalizado correctamente
+				success: function(data){
+
+					if (data == '') {
+                                            $(".alert").removeClass("alert-danger");
+											$(".alert").removeClass("alert-info");
+                                            $(".alert").addClass("alert-success");
+                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
+											$(".alert").delay(3000).queue(function(){
+												/*aca lo que quiero hacer 
+												  después de los 2 segundos de retraso*/
+												$(this).dequeue(); //continúo con el siguiente ítem en la cola
+												
+											});
+											$("#load").html('');
+											url = "index.php";
+											$(location).attr('href',url);
+                                            
+											
+                                        } else {
+                                        	$(".alert").removeClass("alert-danger");
+                                            $(".alert").addClass("alert-danger");
+                                            $(".alert").html('<strong>Error!</strong> '+data);
+                                            $("#load").html('');
+                                        }
+				},
+				//si ha ocurrido un error
+				error: function(){
+					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
+                    $("#load").html('');
+				}
+			});
 		}
-	});
+    });
 	
 
 });
