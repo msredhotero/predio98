@@ -1,11 +1,17 @@
 <?php
 
 include ('../includes/funcionesUsuarios.php');
-
+include ('../includes/funciones.php');
+include ('../includes/funcionesHTML.php');
+include ('../includes/funcionesJugadores.php');
+include ('../includes/funcionesEquipos.php');
 
 
 $serviciosUsuarios  = new ServiciosUsuarios();
-
+$serviciosFunciones = new Servicios();
+$serviciosHTML		= new ServiciosHTML();
+$serviciosJugadores = new ServiciosJ();
+$serviciosEquipos	= new ServiciosE();
 
 $accion = $_POST['accion'];
 
@@ -28,12 +34,139 @@ switch ($accion) {
         break;
 		
 
-	case 'modificarCliente';
+	case 'modificarCliente':
 		modificarCliente($serviciosUsuarios);
 		break;
 	
+	/* para los torneos */
+	case 'insertarTorneo':
+		insertarTorneo($serviciosFunciones);
+		break;
+	case 'modificarTorneo':
+		modificarTorneo($serviciosFunciones);
+		break;
+	case 'eliminarTorneo':
+		eliminarTorneo($serviciosFunciones);
+		break;
+	
+		
+		
+	/* fin torneos */
+	
+	/* para los equipos */
+	
+	/* fin equipos */
+	
+	
+	/* para los jugadores */
+	case 'insertarJugadores':
+		insertarTorneo($serviciosJugadores);
+		break;
+	case 'modificarJugadores':
+		modificarTorneo($serviciosJugadores);
+		break;
+	case 'eliminarJugadores':
+		eliminarTorneo($serviciosJugadores);
+		break;
+	/* fin jugadores */
+	
+	
+	/* para los zonas */
+	
+	/* fin zonas */
+	
+	
+	/* para los torneo-zonas-equipos */
+	
+	/* fin torneo-zonas-equipos */
+	
+	
+	/* para los fixture */
+	
+	/* fin fixture */
 }
 
+//////////////////////////Traer datos */
+
+/* para los torneos */
+
+function insertarTorneo($serviciosFunciones) {
+	$nombre			=	$_POST['nombre'];
+	$fechacreacion	=	$_POST['fechacreacion'];
+
+	if (isset($_POST['activo'])) {
+		$activo	= 1;
+	} else {
+		$activo = 0;
+	}
+	
+	if (isset($_POST['actual'])) {
+		$actual	= 1;
+	} else {
+		$actual = 0;
+	}
+	$reftipotorneo	=	$_POST['reftipotorneo'];
+	
+	$res = $serviciosFunciones->insertarTorneo($nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
+	//echo $res;
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo "Huvo un error al insertar datos";	
+	}
+}
+
+function modificarTorneo($serviciosFunciones) {
+	$id				=	$_POST['id'];
+	$nombre			=	$_POST['nombre'];
+	$fechacreacion	=	$_POST['fechacreacion'];
+	$activo			=	$_POST['activo'];
+	$actual			=	$_POST['actual'];
+	$reftipotorneo	=	$_POST['reftipotorneo'];
+	
+	$res = $serviciosFunciones->modificarTorneo($id,$nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo "Huvo un error al insertar datos";	
+	}
+}
+
+function eliminarTorneo($serviciosFunciones) {
+	
+}
+
+
+/* fin torneos */
+	
+/* para los equipos */
+
+/* fin equipos */
+
+
+/* para los jugadores */
+
+/* fin jugadores */
+
+
+/* para los zonas */
+
+/* fin zonas */
+
+
+/* para los torneo-zonas-equipos */
+
+/* fin torneo-zonas-equipos */
+
+
+/* para los fixture */
+
+/* fin fixture */
+	
+	
+	
 function modificarCliente($serviciosUsuarios) {
 	$email		=	$_POST['email'];
 	$password	=	$_POST['password'];
