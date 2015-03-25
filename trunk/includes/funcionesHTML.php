@@ -5,7 +5,7 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosHTML {
 
-function menu($usuario,$titulo,$rol) {
+function menu($usuario,$titulo,$rol,$torneo) {
 	
 	$sql = "select idmenu,url,icono, nombre, permiso from predio_menu where permiso like '%".$rol."%' order by orden";
 	$res = $this->query($sql,0);
@@ -39,7 +39,20 @@ function menu($usuario,$titulo,$rol) {
 	}
 	
 	
-	$menu = '<div id="navigation" >
+	$menu = '
+		<div style="background-color:#333; position:absolute; top:0;left:0; height:35px; width:100%; color:#FFF; padding-top:7px;" align="right">
+			
+			<ul class="list-inline">
+				<li><span class="glyphicon glyphicon-user"></span> '.$usuario.'</li>
+				<li style="color:#FC0;">'.$torneo.' <a href="../torneos/"> Cambiar</a></li>    
+			</ul>
+		</div>
+		 
+		<div style="height:30px;">
+		
+		</div> 
+	
+		<div id="navigation" >
 			
 			
 				<nav class="nav">
@@ -65,6 +78,31 @@ function validacion($tabla) {
 	
 	$formJquery = '';
 	$formValidador = '';
+	
+	$links = '$(".ver").click(function(event){
+			url = "ver.php";
+			$(location).attr("href",url);
+	});//fin del boton eliminar
+	
+	$(".varborrar").click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$(".varmodificar").click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificar.php?id=" + usersid;
+			$(location).attr("href",url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar';
 	
 	if ($res == false) {
 		return 'Error al traer datos';
@@ -188,7 +226,7 @@ function validacion($tabla) {
 			}
 		';
 		
-		return $formJquery.$formValidador;
+		return $links.$formJquery.$formValidador;
 	}	
 }
 

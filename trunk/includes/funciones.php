@@ -23,17 +23,25 @@ class Servicios {
 	/* fin */
 
 
-	function camposTablaView($cabeceras,$datos) {
+	function camposTablaView($cabeceras,$datos,$cantidad) {
 		$cadView = '';
 		$cadRows = '';
+		
 		while ($row = mysql_fetch_array($datos)) {
+			$cadsubRows = '';
 			$cadRows = $cadRows.'
 			
 					<tr>
-                        	<td>'.utf8_encode($row['apellido']).'</td>
-
-                            <td>
-
+                        	';
+			
+			for ($i=1;$i<=$cantidad;$i++) {
+				$cadsubRows = $cadsubRows.'<td>'.$row[$i].'</td>';	
+			}
+			
+			$cadRows = $cadRows.'
+                            '.$cadsubRows.'
+							<td>
+								
                                 <div class="btn-group">
                                     <button class="btn btn-success" type="button">Acciones</button>
                                     
@@ -44,15 +52,15 @@ class Servicios {
                                     
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                        <a href="javascript:void(0)" class="varmodificar" id="'.$row['idusuario'].'">Modificar</a>
+                                        <a href="javascript:void(0)" class="varmodificar" id="'.$row[0].'">Modificar</a>
                                         </li>
 
                                         <li>
-                                        <a href="javascript:void(0)" class="varborrar" id="'.$row['idusuario'].'">Borrar</a>
+                                        <a href="javascript:void(0)" class="varborrar" id="'.$row[0].'">Borrar</a>
                                         </li>
 										
                                         <li>
-                                        <a href="javascript:void(0)" class="btnDetalle" id="'.$row['idusuario'].'">Ver</a>
+                                        <a href="javascript:void(0)" class="btnDetalle" id="'.$row[0].'">Ver</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -62,7 +70,7 @@ class Servicios {
 		}
 		
 		$cadView = $cadView.'
-			<table class="table table-striped table-responsive">
+			<table class="table table-striped table-responsive" id="example">
             	<thead>
                 	<tr>
                     	'.$cabeceras.'
@@ -70,10 +78,11 @@ class Servicios {
                     </tr>
                 </thead>
                 <tbody>
-<!--idproducto,nombre,precio_unit,precio_venta,stock,stock_min,reftipoproducto,refproveedor,codigo,codigobarra,caracteristicas -->
-                	'.$cadRows.'
+
+                	'.utf8_encode($cadRows).'
                 </tbody>
             </table>
+			<div style="margin-bottom:85px; margin-right:60px;"></div>
 		
 		';	
 		
@@ -110,9 +119,10 @@ class Servicios {
 				
 				$i = 0;
 				foreach ($lblcambio as $cambio) {
-					if ($row[0] == $lblcambio) {
+					if ($row[0] == $cambio) {
 						$label = $lblreemplazo[$i];
-						break 2;
+						$i = 0;
+						break;
 					} else {
 						$label = $row[0];
 					}
@@ -127,7 +137,7 @@ class Servicios {
 							<label for="'.$label.'" class="control-label" style="text-align:left">'.ucwords($label).'</label>
 							<div class="input-group col-md-12">
 								<span class="input-group-addon">$</span>
-								<input type="text" class="form-control" id="'.$row[0].'" name="'.$row[0].'" value="0" required>
+								<input type="text" class="form-control" id="'.strtolower($row[0]).'" name="'.strtolower($row[0]).'" value="0" required>
 								<span class="input-group-addon">.00</span>
 							</div>
 						</div>
@@ -136,17 +146,28 @@ class Servicios {
 					} else {
 						if ( in_array($row[0],$refCampo) ) {
 							
-							$campo = $row[0];
+							$campo = strtolower($row[0]);
 							
 							$option = $refdescripcion[array_search($row[0], $refCampo)];
-							
+							/*
+							$i = 0;
+							foreach ($lblcambio as $cambio) {
+								if ($row[0] == $cambio) {
+									$label = $lblreemplazo[$i];
+									$i = 0;
+									break 2;
+								} else {
+									$label = $row[0];
+								}
+								$i = $i + 1;
+							}*/
 							
 							$form	=	$form.'
 							
 							<div class="form-group col-md-6">
 								<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 								<div class="input-group col-md-12">
-									<select class="form-control" id="'.$campo.'" name="'.$campo.'">
+									<select class="form-control" id="'.strtolower($campo).'" name="'.strtolower($campo).'">
 										';
 							
 							$form	=	$form.$option;
@@ -161,7 +182,7 @@ class Servicios {
 							
 							if (strpos($row[1],"bit") !== false) {
 								$label = ucwords($label);
-								$campo = $row[0];
+								$campo = strtolower($row[0]);
 								
 								$form	=	$form.'
 								
@@ -179,14 +200,14 @@ class Servicios {
 								
 								if (strpos($row[1],"date") !== false) {
 									$label = ucwords($label);
-									$campo = $row[0];
+									$campo = strtolower($row[0]);
 									
 									$form	=	$form.'
 									
 									<div class="form-group col-md-6">
 										<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 										<div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-field="'.$campo.'" data-link-format="yyyy-mm-dd">
-											<input class="form-control" size="50" type="text" value="" readonly>
+											<input name="'.$campo.'" id="'.$campo.'" class="form-control" size="50" type="text" value="" readonly>
 											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
 									</div>
@@ -195,7 +216,7 @@ class Servicios {
 									
 								} else {
 									$label = ucwords($label);
-									$campo = $row[0];
+									$campo = strtolower($row[0]);
 									
 									$form	=	$form.'
 									
@@ -438,7 +459,7 @@ class Servicios {
 	}
 	
 	function TraerTorneos() {
-		$sql = "select t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
 				inner join
 				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
 				order by idtorneo desc";
@@ -460,47 +481,33 @@ function TraerTorneosClientes() {
 		return $this-> query($sql,0);
 	}
 	
-	function insertTorneo($nombre) {
-		$usu = utf8_encode($nombre);
-		$fechacrea = date('Y-m-d');
-		$activo = true;
-		
-		if (trim($nombre) != "") 
-		{
-		
+	function insertarTorneo($nombre,$fechacrea,$activo,$actual,$reftipotorneo) {
 		$nombre = str_replace("'","",$nombre);
+		$nombre = utf8_decode($nombre);
 		
+		$sql = "insert into dbtorneos(idtorneo,nombre,fechacreacion,activo,actual,reftipotorneo) values ('','".$nombre."', '".$fechacrea."', ".$activo.",".$actual.",".$reftipotorneo.")";
+		//return $sql;
+		$res = $this-> query($sql,1);
 		
-		
-		$sql = "insert into dbtorneos(idtorneo,nombre,fechacreacion,activo) values ('','".$nombre."', '".$fechacrea."', ".$activo.")";
-		$this-> query($sql,1);
-		
-		$idUltimo = "select max(idtorneo) from dbtorneos";
-		$resid = $this-> query($idUltimo,0);
-		$idtorneo = mysql_result($resid,0,0);
-		$this->activarTabla("dbtorneos",$idtorneo,"idtorneo",true);
-		return 1;
-		} else {
-			return 0;
-		}
+		return $res;
 	}
 	
-	function modificarTorneo($nombre,$activo,$idtorneo) {
-		$fechacrea = date('Y-m-d');
+	function modificarTorneo($idtorneo,$nombre,$fechacrea,$activo,$actual,$reftipotorneo) {
 		$nombre = str_replace("'","",$nombre);
+		$nombre = utf8_decode($nombre);
+
 		
-		if (trim($nombre) != "") 
-		{
-		if ($activo == true) {
-			$this->activarTabla("dbtorneos",$idtorneo,"idtorneo",true);
-		}
-		
-		$sql = "update dbtorneos set nombre = '".$nombre."', fechacreacion = '".$fechacrea."', activo =".$activo." where idtorneo =".$idtorneo;
-		$this-> query($sql,0);
-		return 1;
-		} else {
-			return 0;
-		}
+		$sql = "update dbtorneos 
+					set 
+						nombre = '".$nombre."', 
+						activo =".$activo.",
+						actual =".$actual.",
+						fechacreacion = '".$fechacrea."',
+						reftipotorneo = ".$reftipotorneo."  
+						where idtorneo =".$idtorneo;
+		$res = $this-> query($sql,0);
+		return $res;
+
 		
 	}
 	

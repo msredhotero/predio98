@@ -22,15 +22,15 @@ $serviciosEquipos 	= new ServiciosE();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Amonestados",$_SESSION['refroll_predio']);
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Equipos",$_SESSION['refroll_predio'],"Fútbol 7");
 
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
 $tabla 			= "dbequipos";
 
-$lblCambio[] 	= "";
-$lblreemplazo[] = "";
+$lblCambio	 	= array("nombrecapitan","emailcapitan","telefonocapitan","facebookcapitan","nombresubcapitan","emailsubcapitan","telefonosubcapitan","facebooksubcapitan");
+$lblreemplazo	= array("Nombre Capitán","Email Capitán","Telefono Capitán","Facebook Capitán","Nombre SubCapitán","Email SubCapitán","Telefono SubCapitán","Facebook SubCapitán");
 
 $cadRef = '';
 
@@ -59,7 +59,7 @@ $cabeceras 		= "	<th>Nombre</th>
 
 $formulario 	= $serviciosFunciones->camposTabla("insertarEquipo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosEquipos->TraerEquipos());
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosEquipos->TraerEquipos(),9);
 
 
 
@@ -132,7 +132,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga de Torneos</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Carga de Equipos</p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -170,9 +170,37 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 </div>
 
+<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+<script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	$('#example').dataTable({
+		"order": [[ 0, "asc" ]],
+		"language": {
+			"emptyTable":     "No hay datos cargados",
+			"info":           "Mostrar _START_ hasta _END_ del total de _TOTAL_ filas",
+			"infoEmpty":      "Mostrar 0 hasta 0 del total de 0 filas",
+			"infoFiltered":   "(filtrados del total de _MAX_ filas)",
+			"infoPostFix":    "",
+			"thousands":      ",",
+			"lengthMenu":     "Mostrar _MENU_ filas",
+			"loadingRecords": "Cargando...",
+			"processing":     "Procesando...",
+			"search":         "Buscar:",
+			"zeroRecords":    "No se encontraron resultados",
+			"paginate": {
+				"first":      "Primero",
+				"last":       "Ultimo",
+				"next":       "Siguiente",
+				"previous":   "Anterior"
+			},
+			"aria": {
+				"sortAscending":  ": activate to sort column ascending",
+				"sortDescending": ": activate to sort column descending"
+			}
+		  }
+	} );
 	
 	<?php 
 		echo $serviciosHTML->validacion($tabla);

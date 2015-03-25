@@ -9,24 +9,22 @@ date_default_timezone_set('America/Buenos_Aires');
 class ServiciosJ {
 	
 	function TraerJugadores() {
-		$sql = "select * from dbjugadores order by apellido,nombre";
+		$sql = "select idjugador,apyn,dni from dbjugadores order by apellido,nombre";
 		return $this->query($sql,0);
 	}
 	
 	function TraerJugadoresEquipos() {
-		$sql = "select * from dbjugadores j
+		$sql = "select j.idequipo,j.apyn,j.dni,e.nombre from dbjugadores j
 		        inner join dbequipos e
 		        on j.idequipo = e.idequipo
-				order by j.apellido,j.nombre";
+				order by e.nombre,j.apyn";
 		return $this->query($sql,0);
 	}
 	
-        Function TraerJugadoresPorEquipo($idequipo) {
+    function TraerJugadoresPorEquipo($idequipo) {
 		$sql = "select dbjugadores.idjugador,
-trim(dbjugadores.apellido) as apellido,
-trim(dbjugadores.nombre) as nombre,
 dbjugadores.idequipo,
-concat(trim(apellido),' ' ,trim(nombre)) as apellidonombre from dbjugadores where idequipo = ".$idequipo." order by apellido,nombre";
+concat(trim(apellido),' ' ,trim(nombre)) as apellidonombre from dbjugadores where idequipo = ".$idequipo." order by apyn";
 		return $this->query($sql,0);
 	}
 
@@ -46,23 +44,22 @@ concat(trim(apellido),' ' ,trim(nombre)) as apellidonombre from dbjugadores wher
 		return $this->query($sql,0);
 	}
 	
-        function insertarJugador($apellido,$nombre,$idequipo) {
-		header( 'Content-type: text/html; charset=iso-8859-1' );
-		$sql = "insert into dbjugadores(idjugador,apellido,nombre,idequipo)
-										values ('','".utf8_decode($apellido)."','".utf8_decode($nombre)."',".$idequipo.")";
-		$this->query($sql,1);
-		return 1;
+    function insertarJugadores($apyn,$dni,$idequipo) {
+		$sql = "insert into dbjugadores(idjugador,apyn,dni,idequipo)
+										values ('','".utf8_decode($apellido)."',".$dni.",".$idequipo.")";
+		$res = $this->query($sql,1);
+		return $res;
 	}
 
 
 	
-	function modificarJugador($apellido,$nombre,$idequipo,$id) {
+	function modificarJugadores($apyn,$dni,$idequipo,$id) {
 		$sql = "update dbjugadores set apellido = '".utf8_decode($apellido)."', nombre = '".utf8_decode($nombre)."', idequipo = ".$idequipo." where idjugador =".$id;
 		$this->query($sql,0);
 		return 1;
 	}
 	
-	function eliminarJugador($id) {
+	function eliminarJugadores($id) {
 		$sql = "delete from dbjugadores where idjugador =".$id;
 		$this->query($sql,0);
 		return 1;
