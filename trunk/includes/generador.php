@@ -52,6 +52,31 @@ if ($res == false) {
 	
 	$cuerpoVariableUpdate = "";
 	
+	
+	$ajaxFunciones = "
+	
+		case 'insertar".$nombre."':
+			insertar".$nombre."($servicios".$nombre.");
+			break;
+		case 'modificar".$nombre."':
+			modificar".$nombre."($servicios".$nombre.");
+			break;
+		case 'eliminar".$nombre."':
+			eliminar".$nombre."($servicios".$nombre.");
+			break;
+	
+	";
+	/*
+	case 'insertarJugadores':
+		insertarTorneo($serviciosJugadores);
+		break;
+	case 'modificarJugadores':
+		modificarTorneo($serviciosJugadores);
+		break;
+	case 'eliminarJugadores':
+		eliminarTorneo($serviciosJugadores);
+		break;
+	*/
 	while ($row = mysql_fetch_array($res)) {
 		if ($row[3] == 'PRI') {
 			$clave = $row[0];			
