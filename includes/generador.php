@@ -51,21 +51,24 @@ if ($res == false) {
 	$cuerpoSQL = '';
 	
 	$cuerpoVariableUpdate = "";
-	
+	$cuerpoVariablePOST = "";
 	
 	$ajaxFunciones = "
 	
-		case 'insertar".$nombre."':
-			insertar".$nombre."($servicios".$nombre.");
-			break;
-		case 'modificar".$nombre."':
-			modificar".$nombre."($servicios".$nombre.");
-			break;
-		case 'eliminar".$nombre."':
-			eliminar".$nombre."($servicios".$nombre.");
-			break;
+		case 'insertar".$nombre."': <br>
+			insertar".$nombre."("."$"."servicios".$nombre."); <br>
+			break; <br>
+		case 'modificar".$nombre."': <br>
+			modificar".$nombre."("."$"."servicios".$nombre."); <br>
+			break; <br>
+		case 'eliminar".$nombre."': <br>
+			eliminar".$nombre."("."$"."servicios".$nombre."); <br>
+			break; <br>
 	
 	";
+	
+	
+	
 	/*
 	case 'insertarJugadores':
 		insertarTorneo($serviciosJugadores);
@@ -84,14 +87,15 @@ if ($res == false) {
 			
 			switch ($row[1]) {
 				case "date":
-				
-					$cuerpoVariable = $cuerpoVariable."'".'".utf8_decode($'.$row[0].')."'."',";
-					$cuerpoVariableComunes = $cuerpoVariableComunes."$".$row[0].",";
-					$cuerpoSQL = $cuerpoSQL.$row[0].",";
+					$cuerpoVariablePOST 	= $cuerpoVariablePOST."$".$row[0]." = "."$"."_POST['".$row[0]."']; <br>";
+					$cuerpoVariable 		= $cuerpoVariable."'".'".utf8_decode($'.$row[0].')."'."',";
+					$cuerpoVariableComunes	= $cuerpoVariableComunes."$".$row[0].",";
+					$cuerpoSQL 				= $cuerpoSQL.$row[0].",";
 					
 					$cuerpoVariableUpdate = $cuerpoVariableUpdate.$row[0].' = '."'".'".utf8_decode($'.$row[0].')."'."',";
 					break;
 				case "datetime":
+					$cuerpoVariablePOST 	= $cuerpoVariablePOST."$".$row[0]." = "."$"."_POST['".$row[0]."']; <br>";
 					$cuerpoVariable = $cuerpoVariable."'".'".utf8_decode($'.$row[0].')."'."',";
 					$cuerpoVariableComunes = $cuerpoVariableComunes."$".$row[0].",";
 					$cuerpoSQL = $cuerpoSQL.$row[0].",";
@@ -99,11 +103,24 @@ if ($res == false) {
 					break;
 				default:
 					if (strpos($row[1],"varchar") !== false) {
+						$cuerpoVariablePOST 	= $cuerpoVariablePOST."$".$row[0]." = "."$"."_POST['".$row[0]."']; <br>";
 						$cuerpoVariable = $cuerpoVariable."'".'".utf8_decode($'.$row[0].')."'."',";
 						$cuerpoVariableComunes = $cuerpoVariableComunes."$".$row[0].",";
 						$cuerpoSQL = $cuerpoSQL.$row[0].",";
 						$cuerpoVariableUpdate = $cuerpoVariableUpdate.$row[0].' = '."'".'".utf8_decode($'.$row[0].')."'."',";	
 					} else {
+						if (strpos($row[1],"bit") !== false) {
+							$cuerpoVariablePOST 	= $cuerpoVariablePOST."
+									if (isset("."$_"."POST['".$row[0]."'])) { <br>
+										"."$".$row[0]."	= 1; <br>
+									} else { <br>
+										"."$".$row[0]." = 0; <br>
+									} <br>
+							
+							";	
+						} else {
+							$cuerpoVariablePOST 	= $cuerpoVariablePOST."$".$row[0]." = "."$"."_POST['".$row[0]."']; <br>";	
+						}
 						$cuerpoVariable = $cuerpoVariable.'".$'.$row[0].'.",';
 						$cuerpoVariableComunes = $cuerpoVariableComunes."$".$row[0].",";
 						$cuerpoSQL = $cuerpoSQL.$row[0].",";
@@ -116,6 +133,71 @@ if ($res == false) {
 		}
 		
 	}
+	
+	
+	$ajaxFuncionesController = "
+	
+		function insertar".$nombre."("."$"."servicios".$nombre.") { <br>
+			".$cuerpoVariablePOST."
+			
+			"."$"."res = "."$"."servicios".$nombre."->insertar".$nombre."(".$cuerpoVariableComunes.") <br>
+			
+			if ((integer)"."$"."res > 0) { <br>
+				echo ''; <br>
+			} else { <br>
+				echo 'Huvo un error al insertar datos';	 <br>
+			} <br>
+		
+		} <br>
+		
+		function modificar".$nombre."("."$"."servicios".$nombre.") { <br>
+			
+			"."$"."id = 	"."$"."_POST['id']; <br>
+			".$cuerpoVariablePOST."
+			
+			"."$"."res = "."$"."servicios".$nombre."->modificar".$nombre."("."$"."id,".$cuerpoVariableComunes.") <br>
+			echo "."$"."res; <br>
+		} <br>
+
+		function eliminar".$nombre."("."$"."servicios".$nombre.") { <br>
+			"."$"."id = 	"."$"."_POST['id']; <br>
+			
+			"."$"."res = "."$"."servicios".$nombre."->eliminar".$nombre."("."$"."id) <br>
+			echo "."$"."res; <br>
+		} <br>
+	
+	";
+	/*
+	function insertarTorneo($serviciosFunciones) {
+	$nombre			=	$_POST['nombre'];
+	$fechacreacion	=	$_POST['fechacreacion'];
+
+	if (isset($_POST['activo'])) {
+		$activo	= 1;
+	} else {
+		$activo = 0;
+	}
+	
+	if (isset($_POST['actual'])) {
+		$actual	= 1;
+	} else {
+		$actual = 0;
+	}
+	$reftipotorneo	=	$_POST['reftipotorneo'];
+	
+	$res = $serviciosFunciones->insertarTorneo($nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
+	//echo $res;
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo "Huvo un error al insertar datos";	
+	}
+}
+	
+	
+	
+	*/
 	
 	$cuerpoVariable			= substr($cuerpoVariable,0,strlen($cuerpoVariable)-1);
 	$cuerpoVariableUpdate	= substr($cuerpoVariableUpdate,0,strlen($cuerpoVariableUpdate)-1);
@@ -164,7 +246,7 @@ if ($res == false) {
 	
 
 	
-	echo $includes;
+	echo $includes."<br><br><br>".$ajaxFunciones."<br><br><br>".$ajaxFuncionesController;
 }
 
 

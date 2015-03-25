@@ -127,11 +127,8 @@ function modificarTorneo($serviciosFunciones) {
 	
 	$res = $serviciosFunciones->modificarTorneo($id,$nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
 	
-	if ((integer)$res > 0) {
-		echo '';
-	} else {
-		echo "Huvo un error al insertar datos";	
-	}
+
+	echo $res;
 }
 
 function eliminarTorneo($serviciosFunciones) {
