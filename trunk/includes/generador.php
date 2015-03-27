@@ -33,8 +33,8 @@ function query($sql,$accion) {
 }
 
 
-$tabla = "DbJugadores";
-$nombre = "Jugadores";
+$tabla = "DbEquipos";
+$nombre = "Equipos";
 
 $sql	=	"show columns from ".$tabla;
 $res 	=	query($sql,0);
@@ -134,13 +134,21 @@ if ($res == false) {
 		
 	}
 	
+
+	
+	$cuerpoVariable			= substr($cuerpoVariable,0,strlen($cuerpoVariable)-1);
+	$cuerpoVariableUpdate	= substr($cuerpoVariableUpdate,0,strlen($cuerpoVariableUpdate)-1);
+	$cuerpoVariableComunes	= substr($cuerpoVariableComunes,0,strlen($cuerpoVariableComunes)-1);
+	$cuerpoSQL				= substr($cuerpoSQL,0,strlen($cuerpoSQL)-1);
+	
+	
 	
 	$ajaxFuncionesController = "
 	
 		function insertar".$nombre."("."$"."servicios".$nombre.") { <br>
 			".$cuerpoVariablePOST."
 			
-			"."$"."res = "."$"."servicios".$nombre."->insertar".$nombre."(".$cuerpoVariableComunes.") <br>
+			"."$"."res = "."$"."servicios".$nombre."->insertar".$nombre."(".$cuerpoVariableComunes."); <br>
 			
 			if ((integer)"."$"."res > 0) { <br>
 				echo ''; <br>
@@ -155,65 +163,25 @@ if ($res == false) {
 			"."$"."id = 	"."$"."_POST['id']; <br>
 			".$cuerpoVariablePOST."
 			
-			"."$"."res = "."$"."servicios".$nombre."->modificar".$nombre."("."$"."id,".$cuerpoVariableComunes.") <br>
+			"."$"."res = "."$"."servicios".$nombre."->modificar".$nombre."("."$"."id,".$cuerpoVariableComunes."); <br>
 			echo "."$"."res; <br>
 		} <br>
 
 		function eliminar".$nombre."("."$"."servicios".$nombre.") { <br>
 			"."$"."id = 	"."$"."_POST['id']; <br>
 			
-			"."$"."res = "."$"."servicios".$nombre."->eliminar".$nombre."("."$"."id) <br>
+			"."$"."res = "."$"."servicios".$nombre."->eliminar".$nombre."("."$"."id); <br>
 			echo "."$"."res; <br>
 		} <br>
 	
 	";
-	/*
-	function insertarTorneo($serviciosFunciones) {
-	$nombre			=	$_POST['nombre'];
-	$fechacreacion	=	$_POST['fechacreacion'];
 
-	if (isset($_POST['activo'])) {
-		$activo	= 1;
-	} else {
-		$activo = 0;
-	}
-	
-	if (isset($_POST['actual'])) {
-		$actual	= 1;
-	} else {
-		$actual = 0;
-	}
-	$reftipotorneo	=	$_POST['reftipotorneo'];
-	
-	$res = $serviciosFunciones->insertarTorneo($nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
-	//echo $res;
-	
-	if ((integer)$res > 0) {
-		echo '';
-	} else {
-		echo "Huvo un error al insertar datos";	
-	}
-}
-	
-	
-	
-	*/
-	
-	$cuerpoVariable			= substr($cuerpoVariable,0,strlen($cuerpoVariable)-1);
-	$cuerpoVariableUpdate	= substr($cuerpoVariableUpdate,0,strlen($cuerpoVariableUpdate)-1);
-	$cuerpoVariableComunes	= substr($cuerpoVariableComunes,0,strlen($cuerpoVariableComunes)-1);
-	$cuerpoSQL				= substr($cuerpoSQL,0,strlen($cuerpoSQL)-1);
-	
-	//// para el insert ///
-	/*  '','".utf8_decode($apellido)."',".$dni.",".$idequipo." */
-	
-	/*  para el update
-	
-						apellido = '".utf8_decode($apellido)."', 
-						nombre = '".utf8_decode($nombre)."', 
-						idequipo = ".$idequipo." 
-						
-						*/
+
+
+
+
+
+
 	$includes = $includes.'
 	
 		function insertar'.$nombre.'('.$cuerpoVariableComunes.') { <br>		
