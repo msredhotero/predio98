@@ -54,11 +54,20 @@ switch ($accion) {
 	/* fin torneos */
 	
 	/* para los equipos */
-	
+	case 'insertarEquipos':
+		insertarEquipos($serviciosEquipos);
+		break;
+	case 'modificarEquipos':
+		modificarEquipos($serviciosEquipos);
+		break;
+	case 'eliminarEquipos':
+		eliminarEquipos($serviciosEquipos);
+		break; 
 	/* fin equipos */
 	
 	
 	/* para los jugadores */
+
 	case 'insertarJugadores':
 		insertarJugadores($serviciosJugadores);
 		break;
@@ -67,7 +76,7 @@ switch ($accion) {
 		break;
 	case 'eliminarJugadores':
 		eliminarJugadores($serviciosJugadores);
-		break;
+		break; 
 	/* fin jugadores */
 	
 	
@@ -132,7 +141,10 @@ function modificarTorneo($serviciosFunciones) {
 }
 
 function eliminarTorneo($serviciosFunciones) {
+	$id				=	$_POST['id'];
 	
+	$res = $serviciosFunciones->eliminarTorneo($id);
+	echo $res;
 }
 
 
@@ -140,11 +152,78 @@ function eliminarTorneo($serviciosFunciones) {
 	
 /* para los equipos */
 
+function insertarEquipos($serviciosEquipos) {
+	$Nombre 			= $_POST['Nombre'];
+	$nombrecapitan 		= $_POST['nombrecapitan'];
+	$telefonocapitan 	= $_POST['telefonocapitan'];
+	$facebookcapitan 	= $_POST['facebookcapitan'];
+	$nombresubcapitan 	= $_POST['nombresubcapitan'];
+	$telefonosubcapitan = $_POST['telefonosubcapitan'];
+	$facebooksubcapitan = $_POST['facebooksubcapitan'];
+	$emailcapitan 		= $_POST['emailcapitan'];
+	$emailsubcapitan 	= $_POST['emailsubcapitan'];
+
+	$res = $serviciosEquipos->insertarEquipos($Nombre,$nombrecapitan,$telefonocapitan,$facebookcapitan,$nombresubcapitan,$telefonosubcapitan,$facebooksubcapitan,$emailcapitan,$emailsubcapitan);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarEquipos($serviciosEquipos) {
+	$id 				= $_POST['id'];
+	$Nombre 			= $_POST['Nombre'];
+	$nombrecapitan 		= $_POST['nombrecapitan'];
+	$telefonocapitan 	= $_POST['telefonocapitan'];
+	$facebookcapitan 	= $_POST['facebookcapitan'];
+	$nombresubcapitan 	= $_POST['nombresubcapitan'];
+	$telefonosubcapitan = $_POST['telefonosubcapitan'];
+	$facebooksubcapitan = $_POST['facebooksubcapitan'];
+	$emailcapitan 		= $_POST['emailcapitan'];
+	$emailsubcapitan 	= $_POST['emailsubcapitan'];
+
+	$res = $serviciosEquipos->modificarEquipos($id,$Nombre,$nombrecapitan,$telefonocapitan,$facebookcapitan,$nombresubcapitan,$telefonosubcapitan,$facebooksubcapitan,$emailcapitan,$emailsubcapitan);
+	
+	echo $res;
+}
+
+function eliminarEquipos($serviciosEquipos) {
+	$id = $_POST['id'];
+	$res = $serviciosEquipos->eliminarEquipos($id);
+	echo $res;
+} 
 /* fin equipos */
 
 
 /* para los jugadores */
 
+function insertarJugadores($serviciosJugadores) {
+	$apyn 		= $_POST['apyn'];
+	$idequipo 	= $_POST['idequipo'];
+	$dni 		= $_POST['dni'];
+	
+	$res = $serviciosJugadores->insertarJugadores($apyn,$idequipo,$dni);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarJugadores($serviciosJugadores) {
+	$id 		= $_POST['id'];
+	$apyn 		= $_POST['apyn'];
+	$idequipo 	= $_POST['idequipo'];
+	$dni 		= $_POST['dni'];
+	
+	$res = $serviciosJugadores->modificarJugadores($id,$apyn,$idequipo,$dni);
+	echo $res;
+}
+function eliminarJugadores($serviciosJugadores) {
+	$id = $_POST['id'];
+	
+	$res = $serviciosJugadores->eliminarJugadores($id);
+	echo $res;
+} 
 /* fin jugadores */
 
 
