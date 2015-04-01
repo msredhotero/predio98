@@ -20,7 +20,7 @@ function GUID()
 }
 
 
-function login($usuario,$pass) {
+function login($usuario,$pass,$torneo) {
 	
 	$sqlusu = "select * from se_usuarios where email = '".$usuario."'";
 
@@ -57,6 +57,9 @@ if (mysql_num_rows($respusu) > 0) {
 		$_SESSION['nombre_predio'] = mysql_result($resppass,0,0);
 		$_SESSION['email_predio'] = mysql_result($resppass,0,1);
 		$_SESSION['refroll_predio'] = mysql_result($resppass,0,3);
+		
+		$sqlTorneo = "select descripciontorneo from tbtipotorneo where idtipotorneo =".$torneo;
+		$_SESSION['torneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,0);
 	}
 	
 }	else {

@@ -2,10 +2,12 @@
 set_include_path("class");
 
 require 'includes/funcionesUsuarios.php';
+include ('includes/funciones.php');
 
 $serviciosUsuarios = new ServiciosUsuarios();
+$servicios = new Servicios();
 
-
+$resTipoTorneos = $servicios->traerTipoTorneo();
 
 ?>
 <!DOCTYPE HTML>
@@ -111,6 +113,7 @@ $serviciosUsuarios = new ServiciosUsuarios();
         						$.ajax({
                                 data:  {email:		$("#email").val(),
 										pass:		$("#pass").val(),
+										reftorneo:	$('#reftorneo').val(),
 										accion:		'login'},
                                 url:   'ajax/ajax.php',
                                 type:  'post',
@@ -197,17 +200,28 @@ $serviciosUsuarios = new ServiciosUsuarios();
                 -->
               <div class="form-group">
                 <label for="usuario" class="col-md-2 control-label" style="color:#FFF;text-align:left;">E-Mail</label>
-                <div class="col-lg-10">
+                <div class="col-lg-7">
                   <input type="email" class="form-control" id="email" name="email" 
-                         placeholder="E-Mail" style="width:400px;">
+                         placeholder="E-Mail">
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="ejemplo_password_2" class="col-md-2 control-label" style="color:#FFF">Contraseña</label>
-                <div class="col-lg-10">
+                <label for="ejemplo_password_2" class="col-md-2 control-label" style="color:#FFF;text-align:left;">Contraseña</label>
+                <div class="col-lg-7">
                   <input type="password" class="form-control" id="pass" name="pass" 
-                         placeholder="password" style="width:400px;">
+                         placeholder="password">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="ejemplo_password_2" class="col-md-2 control-label" style="color:#FFF;text-align:left;">Torneo</label>
+                <div class="col-lg-7">
+                  <select class="form-control" id="reftorneo" name="reftorneo" >
+                  	<?php while ($rowT = mysql_fetch_array($resTipoTorneos)) { ?>
+						<option value="<?php echo $rowT[0]; ?>"><?php echo utf8_encode($rowT[1]); ?></option>	
+					<?php } ?>
+                  </select>
                 </div>
               </div>
               

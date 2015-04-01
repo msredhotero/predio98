@@ -207,27 +207,50 @@ class Servicios {
 									<div class="form-group col-md-6">
 										<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 										<div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-field="'.$campo.'" data-link-format="yyyy-mm-dd">
-											<input name="'.$campo.'" id="'.$campo.'" class="form-control" size="50" type="text" value="" readonly>
+											<input class="form-control" size="50" type="text" value="" readonly>
 											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
+										<input type="hidden" name="'.$campo.'" id="'.$campo.'" value="" />
 									</div>
 									
 									';
 									
 								} else {
-									$label = ucwords($label);
-									$campo = strtolower($row[0]);
 									
-									$form	=	$form.'
-									
-									<div class="form-group col-md-6">
-										<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
-										<div class="input-group col-md-12">
-											<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+									if (strpos($row[1],"time") !== false) {
+										$label = ucwords($label);
+										$campo = strtolower($row[0]);
+										
+										$form	=	$form.'
+										
+										<div class="form-group col-md-6">
+											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+											<div class="input-group bootstrap-timepicker col-md-6">
+												<input id="timepicker2" name="'.$campo.'" class="form-control">
+												<span class="input-group-addon">
+<span class="glyphicon glyphicon-time"></span>
+</span>
+											</div>
+											
 										</div>
-									</div>
-									
-									';
+										
+										';
+										
+									} else {
+										$label = ucwords($label);
+										$campo = strtolower($row[0]);
+										
+										$form	=	$form.'
+										
+										<div class="form-group col-md-6">
+											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+											<div class="input-group col-md-12">
+												<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+											</div>
+										</div>
+										
+										';
+									}
 								}
 							}
 						}
@@ -240,7 +263,8 @@ class Servicios {
 				}
 			}
 			
-			$formulario = $form."<br><br>".$camposEscondido;
+			$formulario = $form."<br><br>".$camposEscondido."<div class='row'><div class='alert'></div></div>
+			<div class='row'><div id='load'></div></div>";
 			
 			return $formulario;
 		}	
@@ -379,6 +403,13 @@ class Servicios {
 	}
 
 
+	function TraerCanchas() {
+		$sql = "select idcancha, cancha from tbcanchas order by idcancha";
+		
+		return $this-> query($sql,0);
+			
+	}
+
 	Function TraerUsuario($nombre,$pass) {
 		
 		require_once 'appconfig.php';
@@ -476,8 +507,11 @@ function TraerTorneosClientes() {
 		return $this-> query($sql,0);
 	}
 
-	function TraerTorneosActivo() {
-		$sql = "select * from dbtorneos where activo = 1";
+	function TraerTorneosActivo($tipotorneo) {
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+				inner join
+				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
+				where tt.descripciontorneo = '".$tipotorneo."' and t.activo = 1";
 		return $this-> query($sql,0);
 	}
 	
@@ -530,6 +564,14 @@ function TraerTorneosClientes() {
 		}
 		
 	}
+	
+	function TraerHorarios($tipotorneo) {
+		$sql = "select t.idhorario, t.horario from tbhorarios t 
+				inner join tbtipotorneo tp on t.reftipotorneo = tp.idtipotorneo 
+				where tp.descripciontorneo = '".$tipotorneo."'";
+		return $this-> query($sql,0);
+	}
+	
 	
 	function TraerFecha() {
 		$sql = "select * from tbfechas";

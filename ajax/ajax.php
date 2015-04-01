@@ -5,13 +5,16 @@ include ('../includes/funciones.php');
 include ('../includes/funcionesHTML.php');
 include ('../includes/funcionesJugadores.php');
 include ('../includes/funcionesEquipos.php');
-
+include ('../includes/funcionesGrupos.php');
+include ('../includes/funcionesZonasEquipos.php');
 
 $serviciosUsuarios  = new ServiciosUsuarios();
 $serviciosFunciones = new Servicios();
 $serviciosHTML		= new ServiciosHTML();
 $serviciosJugadores = new ServiciosJ();
 $serviciosEquipos	= new ServiciosE();
+$serviciosGrupos	= new ServiciosG();
+$serviciosZonasEquipos	= new ServiciosZonasEquipos();
 
 $accion = $_POST['accion'];
 
@@ -82,16 +85,41 @@ switch ($accion) {
 	
 	/* para los zonas */
 	
+	case 'insertarGrupo':
+		insertarGrupo($serviciosGrupos);
+		break;
+	case 'modificarGrupos':
+		modificarGrupos($serviciosGrupos);
+		break;
+	case 'eliminarGrupos':
+		eliminarGrupos($serviciosGrupos);
+		break; 
 	/* fin zonas */
 	
 	
 	/* para los torneo-zonas-equipos */
-	
+	case 'insertarZonasEquipos':
+		insertarZonasEquipos($serviciosZonasEquipos);
+		break;
+	case 'modificarZonasEquipos':
+		modificarZonasEquipos($serviciosZonasEquipos);
+		break;
+	case 'eliminarZonasEquipos':
+		eliminarZonasEquipos($serviciosZonasEquipos);
+		break; 
 	/* fin torneo-zonas-equipos */
 	
 	
 	/* para los fixture */
-	
+	case 'insertarFixture':
+		insertarFixture($serviciosZonasEquipos);
+		break;
+	case 'modificarFixture':
+		modificarFixture($serviciosZonasEquipos);
+		break;
+	case 'eliminarFixture':
+		eliminarFixture($serviciosZonasEquipos);
+		break; 
 	/* fin fixture */
 }
 
@@ -228,17 +256,104 @@ function eliminarJugadores($serviciosJugadores) {
 
 
 /* para los zonas */
-
+function insertarGrupo($serviciosGrupos) {
+$Nombre = $_POST['nombre'];
+$res = $serviciosGrupos->insertarGrupos($Nombre);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarGrupos($serviciosGrupos) {
+$id = $_POST['id'];
+$Nombre = $_POST['nombre'];
+$res = $serviciosGrupos->modificarGrupos($id,$Nombre);
+echo $res;
+}
+function eliminarGrupos($serviciosGrupos) {
+$id = $_POST['id'];
+$res = $serviciosGrupos->eliminarGrupos($id);
+echo $res;
+} 
 /* fin zonas */
 
 
 /* para los torneo-zonas-equipos */
 
+function insertarZonasEquipos($serviciosZonasEquipos) {
+$refgrupo = $_POST['refgrupo'];
+$reftorneo = $_POST['reftorneo'];
+$refequipo = $_POST['refequipo'];
+$prioridad = $_POST['prioridad'];
+$res = $serviciosZonasEquipos->insertarZonasEquipos($refgrupo,$reftorneo,$refequipo,$prioridad);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarZonasEquipos($serviciosZonasEquipos) {
+$id = $_POST['id'];
+$refgrupo = $_POST['refgrupo'];
+$reftorneo = $_POST['reftorneo'];
+$refequipo = $_POST['refequipo'];
+$prioridad = $_POST['prioridad'];
+$res = $serviciosZonasEquipos->modificarZonasEquipos($id,$refgrupo,$reftorneo,$refequipo,$prioridad);
+echo $res;
+}
+function eliminarZonasEquipos($serviciosZonasEquipos) {
+$id = $_POST['id'];
+$res = $serviciosZonasEquipos->eliminarZonasEquipos($id);
+echo $res;
+} 
 /* fin torneo-zonas-equipos */
 
 
 /* para los fixture */
 
+
+function insertarFixture($serviciosZonasEquipos) {
+	$reftorneoge_a 	= $_POST['reftorneoge_a'];
+	$resultado_a 	= $_POST['resultado_a'];
+	$reftorneoge_b 	= $_POST['reftorneoge_b'];
+	$resultado_b 	= $_POST['resultado_b'];
+	$fechajuego 	= $_POST['fechajuego'];
+	$refFecha 		= $_POST['reffecha'];
+	$cancha 		= $_POST['cancha'];
+	$horario 		= $_POST['hora'];
+	
+	$res = $serviciosZonasEquipos->insertarFixture($reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario);
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+
+
+function modificarFixture($serviciosZonasEquipos) {
+	$id 			= $_POST['id'];
+	$reftorneoge_a 	= $_POST['reftorneoge_a'];
+	$resultado_a 	= $_POST['resultado_a'];
+	$reftorneoge_b 	= $_POST['reftorneoge_b'];
+	$resultado_b 	= $_POST['resultado_b'];
+	$fechajuego 	= $_POST['fechajuego'];
+	$refFecha 		= $_POST['refFecha'];
+	$cancha 		= $_POST['cancha'];
+	$horario 		= $_POST['horario'];
+	
+	$res = $serviciosZonasEquipos->modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario);
+	echo $res;
+} 
+
+
+function eliminarFixture($serviciosZonasEquipos) {
+$id = $_POST['id'];
+$res = $serviciosZonasEquipos->eliminarFixture($id);
+echo $res;
+} 
 /* fin fixture */
 	
 	
@@ -318,7 +433,9 @@ function modificarUsuario($serviciosUsuarios) {
 function enviarMail($serviciosUsuarios) {
 	$email		=	$_POST['email'];
 	$pass		=	$_POST['pass'];
-	echo $serviciosUsuarios->login($email,$pass);
+	$torneo		=	$_POST['reftorneo'];
+	
+	echo $serviciosUsuarios->login($email,$pass,$torneo);
 }
 
 

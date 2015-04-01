@@ -18,7 +18,7 @@ $serviciosHTML = new ServiciosHTML();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],"Fútbol 7");
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 /////////////////////// Opciones de la pagina  ////////////////////
