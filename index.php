@@ -259,7 +259,12 @@
                                 <div class="callbacks_container">
                                   <ul class="rslides" id="slider4">
                                     <li>
-                                      <img src="imagenes/FIXTURE NUEVO F7 - FECHA 2 - 2015.png" alt="">
+                                      
+                                        <h3>In semper consequat</h3>
+                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
+                                        
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                                       <p class="caption">CERO TOLERANCIA / HORARIOS DE LA FECHA 2 
                                       	<button type="button" class="btn btn-info" aria-label="Left Align">
   											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
@@ -267,7 +272,11 @@
 									  </p>
                                     </li>
                                     <li>
-                                      <img src="imagenes/20150304_143131.jpg" alt="">
+                                      	<h3>In semper consequat</h3>
+                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
+                                        
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                                       <p class="caption">COMIENZO DEL TORNEO ESTE SÁBADO 7-3 
                                       <button type="button" class="btn btn-info" aria-label="Left Align">
   											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
@@ -275,7 +284,11 @@
                                       </p>
                                     </li>
                                     <li>
-                                      <img src="imagenes/2015-02-04 20.39.18.jpg" alt="">
+                                      	<h3>In semper consequat</h3>
+                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
+                                        
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                                       <p class="caption">CRONOGRAMA A SEGUIR 
                                       <button type="button" class="btn btn-info" aria-label="Left Align">
   											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
