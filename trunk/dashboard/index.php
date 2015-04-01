@@ -17,7 +17,7 @@ $serviciosHTML = new ServiciosHTML();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Dashboard",$_SESSION['refroll_predio'],"Fútbol 7");
+$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Dashboard",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 if ($_SESSION['refroll_predio'] != 1) {

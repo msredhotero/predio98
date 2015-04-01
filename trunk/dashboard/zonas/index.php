@@ -21,7 +21,7 @@ $serviciosGrupos 	= new ServiciosG();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Zonas",$_SESSION['refroll_predio'],"Fútbol 7");
+$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Zonas",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 /////////////////////// Opciones de la pagina  ////////////////////
@@ -197,7 +197,7 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
-		
+
 		if (validador() == "")
         {
 			//información del formulario

@@ -30,16 +30,16 @@ class ServiciosG {
 	}
 	
 	
-	function insertarGrupo($letra) {
-		$nombre = "Zona ".$letra;
-		$sql = "insert into dbgrupos (idgrupo,nombre) values ('','".$nombre."')";
-		$this-> query($sql,1);
-		return 1;
+	function insertarGrupos($letra) {
+
+		$sql = "insert into dbgrupos (idgrupo,nombre) values ('','".$letra."')";
+		$res = $this->query($sql,1);
+		return $res;
 	}
 	
 	
 	
-	Function query($sql,$accion) {
+	function query($sql,$accion) {
 		
 		
 		require_once 'appconfig.php';
