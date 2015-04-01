@@ -112,24 +112,17 @@
 
 
 <body>
-
+<div style="background-color:#000; height:auto; margin-top:-20px; padding-top:20px;">
     <div class="clearfix content">
     	<div class="row">
         
         </div>
     	<div class="header-container">
             <header class="wrapper clearfix">
-                <a href="index.php"><img src="imagenes/marca.png"></a>
-                
-                <div class="infoPre alert alert-info">
-                	<ul>
-                    	<li><span class="glyphicon glyphicon-earphone"> </span> 221-15-6258871 – Nicolas (Solo sms y llamadas)</li>
-                        <li><span class="glyphicon glyphicon-envelope"> </span> predio.98@hotmail.com</li>
-                        <li><span class="icoface"></span><span class="espacioextra"></span> <a href="www.facebook.com/predio.98">Predio La Plata</a></li>
-                        <li><span class="glyphicon glyphicon-road"> </span> 98 Y 16 (Entrar por Avenida 13, única entrada)</li>
-                        <li><span class="icobus"></span><span class="espacioextra"></span> Linea ESTE: 12, 13 y 14 (el que va por 7 y 90). Estos micros, los deja en 13 y 98.</li>
-                    </ul>
+                <div align="center">
+                <a href="index.php"><img src="imagenes/logo.png"></a>
                 </div>
+               
                 
                 <nav id="menu">
                     <ul class="clearfix contenedorMenu">
@@ -258,7 +251,7 @@
                         <div class="col-md-7">
                         
                         <!-- Slideshow 4 -->
-                        	<div class="panel panel-primary" style="margin-top:20px;">
+                        	<div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias</h3>
                               </div>
@@ -329,7 +322,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                         </div>
                         <div class="col-md-5">
-                        	<div class="panel panel-default" style="margin-top:20px;">
+                        	<div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias de Predio</h3>
                               </div>
@@ -340,7 +333,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                               </div>
                             </div>
                             
-                            <div class="panel panel-default" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Ultimo Momento</h3>
                               </div>
@@ -352,7 +345,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             </div>
                             
                             
-                            <div class="panel panel-default" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Fixture</h3>
                               </div>
@@ -459,7 +452,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                               </div>
                             </div>
                             
-                            <div class="panel panel-default" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Proxima Fecha</h3>
                               </div>
@@ -477,7 +470,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             </div>
                             
                             
-                            <div class="panel panel-default" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">El tiempo en La Plata</h3>
                               </div>
@@ -526,6 +519,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
             <h3>footer</h3>
         </footer>
     </div>  -->
+</div>
     <footer class="clearfix">
     
     

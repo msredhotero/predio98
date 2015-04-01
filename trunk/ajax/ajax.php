@@ -286,6 +286,12 @@ $refgrupo = $_POST['refgrupo'];
 $reftorneo = $_POST['reftorneo'];
 $refequipo = $_POST['refequipo'];
 $prioridad = $_POST['prioridad'];
+
+$horario1 = $_POST['horario1'];
+$horario2 = $_POST['horario2'];
+$horario3 = $_POST['horario3'];
+$horario4 = $_POST['horario4'];
+
 $res = $serviciosZonasEquipos->insertarZonasEquipos($refgrupo,$reftorneo,$refequipo,$prioridad);
 if ((integer)$res > 0) {
 echo '';

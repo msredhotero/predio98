@@ -31,6 +31,7 @@ $resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"ZonasEq
 
 
 
+$resHorarios = $serviciosFunciones->TraerHorarios($_SESSION['torneo_predio']);
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
@@ -42,7 +43,9 @@ $lblreemplazo	= array("Zonas","Equipos","Torneo");
 $resTipoTorneo 	= $serviciosFunciones->TraerTorneosActivo($_SESSION['torneo_predio']);
 
 $cadRef = '';
+$idtorneo = 0;
 while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
+	$idtorneo = $rowTT[0];
 	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
 	
 }
@@ -166,6 +169,50 @@ if ($_SESSION['refroll_predio'] != 1) {
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
     		<?php echo $formulario; ?>
+            
+            <br>
+            <hr>
+            <h4>Prioridades de Turnos</h4>
+            <div class="help-block">
+            	* Recuerde que cero 0, significa que no puede jugar en ese horario
+            </div>
+            <div class="row">
+            
+            	<?php
+					$i = 0;
+					while ($rowH = mysql_fetch_array($resHorarios)) {
+					$i = $i + 1;
+
+				?>
+            	<div class="form-group col-md-3">
+                    <label class="control-label" style="text-align:left" for="refgrupo"><?php echo $rowH[1]; ?></label>
+                    <div class="input-group col-md-12">
+                        <select id="refgrupo" class="form-control" name="horario<?php echo $i; ?>">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="0">0</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                
+                <?php
+				
+					}
+				
+				?>
+                
+               
+            
+            </div>
+            
             
             <div class="row">
                 <div class="col-md-12">
