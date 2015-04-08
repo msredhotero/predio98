@@ -35,73 +35,29 @@ class ServiciosE {
 		return $this-> query($sql,0);
 	}
 	
-	function insertarEquipo($equipo,$nombre,$apellido,$mail,$tel) {
-		header( 'Content-type: text/html; charset=iso-8859-1' );
-		$equipo = utf8_decode(trim(str_replace("'","",$equipo)));
-		$nombre = utf8_decode(trim(str_replace("'","",$nombre)));
-		$apellido = utf8_decode(trim(str_replace("'","",$apellido)));
-		$mail = trim(str_replace("'","",$mail));
-		$tel = trim(str_replace("'","",$tel));
+function insertarEquipos($nombre,$nombrecapitan,$telefonocapitan,$facebookcapitan,$nombresubcapitan,$telefonosubcapitan,$facebooksubcapitan,$emailcapitan,$emailsubcapitan) {
+$sql = "insert into dbequipos(idequipo,nombre,nombrecapitan,telefonocapitan,facebookcapitan,nombresubcapitan,telefonosubcapitan,facebooksubcapitan,emailcapitan,emailsubcapitan)
+values ('','".utf8_decode($nombre)."','".utf8_decode($nombrecapitan)."','".utf8_decode($telefonocapitan)."','".utf8_decode($facebookcapitan)."','".utf8_decode($nombresubcapitan)."','".utf8_decode($telefonosubcapitan)."','".utf8_decode($facebooksubcapitan)."','".utf8_decode($emailcapitan)."','".utf8_decode($emailsubcapitan)."')";
+$res = $this->query($sql,1);
+return $res;
+}
 
-		if ($equipo != "") {
-		
-		$sqlIdviejo = "select max(idcontacto) from dbcontactos";
-		$resIdviejo =  $this-> query($sqlIdviejo,0);
-		$idviejo = mysql_result($resIdviejo,0,0);
-		
-		$sqlcontactos = "insert into dbcontactos
-							(idcontacto,
-							nombre,
-							apellido,
-							asunto,
-							mensaje,
-							telefono,
-							mail,
-							domicilio,imagen) values 
-							('','".$nombre."','".$apellido."','','',".$tel.",'".$mail."','','')";
-		$this-> query($sqlcontactos,1);
-		
-		$sqlId = "select max(idcontacto) from dbcontactos";
-		$resId =  $this-> query($sqlId,0);
-		$id = mysql_result($resId,0,0);
-		
-		if ($idviejo < $id)
-		{
-		$sql = "insert into dbequipos (idequipo,nombre,refcontacto) values ('','".$equipo."',".$id.")";
-		$this-> query($sql,1);
-		return 1;
-		} else {
-			return 0;
-		}
-		} else {
-			return 0;
-		}
-	}
-	
-	
-	function modificarEquipo($equipo,$id) {
-		header( 'Content-type: text/html; charset=iso-8859-1' );
-		$equipo = trim(str_replace("'","",$equipo));
-		
-		if ($equipo != "") {
-		$sql = "update dbequipos set nombre = '".utf8_decode($equipo)."' where idequipo =".$id; 
-		$this -> query($sql,0);
-		return 1;
-		} else {
-			return 0;
-		}
-		
-	}
-	
-	function modificarInfoEquipo($idequipo,$apellido,$nombre,$mail,$tel,$imagen) {
-		header( 'Content-type: text/html; charset=iso-8859-1' );
-		$refcontacto = mysql_result($this->TraerIdEquipo($idequipo),0,2);
-		
-		$sql = "update dbcontactos
-				set apellido = '".utf8_decode($apellido)."',nombre='".utf8_decode($nombre)."',mail='".$mail."',telefono= ".$tel.", imagen = '".$imagen."' where idcontacto =".$refcontacto;
-		$this-> query($sql,0);
-		return 1;		
-	}
+
+function modificarEquipos($id,$nombre,$nombrecapitan,$telefonocapitan,$facebookcapitan,$nombresubcapitan,$telefonosubcapitan,$facebooksubcapitan,$emailcapitan,$emailsubcapitan) {
+$sql = "update dbequipos
+set
+nombre = '".utf8_decode($nombre)."',nombrecapitan = '".utf8_decode($nombrecapitan)."',telefonocapitan = '".utf8_decode($telefonocapitan)."',facebookcapitan = '".utf8_decode($facebookcapitan)."',nombresubcapitan = '".utf8_decode($nombresubcapitan)."',telefonosubcapitan = '".utf8_decode($telefonosubcapitan)."',facebooksubcapitan = '".utf8_decode($facebooksubcapitan)."',emailcapitan = '".utf8_decode($emailcapitan)."',emailsubcapitan = '".utf8_decode($emailsubcapitan)."'
+where idequipo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarEquipos($id) {
+$sql = "delete from dbequipos where idequipo =".$id;
+$res = $this->query($sql,0);
+return $res;
+} 
 	
 	Function query($sql,$accion) {
 		
@@ -119,12 +75,23 @@ class ServiciosE {
 		
 		mysql_select_db($database);
 		
-		$result = mysql_query($sql,$conex);
+		        $error = 0;
+		mysql_query("BEGIN");
+		$result=mysql_query($sql,$conex);
 		if ($accion && $result) {
 			$result = mysql_insert_id();
 		}
-		mysql_close($conex);
-		return $result;
+		if(!$result){
+			$error=1;
+		}
+		if($error==1){
+			mysql_query("ROLLBACK");
+			return false;
+		}
+		 else{
+			mysql_query("COMMIT");
+			return $result;
+		}
 		
 	}
 	

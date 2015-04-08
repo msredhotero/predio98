@@ -102,6 +102,70 @@ class ServiciosZonasEquipos {
 				
 	}
 	
+	function traerFixturePorEquipo($idequipo) {
+		$sql = "select 
+			fi.idfixture,
+			(select e.nombre 
+			        from dbtorneoge tge
+			        inner 
+			        join dbtorneos t
+			        on tge.reftorneo = t.idtorneo and t.activo = true
+			        inner 
+			        join dbequipos e
+			        on e.idequipo = tge.refequipo
+			        inner 
+			        join dbgrupos g
+			        on g.idgrupo = tge.refgrupo
+			        where tge.idtorneoge = fi.reftorneoge_a) as equipoa,
+			fi.resultado_a as resultadoa,
+			fi.resultado_b as resultadob,
+			(select e.nombre 
+			        from dbtorneoge tge
+			        inner 
+			        join dbtorneos t
+			        on tge.reftorneo = t.idtorneo and t.activo = true
+			        inner 
+			        join dbequipos e
+			        on e.idequipo = tge.refequipo
+			        inner 
+			        join dbgrupos g
+			        on g.idgrupo = tge.refgrupo
+			        where tge.idtorneoge = fi.reftorneoge_b) as equipob,
+			
+			(select g.nombre
+			        from dbtorneoge tge
+			        inner 
+			        join dbtorneos t
+			        on tge.reftorneo = t.idtorneo and t.activo = true
+			        inner 
+			        join dbequipos e
+			        on e.idequipo = tge.refequipo
+			        inner 
+			        join dbgrupos g
+			        on g.idgrupo = tge.refgrupo
+			        where tge.idtorneoge = fi.reftorneoge_b) as zona,   
+			fi.fechajuego,
+			f.tipofecha as fecha,
+			fi.hora,
+			g.nombre
+					from dbfixture as fi
+					        inner 
+					        join tbfechas AS f
+					        on fi.reffecha = f.idfecha
+					        inner 
+					        join dbtorneoge tge
+					        on tge.idtorneoge = fi.reftorneoge_b
+					        inner 
+					        join dbtorneos t
+					        on tge.reftorneo = t.idtorneo and t.activo = true
+					        inner 
+					        join dbgrupos g
+					        on g.idgrupo = tge.refgrupo
+					 where  tge.refequipo = ".$idequipo." 
+					 order by g.nombre,f.tipofecha,fi.hora";
+
+		return $this-> query($sql,0);
+	}
 	
 	function TraerFixturePorGrupo($idgrupo){
 	$sql = "select 
@@ -243,6 +307,30 @@ class ServiciosZonasEquipos {
 	}
 	
 	
+	function insertarHorariosEquiposPrioridades($reftorneoge,$refturno,$valor) {
+		$sql = "insert into dbturnosequiposprioridad(iddbturnosequiposprioridad,reftorneoge,refturno,valor)
+		values ('',".$reftorneoge.",".$refturno.",".$valor.")";
+		$res = $this->query($sql,1);
+		return $res;
+	}
+	
+	
+	function modificarHorariosEquiposPrioridades($id,$refturno,$valor) {
+		$sql = "update dbturnosequiposprioridad
+		set
+			refturno = ".$refturno.",valor = ".$valor."
+		where iddbturnosequiposprioridad =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	
+	function eliminarHorariosEquiposPrioridades($id) {
+		$sql = "delete from dbturnosequiposprioridad where iddbturnosequiposprioridad =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+	} 
+	
 	
 	function insertarZonasEquipos($refgrupo,$reftorneo,$refequipo,$prioridad) {
 		$sql = "insert into dbtorneoge(IdTorneoGE,refgrupo,reftorneo,refequipo,prioridad)
@@ -252,7 +340,9 @@ class ServiciosZonasEquipos {
 	}
 	
 	
-	function modificarZonasEquipos($id) {
+	
+	
+	function modificarZonasEquipos($id,$refgrupo,$reftorneo,$refequipo,$prioridad) {
 		$sql = "update dbtorneoge
 		set
 		refgrupo = ".$refgrupo.",reftorneo = ".$reftorneo.",refequipo = ".$refequipo.",prioridad = ".$prioridad."
@@ -262,48 +352,15 @@ class ServiciosZonasEquipos {
 	}
 
 	
-	function eliminarZonasEquipos($idgrupo,$idequipo,$idtorneo) {
+	function eliminarZonasEquipos($id) {
 		
-		$sql = "SELECT
-				tge.idtorneoge,
-				ge.idgrupoequipo
-				FROM
-				dbgruposequipos ge
-				Inner Join dbtorneoge tge ON ge.idgrupoequipo = tge.refgrupoequipo
-				WHERE
-				ge.refequipo =  ".$idequipo." AND
-				ge.refgrupo =  ".$idgrupo;
-				
-		$res = $this-> query($sql,0);
+		$this->eliminarHorariosEquiposPrioridades($id);
+
+		$sqldelTorGE = "delete from dbtorneoge where idtorneoge =".$id;
+		$res = $this-> query($sqldelTorGE,0);
 		
-		
-		$idtorneoeg= mysql_result($res,0,0);
-		$idgrupoequipo= mysql_result($res,0,1);
-		
-		
-		$idfixture = "SELECT
-					dbfixture.reffecha
-					FROM
-					dbfixture
-					WHERE
-					dbfixture.reftorneoge_a =  ".$idtorneoeg." OR
-					dbfixture.reftorneoge_b =  ".$idtorneoeg;
-		$resfix =  $this-> query($idfixture,0);
-					
-		if (mysql_num_rows($resfix) > 0) {
-			return 0;
-		} else {
-			
-			$sqldelGruEqui = "delete from dbgruposequipos where idgrupoequipo =".$idgrupoequipo;
-			$this-> query($sqldelGruEqui,0);
-			$sqldelTorGE = "delete from dbtorneoge where idtorneoge =".$idtorneoeg;
-			$this-> query($sqldelTorGE,0);
-			
-			return 1;
-		}
-				
-		
-		
+		return $res;
+	
 		
 	}
 	
@@ -495,6 +552,16 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
+	
+	function TraerEquiposZonasPorId($id) {
+		$sql  = "select 
+			IdTorneoGE, refgrupo, refequipo, reftorneo, prioridad
+		from
+			dbtorneoge 
+		where IdTorneoGE = ".$id;
+		return $this->query($sql,0);
+	}
+	
 	Function query($sql,$accion) {
 		
 		
@@ -511,12 +578,23 @@ class ServiciosZonasEquipos {
 		
 		mysql_select_db($database);
 		
-		$result = mysql_query($sql,$conex);
+		        $error = 0;
+		mysql_query("BEGIN");
+		$result=mysql_query($sql,$conex);
 		if ($accion && $result) {
 			$result = mysql_insert_id();
 		}
-		mysql_close($conex);
-		return $result;
+		if(!$result){
+			$error=1;
+		}
+		if($error==1){
+			mysql_query("ROLLBACK");
+			return false;
+		}
+		 else{
+			mysql_query("COMMIT");
+			return $result;
+		}
 		
 	}
 	

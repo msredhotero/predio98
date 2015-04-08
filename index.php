@@ -120,7 +120,7 @@
     	<div class="header-container">
             <header class="wrapper clearfix">
                 <div align="center">
-                <a href="index.php"><img src="imagenes/logo.png"></a>
+                <a href="index.php"><img src="imagenes/logo2.png"></a>
                 </div>
                
                 
@@ -139,23 +139,23 @@
             </header>
         </div>
     	
-        <div class="row" style=" background-color:#dadada; z-index:9999999px; display:block;">
+        <div class="row" style=" background-color:#dadada; z-index:9999999px; display:block; margin-left:10px; margin-right:10px;">
         	<div id="submenu" style="display:none; z-index:9999999px;">
             <div style="height:auto; position:relative; ">
             	<div class="col-md-4" style="padding-top:10px;">
-                	<div class="alert alert-danger alert-dismissible submenu" id="futbolco">
+                	<div class="alert alert-predio alert-dismissible submenu" id="futbolco">
                     	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;  margin-right:4%;"> Torneo de Fútbol 11 con Off-side</p> 
                     </div>
-                    <div class="alert alert-info alert-dismissible submenu" id="futbolso">
+                    <div class="alert alert-predio alert-dismissible submenu" id="futbolso">
                     	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 11 sin Off-side</p> 
                     </div>
-                    <div class="alert alert-success alert-dismissible submenu" id="futbol">
+                    <div class="alert alert-predio alert-dismissible submenu" id="futbol">
                     	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
                 <div class="col-md-4 foncecoE" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/estadisticas2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -171,7 +171,7 @@
                 </div>
                 <div class="col-md-4 foncesoE" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/estadisticas2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="col-md-4 fsieteE" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/estadisticas2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -203,7 +203,7 @@
                 </div>
                 <div class="col-md-4 foncecoI" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/datos2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Información</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -215,7 +215,7 @@
                 </div>
                 <div class="col-md-4 foncesoI" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/datos2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Información</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -227,7 +227,7 @@
                 </div>
                 <div class="col-md-4 fsieteI" style="display:none;">
                 	<div class="col-md-6" align="center">
-                    	<img src="imagenes/datos2.png">
+                    	
                         <h4 class="textoTrazoTitulos"> Información</h4>
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
@@ -254,6 +254,7 @@
                         	<div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <div class="callbacks_container">
@@ -338,6 +339,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                         	<div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias de Predio</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
@@ -349,6 +351,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Ultimo Momento</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
@@ -361,6 +364,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Fixture</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
@@ -468,6 +472,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Proxima Fecha</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <h5>In semper consequat</h5>
@@ -486,6 +491,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             <div class="panel panel-predio" style="margin-top:20px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">El tiempo en La Plata</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
                               <div class="panel-body">
                                 <div id="cont_56e6c96ebc37c4741354591bec3723d6">

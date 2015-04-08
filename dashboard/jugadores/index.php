@@ -25,6 +25,24 @@ $fecha = date('Y-m-d');
 
 $resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Jugadores",$_SESSION['refroll_predio'],"Fútbol 7");
 
+
+//// autocompletar /////////
+
+$res = $serviciosJugadores->TraerJugadores();
+
+$arreglo_php = array();
+if(mysql_num_rows($res)==0)
+   array_push($arreglo_php, "No hay datos");
+else{
+  while($palabras = mysql_fetch_array($res)){
+    array_push($arreglo_php, $palabras["apyn"]);
+  }
+}
+
+
+//////////////////////////////
+
+
 /////////////////////// Opciones de la pagina  ////////////////////
 
 $lblTitulosingular	= "Jugador";
@@ -66,10 +84,6 @@ $cantidad = 3;
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
-
-
-$formulario 	= $serviciosFunciones->camposTabla("insertarJugador",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->TraerJugadoresEquipos(),$cantidad);
 
 
@@ -107,7 +121,7 @@ if ($_SESSION['refroll_predio'] != 1) {
     <link rel="stylesheet" href="../../css/jquery-ui.css">
 
     <script src="../../js/jquery-ui.js"></script>
-    
+    <script src="../../js/ui/jquery.ui.autocomplete.js"></script>
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -131,6 +145,19 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
+    
+    <script>
+	  $(function(){
+		var autocompletar = new Array();
+		<?php //Esto es un poco de php para obtener lo que necesitamos
+		 for($p = 0;$p < count($arreglo_php); $p++){ //usamos count para saber cuantos elementos hay ?>
+		   autocompletar.push('<?php echo $arreglo_php[$p]; ?>');
+		 <?php } ?>
+		 $("#apyn").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
+		   source: autocompletar //Le decimos que nuestra fuente es el arreglo
+		 });
+	  });
+	</script>
 </head>
 
 <body>
@@ -149,15 +176,44 @@ if ($_SESSION['refroll_predio'] != 1) {
         </div>
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
-    		<?php echo $formulario; ?>
-            
+				<div class="row">
+                    <div class="form-group col-md-6">
+                    
+                        <label class="control-label" style="text-align:left" for="apyn">Apellido Y Nombre</label>
+                        <div class="input-group col-md-12">
+                            <input id="apyn" class="form-control" type="text" required="" placeholder="Ingrese el Apellido Y Nombre..." name="apyn">
+                        </div>
+                    
+                    </div>
+                    
+                    
+                <div class="form-group col-md-6">
+                    <label class="control-label" style="text-align:left" for="idequipo">Equipo</label>
+                    <div class="input-group col-md-12">
+                        <select id="idequipo" class="form-control" name="idequipo">
+                        	<?php echo $cadRef; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                
+                <div class="form-group col-md-6">
+                    <label class="control-label" style="text-align:left" for="dni">Dni</label>
+                    <div class="input-group col-md-12">
+                        <input id="dni" class="form-control" type="text" required="" placeholder="Ingrese el Dni..." name="dni">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <input id="accion" type="hidden" value="insertarJugador" name="accion">
             <div class="row">
                 <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                    </li>
-                </ul>
+                    <ul class="list-inline" style="margin-top:15px;">
+                        <li>
+                        	<button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        </li>
+                    </ul>
                 </div>
             </div>
             </form>

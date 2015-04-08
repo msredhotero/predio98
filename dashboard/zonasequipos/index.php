@@ -187,7 +187,7 @@ if ($_SESSION['refroll_predio'] != 1) {
             	<div class="form-group col-md-3">
                     <label class="control-label" style="text-align:left" for="refgrupo"><?php echo $rowH[1]; ?></label>
                     <div class="input-group col-md-12">
-                        <select id="refgrupo" class="form-control" name="horario<?php echo $i; ?>">
+                        <select id="horario<?php echo $i; ?>" class="form-control" name="horario<?php echo $i; ?>">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -200,6 +200,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                             <option value="0">0</option>
                             
                         </select>
+                        <input type="hidden" id="idhorario<?php echo $i; ?>" name="idhorario<?php echo $i; ?>" value="<?php echo $rowH[0]; ?>"/>
                     </div>
                 </div>
                 
@@ -240,11 +241,20 @@ if ($_SESSION['refroll_predio'] != 1) {
    
 </div>
 
+</div>
+
 
 </div>
 
 
+<div id="dialog2" title="Eliminar Equipo de la Zona">
+    	<p class="alert alert-danger">
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar el Equipo de la Zona?.<span id="proveedorEli"></span>
+        </p>
 
+        <input type="hidden" value="" id="idEliminar" name="idEliminar">
+</div>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -254,31 +264,69 @@ $(document).ready(function(){
 	
 	?>
 	
-	 $( '#dialogDetalle' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
+	 $('.varborrar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
 
-	 $( '#dialog2' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$('.varmodificar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificar.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
+
+	 $( "#dialog2" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:260,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarZonasEquipos'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											
+											$('.'+$('#idEliminar').val()).fadeOut( "slow", function() {
+												$(this).remove();
+											  });
+											
+											url = "index.php";
+											//$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
 	
 	
 	//al enviar el formulario
