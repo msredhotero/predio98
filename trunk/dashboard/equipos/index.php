@@ -57,7 +57,7 @@ $cabeceras 		= "	<th>Nombre</th>
 
 
 
-$formulario 	= $serviciosFunciones->camposTabla("insertarEquipo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+$formulario 	= $serviciosFunciones->camposTabla("insertarEquipos",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosEquipos->TraerEquipos(),9);
 
@@ -137,7 +137,18 @@ if ($_SESSION['refroll_predio'] != 1) {
         </div>
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
-        	<?php echo $formulario; ?>
+        	<div class="row">
+			<?php echo $formulario; ?>
+            </div>
+            
+            <div class='row' style="margin-left:25px; margin-right:25px;">
+                <div class='alert'>
+                
+                </div>
+                <div id='load'>
+                
+                </div>
+            </div>
             
             <div class="row">
                 <div class="col-md-12">
@@ -171,7 +182,14 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 
 </div>
-
+<div id="dialog2" title="Eliminar Equipos">
+    	<p>
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar el equipo?.<span id="proveedorEli"></span>
+        </p>
+        <p><strong>Importante: </strong>Si elimina el equipo se perderan todos los datos de este</p>
+        <input type="hidden" value="" id="idEliminar" name="idEliminar">
+</div>
 <script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
 <script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
 
@@ -204,36 +222,75 @@ $(document).ready(function(){
 		  }
 	} );
 	
+		$('.varborrar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
+
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$("#example").on("click",'.varmodificar', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			
+			url = "modificar.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
+
+	 $( "#dialog2" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:240,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarEquipos'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											url = "index.php";
+											$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
+			
 	<?php 
 		echo $serviciosHTML->validacion($tabla);
 	
 	?>
 	
-	 $( '#dialogDetalle' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
 
-	 $( '#dialog2' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
 	
 	
 	//al enviar el formulario

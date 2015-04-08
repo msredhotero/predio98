@@ -7,6 +7,7 @@ include ('../includes/funcionesJugadores.php');
 include ('../includes/funcionesEquipos.php');
 include ('../includes/funcionesGrupos.php');
 include ('../includes/funcionesZonasEquipos.php');
+include ('../includes/funcionesNoticias.php');
 
 $serviciosUsuarios  = new ServiciosUsuarios();
 $serviciosFunciones = new Servicios();
@@ -15,6 +16,8 @@ $serviciosJugadores = new ServiciosJ();
 $serviciosEquipos	= new ServiciosE();
 $serviciosGrupos	= new ServiciosG();
 $serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$serviciosNoticias = new ServiciosNoticias();
+
 
 $accion = $_POST['accion'];
 
@@ -51,8 +54,12 @@ switch ($accion) {
 	case 'eliminarTorneo':
 		eliminarTorneo($serviciosFunciones);
 		break;
-	
-		
+	case 'traerTorneoPorTipoTorneo':
+		traerTorneoPorTipoTorneo($serviciosFunciones);
+		break;
+	case 'cambiarTorneo':
+		cambiarTorneo($serviciosFunciones);
+		break;
 		
 	/* fin torneos */
 	
@@ -79,7 +86,33 @@ switch ($accion) {
 		break;
 	case 'eliminarJugadores':
 		eliminarJugadores($serviciosJugadores);
+		break;
+	case 'traerJugadores':
+		traerJugadores($serviciosJugadores);
+		break;
+		
+	case 'insertarGoleadores':
+		insertarGoleadores($serviciosJugadores);
+		break;
+	case 'modificarGoleadores':
+		modificarGoleadores($serviciosJugadores);
+		break;
+	case 'eliminarGoleadores':
+		eliminarGoleadores($serviciosJugadores);
 		break; 
+	
+	case 'insertarAmonestados':
+		insertarAmonestados($serviciosJugadores);
+		break;
+	case 'modificarAmonestados':
+		modificarAmonestados($serviciosJugadores);
+		break;
+	case 'eliminarAmonestados':
+		eliminarAmonestados($serviciosJugadores);
+		break; 
+	case 'insertarEstadistica':
+		insertarEstadistica($serviciosJugadores);
+		break;
 	/* fin jugadores */
 	
 	
@@ -120,10 +153,66 @@ switch ($accion) {
 	case 'eliminarFixture':
 		eliminarFixture($serviciosZonasEquipos);
 		break; 
+	case 'traerFixturePorEquipo':
+		traerFixturePorEquipo($serviciosZonasEquipos);
+		break;
 	/* fin fixture */
+	
+	/* para los noticias */
+	case 'insertarNoticiasPrincipales':
+		insertarNoticiasPrincipales($serviciosNoticias);
+		break;
+	case 'modificarNoticiasPrincipales':
+		modificarNoticiasPrincipales($serviciosNoticias);
+		break;
+	case 'eliminarNoticiasPrincipales':
+		eliminarNoticiasPrincipales($serviciosNoticias);
+		break; 
+	/* fin noticias */
 }
 
 //////////////////////////Traer datos */
+
+
+/* para los noticias */
+
+
+
+/* fin noticias */
+
+
+function insertarNoticiasPrincipales($serviciosNoticias) {
+$titulo = $_POST['titulo'];
+$noticiaprincipal = $_POST['noticiaprincipal'];
+$fechacreacion = $_POST['fechacreacion'];
+$res = $serviciosNoticias->insertarNoticiasPrincipales($titulo,$noticiaprincipal,$fechacreacion);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarNoticiasPrincipales($serviciosNoticias) {
+$id = $_POST['id'];
+$titulo = $_POST['titulo'];
+$noticiaprincipal = $_POST['noticiaprincipal'];
+$fechacreacion = $_POST['fechacreacion'];
+$res = $serviciosNoticias->modificarNoticiasPrincipales($id,$titulo,$noticiaprincipal,$fechacreacion);
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+function eliminarNoticiasPrincipales($serviciosNoticias) {
+$id = $_POST['id'];
+$res = $serviciosNoticias->eliminarNoticiasPrincipales($id);
+echo $res;
+} 
+
+
+
+
 
 /* para los torneos */
 
@@ -158,14 +247,27 @@ function modificarTorneo($serviciosFunciones) {
 	$id				=	$_POST['id'];
 	$nombre			=	$_POST['nombre'];
 	$fechacreacion	=	$_POST['fechacreacion'];
-	$activo			=	$_POST['activo'];
-	$actual			=	$_POST['actual'];
+	if (isset($_POST['activo'])) {
+		$activo	= 1;
+	} else {
+		$activo = 0;
+	}
+	
+	if (isset($_POST['actual'])) {
+		$actual	= 1;
+	} else {
+		$actual = 0;
+	}
 	$reftipotorneo	=	$_POST['reftipotorneo'];
 	
 	$res = $serviciosFunciones->modificarTorneo($id,$nombre,$fechacreacion,$activo,$actual,$reftipotorneo);
 	
 
-	echo $res;
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
 }
 
 function eliminarTorneo($serviciosFunciones) {
@@ -176,12 +278,37 @@ function eliminarTorneo($serviciosFunciones) {
 }
 
 
+function traerTorneoPorTipoTorneo($serviciosFunciones) {
+	$idtipotorneo	=	$_POST['reftipotorneo'];
+	
+	$res = $serviciosFunciones->traerTorneoPorTipoTorneo($idtipotorneo);
+	
+	$cad = '';
+	while ($roww = mysql_fetch_array($res)) {
+		$cad = $cad.'<option value="'.$roww[0].'">'.utf8_encode($roww[1]).'</td>';	
+	}
+	echo $cad;
+}
+
+function cambiarTorneo($serviciosFunciones) {
+	$idtipotorneo		=	$_POST['reftipotorneo'];
+	$idtorneo			=	$_POST['reftorneo'];
+	
+	$res = $serviciosFunciones->cambiarTorneo($idtipotorneo,$idtorneo);
+	//echo $res;
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al cambiar el torneo';
+	}
+}
+
 /* fin torneos */
 	
 /* para los equipos */
 
 function insertarEquipos($serviciosEquipos) {
-	$Nombre 			= $_POST['Nombre'];
+	$Nombre 			= $_POST['nombre'];
 	$nombrecapitan 		= $_POST['nombrecapitan'];
 	$telefonocapitan 	= $_POST['telefonocapitan'];
 	$facebookcapitan 	= $_POST['facebookcapitan'];
@@ -200,7 +327,7 @@ function insertarEquipos($serviciosEquipos) {
 }
 function modificarEquipos($serviciosEquipos) {
 	$id 				= $_POST['id'];
-	$Nombre 			= $_POST['Nombre'];
+	$Nombre 			= $_POST['nombre'];
 	$nombrecapitan 		= $_POST['nombrecapitan'];
 	$telefonocapitan 	= $_POST['telefonocapitan'];
 	$facebookcapitan 	= $_POST['facebookcapitan'];
@@ -212,7 +339,11 @@ function modificarEquipos($serviciosEquipos) {
 
 	$res = $serviciosEquipos->modificarEquipos($id,$Nombre,$nombrecapitan,$telefonocapitan,$facebookcapitan,$nombresubcapitan,$telefonosubcapitan,$facebooksubcapitan,$emailcapitan,$emailsubcapitan);
 	
-	echo $res;
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
 }
 
 function eliminarEquipos($serviciosEquipos) {
@@ -244,7 +375,11 @@ function modificarJugadores($serviciosJugadores) {
 	$dni 		= $_POST['dni'];
 	
 	$res = $serviciosJugadores->modificarJugadores($id,$apyn,$idequipo,$dni);
-	echo $res;
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al MODIFICAR datos';
+	}
 }
 function eliminarJugadores($serviciosJugadores) {
 	$id = $_POST['id'];
@@ -252,6 +387,116 @@ function eliminarJugadores($serviciosJugadores) {
 	$res = $serviciosJugadores->eliminarJugadores($id);
 	echo $res;
 } 
+
+function traerJugadores($serviciosJugadores) {
+	$idequipo		=	$_POST['refequipo'];
+	
+	$res = $serviciosJugadores->TraerJugadoresPorEquipo($idequipo);
+	
+	$cad = '';
+	while ($roww = mysql_fetch_array($res)) {
+		$cad = $cad.'<option value="'.$roww[0].'">'.utf8_encode($roww[1]).' - '.$roww[2].'</td>';	
+	}
+	echo $cad;
+		
+}
+
+
+
+function insertarGoleadores($serviciosJugadores) {
+	$refequipo 	= $_POST['refequipo'];
+	$reffixture = $_POST['reffixture'];
+	$goles 		= $_POST['goles'];
+	$refjugador = $_POST['refjugador'];
+
+	$res = $serviciosJugadores->insertarGoleadores($refequipo,$reffixture,$goles,$refjugador);
+
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+
+function modificarGoleadores($serviciosJugadores) {
+	$id 		= $_POST['id'];
+	$refequipo 	= $_POST['refequipo'];
+	$reffixture = $_POST['reffixture'];
+	$goles 		= $_POST['goles'];
+	$refjugador = $_POST['refjugador'];
+	
+	$res = $serviciosJugadores->modificarGoleadores($id,$refequipo,$reffixture,$goles,$refjugador);
+
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+
+function eliminarGoleadores($serviciosJugadores) {
+$id = $_POST['id'];
+$res = $serviciosJugadores->eliminarGoleadores($id);
+echo $res;
+} 
+
+
+
+
+function insertarAmonestados($serviciosJugadores) {
+	$refjugador = $_POST['refjugador'];
+	$refequipo 	= $_POST['refequipo'];
+	$reffixture = $_POST['reffixture'];
+	$amarillas 	= $_POST['amarillas'];
+	
+	$res = $serviciosJugadores->insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarAmonestados($serviciosJugadores) {
+	$id 		= $_POST['id'];
+	$refjugador = $_POST['refjugador'];
+	$refequipo	 = $_POST['refequipo'];
+	$reffixture = $_POST['reffixture'];
+	$amarillas 	= $_POST['amarillas'];
+	
+	$res = $serviciosJugadores->modificarAmonestados($id,$refjugador,$refequipo,$reffixture,$amarillas);
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+function eliminarAmonestados($serviciosJugadores) {
+$id = $_POST['id'];
+$res = $serviciosJugadores->eliminarAmonestados($id);
+echo $res;
+}
+
+
+function insertarEstadistica($serviciosJugadores) {
+	$refjugador = $_POST['refjugador'];
+	$refequipo 	= $_POST['refequipo'];
+	$reffixture = $_POST['reffixture'];
+	$amarillas 	= $_POST['amarillas'];
+	$goles 		= $_POST['goles'];
+	
+	if (($goles != '') || ($goles != 0)) {
+		$res2 = $serviciosJugadores->insertarGoleadores($refequipo,$reffixture,$goles,$refjugador);
+	}
+			
+	if (($amarillas != '') || ($amarillas != 0)) {
+		$res  = $serviciosJugadores->insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas);
+	}	
+	
+	return '';
+	
+}
+
+
 /* fin jugadores */
 
 
@@ -266,10 +511,15 @@ echo 'Huvo un error al insertar datos';
 }
 }
 function modificarGrupos($serviciosGrupos) {
-$id = $_POST['id'];
-$Nombre = $_POST['nombre'];
-$res = $serviciosGrupos->modificarGrupos($id,$Nombre);
-echo $res;
+	$id = $_POST['id'];
+	$Nombre = $_POST['nombre'];
+	
+	$res = $serviciosGrupos->modificarGrupos($id,$Nombre);
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
 }
 function eliminarGrupos($serviciosGrupos) {
 $id = $_POST['id'];
@@ -282,32 +532,46 @@ echo $res;
 /* para los torneo-zonas-equipos */
 
 function insertarZonasEquipos($serviciosZonasEquipos) {
-$refgrupo = $_POST['refgrupo'];
-$reftorneo = $_POST['reftorneo'];
-$refequipo = $_POST['refequipo'];
-$prioridad = $_POST['prioridad'];
-
-$horario1 = $_POST['horario1'];
-$horario2 = $_POST['horario2'];
-$horario3 = $_POST['horario3'];
-$horario4 = $_POST['horario4'];
-
-$res = $serviciosZonasEquipos->insertarZonasEquipos($refgrupo,$reftorneo,$refequipo,$prioridad);
-if ((integer)$res > 0) {
-echo '';
-} else {
-echo 'Huvo un error al insertar datos';
+	$refgrupo 		= $_POST['refgrupo'];
+	$reftorneo 		= $_POST['reftorneo'];
+	$refequipo 		= $_POST['refequipo'];
+	$prioridad	 	= $_POST['prioridad'];
+	
+	
+	$res = $serviciosZonasEquipos->insertarZonasEquipos($refgrupo,$reftorneo,$refequipo,$prioridad);
+	if ((integer)$res > 0) {
+		
+		for ($i=1;$i<=4;$i++) {
+			$serviciosZonasEquipos->insertarHorariosEquiposPrioridades($res,$_POST['idhorario'.$i],$_POST['horario'.$i]);
+		}
+		
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
 }
-}
+
+
 function modificarZonasEquipos($serviciosZonasEquipos) {
-$id = $_POST['id'];
-$refgrupo = $_POST['refgrupo'];
-$reftorneo = $_POST['reftorneo'];
-$refequipo = $_POST['refequipo'];
-$prioridad = $_POST['prioridad'];
-$res = $serviciosZonasEquipos->modificarZonasEquipos($id,$refgrupo,$reftorneo,$refequipo,$prioridad);
-echo $res;
+	
+	$id 		= $_POST['id'];
+	$refgrupo 	= $_POST['refgrupo'];
+	$reftorneo 	= $_POST['reftorneo'];
+	$refequipo 	= $_POST['refequipo'];
+	$prioridad 	= $_POST['prioridad'];
+	
+	$res = $serviciosZonasEquipos->modificarZonasEquipos($id,$refgrupo,$reftorneo,$refequipo,$prioridad);
+	for ($i=1;$i<=4;$i++) {
+			$serviciosZonasEquipos->modificarHorariosEquiposPrioridades($_POST['idtp'.$i],$_POST['idhorario'.$i],$_POST['horario'.$i]);
+		}
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
 }
+
+
 function eliminarZonasEquipos($serviciosZonasEquipos) {
 $id = $_POST['id'];
 $res = $serviciosZonasEquipos->eliminarZonasEquipos($id);
@@ -351,7 +615,11 @@ function modificarFixture($serviciosZonasEquipos) {
 	$horario 		= $_POST['horario'];
 	
 	$res = $serviciosZonasEquipos->modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario);
-	echo $res;
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
 } 
 
 
@@ -360,6 +628,21 @@ $id = $_POST['id'];
 $res = $serviciosZonasEquipos->eliminarFixture($id);
 echo $res;
 } 
+
+
+function traerFixturePorEquipo($serviciosZonasEquipos) {
+	$idequipo		=	$_POST['refequipo'];
+	
+	$res4 = $serviciosZonasEquipos->traerFixturePorEquipo($idequipo);
+	
+
+	$cad = '';
+	while ($row4 = mysql_fetch_array($res4)) {
+		$cad = $cad.'<option value="'.$row4[0].'">'.$row4[7].' - '.$row4[8].'</td>';	
+	}
+	echo $cad;
+		
+}
 /* fin fixture */
 	
 	

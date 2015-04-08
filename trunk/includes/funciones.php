@@ -26,17 +26,30 @@ class Servicios {
 	function camposTablaView($cabeceras,$datos,$cantidad) {
 		$cadView = '';
 		$cadRows = '';
-		
+		if ($cantidad == 99) {
+				$cantidad = 5;
+				$classMod = 'varmodificargoleadores';
+				$classEli = 'varborrargoleadores';
+				$idresultados = "resultadosgoleadores";
+			} else {
+				$classMod = 'varmodificar';
+				$classEli = 'varborrar';
+				$idresultados = "resultados";
+			}
 		while ($row = mysql_fetch_array($datos)) {
 			$cadsubRows = '';
 			$cadRows = $cadRows.'
 			
-					<tr>
+					<tr class="'.$row[0].'">
                         	';
 			
+			
 			for ($i=1;$i<=$cantidad;$i++) {
+				
 				$cadsubRows = $cadsubRows.'<td>'.$row[$i].'</td>';	
 			}
+			
+			
 			
 			$cadRows = $cadRows.'
                             '.$cadsubRows.'
@@ -52,16 +65,13 @@ class Servicios {
                                     
                                     <ul class="dropdown-menu" role="menu">
                                         <li>
-                                        <a href="javascript:void(0)" class="varmodificar" id="'.$row[0].'">Modificar</a>
+                                        <a href="javascript:void(0)" class="'.$classMod.'" id="'.$row[0].'">Modificar</a>
                                         </li>
 
                                         <li>
-                                        <a href="javascript:void(0)" class="varborrar" id="'.$row[0].'">Borrar</a>
+                                        <a href="javascript:void(0)" class="'.$classEli.'" id="'.$row[0].'">Borrar</a>
                                         </li>
 										
-                                        <li>
-                                        <a href="javascript:void(0)" class="btnDetalle" id="'.$row[0].'">Ver</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </td>
@@ -77,7 +87,7 @@ class Servicios {
                         <th>Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="'.$idresultados.'">
 
                 	'.utf8_encode($cadRows).'
                 </tbody>
@@ -237,19 +247,37 @@ class Servicios {
 										';
 										
 									} else {
-										$label = ucwords($label);
-										$campo = strtolower($row[0]);
-										
-										$form	=	$form.'
-										
-										<div class="form-group col-md-6">
-											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
-											<div class="input-group col-md-12">
-												<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+										if ((integer)(str_replace('varchar(','',$row[1])) > 200) {
+											$label = ucwords($label);
+											$campo = strtolower($row[0]);
+											
+											$form	=	$form.'
+											
+											<div class="form-group col-md-6">
+												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+												<div class="input-group col-md-12">
+													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required></textarea>
+												</div>
+												
 											</div>
-										</div>
-										
-										';
+											
+											';
+											
+										} else {
+											$label = ucwords($label);
+											$campo = strtolower($row[0]);
+											
+											$form	=	$form.'
+											
+											<div class="form-group col-md-6">
+												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+												<div class="input-group col-md-12">
+													<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+												</div>
+											</div>
+											
+											';
+										}
 									}
 								}
 							}
@@ -263,12 +291,208 @@ class Servicios {
 				}
 			}
 			
-			$formulario = $form."<br><br>".$camposEscondido."<div class='row'><div class='alert'></div></div>
-			<div class='row'><div id='load'></div></div>";
+			$formulario = $form."<br><br>".$camposEscondido;
 			
 			return $formulario;
 		}	
 	}
+
+
+
+
+
+
+
+	function camposTablaModificar($id,$lblid,$accion,$tabla,$lblcambio,$lblreemplazo,$refdescripcion,$refCampo) {
+		
+		if ($tabla == 'dbtorneos') {
+			$resMod = $this->TraerIdTorneos($id);
+		} else {
+			$sqlMod = "select * from ".$tabla." where ".$lblid." = ".$id;
+			$resMod = $this->query($sqlMod,0);
+		}
+		$sql	=	"show columns from ".$tabla;
+		$res 	=	$this->query($sql,0);
+		
+		$camposEscondido = "";
+		/* Analizar para despues */
+		/*if (count($refencias) > 0) {
+			$j = 0;
+
+			foreach ($refencias as $reftablas) {
+				$sqlTablas = "select id".$reftablas.", ".$refdescripcion[$j]." from ".$reftablas." order by ".$refdescripcion[$j];
+				$resultadoRef[$j][0] = $this->query($sqlTablas,0);
+				$resultadoRef[$j][1] = $refcampos[$j];
+			}
+		}*/
+		
+		
+		if ($res == false) {
+			return 'Error al traer datos';
+		} else {
+			
+			$form	=	'';
+			
+			while ($row = mysql_fetch_array($res)) {
+				
+				$i = 0;
+				foreach ($lblcambio as $cambio) {
+					if ($row[0] == $cambio) {
+						$label = $lblreemplazo[$i];
+						$i = 0;
+						break;
+					} else {
+						$label = $row[0];
+					}
+					$i = $i + 1;
+				}
+				
+				if ($row[3] != 'PRI') {
+					if (strpos($row[1],"decimal") !== false) {
+						$form	=	$form.'
+						
+						<div class="form-group col-md-6">
+							<label for="'.$label.'" class="control-label" style="text-align:left">'.ucwords($label).'</label>
+							<div class="input-group col-md-12">
+								<span class="input-group-addon">$</span>
+								<input type="text" class="form-control" id="'.strtolower($row[0]).'" name="'.strtolower($row[0]).'" value="'.mysql_result($resMod,0,$row[0]).'" required>
+								<span class="input-group-addon">.00</span>
+							</div>
+						</div>
+						
+						';
+					} else {
+						if ( in_array($row[0],$refCampo) ) {
+							
+							$campo = strtolower($row[0]);
+							
+							$option = $refdescripcion[array_search($row[0], $refCampo)];
+							/*
+							$i = 0;
+							foreach ($lblcambio as $cambio) {
+								if ($row[0] == $cambio) {
+									$label = $lblreemplazo[$i];
+									$i = 0;
+									break 2;
+								} else {
+									$label = $row[0];
+								}
+								$i = $i + 1;
+							}*/
+							
+							$form	=	$form.'
+							
+							<div class="form-group col-md-6">
+								<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+								<div class="input-group col-md-12">
+									<select class="form-control" id="'.strtolower($campo).'" name="'.strtolower($campo).'">
+										';
+							
+							$form	=	$form.$option;
+							
+							$form	=	$form.'		</select>
+								</div>
+							</div>
+							
+							';
+							
+						} else {
+							
+							if (strpos($row[1],"bit") !== false) {
+								$label = ucwords($label);
+								$campo = strtolower($row[0]);
+								
+								$activo = '';
+								if (mysql_result($resMod,0,$row[0])==1){
+									$activo = 'checked';
+								}
+								
+								$form	=	$form.'
+								
+								<div class="form-group col-md-6">
+									<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+									<div class="input-group col-md-12 fontcheck">
+										<input type="checkbox" '.$activo.' class="form-control" id="'.$campo.'" name="'.$campo.'" style="width:50px;" required> <p>Si/No</p>
+									</div>
+								</div>
+								
+								';
+								
+								
+							} else {
+								
+								if (strpos($row[1],"date") !== false) {
+									$label = ucwords($label);
+									$campo = strtolower($row[0]);
+									
+									$form	=	$form.'
+									
+									<div class="form-group col-md-6">
+										<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+										<div class="input-group date form_date col-md-6" data-date="" data-date-format="dd MM yyyy" data-link-field="'.$campo.'" data-link-format="yyyy-mm-dd">
+											<input class="form-control" value="'.mysql_result($resMod,0,$row[0]).'" size="50" type="text" value="" readonly>
+											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+										<input type="hidden" name="'.$campo.'" id="'.$campo.'" value="" />
+									</div>
+									
+									';
+									
+								} else {
+									
+									if (strpos($row[1],"time") !== false) {
+										$label = ucwords($label);
+										$campo = strtolower($row[0]);
+										
+										$form	=	$form.'
+										
+										<div class="form-group col-md-6">
+											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+											<div class="input-group bootstrap-timepicker col-md-6">
+												<input id="timepicker2" value="'.mysql_result($resMod,0,$row[0]).'" name="'.$campo.'" class="form-control">
+												<span class="input-group-addon">
+<span class="glyphicon glyphicon-time"></span>
+</span>
+											</div>
+											
+										</div>
+										
+										';
+										
+									} else {
+										$label = ucwords($label);
+										$campo = strtolower($row[0]);
+										
+										$form	=	$form.'
+										
+										<div class="form-group col-md-6">
+											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+											<div class="input-group col-md-12">
+												<input type="text" value="'.mysql_result($resMod,0,$row[0]).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+											</div>
+										</div>
+										
+										';
+									}
+								}
+							}
+						}
+						
+						
+					}
+				} else {
+	
+					$camposEscondido = $camposEscondido.'<input type="hidden" id="accion" name="accion" value="'.$accion.'"/>'.'<input type="hidden" id="id" name="id" value="'.$id.'"/>';	
+				}
+			}
+			
+			$formulario = $form."<br><br>".$camposEscondido;
+			
+			return $formulario;
+		}	
+	}
+	
+
 
 
 
@@ -498,7 +722,7 @@ class Servicios {
 	}
 	
 	function TraerIdTorneos($id) {
-		$sql = "select * from dbtorneos where idtorneo = ".$id;
+		$sql = "SELECT idtorneo,nombre,date_format(fechacreacion, '%d/%m/%Y') as fechacreacion,activo,actual,reftipotorneo FROM dbtorneos where idtorneo = ".$id;
 		return $this-> query($sql,0);
 	}
 	
@@ -507,6 +731,23 @@ function TraerTorneosClientes() {
 		return $this-> query($sql,0);
 	}
 
+function cambiarTorneo($idtipotorneo,$idtorneo) {
+	
+	$resTP = $this->TraerTorneoPorTipoTorneo($idtipotorneo);
+	session_start();
+	$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
+	
+	$_SESSION['idtorneo_predio'] = $idtorneo;
+	
+	return true;
+}
+	
+	
+function deshactivarTorneos($idtorneo,$idtipotorneo) {
+	$sql = "update dbtorneos set activo = 0 where reftipotorneo = ".$idtipotorneo." and idtorneo <> ".$idtorneo;
+	return $this-> query($sql,0);
+}
+
 	function TraerTorneosActivo($tipotorneo) {
 		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
 				inner join
@@ -514,6 +755,16 @@ function TraerTorneosClientes() {
 				where tt.descripciontorneo = '".$tipotorneo."' and t.activo = 1";
 		return $this-> query($sql,0);
 	}
+	
+	function TraerTorneoPorTipoTorneo($idtipotorneo) {
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+				inner join
+				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
+				where tt.idtipotorneo = ".$idtipotorneo;
+		return $this-> query($sql,0);
+	}
+	
+	
 	
 	function insertarTorneo($nombre,$fechacrea,$activo,$actual,$reftipotorneo) {
 		$nombre = str_replace("'","",$nombre);
@@ -536,11 +787,19 @@ function TraerTorneosClientes() {
 						nombre = '".$nombre."', 
 						activo =".$activo.",
 						actual =".$actual.",
-						fechacreacion = '".$fechacrea."',
-						reftipotorneo = ".$reftipotorneo."  
+						";
+		if ($fechacrea != '') {				
+			$sql = $sql."   fechacreacion = '".$fechacrea."',";
+		}
+		$sql = $sql."   reftipotorneo = ".$reftipotorneo."  
 						where idtorneo =".$idtorneo;
 		$res = $this-> query($sql,0);
-		return $res;
+		
+		if ($res == false) {
+			return 'Error al insertar datos';
+		} else {
+			return '';
+		}	
 
 		
 	}
@@ -569,6 +828,17 @@ function TraerTorneosClientes() {
 		$sql = "select t.idhorario, t.horario from tbhorarios t 
 				inner join tbtipotorneo tp on t.reftipotorneo = tp.idtipotorneo 
 				where tp.descripciontorneo = '".$tipotorneo."'";
+		return $this-> query($sql,0);
+	}
+	
+	function TraerHorariosId($id) {
+		$sql = "select
+				h.idhorario,tp.valor,tp.iddbturnosequiposprioridad
+				from		dbturnosequiposprioridad tp
+				inner
+				join		tbhorarios h
+				on			tp.refturno = h.idhorario
+				where		tp.reftorneoge = ".$id;
 		return $this-> query($sql,0);
 	}
 	
@@ -643,12 +913,23 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 		
 		mysql_select_db($database);
 		
-		$result = mysql_query($sql,$conex);
+		        $error = 0;
+		mysql_query("BEGIN");
+		$result=mysql_query($sql,$conex);
 		if ($accion && $result) {
 			$result = mysql_insert_id();
 		}
-		mysql_close($conex);
-		return $result;
+		if(!$result){
+			$error=1;
+		}
+		if($error==1){
+			mysql_query("ROLLBACK");
+			return false;
+		}
+		 else{
+			mysql_query("COMMIT");
+			return $result;
+		}
 		
 	}
 	

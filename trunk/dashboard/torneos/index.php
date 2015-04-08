@@ -147,6 +147,18 @@ if ($_SESSION['refroll_predio'] != 1) {
         	<form class="form-inline formulario" role="form">
         	<?php echo $formulario; ?>
             
+            
+            
+            <div class='row'>
+                <div class='alert'>
+                
+                </div>
+                <div id='load'>
+                
+                </div>
+            </div>
+			
+            
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
@@ -169,7 +181,6 @@ if ($_SESSION['refroll_predio'] != 1) {
         	<?php echo $lstCargados; ?>
     	</div>
     </div>
-    
     
 
     
@@ -196,18 +207,29 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	 $( '#dialogDetalle' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
+	 $('.varborrar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
+
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$('.varmodificar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificar.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
 
 	 $( "#dialog2" ).dialog({
 		 	

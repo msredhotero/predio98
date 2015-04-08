@@ -44,7 +44,7 @@ function menu($usuario,$titulo,$rol,$torneo) {
 			
 			<ul class="list-inline">
 				<li><span class="glyphicon glyphicon-user"></span> '.$usuario.'</li>
-				<li style="color:#FC0;">'.$torneo.' <a href="../torneos/"> Cambiar</a></li>    
+				<li style="color:#FC0;">'.$torneo.' <a href="../torneos/cambiartorneo.php"> Cambiar</a></li>    
 			</ul>
 		</div>
 		 

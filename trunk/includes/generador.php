@@ -33,8 +33,8 @@ function query($sql,$accion) {
 }
 
 
-$tabla = "dbfixture";
-$nombre = "Fixture";
+$tabla = "dbnoticiapredio";
+$nombre = "NoticiasPredio";
 
 $sql	=	"show columns from ".$tabla;
 $res 	=	query($sql,0);
