@@ -111,7 +111,7 @@ if ($res == false) {
 					} else {
 						if (strpos($row[1],"bit") !== false) {
 							$cuerpoVariablePOST 	= $cuerpoVariablePOST."
-									if (isset("."$_"."POST['".$row[0]."'])) { <br>
+									if (isset("."$"."_POST['".$row[0]."'])) { <br>
 										"."$".$row[0]."	= 1; <br>
 									} else { <br>
 										"."$".$row[0]." = 0; <br>
