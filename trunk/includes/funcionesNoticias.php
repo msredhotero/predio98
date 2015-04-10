@@ -85,6 +85,43 @@ return $res;
 		return $res;
 	}
 
+
+function insertarNoticias($titulo,$parrafo,$fechacreacion,$galeria) {
+$sql = "insert into dbnoticias(idnoticia,titulo,parrafo,fechacreacion,galeria)
+values ('','".utf8_decode($titulo)."','".utf8_decode($parrafo)."','".utf8_decode($fechacreacion)."',".$galeria.")";
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarNoticias($id,$titulo,$parrafo,$fechacreacion,$galeria) {
+$sql = "update dbnoticias
+set
+titulo = '".utf8_decode($titulo)."',parrafo = '".utf8_decode($parrafo)."',fechacreacion = '".utf8_decode($fechacreacion)."',galeria = ".$galeria."
+where idnoticia =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarNoticias($id) {
+$sql = "delete from dbnoticias where idnoticia =".$id;
+$res = $this->query($sql,0);
+return $res;
+} 
+
+	function traerNoticias() {
+		$sql = "select * from dbnoticias order by fechacreacion";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	
+	function traerNoticiasPorId($id) {
+		$sql = "select * from dbnoticias where idnoticia =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+	}
 	
 	function query($sql,$accion) {
 		

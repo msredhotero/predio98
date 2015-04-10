@@ -168,6 +168,26 @@ switch ($accion) {
 	case 'eliminarNoticiasPrincipales':
 		eliminarNoticiasPrincipales($serviciosNoticias);
 		break; 
+	
+	case 'insertarNoticiasPredio':
+		insertarNoticiasPredio($serviciosNoticiasPredio);
+		break;
+	case 'modificarNoticiasPredio':
+		modificarNoticiasPredio($serviciosNoticiasPredio);
+		break;
+	case 'eliminarNoticiasPredio':
+		eliminarNoticiasPredio($serviciosNoticiasPredio);
+		break; 
+			
+	case 'insertarNoticias':
+		insertarNoticias($serviciosNoticias);
+		break;
+	case 'modificarNoticias':
+		modificarNoticias($serviciosNoticias);
+		break;
+	case 'eliminarNoticias':
+		eliminarNoticias($serviciosNoticias);
+		break; 
 	/* fin noticias */
 }
 
@@ -178,7 +198,46 @@ switch ($accion) {
 
 
 
-/* fin noticias */
+
+function insertarNoticias($serviciosNoticias) {
+$titulo = $_POST['titulo'];
+$parrafo = $_POST['parrafo'];
+$fechacreacion = $_POST['fechacreacion'];
+if (isset($_POST['galeria'])) {
+$galeria = 1;
+} else {
+$galeria = 0;
+}
+$res = $serviciosNoticias->insertarNoticias($titulo,$parrafo,$fechacreacion,$galeria);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarNoticias($serviciosNoticias) {
+$id = $_POST['id'];
+$titulo = $_POST['titulo'];
+$parrafo = $_POST['parrafo'];
+$fechacreacion = $_POST['fechacreacion'];
+if (isset($_POST['galeria'])) {
+$galeria = 1;
+} else {
+$galeria = 0;
+}
+$res = $serviciosNoticias->modificarNoticias($id,$titulo,$parrafo,$fechacreacion,$galeria);
+if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+function eliminarNoticias($serviciosNoticias) {
+$id = $_POST['id'];
+$res = $serviciosNoticias->eliminarNoticias($id);
+echo $res;
+} 
+
 
 
 function insertarNoticiasPrincipales($serviciosNoticias) {
@@ -211,6 +270,37 @@ echo $res;
 } 
 
 
+
+
+function insertarNoticiasPredio($serviciosNoticiasPredio) {
+$titulo = $_POST['titulo'];
+$noticiapredio = $_POST['noticiapredio'];
+$fechacreacion = $_POST['fechacreacion'];
+$res = $serviciosNoticiasPredio->insertarNoticiasPredio($titulo,$noticiapredio,$fechacreacion);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarNoticiasPredio($serviciosNoticiasPredio) {
+$id = $_POST['id'];
+$titulo = $_POST['titulo'];
+$noticiapredio = $_POST['noticiapredio'];
+$fechacreacion = $_POST['fechacreacion'];
+$res = $serviciosNoticiasPredio->modificarNoticiasPredio($id,$titulo,$noticiapredio,$fechacreacion);
+if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+function eliminarNoticiasPredio($serviciosNoticiasPredio) {
+$id = $_POST['id'];
+$res = $serviciosNoticiasPredio->eliminarNoticiasPredio($id);
+echo $res;
+} 
+/* fin noticias */
 
 
 
