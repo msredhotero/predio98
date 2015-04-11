@@ -1,24 +1,24 @@
 <?php
 
 date_default_timezone_set('America/Buenos_Aires');
-require '../includes/funcionesProductos.php';
-require '../includes/funcionesTurnos.php';
-require '../includes/funcionesConfiguraciones.php';
-require '../includes/funcionesReportes.php';
 
-$serviciosProductos = new ServiciosProductos();
-$serviciosTurnos	= new ServiciosTurnos();
-$serviciosConfiguraciones = new ServiciosConfiguraciones();
-$serviciosReportes = new ServiciosReportes();
+include ('../includes/funcionesUsuarios.php');
+include ('../includes/funciones.php');
+include ('../includes/funcionesHTML.php');
+include ('../includes/funcionesJugadores.php');
+include ('../includes/funcionesEquipos.php');
+include ('../includes/funcionesGrupos.php');
+include ('../includes/funcionesZonasEquipos.php');
+include ('../includes/funcionesNoticias.php');
 
-$where = " and year(v.fechacreacion) = ".date('Y')."
-					and month(v.fechacreacion) = ".date('m')." ";
-
-
-$resIngresosCanchas = $serviciosReportes->ingresosCanchas($where);
-$resIngresosVentas = $serviciosReportes->ingresosVentas($where);
-$resIngresosFiestas = $serviciosReportes->ingresosFiestas($where);
-
+$serviciosUsuarios  = new ServiciosUsuarios();
+$serviciosFunciones = new Servicios();
+$serviciosHTML		= new ServiciosHTML();
+$serviciosJugadores = new ServiciosJ();
+$serviciosEquipos	= new ServiciosE();
+$serviciosGrupos	= new ServiciosG();
+$serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$serviciosNoticias = new ServiciosNoticias();
 $fecha = date('Y-m-d');
 
 require('fpdf.php');
