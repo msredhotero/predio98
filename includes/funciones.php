@@ -897,7 +897,86 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 		//return $sql;
 	}
 	
-	Function query($sql,$accion) {
+	
+	function traerPlanillas() {
+		$sql = "select
+					*
+					from (
+						select 
+						e.Nombre,
+						e.nombrecapitan,
+						e.telefonocapitan,
+						e.emailcapitan,
+						e.facebookcapitan,
+						e.nombresubcapitan,
+						e.telefonosubcapitan,
+						e.facebooksubcapitan,
+						g.nombre as zona,
+					t.Nombre as torneo,
+						tp.descripciontorneo,
+						e.IdEquipo,
+					f.Idfixture
+					
+						from		dbtorneoge tge
+						inner
+						join		dbequipos e
+						on			tge.refequipo = e.idequipo
+						inner
+						join		dbgrupos g
+						on			g.idgrupo = tge.refgrupo
+						inner
+						join		dbtorneos t
+						on			t.idtorneo = tge.reftorneo
+						inner
+						join		tbtipotorneo tp
+						on			tp.idtipotorneo = t.reftipotorneo
+						inner
+						join		dbfixture f
+						on			f.reftorneoge_a = tge.idtorneoge
+						
+						union all
+						
+						
+						select 
+					e.Nombre,
+					e.nombrecapitan,
+					e.telefonocapitan,
+					e.emailcapitan,
+					e.facebookcapitan,
+					e.nombresubcapitan,
+					e.telefonosubcapitan,
+					e.facebooksubcapitan,
+					g.nombre as zona,
+					t.Nombre as torneo,
+					tp.descripciontorneo,
+					e.IdEquipo,
+					f.Idfixture
+					
+					from		dbtorneoge tge
+					inner
+					join		dbequipos e
+					on			tge.refequipo = e.idequipo
+					inner
+					join		dbgrupos g
+					on			g.idgrupo = tge.refgrupo
+					inner
+					join		dbtorneos t
+					on			t.idtorneo = tge.reftorneo
+					inner
+					join		tbtipotorneo tp
+					on			tp.idtipotorneo = t.reftipotorneo
+					inner
+					join		dbfixture f
+					on			f.reftorneoge_b = tge.idtorneoge
+					) t
+					
+					order by t.idfixture limit 1";	
+		
+		return $this-> query($sql,0);
+	}
+	
+	
+	function query($sql,$accion) {
 		
 		require_once 'appconfig.php';
 
