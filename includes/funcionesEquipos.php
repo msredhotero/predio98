@@ -59,7 +59,43 @@ $res = $this->query($sql,0);
 return $res;
 } 
 	
-	Function query($sql,$accion) {
+	
+	
+	
+	
+function insertarSuspendidos($refjugador,$motivos,$cantidadfechas,$fechacreacion) {
+$sql = "insert into tbsuspendidos(idsuspendido,refjugador,motivos,cantidadfechas,fechacreacion)
+values ('',".$refjugador.",'".utf8_decode($motivos)."',".$cantidadfechas.",'".utf8_decode($fechacreacion)."')";
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarSuspendidos($id,$refjugador,$motivos,$cantidadfechas,$fechacreacion) {
+$sql = "update tbsuspendidos
+set
+refjugador = ".$refjugador.",motivos = '".utf8_decode($motivos)."',cantidadfechas = ".$cantidadfechas.",fechacreacion = '".utf8_decode($fechacreacion)."'
+where idsuspendido =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarSuspendidos($id) {
+$sql = "delete from tbsuspendidos where idsuspendido =".$id;
+$res = $this->query($sql,0);
+return $res;
+} 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	function query($sql,$accion) {
 		
 		require_once 'appconfig.php';
 

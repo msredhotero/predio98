@@ -175,13 +175,14 @@ if ($_SESSION['refroll_predio'] != 1) {
         	
         </div>
     	<div class="cuerpoBox">
+        	<div class="row" style="margin-left:25px; margin-right:25px;">
         	<form class="form-inline formulario" role="form">
 				<div class="row">
                     <div class="form-group col-md-6">
                     
                         <label class="control-label" style="text-align:left" for="apyn">Apellido Y Nombre</label>
                         <div class="input-group col-md-12">
-                            <input id="apyn" class="form-control" type="text" required="" placeholder="Ingrese el Apellido Y Nombre..." name="apyn">
+                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." name="apyn">
                         </div>
                     
                     </div>
@@ -200,13 +201,16 @@ if ($_SESSION['refroll_predio'] != 1) {
                 <div class="form-group col-md-6">
                     <label class="control-label" style="text-align:left" for="dni">Dni</label>
                     <div class="input-group col-md-12">
-                        <input id="dni" class="form-control" type="text" required="" placeholder="Ingrese el Dni..." name="dni">
+                        <input id="dni" class="form-control" type="text" required placeholder="Ingrese el Dni..." name="dni">
                     </div>
                 </div>
             </div>
             <br>
             <br>
-            <input id="accion" type="hidden" value="insertarJugador" name="accion">
+            
+            
+            
+            <input id="accion" type="hidden" value="insertarJugadores" name="accion">
             <div class="row">
                 <div class="col-md-12">
                     <ul class="list-inline" style="margin-top:15px;">
@@ -217,6 +221,11 @@ if ($_SESSION['refroll_predio'] != 1) {
                 </div>
             </div>
             </form>
+            </div>
+            <div class="row" style="margin-left:25px; margin-right:25px;">
+            <div class="alert"> </div>
+            <div id="load"> </div>
+            </div>
     	</div>
     </div>
 
@@ -353,7 +362,7 @@ $(document).ready(function(){
 											});
 											$("#load").html('');
 											url = "index.php";
-											$(location).attr('href',url);
+											//$(location).attr('href',url);
                                             
 											
                                         } else {

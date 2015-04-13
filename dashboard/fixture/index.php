@@ -75,7 +75,7 @@ while ($rowH = mysql_fetch_array($resHorarios)) {
 
 
 $refdescripcion = array(0 => $cadRef,1=>$cadRef,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
-$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","hora"); 
+$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","Hora"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
@@ -172,8 +172,14 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         </div>
     	<div class="cuerpoBox">
     		<form class="form-inline formulario" role="form">
+            <div class="row" style="margin-left:25px; margin-right:25px;">
     		<?php echo $formulario; ?>
+            </div>
             
+            <div class="row" style="margin-left:25px; margin-right:25px;">
+                <div class="alert"> </div>
+                <div id="load"> </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
@@ -202,7 +208,14 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
 
 
 </div>
-
+<div id="dialog2" title="Eliminar Fixture">
+    	<p>
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar el fixture?.<span id="proveedorEli"></span>
+        </p>
+        <p><strong>Importante: </strong>Si elimina el fixture se perderan todos los datos de este</p>
+        <input type="hidden" value="" id="idEliminar" name="idEliminar">
+</div>
 
 <script src="../../js/bootstrap-datetimepicker.min.js"></script>
 <script src="../../js/bootstrap-datetimepicker.es.js"></script>
@@ -222,31 +235,68 @@ $(document).ready(function(){
 	
 	?>
 	
-	 $( '#dialogDetalle' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
+	 $('.varborrar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
 
-	 $( '#dialog2' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+
+	$("#example").on("click",'.varmodificar', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			
+			url = "modificar.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
+
+	 $( "#dialog2" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:240,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarFixture'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											url = "index.php";
+											$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
 	
 	
 	//al enviar el formulario
@@ -287,8 +337,20 @@ $(document).ready(function(){
 												
 											});
 											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
+											//url = "index.php";
+											var a = $('#reftorneoge_a option:selected').html();
+											var b = $('#reftorneoge_b option:selected').html();
+											a = a.split(' - ');
+											b = b.split(' - ');
+											
+											$('#resultados').prepend('<tr><td>' + a[1] + '</td><td></td><td></td><td>' + 
+																		+ b[1] + '</td><td>' + 
+																		a[0] + '</td><td>' + 
+																		$('#fechajuego option:selected').html() + '</td><td>' + 
+																		$('#reffecha option:selected').html() + '</td><td>' + 
+																		$('#hora option:selected').html() + '</td><td style="color:#f00;">Nuevo</td></tr>').fadeIn(300);
+											
+											//$(location).attr('href',url);
                                             
 											
                                         } else {

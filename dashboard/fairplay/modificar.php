@@ -23,6 +23,10 @@ $fecha = date('Y-m-d');
 $resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"FairPlay",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
+$id = $_GET['id'];
+
+$resResultado = $serviciosFunciones->traerConductaPorId($id);;
+
 /////////////////////// Opciones de la pagina  ////////////////////
 
 $lblTitulosingular	= "FairPlay";
@@ -43,7 +47,11 @@ $resTipoTorneo 	= $serviciosEquipos->TraerEquipos();
 
 $cadRef = '';
 while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
-	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
+	if (mysql_result($resResultado,0,'idequipo')==$rowTT[0]) {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).'</option>';
+	} else {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
+	}
 	
 }
 
@@ -54,18 +62,8 @@ $refCampo[] 	= "refequipo";
 
 
 
-/////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Equipo</th>
-				<th>Puntos</th>";
 
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
-
-$formulario 	= $serviciosFunciones->camposTabla("insertarConducta",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),2);
+$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idconducta","modificarConducta",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
 
 
@@ -140,16 +138,18 @@ if ($_SESSION['refroll_predio'] != 1) {
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga de <?php echo $lblTituloplural; ?></p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Modificación de <?php echo $lblTituloplural; ?></p>
         	
         </div>
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
-        	<?php echo $formulario; ?>
+        	
+			<div class="row">
+			<?php echo $formulario; ?>
+            </div>
             
             
-            
-            <div class='row'>
+            <div class='row' style="margin-left:25px; margin-right:25px;">
                 <div class='alert'>
                 
                 </div>
@@ -157,13 +157,18 @@ if ($_SESSION['refroll_predio'] != 1) {
                 
                 </div>
             </div>
-			
             
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
                     <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Modificar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
                     </li>
                 </ul>
                 </div>
@@ -171,20 +176,8 @@ if ($_SESSION['refroll_predio'] != 1) {
             </form>
     	</div>
     </div>
-    
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Cargados</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<?php echo $lstCargados; ?>
-    	</div>
-    </div>
-    
 
-    
-    
+
    
 </div>
 
@@ -207,7 +200,13 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	 $('.varborrar').click(function(event){
+	$('.volver').click(function(event){
+		 
+		url = "index.php";
+		$(location).attr('href',url);
+	});//fin del boton modificar
+	
+	$('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -220,16 +219,6 @@ $(document).ready(function(){
 			alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton eliminar
-	
-	$('.varmodificar').click(function(event){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			url = "modificar.php?id=" + usersid;
-			$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton modificar
 
 	 $( "#dialog2" ).dialog({
 		 	
@@ -305,7 +294,7 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
+                                            $(".alert").html('<strong>Ok!</strong> Se Modifico exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
 											$(".alert").delay(3000).queue(function(){
 												/*aca lo que quiero hacer 
 												  después de los 2 segundos de retraso*/
@@ -313,8 +302,7 @@ $(document).ready(function(){
 												
 											});
 											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
+											
                                             
 											
                                         } else {

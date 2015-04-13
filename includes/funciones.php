@@ -868,6 +868,47 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		return $this-> query($sql,0);
 	}
 	
+	function insertarConducta($refequipo,$puntos) {
+$sql = "insert into tbconducta(idconducta,refequipo,puntos)
+values ('',".$refequipo.",".$puntos.")";
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarConducta($id,$refequipo,$puntos) {
+$sql = "update tbconducta
+set
+refequipo = ".$refequipo.",puntos = ".$puntos."
+where idconducta =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarConducta($id) {
+$sql = "delete from tbconducta where idconducta =".$id;
+$res = $this->query($sql,0);
+return $res;
+} 
+
+function traerConducta() {
+	$sql = "select c.idconducta,e.nombre,c.puntos from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			order by e.nombre";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+function traerConductaPorId($id) {
+	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			where c.idconducta =".$id;
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+
 	function insertarContacto($nombre,$apellido,$mail,$asunto,$mensaje) {
 		
 		$sql = "insert into dbcontactos(dbcontactos.idcontacto,
@@ -903,19 +944,23 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					*
 					from (
 						select 
-						e.Nombre,
+						e.nombre,
 						e.nombrecapitan,
 						e.telefonocapitan,
 						e.emailcapitan,
 						e.facebookcapitan,
 						e.nombresubcapitan,
 						e.telefonosubcapitan,
+						e.emailsubcapitan,
 						e.facebooksubcapitan,
 						g.nombre as zona,
-					t.Nombre as torneo,
+						t.idtorneo,
+						tp.idtipotorneo,
+						g.idgrupo,
+						t.nombre as torneo,
 						tp.descripciontorneo,
-						e.IdEquipo,
-					f.Idfixture
+						e.idequipo,
+					f.idfixture
 					
 						from		dbtorneoge tge
 						inner
@@ -945,12 +990,16 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					e.facebookcapitan,
 					e.nombresubcapitan,
 					e.telefonosubcapitan,
+					e.emailsubcapitan,
 					e.facebooksubcapitan,
 					g.nombre as zona,
-					t.Nombre as torneo,
+					g.idgrupo,
+					t.nombre as torneo,
+					t.idtorneo,
+					tp.idtipotorneo,
 					tp.descripciontorneo,
-					e.IdEquipo,
-					f.Idfixture
+					e.idequipo,
+					f.idfixture
 					
 					from		dbtorneoge tge
 					inner
@@ -970,7 +1019,7 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					on			f.reftorneoge_b = tge.idtorneoge
 					) t
 					
-					order by t.idfixture limit 1";	
+					order by t.idfixture";	
 		
 		return $this-> query($sql,0);
 	}

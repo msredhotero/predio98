@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 if (!isset($_SESSION['usua_predio']))
@@ -12,61 +13,94 @@ include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
 include ('../../includes/funcionesEquipos.php');
+include ('../../includes/funcionesZonasEquipos.php');
 
-$serviciosFunciones = new Servicios();
-$serviciosUsuario = new ServiciosUsuarios();
-$serviciosHTML = new ServiciosHTML();
-$serviciosEquipos = new ServiciosE();
+$serviciosFunciones 	= new Servicios();
+$serviciosUsuario 		= new ServiciosUsuarios();
+$serviciosHTML 			= new ServiciosHTML();
+$serviciosEquipos 		= new ServiciosE();
+$serviciosZonasEquipos 	= new ServiciosZonasEquipos();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"FairPlay",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+//$resProductos = $serviciosProductos->traerProductosLimite(6);
+$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Fixture",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
-/////////////////////// Opciones de la pagina  ////////////////////
+$id = $_GET['id'];
 
-$lblTitulosingular	= "FairPlay";
-$lblTituloplural	= "FairPlay";
-$lblEliminarObs		= "Si elimina el FairPlay";
-$accionEliminar		= "eliminarConducta";
-
-/////////////////////// Fin de las opciones /////////////////////
-
+$resResultado = $serviciosZonasEquipos->TraerFixturePorId($id);
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "tbconducta";
+$tabla 			= "dbfixture";
 
-$lblCambio	 	= array("refequipo");
-$lblreemplazo	= array("Equipo");
+$lblCambio	 	= array("reftorneoge_a","resultado_a","reftorneoge_b","resultado_b","fechajuego","refFecha","cancha");
+$lblreemplazo	= array("Zona-Equipo 1","Resultado 1","Zona-Equipo 2","Resultado 2","Fecha Juego","Fecha","Cancha");
 
-$resTipoTorneo 	= $serviciosEquipos->TraerEquipos();
+$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonas();
+$resZonasEquipos2 	= $serviciosZonasEquipos->TraerEquiposZonas();
 
 $cadRef = '';
-while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
-	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
+while ($rowTT = mysql_fetch_array($resZonasEquipos)) {
+	if (mysql_result($resResultado,0,1) == $rowTT[0]) {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).' - '.utf8_encode($rowTT[2]).'</option>';
+	} else {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).' - '.utf8_encode($rowTT[2]).'</option>';	
+	}
+}
+
+$cadRefb = '';
+while ($rowTT2 = mysql_fetch_array($resZonasEquipos2)) {
+	if (mysql_result($resResultado,0,3) == $rowTT2[0]) {
+		$cadRefb = $cadRefb.'<option value="'.$rowTT2[0].'" selected>'.utf8_encode($rowTT2[1]).' - '.utf8_encode($rowTT2[2]).'</option>';
+	} else {
+		$cadRefb = $cadRefb.'<option value="'.$rowTT2[0].'">'.utf8_encode($rowTT2[1]).' - '.utf8_encode($rowTT2[2]).'</option>';	
+	}
+}
+
+
+$resFechas 	= $serviciosFunciones->TraerFecha();
+
+$cadRef2 = '';
+while ($rowZ = mysql_fetch_array($resFechas)) {
+	if (mysql_result($resResultado,0,'refFecha') == $rowZ[0]) {
+		$cadRef2 = $cadRef2.'<option value="'.$rowZ[0].'" selected>'.utf8_encode($rowZ[1]).'</option>';
+	} else {
+		$cadRef2 = $cadRef2.'<option value="'.$rowZ[0].'">'.utf8_encode($rowZ[1]).'</option>';
+	}
+}
+
+$resCanchas 	= $serviciosFunciones->TraerCanchas();
+
+$cadRef3 = '';
+while ($rowC = mysql_fetch_array($resCanchas)) {
+	if (mysql_result($resResultado,0,'cancha') == $rowC[1]) {
+		$cadRef3 = $cadRef3.'<option value="'.$rowC[0].'" selected>'.utf8_encode($rowC[1]).'</option>';
+	} else {
+		$cadRef3 = $cadRef3.'<option value="'.$rowC[0].'">'.utf8_encode($rowC[1]).'</option>';
+	}
+	
 	
 }
 
-$refdescripcion = array(0 => $cadRef);
-$refCampo[] 	= "refequipo"; 
+
+$resHorarios 	= $serviciosFunciones->TraerHorarios($_SESSION['torneo_predio']);
+
+$cadRef4 = '';
+while ($rowH = mysql_fetch_array($resHorarios)) {
+	$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'">'.utf8_encode($rowH[1]).'</option>';
+	
+}
+
+
+$refdescripcion = array(0 => $cadRef,1=>$cadRefb,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
+$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","hora"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
 
 
-/////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Equipo</th>
-				<th>Puntos</th>";
-
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
-
-$formulario 	= $serviciosFunciones->camposTabla("insertarConducta",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),2);
-
+$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idfixture", "modificarFixture",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -97,23 +131,23 @@ if ($_SESSION['refroll_predio'] != 1) {
 <link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">
     
 
+    
     <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
-
     <link rel="stylesheet" href="../../css/jquery-ui.css">
 
     <script src="../../js/jquery-ui.js"></script>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="../../bootstrap/css/bootstrap-theme.min.css">
-
-    <link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
+    
+	<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css"/>
+	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-    
 
+	<style type="text/css">
+		
+  
+		
+	</style>
     
    
    <link href="../../css/perfect-scrollbar.css" rel="stylesheet">
@@ -130,26 +164,26 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <body>
 
-
- 
-<?php echo $resMenu; ?>
+ <?php echo $resMenu; ?>
 
 <div id="content">
 
-<h3><?php echo $lblTituloplural; ?></h3>
+<h3>Equipos</h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga de <?php echo $lblTituloplural; ?></p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Modificar de Equipos</p>
         	
         </div>
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
-        	<?php echo $formulario; ?>
+        	
+			<div class="row">
+			<?php echo $formulario; ?>
+            </div>
             
             
-            
-            <div class='row'>
+            <div class='row' style="margin-left:25px; margin-right:25px;">
                 <div class='alert'>
                 
                 </div>
@@ -157,13 +191,18 @@ if ($_SESSION['refroll_predio'] != 1) {
                 
                 </div>
             </div>
-			
             
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
                     <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Modificar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
                     </li>
                 </ul>
                 </div>
@@ -172,18 +211,6 @@ if ($_SESSION['refroll_predio'] != 1) {
     	</div>
     </div>
     
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Cargados</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<?php echo $lstCargados; ?>
-    	</div>
-    </div>
-    
-
-    
     
    
 </div>
@@ -191,23 +218,27 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 </div>
 
-
-<div id="dialog2" title="Eliminar <?php echo $lblTitulosingular; ?>">
+<div id="dialog2" title="Eliminar Equipos">
     	<p>
         	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            ¿Esta seguro que desea eliminar el <?php echo $lblTitulosingular; ?>?.<span id="proveedorEli"></span>
+            ¿Esta seguro que desea eliminar el equipo?.<span id="proveedorEli"></span>
         </p>
-        <p><strong>Importante: </strong><?php echo $lblEliminarObs; ?></p>
+        <p><strong>Importante: </strong>Si elimina el equipo se perderan todos los datos de este</p>
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
-<script src="../../js/bootstrap-datetimepicker.min.js"></script>
-<script src="../../js/bootstrap-datetimepicker.es.js"></script>
-
+<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+<script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
+
+	$('.volver').click(function(event){
+		 
+		url = "index.php";
+		$(location).attr('href',url);
+	});//fin del boton modificar
 	
-	 $('.varborrar').click(function(event){
+	$('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -220,16 +251,6 @@ $(document).ready(function(){
 			alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton eliminar
-	
-	$('.varmodificar').click(function(event){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			url = "modificar.php?id=" + usersid;
-			$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton modificar
 
 	 $( "#dialog2" ).dialog({
 		 	
@@ -242,7 +263,7 @@ $(document).ready(function(){
 				    "Eliminar": function() {
 	
 						$.ajax({
-									data:  {id: $('#idEliminar').val(), accion: '<?php echo $accionEliminar; ?>'},
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarEquipos'},
 									url:   '../../ajax/ajax.php',
 									type:  'post',
 									beforeSend: function () {
@@ -275,6 +296,9 @@ $(document).ready(function(){
 	
 	?>
 	
+
+	
+	
 	//al enviar el formulario
     $('#cargar').click(function(){
 		
@@ -305,7 +329,7 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
+                                            $(".alert").html('<strong>Ok!</strong> Se modifico exitosamente el <strong>Equipo</strong>. ');
 											$(".alert").delay(3000).queue(function(){
 												/*aca lo que quiero hacer 
 												  después de los 2 segundos de retraso*/
@@ -313,8 +337,8 @@ $(document).ready(function(){
 												
 											});
 											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
+											//url = "index.php";
+											//$(location).attr('href',url);
                                             
 											
                                         } else {
@@ -335,22 +359,6 @@ $(document).ready(function(){
 
 });
 </script>
-
-<script type="text/javascript">
-$('.form_date').datetimepicker({
-	language:  'es',
-	weekStart: 1,
-	todayBtn:  1,
-	autoclose: 1,
-	todayHighlight: 1,
-	startView: 2,
-	minView: 2,
-	forceParse: 0,
-	format: 'dd/mm/yyyy'
-});
-</script>
-
-
 <?php } ?>
 </body>
 </html>

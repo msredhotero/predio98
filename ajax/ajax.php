@@ -73,6 +73,16 @@ switch ($accion) {
 	case 'eliminarEquipos':
 		eliminarEquipos($serviciosEquipos);
 		break; 
+		
+	case 'insertarConducta':
+		insertarConducta($serviciosFunciones);
+		break;
+	case 'modificarConducta':
+		modificarConducta($serviciosFunciones);
+		break;
+	case 'eliminarConducta':
+		eliminarConducta($serviciosFunciones);
+		break; 
 	/* fin equipos */
 	
 	
@@ -113,6 +123,16 @@ switch ($accion) {
 	case 'insertarEstadistica':
 		insertarEstadistica($serviciosJugadores);
 		break;
+	
+	case 'insertarSuspendidos':
+		insertarSuspendidos($serviciosJugadores);
+		break;
+	case 'modificarSuspendidos':
+		modificarSuspendidos($serviciosJugadores);
+		break;
+	case 'eliminarSuspendidos':
+		eliminarSuspendidos($serviciosJugadores);
+		break; 
 	/* fin jugadores */
 	
 	
@@ -440,6 +460,37 @@ function eliminarEquipos($serviciosEquipos) {
 	$id = $_POST['id'];
 	$res = $serviciosEquipos->eliminarEquipos($id);
 	echo $res;
+}
+
+
+
+
+
+function insertarConducta($serviciosFunciones) {
+	$refequipo = $_POST['refequipo'];
+	$puntos = $_POST['puntos'];
+	$res = $serviciosFunciones->insertarConducta($refequipo,$puntos);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarConducta($serviciosFunciones) {
+	$id = $_POST['id'];
+	$refequipo = $_POST['refequipo'];
+	$puntos = $_POST['puntos'];
+	$res = $serviciosFunciones->modificarConducta($id,$refequipo,$puntos);
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function eliminarConducta($serviciosFunciones) {
+	$id = $_POST['id'];
+	$res = $serviciosFunciones->eliminarConducta($id);
+	echo $res;
 } 
 /* fin equipos */
 
@@ -449,9 +500,9 @@ function eliminarEquipos($serviciosEquipos) {
 function insertarJugadores($serviciosJugadores) {
 	$apyn 		= $_POST['apyn'];
 	$idequipo 	= $_POST['idequipo'];
-	$dni 		= $_POST['dni'];
+	$dni 		= str_replace('.','',$_POST['dni']);
 	
-	$res = $serviciosJugadores->insertarJugadores($apyn,$idequipo,$dni);
+	$res = $serviciosJugadores->insertarJugadores($apyn,$dni,$idequipo);
 	if ((integer)$res > 0) {
 		echo '';
 	} else {
@@ -586,6 +637,40 @@ function insertarEstadistica($serviciosJugadores) {
 	
 }
 
+
+
+function insertarSuspendidos($serviciosSuspendidos) {
+	$refjugador = $_POST['refjugador'];
+	$refequipo = $_POST['refequipo'];
+	$motivos = str_replace("'",'',trim($_POST['motivos']));
+	$cantidadfechas = $_POST['cantidadfechas'];
+	$fechacreacion = date('Y-m-d');
+	$res = $serviciosSuspendidos->insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarSuspendidos($serviciosSuspendidos) {
+	$id = $_POST['id'];
+	$refjugador = $_POST['refjugador'];
+	$refequipo = $_POST['refequipo'];
+	$motivos = str_replace("'",'',trim($_POST['motivos']));
+	$cantidadfechas = $_POST['cantidadfechas'];
+	$fechacreacion = date('Y-m-d');
+	$res = $serviciosSuspendidos->modificarSuspendidos($id,$refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion);
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+function eliminarSuspendidos($serviciosSuspendidos) {
+	$id = $_POST['id'];
+	$res = $serviciosSuspendidos->eliminarSuspendidos($id);
+	echo $res;
+} 
 
 /* fin jugadores */
 
