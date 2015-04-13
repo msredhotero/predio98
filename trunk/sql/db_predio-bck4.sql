@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-04-2015 a las 07:55:44
+-- Tiempo de generación: 11-04-2015 a las 02:41:43
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `dbfixture` (
   `cancha` varchar(12) DEFAULT NULL,
   PRIMARY KEY (`Idfixture`),
   KEY `indices` (`reftorneoge_a`,`resultado_a`,`reftorneoge_b`,`resultado_b`,`refFecha`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4371 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4102 ;
 
 --
 -- Volcado de datos para la tabla `dbfixture`
@@ -284,273 +284,7 @@ INSERT INTO `dbfixture` (`Idfixture`, `reftorneoge_a`, `resultado_a`, `reftorneo
 (4098, 2, NULL, 3, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 9'),
 (4099, 1, NULL, 1080, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 9'),
 (4100, 1079, NULL, 8, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 9'),
-(4101, 1005, NULL, 1000, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 9'),
-(4102, 1028, NULL, 1029, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 2'),
-(4103, 1033, NULL, 1035, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 2'),
-(4104, 1026, NULL, 1030, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 2'),
-(4105, 1018, NULL, 1022, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 3'),
-(4106, 1019, NULL, 1025, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 3'),
-(4107, 1027, NULL, 1032, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 3'),
-(4108, 1031, NULL, 1034, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 4'),
-(4109, 1015, NULL, 1014, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 4'),
-(4110, 1016, NULL, 1011, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 4'),
-(4111, 1020, NULL, 1036, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 5'),
-(4112, 1023, NULL, 1024, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 5'),
-(4113, 1021, NULL, 1017, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 5'),
-(4114, 1013, NULL, 1010, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 7'),
-(4115, 1009, NULL, 1007, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 7'),
-(4116, 1008, NULL, 1012, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 7'),
-(4117, 6, NULL, 7, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 8'),
-(4119, 1004, NULL, 1001, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 8'),
-(4120, 5, NULL, 4, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 8'),
-(4121, 1003, NULL, 998, NULL, '2015-04-11', 28, '13:30:00', 'Cancha 10'),
-(4122, 1002, NULL, 999, NULL, '2015-04-11', 28, '15:00:00', 'Cancha 10'),
-(4123, 1006, NULL, 997, NULL, '2015-04-11', 28, '16:30:00', 'Cancha 10'),
-(4124, 1052, NULL, 1039, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 1A'),
-(4125, 1044, NULL, 1045, NULL, '2015-04-11', 28, '13:10:00', 'Cancha 1A'),
-(4126, 1043, NULL, 1046, NULL, '2015-04-11', 28, '14:20:00', 'Cancha 1A'),
-(4127, 1041, NULL, 1049, NULL, '2015-04-11', 28, '15:30:00', 'Cancha 1A'),
-(4128, 1051, NULL, 1040, NULL, '2015-04-11', 28, '16:40:00', 'Cancha 1A'),
-(4129, 1057, NULL, 1058, NULL, '2015-04-11', 28, '16:40:00', 'Cancha 1B'),
-(4130, 1059, NULL, 1061, NULL, '2015-04-11', 28, '15:30:00', 'Cancha 1B'),
-(4131, 1066, NULL, 1065, NULL, '2015-04-11', 28, '14:20:00', 'Cancha 1B'),
-(4132, 1062, NULL, 1064, NULL, '2015-04-11', 28, '13:10:00', 'Cancha 1B'),
-(4133, 1055, NULL, 1056, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 1B'),
-(4134, 1073, NULL, 1068, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 6A'),
-(4135, 1070, NULL, 1077, NULL, '2015-04-11', 28, '13:10:00', 'Cancha 6A'),
-(4136, 1072, NULL, 1076, NULL, '2015-04-11', 28, '14:20:00', 'Cancha 6A'),
-(4137, 1071, NULL, 1067, NULL, '2015-04-11', 28, '15:30:00', 'Cancha 6A'),
-(4138, 1069, NULL, 1075, NULL, '2015-04-11', 28, '16:40:00', 'Cancha 6A'),
-(4139, 1053, NULL, 1060, NULL, '2015-04-11', 28, '16:40:00', 'Cancha 6B'),
-(4140, 1074, NULL, 1078, NULL, '2015-04-11', 28, '15:30:00', 'Cancha 6B'),
-(4141, 1050, NULL, 1048, NULL, '2015-04-11', 28, '14:20:00', 'Cancha 6B'),
-(4142, 1042, NULL, 1047, NULL, '2015-04-11', 28, '13:10:00', 'Cancha 6B'),
-(4143, 1054, NULL, 1063, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 6B'),
-(4144, 1, NULL, 4, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 2'),
-(4145, 1080, NULL, 7, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 2'),
-(4146, 1079, NULL, 3, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 2'),
-(4147, 1007, NULL, 1010, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 10'),
-(4148, 1013, NULL, 1009, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 10'),
-(4152, 8, NULL, 5, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 3'),
-(4150, 2, NULL, 6, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 3'),
-(4151, 1011, NULL, 1013, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 2'),
-(4153, 1079, NULL, 1, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 3'),
-(4154, 1080, NULL, 4, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 3'),
-(4155, 3, NULL, 7, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 3'),
-(4156, 2, NULL, 8, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 4'),
-(4157, 6, NULL, 5, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 4'),
-(4158, 1080, NULL, 1079, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 4'),
-(4159, 3, NULL, 1, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 4'),
-(4160, 7, NULL, 4, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 4'),
-(4161, 2, NULL, 5, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 5'),
-(4162, 6, NULL, 8, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 5'),
-(4163, 1080, NULL, 8, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 5'),
-(4164, 7, NULL, 1079, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 5'),
-(4165, 2, NULL, 4, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 7'),
-(4166, 5, NULL, 1, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 7'),
-(4167, 6, NULL, 3, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 7'),
-(4168, 1080, NULL, 5, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 7'),
-(4169, 7, NULL, 8, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 7'),
-(4170, 2, NULL, 1, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 8'),
-(4171, 4, NULL, 3, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 8'),
-(4172, 6, NULL, 1079, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 8'),
-(4173, 997, NULL, 1004, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 3'),
-(4174, 998, NULL, 1001, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 3'),
-(4175, 1000, NULL, 999, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 4'),
-(4176, 1002, NULL, 1012, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 4'),
-(4177, 1082, NULL, 1003, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 4'),
-(4178, 1005, NULL, 1004, NULL, '2015-03-14', 24, '12:00:00', 'Cancha 4'),
-(4179, 1001, NULL, 999, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 4'),
-(4180, 998, NULL, 1000, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 5'),
-(4181, 1002, NULL, 997, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 5'),
-(4182, 1012, NULL, 1003, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 5'),
-(4183, 1005, NULL, 1001, NULL, '2015-03-21', 25, '12:00:00', 'Cancha 5'),
-(4184, 1004, NULL, 999, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 5'),
-(4185, 998, NULL, 1002, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 7'),
-(4186, 1012, NULL, 1000, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 7'),
-(4187, 1003, NULL, 997, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 7'),
-(4188, 1004, NULL, 1003, NULL, '2015-03-24', 26, '12:00:00', 'Cancha 5'),
-(4189, 999, NULL, 1005, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 5'),
-(4190, 998, NULL, 1012, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 8'),
-(4191, 1001, NULL, 1002, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 8'),
-(4192, 997, NULL, 1000, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 8'),
-(4193, 1005, NULL, 997, NULL, '2015-03-28', 27, '12:00:00', 'Cancha 9'),
-(4194, 1004, NULL, 998, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 9'),
-(4195, 1006, NULL, 999, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 9'),
-(4196, 1002, NULL, 1003, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 9'),
-(4197, 1001, NULL, 1000, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 7'),
-(4198, 1008, NULL, 1081, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 10'),
-(4199, 1083, NULL, 1084, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 10'),
-(4200, 1085, NULL, 1011, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 8'),
-(4206, 1009, NULL, 1011, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 3'),
-(4202, 1008, NULL, 1083, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 2'),
-(4203, 1009, NULL, 1081, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 2'),
-(4204, 1007, NULL, 1084, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 9'),
-(4205, 1085, NULL, 1010, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 9'),
-(4207, 1008, NULL, 1013, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 3'),
-(4208, 1014, NULL, 1083, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 3'),
-(4209, 1010, NULL, 1084, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 10'),
-(4210, 1007, NULL, 1085, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 10'),
-(4211, 1010, NULL, 1016, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 2'),
-(4212, 1014, NULL, 1011, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 2'),
-(4213, 1013, NULL, 1007, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 4'),
-(4214, 1008, NULL, 1009, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 4'),
-(4215, 1085, NULL, 1084, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 4'),
-(4216, 1011, NULL, 1007, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 5'),
-(4217, 1008, NULL, 1015, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 5'),
-(4218, 1014, NULL, 1013, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 5'),
-(4219, 1010, NULL, 1009, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 3'),
-(4220, 1016, NULL, 1012, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 3'),
-(4221, 1019, NULL, 1086, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 8'),
-(4222, 1023, NULL, 1018, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 8'),
-(4223, 1025, NULL, 1017, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 8'),
-(4224, 1021, NULL, 1024, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 7'),
-(4225, 1022, NULL, 1020, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 7'),
-(4226, 1023, NULL, 1086, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 10'),
-(4227, 1018, NULL, 1025, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 10'),
-(4228, 1019, NULL, 1017, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 10'),
-(4229, 1022, NULL, 1021, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 8'),
-(4230, 1020, NULL, 1024, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 8'),
-(4231, 1024, NULL, 1022, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 9'),
-(4232, 1020, NULL, 1021, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 9'),
-(4233, 1023, NULL, 1017, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 2'),
-(4234, 1018, NULL, 1019, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 2'),
-(4235, 1086, NULL, 1025, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 2'),
-(4236, 1018, NULL, 1086, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 3'),
-(4237, 1022, NULL, 1025, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 3'),
-(4238, 1020, NULL, 1023, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 3'),
-(4239, 1019, NULL, 1021, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 10'),
-(4240, 1024, NULL, 1017, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 10'),
-(4241, 1086, NULL, 1021, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 2'),
-(4242, 1017, NULL, 1022, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 2'),
-(4243, 1018, NULL, 1024, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 4'),
-(4244, 1025, NULL, 1023, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 4'),
-(4245, 1020, NULL, 1019, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 4'),
-(4246, 1034, NULL, 1035, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 5'),
-(4247, 1028, NULL, 1026, NULL, '2015-03-07', 23, '13:30:00', 'Cancha 5'),
-(4248, 1033, NULL, 1032, NULL, '2015-03-07', 23, '15:00:00', 'Cancha 5'),
-(4249, 1027, NULL, 1029, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 7'),
-(4250, 1031, NULL, 1030, NULL, '2015-03-07', 23, '16:30:00', 'Cancha 7'),
-(4251, 1028, NULL, 1035, NULL, '2015-03-14', 24, '13:30:00', 'Cancha 7'),
-(4252, 1032, NULL, 1026, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 7'),
-(4253, 1033, NULL, 1034, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 7'),
-(4254, 1031, NULL, 1029, NULL, '2015-03-14', 24, '15:00:00', 'Cancha 9'),
-(4255, 1030, NULL, 1027, NULL, '2015-03-14', 24, '16:30:00', 'Cancha 8'),
-(4256, 1028, NULL, 1034, NULL, '2015-03-21', 25, '13:30:00', 'Cancha 8'),
-(4257, 1027, NULL, 1031, NULL, '2015-03-21', 25, '15:00:00', 'Cancha 8'),
-(4258, 1033, NULL, 1026, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 8'),
-(4259, 1029, NULL, 1030, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 10'),
-(4260, 1032, NULL, 1035, NULL, '2015-03-21', 25, '16:30:00', 'Cancha 9'),
-(4261, 1028, NULL, 1031, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 9'),
-(4262, 1033, NULL, 1029, NULL, '2015-03-24', 26, '15:00:00', 'Cancha 9'),
-(4263, 1026, NULL, 1035, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 9'),
-(4264, 1034, NULL, 1027, NULL, '2015-03-24', 26, '13:30:00', 'Cancha 10'),
-(4265, 1032, NULL, 1030, NULL, '2015-03-24', 26, '16:30:00', 'Cancha 2'),
-(4266, 1028, NULL, 1032, NULL, '2015-03-28', 27, '13:30:00', 'Cancha 10'),
-(4267, 1031, NULL, 1026, NULL, '2015-03-28', 27, '15:00:00', 'Cancha 10'),
-(4268, 1030, NULL, 1034, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 10'),
-(4269, 1027, NULL, 1033, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 2'),
-(4270, 1029, NULL, 1035, NULL, '2015-03-28', 27, '16:30:00', 'Cancha 3'),
-(4271, 1070, NULL, 1074, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 1A'),
-(4272, 1069, NULL, 1087, NULL, '2015-03-07', 23, '13:10:00', 'Cancha 1A'),
-(4273, 1057, NULL, 1053, NULL, '2015-03-07', 23, '14:20:00', 'Cancha 1A'),
-(4274, 1077, NULL, 1076, NULL, '2015-03-07', 23, '15:30:00', 'Cancha 1A'),
-(4275, 1075, NULL, 1068, NULL, '2015-03-07', 23, '16:40:00', 'Cancha 1A'),
-(4276, 1067, NULL, 1073, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 1B'),
-(4277, 1055, NULL, 1059, NULL, '2015-03-07', 23, '13:10:00', 'Cancha 1B'),
-(4278, 1062, NULL, 1060, NULL, '2015-03-07', 23, '14:20:00', 'Cancha 1B'),
-(4279, 1064, NULL, 1058, NULL, '2015-03-07', 23, '15:30:00', 'Cancha 1B'),
-(4280, 1072, NULL, 1071, NULL, '2015-03-07', 23, '16:40:00', 'Cancha 1B'),
-(4281, 1056, NULL, 1054, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 6A'),
-(4282, 1063, NULL, 1088, NULL, '2015-03-07', 23, '13:10:00', 'Cancha 6A'),
-(4283, 1048, NULL, 1043, NULL, '2015-03-07', 23, '14:20:00', 'Cancha 6A'),
-(4284, 1049, NULL, 1050, NULL, '2015-03-07', 23, '15:30:00', 'Cancha 6A'),
-(4285, 1061, NULL, 1089, NULL, '2015-03-07', 23, '16:40:00', 'Cancha 6A'),
-(4286, 1052, NULL, 1047, NULL, '2015-03-07', 23, '12:00:00', 'Cancha 6B'),
-(4287, 1046, NULL, 1044, NULL, '2015-03-07', 23, '13:10:00', 'Cancha 6B'),
-(4288, 1039, NULL, 1041, NULL, '2015-03-07', 23, '14:20:00', 'Cancha 6B'),
-(4289, 1051, NULL, 1045, NULL, '2015-03-07', 23, '15:30:00', 'Cancha 6B'),
-(4290, 1042, NULL, 1040, NULL, '2015-03-07', 23, '16:40:00', 'Cancha 6B'),
-(4291, 1052, NULL, 1042, NULL, '2015-03-14', 24, '12:00:00', 'Cancha 1A'),
-(4292, 1046, NULL, 1041, NULL, '2015-03-14', 24, '13:10:00', 'Cancha 1A'),
-(4293, 1039, NULL, 1045, NULL, '2015-03-14', 24, '14:20:00', 'Cancha 1A'),
-(4294, 1051, NULL, 1043, NULL, '2015-03-14', 24, '15:30:00', 'Cancha 1A'),
-(4295, 1050, NULL, 1040, NULL, '2015-03-14', 24, '16:40:00', 'Cancha 1A'),
-(4296, 1088, NULL, 1054, NULL, '2015-03-14', 24, '12:00:00', 'Cancha 1B'),
-(4297, 1044, NULL, 1047, NULL, '2015-03-14', 24, '13:10:00', 'Cancha 1B'),
-(4298, 1049, NULL, 1048, NULL, '2015-03-14', 24, '14:20:00', 'Cancha 1B'),
-(4299, 1053, NULL, 1058, NULL, '2015-03-14', 24, '15:30:00', 'Cancha 1B'),
-(4300, 1072, NULL, 1068, NULL, '2015-03-14', 24, '16:40:00', 'Cancha 1B'),
-(4301, 1073, NULL, 1077, NULL, '2015-03-14', 24, '12:00:00', 'Cancha 6A'),
-(4302, 1070, NULL, 1067, NULL, '2015-03-14', 24, '13:10:00', 'Cancha 6A'),
-(4303, 1074, NULL, 1069, NULL, '2015-03-14', 24, '14:20:00', 'Cancha 6A'),
-(4304, 1076, NULL, 1075, NULL, '2015-03-14', 24, '15:30:00', 'Cancha 6A'),
-(4305, 1071, NULL, 1087, NULL, '2015-03-14', 24, '16:40:00', 'Cancha 6A'),
-(4306, 1063, NULL, 1056, NULL, '2015-03-14', 24, '12:00:00', 'Cancha 6B'),
-(4307, 1055, NULL, 1064, NULL, '2015-03-14', 24, '13:10:00', 'Cancha 6B'),
-(4308, 1059, NULL, 1062, NULL, '2015-03-14', 24, '14:20:00', 'Cancha 6B'),
-(4309, 1089, NULL, 1060, NULL, '2015-03-14', 24, '15:30:00', 'Cancha 6B'),
-(4310, 1061, NULL, 1057, NULL, '2015-03-14', 24, '16:40:00', 'Cancha 6B'),
-(4311, 1062, NULL, 1058, NULL, '2015-03-21', 25, '12:00:00', 'Cancha 1A'),
-(4312, 1053, NULL, 1063, NULL, '2015-03-21', 25, '13:10:00', 'Cancha 1A'),
-(4313, 1060, NULL, 1088, NULL, '2015-03-21', 25, '14:20:00', 'Cancha 1A'),
-(4314, 1048, NULL, 1042, NULL, '2015-03-21', 25, '15:30:00', 'Cancha 1A'),
-(4315, 1040, NULL, 1047, NULL, '2015-03-21', 25, '16:40:00', 'Cancha 1A'),
-(4316, 1052, NULL, 1050, NULL, '2015-03-21', 25, '12:00:00', 'Cancha 1B'),
-(4317, 1046, NULL, 1039, NULL, '2015-03-21', 25, '13:10:00', 'Cancha 1B'),
-(4318, 1044, NULL, 1049, NULL, '2015-03-21', 25, '14:20:00', 'Cancha 1B'),
-(4319, 1041, NULL, 1051, NULL, '2015-03-21', 25, '15:30:00', 'Cancha 1B'),
-(4320, 1045, NULL, 1043, NULL, '2015-03-21', 25, '16:40:00', 'Cancha 1B'),
-(4321, 1054, NULL, 1055, NULL, '2015-03-21', 25, '12:00:00', 'Cancha 6A'),
-(4322, 1056, NULL, 1059, NULL, '2015-03-21', 25, '13:10:00', 'Cancha 6A'),
-(4323, 1064, NULL, 1061, NULL, '2015-03-21', 25, '14:20:00', 'Cancha 6A'),
-(4324, 1072, NULL, 1078, NULL, '2015-03-21', 25, '15:30:00', 'Cancha 6A'),
-(4325, 1089, NULL, 1057, NULL, '2015-03-21', 25, '16:40:00', 'Cancha 6A'),
-(4326, 1073, NULL, 1074, NULL, '2015-03-21', 25, '12:00:00', 'Cancha 6B'),
-(4327, 1077, NULL, 1069, NULL, '2015-03-21', 25, '13:10:00', 'Cancha 6B'),
-(4328, 1075, NULL, 1070, NULL, '2015-03-21', 25, '14:20:00', 'Cancha 6B'),
-(4329, 1068, NULL, 1071, NULL, '2015-03-21', 25, '15:30:00', 'Cancha 6B'),
-(4330, 1067, NULL, 1076, NULL, '2015-03-21', 25, '16:40:00', 'Cancha 6B'),
-(4331, 1073, NULL, 1070, NULL, '2015-03-24', 26, '12:00:00', 'Cancha 1A'),
-(4332, 1067, NULL, 1068, NULL, '2015-03-24', 26, '13:10:00', 'Cancha 1A'),
-(4333, 1069, NULL, 1071, NULL, '2015-03-24', 26, '14:20:00', 'Cancha 1A'),
-(4334, 1077, NULL, 1074, NULL, '2015-03-24', 26, '15:30:00', 'Cancha 1A'),
-(4335, 1076, NULL, 1078, NULL, '2015-03-24', 26, '16:40:00', 'Cancha 1A'),
-(4336, 1056, NULL, 1058, NULL, '2015-03-24', 26, '12:00:00', 'Cancha 1B'),
-(4337, 1060, NULL, 1059, NULL, '2015-03-24', 26, '13:10:00', 'Cancha 1B'),
-(4338, 1044, NULL, 1043, NULL, '2015-03-24', 26, '14:20:00', 'Cancha 1B'),
-(4339, 1075, NULL, 1072, NULL, '2015-03-24', 26, '15:30:00', 'Cancha 1B'),
-(4340, 1040, NULL, 1048, NULL, '2015-03-24', 26, '16:40:00', 'Cancha 1B'),
-(4341, 1052, NULL, 1041, NULL, '2015-03-24', 26, '12:00:00', 'Cancha 6A'),
-(4342, 1046, NULL, 1042, NULL, '2015-03-24', 26, '13:10:00', 'Cancha 6A'),
-(4343, 1039, NULL, 1051, NULL, '2015-03-24', 26, '14:20:00', 'Cancha 6A'),
-(4344, 1049, NULL, 1047, NULL, '2015-03-24', 26, '15:30:00', 'Cancha 6A'),
-(4345, 1045, NULL, 1050, NULL, '2015-03-24', 26, '16:40:00', 'Cancha 6A'),
-(4346, 1054, NULL, 1064, NULL, '2015-03-24', 26, '12:00:00', 'Cancha 6B'),
-(4347, 1063, NULL, 1055, NULL, '2015-03-24', 26, '13:10:00', 'Cancha 6B'),
-(4348, 1089, NULL, 1053, NULL, '2015-03-24', 26, '14:20:00', 'Cancha 6B'),
-(4349, 1062, NULL, 1057, NULL, '2015-03-24', 26, '15:30:00', 'Cancha 6B'),
-(4350, 1061, NULL, 1088, NULL, '2015-03-24', 26, '16:40:00', 'Cancha 6B'),
-(4351, 1054, NULL, 1061, NULL, '2015-03-28', 27, '12:00:00', 'Cancha 1A'),
-(4352, 1055, NULL, 1060, NULL, '2015-03-28', 27, '13:10:00', 'Cancha 1A'),
-(4353, 1056, NULL, 1065, NULL, '2015-03-28', 27, '14:20:00', 'Cancha 1A'),
-(4354, 1058, NULL, 1066, NULL, '2015-03-28', 27, '15:30:00', 'Cancha 1A'),
-(4355, 1057, NULL, 1064, NULL, '2015-03-28', 27, '16:40:00', 'Cancha 1A'),
-(4356, 1073, NULL, 1069, NULL, '2015-03-28', 27, '12:00:00', 'Cancha 1B'),
-(4357, 1074, NULL, 1071, NULL, '2015-03-28', 27, '13:10:00', 'Cancha 1B'),
-(4358, 1067, NULL, 1075, NULL, '2015-03-28', 27, '14:20:00', 'Cancha 1B'),
-(4359, 1076, NULL, 1070, NULL, '2015-03-28', 27, '15:30:00', 'Cancha 1B'),
-(4360, 1068, NULL, 1078, NULL, '2015-03-28', 27, '16:40:00', 'Cancha 1B'),
-(4361, 1063, NULL, 1062, NULL, '2015-03-28', 27, '12:00:00', 'Cancha 6A'),
-(4362, 1049, NULL, 1042, NULL, '2015-03-28', 27, '13:10:00', 'Cancha 6A'),
-(4363, 1059, NULL, 1053, NULL, '2015-03-28', 27, '14:20:00', 'Cancha 6A'),
-(4364, 1051, NULL, 1047, NULL, '2015-03-28', 27, '15:30:00', 'Cancha 6A'),
-(4365, 1072, NULL, 1077, NULL, '2015-03-28', 27, '16:40:00', 'Cancha 6A'),
-(4366, 1052, NULL, 1048, NULL, '2015-03-28', 27, '12:00:00', 'Cancha 6B'),
-(4367, 1050, NULL, 1044, NULL, '2015-03-28', 27, '13:10:00', 'Cancha 6B'),
-(4368, 1046, NULL, 1045, NULL, '2015-03-28', 27, '14:20:00', 'Cancha 6B'),
-(4369, 1039, NULL, 1040, NULL, '2015-03-28', 27, '15:30:00', 'Cancha 6B'),
-(4370, 1041, NULL, 1043, NULL, '2015-03-28', 27, '16:40:00', 'Cancha 6B');
+(4101, 1005, NULL, 1000, NULL, '2015-04-11', 28, '12:00:00', 'Cancha 9');
 
 -- --------------------------------------------------------
 
@@ -604,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `dbjugadores` (
   PRIMARY KEY (`idjugador`),
   KEY `dni` (`dni`),
   KEY `idequipo` (`idequipo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2200 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2071 ;
 
 --
 -- Volcado de datos para la tabla `dbjugadores`
@@ -1917,137 +1651,7 @@ INSERT INTO `dbjugadores` (`idjugador`, `apyn`, `idequipo`, `dni`) VALUES
 (2067, 'Santiago Paredes', 90, 33800001),
 (2068, 'Juan Manuel Aubert', 90, 36238351),
 (2069, '', 35609150, 61),
-(2070, 'Blas Obregón', 91, 35609150),
-(2071, 'Emiliano Guida', 91, 33589102),
-(2072, 'Facundo Odriozola', 91, 0),
-(2073, 'Federico Delucchi', 91, 0),
-(2074, 'Guido Botalla', 91, 33850743),
-(2075, 'Juan Costa', 91, 33677291),
-(2076, 'Juan I. Fontán', 91, 34050383),
-(2077, 'Juan P. Rubinacci', 91, 31531546),
-(2078, 'Juan Szeinfeld', 91, 33646107),
-(2079, 'Leandro Szeinfeld', 91, 31638822),
-(2080, 'Lucas Brandwajmann Boffi', 91, 33745888),
-(2081, 'Luciano Vaccaro', 91, 33902764),
-(2082, 'Martín de Simone', 91, 33334544),
-(2083, 'Martín Ferella', 91, 33151186),
-(2084, 'Matías Szeinfeld', 91, 35410175),
-(2085, 'Nicolás Nicodima', 91, 33590383),
-(2086, 'Santiago Martiarena', 91, 33506103),
-(2087, 'Sebastián Dejesús', 91, 33108425),
-(2088, 'Bishop Jonathan', 98, 35609179),
-(2089, 'Pacheco Gaston', 98, 37845471),
-(2090, 'Pinilla Emiliano', 98, 38285047),
-(2091, 'Pacheco Silvio', 98, 2),
-(2092, 'Adanti Lucas', 98, 3),
-(2093, 'Lenzina Hernan', 98, 4),
-(2094, 'Benitez Leonel', 98, 5),
-(2095, 'Figuera Emanuel', 98, 6),
-(2096, 'Bortolamedi Alejo', 98, 40061235);
-INSERT INTO `dbjugadores` (`idjugador`, `apyn`, `idequipo`, `dni`) VALUES
-(2097, 'Mannarino Emiliano', 98, 35017456),
-(2098, 'Nazareno Diaz', 98, 39812511),
-(2099, 'Carlos Alejandro Ercole', 98, 35954916),
-(2100, 'ALVAREZ RAMON', 97, 24393049),
-(2101, 'BENITEZ JULIO', 97, 34928614),
-(2102, 'CHAUSINO', 97, 28671552),
-(2103, 'FERRERIRA MATEO', 97, 32066782),
-(2104, 'GONZALES ARON', 97, 42546936),
-(2105, 'HOGGAN LUIS', 97, 37021225),
-(2106, 'RAMIREZ DAVID', 97, 35302312),
-(2107, 'TERRE PEDRO', 97, 40589414),
-(2108, 'VILLAVICENCIO JONATHAN', 97, 33151117),
-(2109, 'Alegre Mauro', 92, 31596671),
-(2110, 'Cufre Darian', 92, 36765242),
-(2111, 'De Sabantonio Fernando', 92, 23136532),
-(2112, 'Dipp Mohamed', 92, 37536818),
-(2113, 'Falcon Nahuel', 92, 32358945),
-(2114, 'Ferreyra Maximiliano', 92, 32690709),
-(2115, 'Ferreyra Sergio', 92, 34516572),
-(2116, 'Gorriz Federico', 92, 32690807),
-(2117, 'Ibañez Walter', 92, 36651291),
-(2118, 'Latsko Franco', 92, 37536694),
-(2119, 'Lezcano Iñaki', 92, 35179414),
-(2120, 'Moraldi Facundo', 92, 33109143),
-(2121, 'Pereyra Raul', 92, 25583278),
-(2122, 'Quiroga Juan Manuel', 92, 35734271),
-(2123, 'Riel Alan', 92, 41457004),
-(2124, 'Rivero Enzo', 92, 32982418),
-(2125, 'Rivero Santiago', 92, 34888172),
-(2126, 'Simaz Lucas', 92, 36765332),
-(2127, 'Alvarez Juan', 99, 37052654),
-(2128, 'Britez Sebastián', 99, 37220286),
-(2129, 'Navarro Pablo', 99, 39800942),
-(2130, 'Notar Nicolás', 99, 38865838),
-(2131, 'Ravainera Santiago', 99, 38407659),
-(2132, 'Rojas Maximiliano', 99, 39851670),
-(2133, 'Toledo Nahuel', 99, 37934867),
-(2134, 'Velazquez Matías', 99, 37578230),
-(2135, 'Wakkun Jonathan', 99, 38045439),
-(2136, 'TORRES RAMIRO', 95, 37372450),
-(2137, 'TUYA GASPAR', 95, 36310295),
-(2138, 'TUYA ALVARO', 95, 36310220),
-(2139, 'CIANI BRUNO', 95, 36310263),
-(2140, 'CORONEL THOMAS', 95, 37608586),
-(2141, 'FILONI LEONEL', 95, 35017743),
-(2142, 'MARCHESOTTI HERNAN', 95, 36310257),
-(2143, 'VIGNAU MARTIN', 95, 38367583),
-(2144, 'FELICE ALEJANDRO JOSÈ', 95, 36645585),
-(2145, 'PANNESE LUCAS', 95, 36933792),
-(2146, 'SCATUERCHIO JUAN MANUEL', 95, 37847657),
-(2147, 'SCATUERCHIO JUAN CRUZ', 95, 36051848),
-(2148, 'BARRECA JOAQUIN', 95, 35611622),
-(2149, 'HUACAN AURELIO', 95, 39114660),
-(2150, 'CIANI FEDERICO', 95, 37398398),
-(2151, 'LAGOMARCINO AGUSTIN', 95, 35096620),
-(2152, 'LAGOMARCINO ESTEBAN', 95, 35096621),
-(2153, 'GALARZA AGUSTIN', 95, 38512480),
-(2154, 'PARAMIO TOMAS', 95, 36051873),
-(2155, 'colman cesar', 96, 29204842),
-(2156, 'comelli ladislao', 96, 40145854),
-(2157, 'emiliano curbelo', 96, 37945768),
-(2158, 'emiliano curbelo', 96, 37945768),
-(2159, 'guido piccinelli', 96, 38865714),
-(2160, 'juan rodriguez', 96, 36617864),
-(2161, 'leonardo seoane', 96, 33954549),
-(2162, 'lucas viega', 96, 37945563),
-(2163, 'matias minietto', 96, 33244873),
-(2164, 'mauro jerez', 96, 38271876),
-(2165, 'nestor jerez', 96, 17082828),
-(2166, 'oscar chaves', 96, 29579719),
-(2167, 'oscariz nahuel', 96, 34488088),
-(2168, 'sebastian hernandez', 96, 37844608),
-(2169, 'tomas quezada', 96, 38454019),
-(2170, 'CONTRERAS CLAUDIO', 94, 38239456),
-(2171, 'FERRARIS PABLO', 94, 37381119),
-(2172, 'GOMEZ CARLOS', 94, 30650199),
-(2173, 'ISASI MAURICIO', 94, 38865844),
-(2174, 'LEON JUAN', 94, 38031126),
-(2175, 'PALEIRO BRIAN', 94, 39116507),
-(2176, 'PALEIRO ENZO', 94, 43264172),
-(2177, 'PALEIRO FRANCO', 94, 40581256),
-(2178, 'PALEIRO MAXIMILIANO', 94, 23806611),
-(2179, 'PICHAITO GUSTAVO', 94, 39513875),
-(2180, 'RAMIREZ', 94, 39371923),
-(2181, 'SALAS ALAN', 94, 40544639),
-(2182, 'SEGOVIA JONATHAN', 94, 34884174),
-(2183, 'SUAREZ NICOLAS', 94, 36068231),
-(2184, 'VIVEROS CARLOS', 94, 41455176),
-(2185, 'ALOMO GUSTAVO', 93, 37180918),
-(2186, 'BERGOS MATIAS', 93, 34928633),
-(2187, 'CASTRO ESTEBAN', 93, 34119800),
-(2188, 'EMILIANDO MELILLO', 93, 34411159),
-(2189, 'FERNANDEZ CARLOS', 93, 33746344),
-(2190, 'GODOY LUCAS', 93, 32070316),
-(2191, 'GUERA CARLOS', 93, 24869450),
-(2192, 'GUMERSINDO SERGIO', 93, 31980014),
-(2193, 'LEONARDO AHUMADA', 93, 31002350),
-(2194, 'LOPEZ SERGIO', 93, 35392743),
-(2195, 'MIGUEL BENITEZ', 93, 38239572),
-(2196, 'PEREZ NESTOR', 93, 38706139),
-(2197, 'RUBEN CASTRO', 93, 31940411),
-(2198, 'PANTERO GERMAN', 8, 28611778),
-(2199, 'SANCHEZ ALEJANDRO', 8, 29558001);
+(2070, 'Blas Obregón', 91, 35609150);
 
 -- --------------------------------------------------------
 
@@ -2125,7 +1729,7 @@ CREATE TABLE IF NOT EXISTS `dbtorneoge` (
   `prioridad` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`IdTorneoGE`),
   KEY `indices` (`refgrupo`,`reftorneo`,`refequipo`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1090 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1081 ;
 
 --
 -- Volcado de datos para la tabla `dbtorneoge`
@@ -2221,16 +1825,7 @@ INSERT INTO `dbtorneoge` (`IdTorneoGE`, `refgrupo`, `reftorneo`, `refequipo`, `p
 (1077, 21, 36, 7, 2),
 (1078, 21, 36, 99, 2),
 (1079, 19, 34, 50, 4),
-(1080, 19, 34, 55, 4),
-(1081, 19, 35, 65, 3),
-(1082, 20, 34, 58, 3),
-(1083, 19, 35, 82, 3),
-(1084, 19, 35, 84, 3),
-(1085, 19, 35, 72, 3),
-(1086, 20, 35, 62, 3),
-(1087, 21, 36, 2, 3),
-(1088, 20, 36, 38, 3),
-(1089, 20, 36, 16, 3);
+(1080, 19, 34, 55, 4);
 
 -- --------------------------------------------------------
 
@@ -2246,7 +1841,7 @@ CREATE TABLE IF NOT EXISTS `dbtorneos` (
   `actual` bit(1) NOT NULL,
   `reftipotorneo` smallint(6) NOT NULL,
   PRIMARY KEY (`IdTorneo`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 --
 -- Volcado de datos para la tabla `dbtorneos`
@@ -2254,8 +1849,7 @@ CREATE TABLE IF NOT EXISTS `dbtorneos` (
 
 INSERT INTO `dbtorneos` (`IdTorneo`, `Nombre`, `FechaCreacion`, `Activo`, `actual`, `reftipotorneo`) VALUES
 (34, 'Torneo Otoño 2015', '2015-03-02', b'1', b'1', 1),
-(35, 'Torneo Otoño 2015', '2015-03-07', b'1', b'1', 2),
-(36, 'Torneo Otoño 2015', '2015-03-07', b'1', b'1', 3);
+(35, 'Torneo Otoño 2015', '2015-03-07', b'1', b'1', 2);
 
 -- --------------------------------------------------------
 
@@ -2286,7 +1880,7 @@ CREATE TABLE IF NOT EXISTS `dbturnosequiposprioridad` (
   `refturno` int(11) NOT NULL,
   `valor` smallint(6) NOT NULL,
   PRIMARY KEY (`iddbturnosequiposprioridad`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=117 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=81 ;
 
 --
 -- Volcado de datos para la tabla `dbturnosequiposprioridad`
@@ -2372,43 +1966,7 @@ INSERT INTO `dbturnosequiposprioridad` (`iddbturnosequiposprioridad`, `reftorneo
 (77, 1018, 1, 9),
 (78, 1018, 2, 0),
 (79, 1018, 3, 0),
-(80, 1018, 4, 0),
-(81, 1081, 1, 1),
-(82, 1081, 2, 1),
-(83, 1081, 3, 1),
-(84, 1081, 4, 1),
-(85, 1082, 1, 1),
-(86, 1082, 2, 1),
-(87, 1082, 3, 1),
-(88, 1082, 4, 1),
-(89, 1083, 5, 1),
-(90, 1083, 6, 1),
-(91, 1083, 7, 1),
-(92, 1083, 8, 1),
-(93, 1084, 5, 1),
-(94, 1084, 6, 1),
-(95, 1084, 7, 1),
-(96, 1084, 8, 1),
-(97, 1085, 5, 1),
-(98, 1085, 6, 1),
-(99, 1085, 7, 1),
-(100, 1085, 8, 1),
-(101, 1086, 5, 1),
-(102, 1086, 6, 1),
-(103, 1086, 7, 1),
-(104, 1086, 8, 1),
-(105, 1087, 9, 1),
-(106, 1087, 10, 1),
-(107, 1087, 11, 1),
-(108, 1087, 12, 1),
-(109, 1088, 9, 1),
-(110, 1088, 10, 1),
-(111, 1088, 11, 1),
-(112, 1088, 12, 1),
-(113, 1089, 9, 1),
-(114, 1089, 10, 1),
-(115, 1089, 11, 1),
-(116, 1089, 12, 1);
+(80, 1018, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -5850,15 +5408,7 @@ CREATE TABLE IF NOT EXISTS `tbamonestados` (
   `reffixture` int(11) NOT NULL,
   `amarillas` tinyint(4) NOT NULL,
   PRIMARY KEY (`idamonestado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `tbamonestados`
---
-
-INSERT INTO `tbamonestados` (`idamonestado`, `refjugador`, `refequipo`, `reffixture`, `amarillas`) VALUES
-(2, 585, 8, 4124, 1),
-(3, 586, 8, 4124, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -5901,16 +5451,7 @@ CREATE TABLE IF NOT EXISTS `tbconducta` (
   `refequipo` int(11) NOT NULL,
   `puntos` int(11) NOT NULL,
   PRIMARY KEY (`idconducta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Volcado de datos para la tabla `tbconducta`
---
-
-INSERT INTO `tbconducta` (`idconducta`, `refequipo`, `puntos`) VALUES
-(1, 51, 5),
-(3, 8, 1),
-(4, 8, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -5920,7 +5461,7 @@ INSERT INTO `tbconducta` (`idconducta`, `refequipo`, `puntos`) VALUES
 
 CREATE TABLE IF NOT EXISTS `tbfechas` (
   `idfecha` int(11) NOT NULL AUTO_INCREMENT,
-  `tipofecha` varchar(10) DEFAULT NULL,
+  `tipofecha` varchar(8) DEFAULT NULL,
   `resumen` varchar(50000) DEFAULT NULL,
   PRIMARY KEY (`idfecha`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
@@ -5964,19 +5505,7 @@ CREATE TABLE IF NOT EXISTS `tbgoleadores` (
   `goles` int(11) NOT NULL,
   `refjugador` int(11) NOT NULL,
   PRIMARY KEY (`idgoleador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
-
---
--- Volcado de datos para la tabla `tbgoleadores`
---
-
-INSERT INTO `tbgoleadores` (`idgoleador`, `refequipo`, `reffixture`, `goles`, `refjugador`) VALUES
-(1, 48, 4100, 2, 1162),
-(3, 27, 4124, 1, 781),
-(4, 27, 4124, 1, 784),
-(5, 27, 4124, 1, 782),
-(6, 8, 4124, 1, 2198),
-(7, 8, 4124, 1, 2199);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -6182,22 +5711,11 @@ CREATE TABLE IF NOT EXISTS `tbservicios_bck` (
 
 CREATE TABLE IF NOT EXISTS `tbsuspendidos` (
   `idsuspendido` int(11) NOT NULL AUTO_INCREMENT,
-  `refequipo` int(11) NOT NULL,
   `refjugador` int(11) NOT NULL,
-  `motivos` varchar(130) DEFAULT NULL,
-  `cantidadfechas` varchar(100) DEFAULT NULL,
-  `fechacreacion` date DEFAULT NULL,
+  `motivos` varchar(200) DEFAULT NULL,
+  `cantidadfechas` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`idsuspendido`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Volcado de datos para la tabla `tbsuspendidos`
---
-
-INSERT INTO `tbsuspendidos` (`idsuspendido`, `refequipo`, `refjugador`, `motivos`, `cantidadfechas`, `fechacreacion`) VALUES
-(1, 0, 1038, 'Por ser feo jjajajaja                    		\r\n                    	', '1', '0000-00-00'),
-(2, 0, 1038, 'Por ser feo jjajajaja                    		\r\n                    	', '1', '2015-04-12'),
-(3, 41, 1038, 'Jugo fuerte y lesiono al arbitro', '1', '2015-04-12');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
