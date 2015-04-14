@@ -14,10 +14,18 @@ class ServiciosJ {
 	}
 	
 	function TraerJugadoresEquipos() {
-		$sql = "select j.idequipo,j.apyn,j.dni,e.nombre from dbjugadores j
+		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre from dbjugadores j
 		        inner join dbequipos e
 		        on j.idequipo = e.idequipo
 				order by e.nombre,j.apyn";
+		return $this->query($sql,0);
+	}
+	
+	function TraerJugadoresPorId($id) {
+		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,e.idequipo from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where idjugador = ".$id;
 		return $this->query($sql,0);
 	}
 	

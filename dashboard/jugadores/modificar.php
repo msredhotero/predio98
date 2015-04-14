@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 
 if (!isset($_SESSION['usua_predio']))
@@ -23,8 +22,12 @@ $serviciosEquipos = new ServiciosE();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Jugadores",$_SESSION['refroll_predio'],"Fútbol 7");
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
+
+$id = $_GET['id'];
+
+$resResultado = $serviciosJugadores->TraerJugadoresPorId($id);
 
 //// autocompletar /////////
 
@@ -63,28 +66,17 @@ $resEquipos 	= $serviciosEquipos->TraerEquipos();
 
 $cadRef = '';
 while ($rowTT = mysql_fetch_array($resEquipos)) {
-	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
-	
+	if (mysql_result($resResultado,0,0) == $rowTT[0]) {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).'</option>';
+	} else {
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';	
+	}
 }
 
 $refdescripcion = array(0 => $cadRef);
 $refCampo[] 	= "idequipo"; 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-
-
-
-/////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Apellido y Nombre</th>
-				<th>DNI</th>
-				<th>Equipos</th>";
-//defino la cantidad de columnas
-$cantidad = 3;
-
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->TraerJugadoresEquipos(),$cantidad);
 
 
 
@@ -116,23 +108,23 @@ if ($_SESSION['refroll_predio'] != 1) {
 <link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">
     
 
-    
     <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
+
     <link rel="stylesheet" href="../../css/jquery-ui.css">
 
     <script src="../../js/jquery-ui.js"></script>
-    <script src="../../js/ui/jquery.ui.autocomplete.js"></script>
-	<!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css"/>
-	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    
 
-	<style type="text/css">
-		
-  
-		
-	</style>
     
    
    <link href="../../css/perfect-scrollbar.css" rel="stylesheet">
@@ -145,22 +137,10 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
-    
-    <script>
-	  $(function(){
-		var autocompletar = new Array();
-		<?php //Esto es un poco de php para obtener lo que necesitamos
-		 for($p = 0;$p < count($arreglo_php); $p++){ //usamos count para saber cuantos elementos hay ?>
-		   autocompletar.push('<?php echo $arreglo_php[$p]; ?>');
-		 <?php } ?>
-		 $("#apyn").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
-		   source: autocompletar //Le decimos que nuestra fuente es el arreglo
-		 });
-	  });
-	</script>
 </head>
 
 <body>
+
 
  
 <?php echo $resMenu; ?>
@@ -171,18 +151,18 @@ if ($_SESSION['refroll_predio'] != 1) {
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga de <?php echo $lblTituloplural; ?></p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Modificación de <?php echo $lblTituloplural; ?></p>
         	
         </div>
     	<div class="cuerpoBox">
-        	<div class="row" style="margin-left:25px; margin-right:25px;">
         	<form class="form-inline formulario" role="form">
-				<div class="row">
+        	
+			<div class="row">
                     <div class="form-group col-md-6">
                     
                         <label class="control-label" style="text-align:left" for="apyn">Apellido Y Nombre</label>
                         <div class="input-group col-md-12">
-                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." name="apyn">
+                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." value="<?php echo mysql_result($resResultado,0,'apyn'); ?>" name="apyn">
                         </div>
                     
                     </div>
@@ -201,7 +181,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                 <div class="form-group col-md-6">
                     <label class="control-label" style="text-align:left" for="dni">Dni</label>
                     <div class="input-group col-md-12">
-                        <input id="dni" class="form-control" type="text" required placeholder="Ingrese el Dni..." name="dni">
+                        <input id="dni" class="form-control" value="<?php echo mysql_result($resResultado,0,'dni'); ?>" type="text" required placeholder="Ingrese el Dni..." name="dni">
                     </div>
                 </div>
             </div>
@@ -210,61 +190,67 @@ if ($_SESSION['refroll_predio'] != 1) {
             
             
             
-            <input id="accion" type="hidden" value="insertarJugadores" name="accion">
+            <input id="accion" type="hidden" value="modificarJugadores" name="accion">
+            <input id="id" type="hidden" value="<?php echo $id; ?>" name="id">
+            </div>
+            
+            
+            <div class='row' style="margin-left:25px; margin-right:25px;">
+                <div class='alert'>
+                
+                </div>
+                <div id='load'>
+                
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-md-12">
-                    <ul class="list-inline" style="margin-top:15px;">
-                        <li>
-                        	<button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                        </li>
-                    </ul>
+                <ul class="list-inline" style="margin-top:15px;">
+                    <li>
+                        <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Modificar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
+                    </li>
+                </ul>
                 </div>
             </div>
             </form>
-            </div>
-            <div class="row" style="margin-left:25px; margin-right:25px;">
-            <div class="alert"> </div>
-            <div id="load"> </div>
-            </div>
     	</div>
     </div>
 
-	<div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Cargados</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<?php echo $lstCargados; ?>
-    	</div>
-    </div>
-    
-    
+
    
 </div>
 
 
 </div>
 
+
 <div id="dialog2" title="Eliminar <?php echo $lblTitulosingular; ?>">
     	<p>
         	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            ¿Esta seguro que desea eliminar al <?php echo $lblTitulosingular; ?>?.<span id="proveedorEli"></span>
+            ¿Esta seguro que desea eliminar el <?php echo $lblTitulosingular; ?>?.<span id="proveedorEli"></span>
         </p>
         <p><strong>Importante: </strong><?php echo $lblEliminarObs; ?></p>
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
-
-<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
-<script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="../../js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/bootstrap-datetimepicker.es.js"></script>
 
 
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$('#example').dataTable({
-		"order": [[ 2, "asc" ]]
-	} );	
+	$('.volver').click(function(event){
+		 
+		url = "index.php";
+		$(location).attr('href',url);
+	});//fin del boton modificar
 	
 	$('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
@@ -279,17 +265,6 @@ $(document).ready(function(){
 			alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton eliminar
-	
-	$("#example").on("click",'.varmodificar', function(){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			
-			url = "modificar.php?id=" + usersid;
-			$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton modificar
 
 	 $( "#dialog2" ).dialog({
 		 	
@@ -365,7 +340,7 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
+                                            $(".alert").html('<strong>Ok!</strong> Se Modifico exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
 											$(".alert").delay(3000).queue(function(){
 												/*aca lo que quiero hacer 
 												  después de los 2 segundos de retraso*/
@@ -373,8 +348,7 @@ $(document).ready(function(){
 												
 											});
 											$("#load").html('');
-											url = "index.php";
-											//$(location).attr('href',url);
+											
                                             
 											
                                         } else {
@@ -392,10 +366,25 @@ $(document).ready(function(){
 			});
 		}
     });
-	
 
 });
 </script>
+
+<script type="text/javascript">
+$('.form_date').datetimepicker({
+	language:  'es',
+	weekStart: 1,
+	todayBtn:  1,
+	autoclose: 1,
+	todayHighlight: 1,
+	startView: 2,
+	minView: 2,
+	forceParse: 0,
+	format: 'dd/mm/yyyy'
+});
+</script>
+
+
 <?php } ?>
 </body>
 </html>
