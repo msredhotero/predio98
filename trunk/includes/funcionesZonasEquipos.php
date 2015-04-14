@@ -292,7 +292,7 @@ class ServiciosZonasEquipos {
 			        on g.idgrupo = tge.refgrupo
 			        where tge.idtorneoge = fi.reftorneoge_a) as equipoa,
 					(case when fi.resultado_a is null then (select
-												(case when sum(gg.goles) is null then null else sum(gg.goles) end)
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
 												from		tbgoleadores gg
 												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
 																										from dbtorneoge tge
@@ -308,7 +308,7 @@ class ServiciosZonasEquipos {
 																										where tge.idtorneoge = fi.reftorneoge_a))
 				else fi.resultado_a end) as resultadoa,
 					(case when fi.resultado_b is null then (select
-															(case when sum(gg.goles) is null then null else sum(gg.goles) end)
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
 															from		tbgoleadores gg
 															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
 						from dbtorneoge tge
