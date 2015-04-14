@@ -119,6 +119,7 @@ class ServiciosFUNC {
 		
 	}
 	
+	/* aca van las posiciones por Grupos */
 	function TraerResultadosPorGrupos($idgrupo) {
 		$sql = "select 
 		       r.nombre,
@@ -135,47 +136,51 @@ class ServiciosFUNC {
 		
 				from (
 				SELECT
-				dbequipos.idequipo,
-				dbequipos.nombre,
-				dbtorneos.activo,
-				dbfixture.fechajuego,
-				dbfixture.hora,
-				dbfixture.resultado_a,
-				dbfixture.resultado_b,
-				dbfixture.reffecha,
-				dbgruposequipos.refgrupo
+				e.idequipo,
+				e.nombre,
+				t.activo,
+				f.tipofecha,
+				fi.hora,
+				fi.resultado_a,
+				fi.resultado_b,
+				fi.reffecha,
+				tge.refgrupo
 				FROM
-				dbequipos
-				Inner Join dbgruposequipos ON dbequipos.idequipo = dbgruposequipos.refequipo
-				Inner Join dbtorneoge ON dbgruposequipos.idgrupoEquipo = dbtorneoge.refgrupoequipo
-				Inner Join dbtorneos ON dbtorneos.idtorneo = dbtorneoge.reftorneo
-				Inner Join dbfixture ON dbtorneoge.IdTorneoge = dbfixture.reftorneoge_a
+				dbtorneoge tge
+				Inner Join dbequipos e ON tge.refequipo = e.idequipo
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				Inner Join dbtorneos t ON t.idtorneo = tge.reftorneo
+				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_a
+				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+				inner join tbfechas f ON fi.refFecha = f.idfecha
 				WHERE
-				dbtorneos.activo =  '1' 
-				and dbgruposequipos.refgrupo = ".$idgrupo."
+				t.activo =  '1' 
+				and tge.refgrupo = ".$idgrupo."
 				/*AND dbequipos.IdEquipo =  17*/
 				
 				UNION all
 				
 				SELECT
-				dbequipos.idequipo,
-				dbequipos.nombre,
-				dbtorneos.activo,
-				dbfixture.fechajuego,
-				dbfixture.hora,
-				dbfixture.resultado_b,
-				dbfixture.resultado_a,
-				dbfixture.reffecha,
-				dbgruposequipos.refgrupo
+				e.idequipo,
+				e.nombre,
+				t.activo,
+				f.tipofecha,
+				fi.hora,
+				fi.resultado_b,
+				fi.resultado_a,
+				fi.reffecha,
+				tge.refgrupo
 				FROM
-				dbequipos
-				Inner Join dbgruposequipos ON dbequipos.idequipo = dbgruposequipos.refequipo
-				Inner Join dbtorneoge ON dbgruposequipos.idgrupoequipo = dbtorneoge.refgrupoequipo
-				Inner Join dbtorneos ON dbtorneos.idtorneo = dbtorneoge.reftorneo
-				Inner Join dbfixture ON dbtorneoge.idtorneoge = dbfixture.reftorneoge_b
+				dbtorneoge tge
+				Inner Join dbequipos e ON tge.refequipo = e.idequipo
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				Inner Join dbtorneos t ON t.idtorneo = tge.reftorneo
+				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_b
+				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+				inner join tbfechas f ON fi.refFecha = f.idfecha
 				WHERE
-				dbtorneos.activo =  '1' 
-				and dbgruposequipos.refgrupo = ".$idgrupo."
+				t.activo =  '1' 
+				and tge.refgrupo = ".$idgrupo."
 				/*AND dbequipos.IdEquipo =  17*/
 				
 				) as r
