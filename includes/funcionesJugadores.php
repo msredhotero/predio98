@@ -87,7 +87,7 @@ class ServiciosJ {
 
 	
 	function modificarJugadores($apyn,$dni,$idequipo,$id) {
-		$sql = "update dbjugadores set apellido = '".utf8_decode($apellido)."', nombre = '".utf8_decode($nombre)."', idequipo = ".$idequipo." where idjugador =".$id;
+		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = '".$dni."', idequipo = ".$idequipo." where idjugador =".$id;
 		$this->query($sql,0);
 		return 1;
 	}
