@@ -133,34 +133,7 @@ class ServiciosFUNC {
 					on t.reftipotorneo = tp.idtipotorneo
 				
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
-				
-					union all
-				
-					select
-					j.apyn, e.nombre, a.goles
-					from	tbgoleadores a
-					inner
-					join	dbfixture fi
-					on		a.reffixture = fi.Idfixture
-					inner
-					join	dbjugadores j
-					on		j.idjugador = a.refjugador
-					inner
-					join	dbequipos e
-					on		e.idequipo = a.refequipo
-					inner 
-					join dbtorneoge tge
-					on tge.idtorneoge = fi.reftorneoge_a
-				
-					inner 
-					join dbtorneos t
-					on tge.reftorneo = t.idtorneo and t.activo = 1
-					
-					inner 
-					join tbtipotorneo tp
-					on t.reftipotorneo = tp.idtipotorneo
-				
-					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+
 				) r
 				group by r.apyn, r.nombre
 				) t
@@ -170,43 +143,17 @@ class ServiciosFUNC {
 	
 	function Amarillas($idtorneo,$zona) {
 		$sql = 'select
-				t.apyn,t.nombre,t.cantidad
+				t.apyn,t.nombre,t.cantidad,t.tipofecha,t.dni
 				from
 				(
 				select
-				r.apyn, r.nombre, sum(r.amarillas) as cantidad
+				r.apyn, r.nombre, sum(r.amarillas) as cantidad,r.tipofecha,r.dni
 				from
 				(
-					select
-					j.apyn, e.nombre, a.amarillas
-					from	tbamonestados a
-					inner
-					join	dbfixture fi
-					on		a.reffixture = fi.Idfixture
-					inner
-					join	dbjugadores j
-					on		j.idjugador = a.refjugador
-					inner
-					join	dbequipos e
-					on		e.idequipo = a.refequipo
-					inner 
-					join dbtorneoge tge
-					on tge.idtorneoge = fi.reftorneoge_b
-				
-					inner 
-					join dbtorneos t
-					on tge.reftorneo = t.idtorneo and t.activo = 1
-					
-					inner 
-					join tbtipotorneo tp
-					on t.reftipotorneo = tp.idtipotorneo
-				
-					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
-				
-					union all
+
 				
 					select
-					j.apyn, e.nombre, a.amarillas
+					j.apyn, e.nombre, a.amarillas,ff.tipofecha,j.dni
 					from	tbamonestados a
 					inner
 					join	dbfixture fi
@@ -228,12 +175,15 @@ class ServiciosFUNC {
 					inner 
 					join tbtipotorneo tp
 					on t.reftipotorneo = tp.idtipotorneo
+					
+					inner join tbfechas ff on ff.idfecha = fi.reffecha
 				
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
 				) r
-				group by r.apyn, r.nombre
+				group by r.apyn, r.nombre,r.tipofecha,r.dni
 				) t
-				order by t.cantidad desc';
+				
+				order by t.apyn,t.tipofecha';
 			return $this-> query($sql,0);
 	}
 	

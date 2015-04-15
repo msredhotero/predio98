@@ -162,7 +162,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                     
                         <label class="control-label" style="text-align:left" for="apyn">Apellido Y Nombre</label>
                         <div class="input-group col-md-12">
-                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." value="<?php echo mysql_result($resResultado,0,'apyn'); ?>" name="apyn">
+                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." value="<?php echo utf8_encode(mysql_result($resResultado,0,'apyn')); ?>" name="apyn">
                         </div>
                     
                     </div>

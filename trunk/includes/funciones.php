@@ -468,7 +468,7 @@ class Servicios {
 										<div class="form-group col-md-6">
 											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 											<div class="input-group col-md-12">
-												<input type="text" value="'.mysql_result($resMod,0,$row[0]).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+												<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
 											</div>
 										</div>
 										
@@ -960,7 +960,10 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 						t.nombre as torneo,
 						tp.descripciontorneo,
 						e.idequipo,
-					f.idfixture
+						f.idfixture,
+						ff.tipofecha,
+						f.cancha,
+						DATE_FORMAT(f.Hora,'%k:%i') AS hora
 					
 						from		dbtorneoge tge
 						inner
@@ -978,6 +981,10 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 						inner
 						join		dbfixture f
 						on			f.reftorneoge_a = tge.idtorneoge
+						
+						inner
+						join		tbfechas ff
+						on			ff.idfecha = f.reffecha
 						
 						union all
 						
@@ -999,7 +1006,10 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					tp.idtipotorneo,
 					tp.descripciontorneo,
 					e.idequipo,
-					f.idfixture
+					f.idfixture,
+					ff.tipofecha,
+					f.cancha,
+					DATE_FORMAT(f.Hora,'%k:%i') AS hora
 					
 					from		dbtorneoge tge
 					inner
@@ -1017,8 +1027,12 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					inner
 					join		dbfixture f
 					on			f.reftorneoge_b = tge.idtorneoge
-					) t
 					
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = f.reffecha
+					) t
+					where t.tipofecha = 'Fecha 6' and t.idgrupo = 19
 					order by t.idfixture";	
 		
 		return $this-> query($sql,0);

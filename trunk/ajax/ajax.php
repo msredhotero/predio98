@@ -515,12 +515,15 @@ function modificarJugadores($serviciosJugadores) {
 	$idequipo 	= $_POST['idequipo'];
 	$dni 		= $_POST['dni'];
 	
-	$res = $serviciosJugadores->modificarJugadores($id,$apyn,$idequipo,$dni);
+	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id);
+	
+	
 	if ($res == true) {
 		echo '';
 	} else {
 		echo 'Huvo un error al MODIFICAR datos';
 	}
+	
 }
 function eliminarJugadores($serviciosJugadores) {
 	$id = $_POST['id'];

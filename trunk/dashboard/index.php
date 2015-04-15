@@ -41,16 +41,16 @@ $torneo7c = $serviciosFUNC->TraerFixturePorZonaTorneo(3,21);
 
 
 ///////////////// goleadores  ////////////////////////////
-$goleadores11ca = $serviciosFUNC->Goleadores(1,19);
-$goleadores11cb = $serviciosFUNC->Goleadores(1,20);
+$goleadores11ca = $serviciosFUNC->Amarillas(1,19);
+$goleadores11cb = $serviciosFUNC->Amarillas(1,20);
 
-$goleadores11sa = $serviciosFUNC->Goleadores(2,19);
-$goleadores11sb = $serviciosFUNC->Goleadores(2,20);
-$goleadores11sc = $serviciosFUNC->Goleadores(2,21);
+$goleadores11sa = $serviciosFUNC->Amarillas(2,19);
+$goleadores11sb = $serviciosFUNC->Amarillas(2,20);
+$goleadores11sc = $serviciosFUNC->Amarillas(2,21);
 
-$goleadores7a = $serviciosFUNC->Goleadores(3,19);
-$goleadores7b = $serviciosFUNC->Goleadores(3,20);
-$goleadores7c = $serviciosFUNC->Goleadores(3,21);
+$goleadores7a = $serviciosFUNC->Amarillas(3,19);
+$goleadores7b = $serviciosFUNC->Amarillas(3,20);
+$goleadores7c = $serviciosFUNC->Amarillas(3,21);
 
 /////////////////////////////////////////////////////////
 ?>
@@ -239,7 +239,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA A</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -248,13 +248,19 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                         </tr>
                         <?php 
 						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores11ca)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
-                        </tr>
+						$amarillas = 0;
+						$dni = 9999999;
+						$primero = 0;
+						while ($row1 = mysql_fetch_array($goleadores11ca)) { 
+						
+						?>
+                            <tr style="font-size:1.5em;">
+                                <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
+                                <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
+                                <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
+                                <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
+                                
+                            </tr>
                     	<?php 
 						$i = $i + 1;
 						} ?>
@@ -266,7 +272,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA B</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -280,7 +286,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -442,7 +448,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA A</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -456,7 +462,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -469,7 +475,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA B</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -483,7 +489,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -496,7 +502,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA C</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA C</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -510,7 +516,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -675,7 +681,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
             	<div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA A</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -689,7 +695,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -702,7 +708,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA B</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -716,7 +722,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
@@ -729,7 +735,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                 <div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">GOLEADORES ZONA C</td>
+                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA C</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -743,7 +749,7 @@ $goleadores7c = $serviciosFUNC->Goleadores(3,21);
                             <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
                             <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            
+                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
                         </tr>
                     	<?php 
 						$i = $i + 1;
