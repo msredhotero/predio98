@@ -99,12 +99,142 @@ class ServiciosFUNC {
 				order by t.equipo";
 	}
 	
-	function PE() {
-		
+	function Goleadores($idtorneo,$zona) {
+		$sql = 'select
+				t.apyn,t.nombre,t.cantidad
+				from
+				(
+				select
+				r.apyn, r.nombre, sum(r.goles) as cantidad
+				from
+				(
+					select
+					j.apyn, e.nombre, a.goles
+					from	tbgoleadores a
+					inner
+					join	dbfixture fi
+					on		a.reffixture = fi.Idfixture
+					inner
+					join	dbjugadores j
+					on		j.idjugador = a.refjugador
+					inner
+					join	dbequipos e
+					on		e.idequipo = a.refequipo
+					inner 
+					join dbtorneoge tge
+					on tge.idtorneoge = fi.reftorneoge_b
+				
+					inner 
+					join dbtorneos t
+					on tge.reftorneo = t.idtorneo and t.activo = 1
+					
+					inner 
+					join tbtipotorneo tp
+					on t.reftipotorneo = tp.idtipotorneo
+				
+					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+				
+					union all
+				
+					select
+					j.apyn, e.nombre, a.goles
+					from	tbgoleadores a
+					inner
+					join	dbfixture fi
+					on		a.reffixture = fi.Idfixture
+					inner
+					join	dbjugadores j
+					on		j.idjugador = a.refjugador
+					inner
+					join	dbequipos e
+					on		e.idequipo = a.refequipo
+					inner 
+					join dbtorneoge tge
+					on tge.idtorneoge = fi.reftorneoge_a
+				
+					inner 
+					join dbtorneos t
+					on tge.reftorneo = t.idtorneo and t.activo = 1
+					
+					inner 
+					join tbtipotorneo tp
+					on t.reftipotorneo = tp.idtipotorneo
+				
+					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+				) r
+				group by r.apyn, r.nombre
+				) t
+				order by t.cantidad desc';
+			return $this-> query($sql,0);
 	}
 	
-	function PP() {
-		
+	function Amarillas($idtorneo,$zona) {
+		$sql = 'select
+				t.apyn,t.nombre,t.cantidad
+				from
+				(
+				select
+				r.apyn, r.nombre, sum(r.amarillas) as cantidad
+				from
+				(
+					select
+					j.apyn, e.nombre, a.amarillas
+					from	tbamonestados a
+					inner
+					join	dbfixture fi
+					on		a.reffixture = fi.Idfixture
+					inner
+					join	dbjugadores j
+					on		j.idjugador = a.refjugador
+					inner
+					join	dbequipos e
+					on		e.idequipo = a.refequipo
+					inner 
+					join dbtorneoge tge
+					on tge.idtorneoge = fi.reftorneoge_b
+				
+					inner 
+					join dbtorneos t
+					on tge.reftorneo = t.idtorneo and t.activo = 1
+					
+					inner 
+					join tbtipotorneo tp
+					on t.reftipotorneo = tp.idtipotorneo
+				
+					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+				
+					union all
+				
+					select
+					j.apyn, e.nombre, a.amarillas
+					from	tbamonestados a
+					inner
+					join	dbfixture fi
+					on		a.reffixture = fi.Idfixture
+					inner
+					join	dbjugadores j
+					on		j.idjugador = a.refjugador
+					inner
+					join	dbequipos e
+					on		e.idequipo = a.refequipo
+					inner 
+					join dbtorneoge tge
+					on tge.idtorneoge = fi.reftorneoge_a
+				
+					inner 
+					join dbtorneos t
+					on tge.reftorneo = t.idtorneo and t.activo = 1
+					
+					inner 
+					join tbtipotorneo tp
+					on t.reftipotorneo = tp.idtipotorneo
+				
+					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+				) r
+				group by r.apyn, r.nombre
+				) t
+				order by t.cantidad desc';
+			return $this-> query($sql,0);
 	}
 	
 	function PG() {
@@ -141,8 +271,38 @@ class ServiciosFUNC {
 				t.activo,
 				f.tipofecha,
 				fi.hora,
-				fi.resultado_a,
-				fi.resultado_b,
+				(case when fi.resultado_a is null then (select
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+												from		tbgoleadores gg
+												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+																										from dbtorneoge tge
+																										inner 
+																										join dbtorneos t
+																										on tge.reftorneo = t.idtorneo and t.activo = true
+																										inner 
+																										join dbequipos e
+																										on e.idequipo = tge.refequipo
+																										inner 
+																										join dbgrupos g
+																										on g.idgrupo = tge.refgrupo
+																										where tge.idtorneoge = fi.reftorneoge_a))
+				else fi.resultado_a end) as resultado_a,
+				(case when fi.resultado_b is null then (select
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+															from		tbgoleadores gg
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+						from dbtorneoge tge
+						inner 
+						join dbtorneos t
+						on tge.reftorneo = t.idtorneo and t.activo = true
+						inner 
+						join dbequipos e
+						on e.idequipo = tge.refequipo
+						inner 
+						join dbgrupos g
+						on g.idgrupo = tge.refgrupo
+						where tge.idtorneoge = fi.reftorneoge_b))
+							else fi.resultado_b end) as resultado_b,
 				fi.reffecha,
 				tge.refgrupo
 				FROM
@@ -153,10 +313,9 @@ class ServiciosFUNC {
 				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_a
 				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
 				inner join tbfechas f ON fi.refFecha = f.idfecha
-				WHERE
-				t.activo =  '1' 
-				and tge.refgrupo = ".$idgrupo."
-				/*AND dbequipos.IdEquipo =  17*/
+				where f.idfecha = 28
+				and tge.refgrupo = 19
+				and tp.idtipotorneo = 1
 				
 				UNION all
 				
@@ -166,8 +325,38 @@ class ServiciosFUNC {
 				t.activo,
 				f.tipofecha,
 				fi.hora,
-				fi.resultado_b,
-				fi.resultado_a,
+				(case when fi.resultado_b is null then (select
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+															from		tbgoleadores gg
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+						from dbtorneoge tge
+						inner 
+						join dbtorneos t
+						on tge.reftorneo = t.idtorneo and t.activo = true
+						inner 
+						join dbequipos e
+						on e.idequipo = tge.refequipo
+						inner 
+						join dbgrupos g
+						on g.idgrupo = tge.refgrupo
+						where tge.idtorneoge = fi.reftorneoge_b))
+							else fi.resultado_b end) as resultado_b,
+				(case when fi.resultado_a is null then (select
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+												from		tbgoleadores gg
+												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+																										from dbtorneoge tge
+																										inner 
+																										join dbtorneos t
+																										on tge.reftorneo = t.idtorneo and t.activo = true
+																										inner 
+																										join dbequipos e
+																										on e.idequipo = tge.refequipo
+																										inner 
+																										join dbgrupos g
+																										on g.idgrupo = tge.refgrupo
+																										where tge.idtorneoge = fi.reftorneoge_a))
+				else fi.resultado_a end) as resultado_a,
 				fi.reffecha,
 				tge.refgrupo
 				FROM
@@ -178,10 +367,9 @@ class ServiciosFUNC {
 				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_b
 				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
 				inner join tbfechas f ON fi.refFecha = f.idfecha
-				WHERE
-				t.activo =  '1' 
-				and tge.refgrupo = ".$idgrupo."
-				/*AND dbequipos.IdEquipo =  17*/
+				where f.idfecha = 28
+				and tge.refgrupo = 19
+				and tp.idtipotorneo = 1
 				
 				) as r
 				group by r.nombre,r.idequipo 
@@ -190,6 +378,148 @@ class ServiciosFUNC {
 				//return $sql;
 	}
 	
+	function TraerProgramaPorFecha($idtorneo,$idzona,$fecha) {
+		$sql = "select 
+
+		       (select ea.nombre from dbequipos ea where ea.idequipo = t.equipoa) as equipo1,
+		       t.resultadoa,
+		       t.resultadob,
+		       (select ea.nombre from dbequipos ea where ea.idequipo = t.equipob) as equipo2, 
+		       t.fechajuego,
+		       t.fecha,
+		       t.hora
+		 
+				from (
+				select 
+				fi.idfixture,
+				(select e.idequipo 
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_a and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as equipoa,
+				
+				(case when fi.resultado_a is null then (select
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+												from		tbgoleadores gg
+												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+																										from dbtorneoge tge
+																										inner 
+																										join dbtorneos t
+																										on tge.reftorneo = t.idtorneo and t.activo = true
+																										inner 
+																										join dbequipos e
+																										on e.idequipo = tge.refequipo
+																										inner 
+																										join dbgrupos g
+																										on g.idgrupo = tge.refgrupo
+																										where tge.idtorneoge = fi.reftorneoge_a))
+				else fi.resultado_a end) as resultadoa,
+				
+				(select e.idequipo 
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_b and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as equipob,
+				
+				(case when fi.resultado_b is null then (select
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+															from		tbgoleadores gg
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+						from dbtorneoge tge
+						inner 
+						join dbtorneos t
+						on tge.reftorneo = t.idtorneo and t.activo = true
+						inner 
+						join dbequipos e
+						on e.idequipo = tge.refequipo
+						inner 
+						join dbgrupos g
+						on g.idgrupo = tge.refgrupo
+						where tge.idtorneoge = fi.reftorneoge_b))
+							else fi.resultado_b end) as resultadob,
+				
+				(select g.nombre
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_b and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as zona,
+				        
+				        
+				fi.fechajuego,
+				f.tipofecha as fecha,
+				DATE_FORMAT(fi.hora,'%k:%i') as hora
+				
+				
+				from dbfixture as fi
+				        inner 
+				        join tbfechas AS f
+				        on fi.reffecha = f.idfecha
+				
+				        inner 
+				        join dbtorneoge tge
+				        on tge.idtorneoge = fi.reftorneoge_b
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				
+				where g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo."
+				order by fecha
+				) as t
+				where t.fecha = '".$fecha."'";
+		$res = $this->query($sql,0);
+		return $res;	
+	}
 	
 	function TraerPrograma($idgrupo,$idequipo) {
 		$sql = "select 
@@ -302,6 +632,137 @@ class ServiciosFUNC {
 				where t.equipoa = ".$idequipo." or t.equipob = ".$idequipo;
 				return $this-> query($sql,0);
 	}
+	
+	function TraerFixturePorZonaTorneo($idtorneo,$zona) {
+		$sql = 'select 
+		       r.nombre,
+		       count(*) as partidos,
+		       sum(case when r.resultado_a > r.resultado_b then 1 else 0 end) as ganados, 
+		       sum(case when r.resultado_a = r.resultado_b then 1 else 0 end) as empatados,
+		       sum(case when r.resultado_a < r.resultado_b then 1 else 0 end) as perdidos,
+		       sum(r.resultado_a) as golesafavor,
+		       sum(r.resultado_b) as golesencontra,
+		       (sum(r.resultado_a) - sum(r.resultado_b)) as diferencia,
+		       ((sum(case when r.resultado_a > r.resultado_b then 1 else 0 end) * 3) +
+		        (sum(case when r.resultado_a = r.resultado_b then 1 else 0 end) * 1)) as pts,
+		        r.idequipo,
+				fp.puntos
+		
+				from (
+				SELECT
+				e.idequipo,
+				e.nombre,
+				t.activo,
+				f.tipofecha,
+				fi.hora,
+				(case when fi.resultado_a is null then (select
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+												from		tbgoleadores gg
+												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+																										from dbtorneoge tge
+																										inner 
+																										join dbtorneos t
+																										on tge.reftorneo = t.idtorneo and t.activo = true
+																										inner 
+																										join dbequipos e
+																										on e.idequipo = tge.refequipo
+																										inner 
+																										join dbgrupos g
+																										on g.idgrupo = tge.refgrupo
+																										where tge.idtorneoge = fi.reftorneoge_a))
+				else fi.resultado_a end) as resultado_a,
+				(case when fi.resultado_b is null then (select
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+															from		tbgoleadores gg
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+						from dbtorneoge tge
+						inner 
+						join dbtorneos t
+						on tge.reftorneo = t.idtorneo and t.activo = true
+						inner 
+						join dbequipos e
+						on e.idequipo = tge.refequipo
+						inner 
+						join dbgrupos g
+						on g.idgrupo = tge.refgrupo
+						where tge.idtorneoge = fi.reftorneoge_b))
+							else fi.resultado_b end) as resultado_b,
+				fi.reffecha,
+				tge.refgrupo
+				FROM
+				dbtorneoge tge
+				Inner Join dbequipos e ON tge.refequipo = e.idequipo
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				Inner Join dbtorneos t ON t.idtorneo = tge.reftorneo
+				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_a
+				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+				inner join tbfechas f ON fi.refFecha = f.idfecha
+				where tge.refgrupo = '.$zona.'
+				and tp.idtipotorneo = '.$idtorneo.'
+				
+				UNION all
+				
+				SELECT
+				e.idequipo,
+				e.nombre,
+				t.activo,
+				f.tipofecha,
+				fi.hora,
+				(case when fi.resultado_b is null then (select
+															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+															from		tbgoleadores gg
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+						from dbtorneoge tge
+						inner 
+						join dbtorneos t
+						on tge.reftorneo = t.idtorneo and t.activo = true
+						inner 
+						join dbequipos e
+						on e.idequipo = tge.refequipo
+						inner 
+						join dbgrupos g
+						on g.idgrupo = tge.refgrupo
+						where tge.idtorneoge = fi.reftorneoge_b))
+							else fi.resultado_b end) as resultado_b,
+				(case when fi.resultado_a is null then (select
+												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
+												from		tbgoleadores gg
+												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+																										from dbtorneoge tge
+																										inner 
+																										join dbtorneos t
+																										on tge.reftorneo = t.idtorneo and t.activo = true
+																										inner 
+																										join dbequipos e
+																										on e.idequipo = tge.refequipo
+																										inner 
+																										join dbgrupos g
+																										on g.idgrupo = tge.refgrupo
+																										where tge.idtorneoge = fi.reftorneoge_a))
+				else fi.resultado_a end) as resultado_a,
+				fi.reffecha,
+				tge.refgrupo
+				FROM
+				dbtorneoge tge
+				Inner Join dbequipos e ON tge.refequipo = e.idequipo
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				Inner Join dbtorneos t ON t.idtorneo = tge.reftorneo
+				Inner Join dbfixture fi ON tge.idtorneoge = fi.reftorneoge_b
+				inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+				inner join tbfechas f ON fi.refFecha = f.idfecha
+				where tge.refgrupo = '.$zona.'
+				and tp.idtipotorneo = '.$idtorneo.'
+				
+				) as r
+				inner
+				join	(select refequipo,sum(puntos) as puntos from tbconducta group by refequipo) fp
+				on		r.idequipo = fp.refequipo
+				group by r.nombre,r.idequipo 
+				order by pts desc,diferencia desc,golesafavor desc,golesencontra desc,ganados desc';
+		$res = $this->query($sql,0);
+		return $res;	
+	}
+	
 	
 	function TraerFixturePorGrupoFechaZona($idgrupo,$fecha) {
 		$sql = "select 
