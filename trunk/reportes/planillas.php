@@ -180,7 +180,13 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	}
 	$pdf->Ln();
 	$pdf->SetX(5);
-	$pdf->Cell(167,30,'OBSERVACIONES',1,0,'L',false);
+	$pdf->Cell(56,5,'Total Goles:',1,0,'L',false);
+	$pdf->Cell(56,5,'Total Amarillas:',1,0,'L',false);
+	$pdf->Cell(55,5,'Total Rojas:',1,0,'L',false);
+	
+	$pdf->Ln();
+	$pdf->SetX(5);
+	$pdf->Cell(167,25,'OBSERVACIONES',1,0,'L',false);
 	$pdf->Cell(16.5,5,'ENTRO',1,0,'C',false);
 	$pdf->Cell(16.5,5,'SALIO',1,0,'C',false);
 	$pdf->Ln();
@@ -207,7 +213,12 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->Cell(16.5,5,'',1,0,'L',false);
 	$pdf->Cell(16.5,5,'',1,0,'L',false);
 	
-
+	
+	/********* LA FECHA **************////////////////
+	$pdf->SetXY(5,260);
+	$pdf->SetFont('Arial','',10);
+	$pdf->Cell(90,6,'FECHA:',0,0,'L',false);
+	
 	
 	
 	/********* LAS FIRMAS **************////////////////
