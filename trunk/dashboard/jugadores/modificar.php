@@ -181,8 +181,17 @@ if ($_SESSION['refroll_predio'] != 1) {
                 <div class="form-group col-md-6">
                     <label class="control-label" style="text-align:left" for="dni">Dni</label>
                     <div class="input-group col-md-12">
-                        <input id="dni" class="form-control" value="<?php echo mysql_result($resResultado,0,'dni'); ?>" type="text" required placeholder="Ingrese el Dni..." name="dni">
+                        <input id="dni" class="form-control" value="<?php echo mysql_result($resResultado,0,'dni'); ?>" type="text" required placeholder="Ingrese el Dni..." name="dni" >
                     </div>
+                </div>
+                
+                
+                <div class="form-group col-md-6">
+                	<label class="control-label" style="text-align:left" for="chequeado">Invitado</label>
+                	<div class="input-group col-md-12 fontcheck">
+                        <input id="invitado" <?php if (mysql_result($resResultado,0,'invitado')== 1) { echo 'checked'; } ?> class="form-control" type="checkbox" required="" style="width:50px;" name="invitado">
+                        <p>Si/No</p>
+                	</div>
                 </div>
             </div>
             <br>

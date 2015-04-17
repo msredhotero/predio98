@@ -500,9 +500,17 @@ function eliminarConducta($serviciosFunciones) {
 function insertarJugadores($serviciosJugadores) {
 	$apyn 		= $_POST['apyn'];
 	$idequipo 	= $_POST['idequipo'];
+	
+	if (isset($_POST['invitado'])) {
+		$invitado = 1;
+	} else {
+		$invitado = 0;
+	}
+
+	
 	$dni 		= str_replace('.','',$_POST['dni']);
 	
-	$res = $serviciosJugadores->insertarJugadores($apyn,$dni,$idequipo);
+	$res = $serviciosJugadores->insertarJugadores($apyn,$dni,$idequipo,$invitado);
 	if ((integer)$res > 0) {
 		echo '';
 	} else {
@@ -515,7 +523,13 @@ function modificarJugadores($serviciosJugadores) {
 	$idequipo 	= $_POST['idequipo'];
 	$dni 		= $_POST['dni'];
 	
-	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id);
+	if (isset($_POST['invitado'])) {
+		$invitado = 1;
+	} else {
+		$invitado = 0;
+	}
+	
+	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado);
 	
 	
 	if ($res == true) {

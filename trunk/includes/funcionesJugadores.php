@@ -14,7 +14,7 @@ class ServiciosJ {
 	}
 	
 	function TraerJugadoresEquipos() {
-		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre from dbjugadores j
+		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,(case when j.invitado = 1 then 'Si' else 'No' end) as invitado from dbjugadores j
 		        inner join dbequipos e
 		        on j.idequipo = e.idequipo
 				order by e.nombre,j.apyn";
@@ -22,7 +22,7 @@ class ServiciosJ {
 	}
 	
 	function TraerJugadoresPorId($id) {
-		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,e.idequipo from dbjugadores j
+		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,e.idequipo,j.invitado from dbjugadores j
 		        inner join dbequipos e
 		        on j.idequipo = e.idequipo
 				where idjugador = ".$id;
@@ -32,8 +32,8 @@ class ServiciosJ {
     function TraerJugadoresPorEquipo($idequipo) {
 		$sql = "select idjugador,
 						apyn,
-						dni 
-					from dbjugadores where idequipo = ".$idequipo." order by apyn";
+						dni ,invitado
+					from dbjugadores where idequipo = ".$idequipo." and invitado = 0 order by apyn";
 		return $this->query($sql,0);
 	}
 
@@ -73,9 +73,9 @@ class ServiciosJ {
 		return 0;
 	}
 	
-    function insertarJugadores($apyn,$dni,$idequipo) {
-		$sql = "insert into dbjugadores(idjugador,apyn,dni,idequipo)
-										values ('','".utf8_decode(trim($apyn))."',".trim($dni).",".$idequipo.")";
+    function insertarJugadores($apyn,$dni,$idequipo,$invitado) {
+		$sql = "insert into dbjugadores(idjugador,apyn,dni,idequipo,invitado)
+										values ('','".utf8_decode(trim($apyn))."',".trim($dni).",".$idequipo.",".$invitado.")";
 		if ($this->existeJugador($dni,$idequipo) == 0) {
 			$res = $this->query($sql,1);
 		} else {
@@ -86,8 +86,10 @@ class ServiciosJ {
 
 
 	
-	function modificarJugadores($apyn,$dni,$idequipo,$id) {
-		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = '".$dni."', idequipo = ".$idequipo." where idjugador =".$id;
+	function modificarJugadores($apyn,$dni,$idequipo,$id,$invitado) {
+		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = '".$dni."', idequipo = ".$idequipo." 
+				, invitado = ".$invitado." 
+				where idjugador =".$id;
 		$this->query($sql,0);
 		return 1;
 	}
