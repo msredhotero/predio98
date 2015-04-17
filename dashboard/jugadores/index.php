@@ -77,9 +77,10 @@ $refCampo[] 	= "idequipo";
 /////////////////////// Opciones para la creacion del view  /////////////////////
 $cabeceras 		= "	<th>Apellido y Nombre</th>
 				<th>DNI</th>
-				<th>Equipos</th>";
+				<th>Equipos</th>
+				<th>Invitado</th>";
 //defino la cantidad de columnas
-$cantidad = 3;
+$cantidad = 4;
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
@@ -203,6 +204,15 @@ if ($_SESSION['refroll_predio'] != 1) {
                     <div class="input-group col-md-12">
                         <input id="dni" class="form-control" type="text" required placeholder="Ingrese el Dni..." name="dni">
                     </div>
+                </div>
+                
+                
+                <div class="form-group col-md-6">
+                	<label class="control-label" style="text-align:left" for="chequeado">Invitado</label>
+                	<div class="input-group col-md-12 fontcheck">
+                        <input id="invitado" class="form-control" type="checkbox" required="" style="width:50px;" name="invitado">
+                        <p>Si/No</p>
+                	</div>
                 </div>
             </div>
             <br>

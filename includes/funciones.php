@@ -1032,7 +1032,7 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					join		tbfechas ff
 					on			ff.idfecha = f.reffecha
 					) t
-					where t.tipofecha = 'Fecha 6' and t.idgrupo = 19
+					where t.tipofecha = 'Fecha 6' 
 					order by t.idfixture";	
 		
 		return $this-> query($sql,0);
