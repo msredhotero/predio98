@@ -39,6 +39,11 @@ function insertarEquipos($nombre,$nombrecapitan,$telefonocapitan,$facebookcapita
 $sql = "insert into dbequipos(idequipo,nombre,nombrecapitan,telefonocapitan,facebookcapitan,nombresubcapitan,telefonosubcapitan,facebooksubcapitan,emailcapitan,emailsubcapitan)
 values ('','".utf8_decode($nombre)."','".utf8_decode($nombrecapitan)."','".utf8_decode($telefonocapitan)."','".utf8_decode($facebookcapitan)."','".utf8_decode($nombresubcapitan)."','".utf8_decode($telefonosubcapitan)."','".utf8_decode($facebooksubcapitan)."','".utf8_decode($emailcapitan)."','".utf8_decode($emailsubcapitan)."')";
 $res = $this->query($sql,1);
+if ((integer)$res > 0) {
+	$sql2 = "insert into tbconducta(idconducta,refequipo,puntos)
+	values ('',".$res.",0)";
+	$res2 = $this->query($sql2,1);	
+}
 return $res;
 }
 

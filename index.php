@@ -130,9 +130,11 @@
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="#">Reglamento</a></li>
                         <li class="menuA"><a href="#">Desarrollo</a></li>
+                        <li class="menuA"></li>
                         <li class="menuA"><a href="#">Premios</a></li>
                         <li class="menuA"><a href="#">Servicios</a></li>
                         <li class="menuA"><a href="#">Fotos</a></li>
+                        <li class="menuA"><a href="#">Contacto</a></li>
                     </ul>
                     <a href="#" id="pull">Menú</a>
                 </nav>
@@ -144,13 +146,13 @@
             <div style="height:auto; position:relative; ">
             	<div class="col-md-4" style="padding-top:10px;">
                 	<div class="alert alert-predio alert-dismissible submenu" id="futbolco">
-                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;  margin-right:4%;"> Torneo de Fútbol 11 con Off-side</p> 
+                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 con Off-side</p> 
                     </div>
                     <div class="alert alert-predio alert-dismissible submenu" id="futbolso">
-                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 11 sin Off-side</p> 
+                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 sin Off-side</p> 
                     </div>
                     <div class="alert alert-predio alert-dismissible submenu" id="futbol">
-                    	<p style="font-size:1.3em;"><img src="imagenes/pelota.png" width="35" height="35" style="float:left; margin-top:-1%;margin-right:4%;"> Torneo de Fútbol 7</p> 
+                    	<p style="font-size:1.3em;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
                 <div class="col-md-4 foncecoE" style="display:none;">

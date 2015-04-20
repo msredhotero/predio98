@@ -30,10 +30,14 @@ class ServiciosJ {
 	}
 	
     function TraerJugadoresPorEquipo($idequipo) {
-		$sql = "select idjugador,
-						apyn,
-						dni ,invitado
-					from dbjugadores where idequipo = ".$idequipo." and invitado = 0 order by apyn";
+		$sql = "select j.idjugador,
+						j.apyn,
+						j.dni ,
+						j.invitado,
+						(case when s.refjugador is null then '0' else '1' end) as suspendido
+					from dbjugadores j 
+					left join (select distinct refjugador from tbsuspendidos) s on j.idjugador = s.refjugador
+					where j.idequipo = ".$idequipo." order by j.apyn";
 		return $this->query($sql,0);
 	}
 
@@ -136,6 +140,19 @@ function traerGoleadores() {
 	return $res;
 }
 
+
+function traerGoleadoresPorFecha($fecha) {
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+			from tbgoleadores g 
+			inner join dbequipos e on g.refequipo = e.idequipo 
+			inner join dbjugadores j on g.refjugador = j.idjugador 
+			inner join dbfixture f on f.idfixture = g.reffixture
+			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			where ff.idfecha in (".$fecha.") ";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
 function traerEstadisticas() {
 	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles , (case when a.amarillas is null then 0 else a.amarillas end) as amarillas
 			from tbgoleadores g 
@@ -167,15 +184,21 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 	$res = $this->query($sql,1);
 	if ((integer)$res > 0) {
 		if ($amarillas == 1) {
-			$sql = "insert into tbconducta(idconducta,refequipo,puntos)
-			values ('',".$refequipo.",1)";
-			$res = $this->query($sql,1);	
+
+			$sql = "update tbconducta
+					set
+					puntos = puntos + 1
+					where refequipo =".$refequipo;
+			$res2 = $this->query($sql,0);	
 		}
 		
 		if ($amarillas == 2) {
-			$sql = "insert into tbconducta(idconducta,refequipo,puntos)
-			values ('',".$refequipo.",3)";
-			$res = $this->query($sql,1);	
+
+			$sql = "update tbconducta
+					set
+					puntos = puntos + 3
+					where refequipo =".$refequipo;
+			$res3 = $this->query($sql,0);	
 		}
 	}
 	return $res;
@@ -206,6 +229,18 @@ function traerAmonestados() {
 			inner join dbjugadores j on g.refjugador = j.idjugador 
 			inner join dbfixture f on f.idfixture = g.reffixture
 			inner join tbfechas ff on f.reffecha = ff.idfecha";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+function traerAmonestadosPorFecha($fecha) {
+	$sql = "select g.idamonestado,j.apyn, j.dni, e.nombre, ff.tipofecha, g.amarillas 
+			from tbamonestados g 
+			inner join dbequipos e on g.refequipo = e.idequipo 
+			inner join dbjugadores j on g.refjugador = j.idjugador 
+			inner join dbfixture f on f.idfixture = g.reffixture
+			inner join tbfechas ff on f.reffecha = ff.idfecha
+			where ff.idfecha in (".$fecha.") ";
 	$res = $this->query($sql,0);
 	return $res;
 }
@@ -246,6 +281,13 @@ return $res;
 
 
 function eliminarSuspendidos($id) {
+
+
+$resS = $this->traerSuspendidosPorId($id);
+
+$sql2 = "delete from dbsuspendidosfechas where refjugador =".mysql_result($resS,0,'idjugador')." and refequipo = ".mysql_result($resS,0,'refequipo');
+$res2 = $this->query($sql2,0);
+
 $sql = "delete from tbsuspendidos where idsuspendido =".$id;
 $res = $this->query($sql,0);
 return $res;

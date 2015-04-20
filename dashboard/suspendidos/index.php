@@ -44,6 +44,18 @@ else{
 //////////////////////////////
 
 
+/////////////////// Fechas para Suspender ///////////////////////
+
+$resFechas = $serviciosFunciones->TraerFecha();
+
+$cadFechasS = '<ul class="list-inline">';
+while ($rowFS = mysql_fetch_array($resFechas)) {
+	$cadFechasS = $cadFechasS."<li>".'<input id="fecha'.$rowFS[0].'" class="form-control" type="checkbox" required="" style="width:50px;" name="fecha'.$rowFS[0].'"><p>'.$rowFS[1].'</p>'."</li>";
+}
+$cadFechasS = $cadFechasS."</ul>";
+
+/////////////////////////////////////////////////////////////////
+
 /////////////////////// Opciones de la pagina  ////////////////////
 $tabla = 'tbsuspendidos';
 
@@ -206,6 +218,17 @@ if ($_SESSION['refroll_predio'] != 1) {
                     <div class="input-group col-md-12">
                     	<input type="text" id="motivos" class="form-control" name="motivos"/>
 
+                    </div>
+                </div>
+            </div>
+            
+            <hr>
+            
+            <div class="row">
+            	<div class="form-group col-md-12">
+                	<label class="control-label" style="text-align:left" for="fechas">Fechas a Suspender</label>
+                    <div class="input-group col-md-12">
+                    	<?php echo $cadFechasS; ?>
                     </div>
                 </div>
             </div>
