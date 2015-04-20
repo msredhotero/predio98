@@ -12,7 +12,7 @@ body {
 }
 
 #content {
-	margin-left:270px;
+	margin-left:21%;
 }
 
 body > h3 {
@@ -138,7 +138,7 @@ padding-bottom: 10px;
 			overflow-y: auto;
 			position: fixed;
 			top: 0;
-			width: 235px;
+			width: 20%;
 			z-index: 9999;
 			overflow: hidden;
 			
@@ -153,7 +153,7 @@ padding-bottom: 10px;
 		
 		#navigation #mobile-header p {
 			color: #fff;
-			font-size:16px;
+			font-size:1em;
 			font-family:  "Courier New", Courier, monospace;
 		}
 		
@@ -177,7 +177,7 @@ padding-bottom: 10px;
 		.nav ul li a {
 			color:#FFF;
 			font-family:Bebas;
-			font-size:18px;
+			font-size:1.4em;
 			text-decoration:none;
 			width:100%;
 		}

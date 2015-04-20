@@ -58,6 +58,40 @@ while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
+/////////////////// Fechas para Suspender ///////////////////////
+
+$resFechas = $serviciosFunciones->TraerFecha();
+
+$resFS = $serviciosFunciones->traerSuspendidosPorFechas( mysql_result($resResultado,0,'idjugador'),mysql_result($resResultado,0,'refequipo'));
+
+
+	while ($subrow = mysql_fetch_array($resFS)) {
+			$arrayFS[] = $subrow;
+	}
+
+
+
+$cadFechasS = '<ul class="list-inline">';
+while ($rowFS = mysql_fetch_array($resFechas)) {
+	$check = '';
+	if (mysql_num_rows($resFS)>0) {
+		foreach ($arrayFS as $item) {
+			if (stripslashes($item['reffecha']) == $rowFS[0]) {
+				$check = 'checked';	
+			}
+		}
+	}
+	$cadFechasS = $cadFechasS."<li>".'<input id="fecha'.$rowFS[0].'" '.$check.' class="form-control" type="checkbox" required="" style="width:50px;" name="fecha'.$rowFS[0].'"><p>'.$rowFS[1].'</p>'."</li>";
+
+
+}
+
+
+
+$cadFechasS = $cadFechasS."</ul>";
+
+/////////////////////////////////////////////////////////////////
+
 
 if ($_SESSION['refroll_predio'] != 1) {
 
@@ -174,8 +208,20 @@ if ($_SESSION['refroll_predio'] != 1) {
                	 <label class="control-label" style="text-align:left" for="reftorneo">Motivos</label>
                     <div class="input-group col-md-12">
                     	<textarea id="motivos" class="form-control" name="motivos" rows="5" cols="6" style="text-align:left;">
-                    		<?php echo mysql_result($resResultado,0,'motivos'); ?>
+                    		<?php echo utf8_encode(mysql_result($resResultado,0,'motivos')); ?>
                     	</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <hr>
+            
+            <div class="row">
+            	<div class="form-group col-md-12">
+                	<label class="control-label" style="text-align:left" for="fechas">Fechas a Suspender</label>
+                    <div class="input-group col-md-12">
+                    	<?php echo $cadFechasS; ?>
                     </div>
                 </div>
             </div>

@@ -146,18 +146,32 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$i = 0;
 	while ($rowJ = mysql_fetch_array($resJugadores))
 	{
+		$pdf->SetFillColor(183,183,183);
 		$i = $i+1;
 		$pdf->Ln();
 		$pdf->SetX(5);
-		$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',false);
-		$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',false);
-		$pdf->Cell(25,5,'',1,0,'C',false);
-		$pdf->Cell(17.5,5,'',1,0,'C',false);
-		$pdf->Cell(15,5,'',1,0,'C',false);
-		$pdf->Cell(20,5,'',1,0,'C',false);
-		$pdf->Cell(20,5,'',1,0,'C',false);
-		$pdf->Cell(20,5,'',1,0,'C',false);
-		$pdf->Cell(13,5,'Si/No',1,0,'C',false);
+		
+		/*if ($rowJ['suspendido'] == '0') {*/
+			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',false);
+			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',false);
+			$pdf->Cell(25,5,'',1,0,'C',false);
+			$pdf->Cell(17.5,5,'',1,0,'C',false);
+			$pdf->Cell(15,5,'',1,0,'C',false);
+			$pdf->Cell(20,5,'',1,0,'C',false);
+			$pdf->Cell(20,5,'',1,0,'C',false);
+			$pdf->Cell(20,5,'',1,0,'C',false);
+			$pdf->Cell(13,5,'Si/No',1,0,'C',false);
+		/*} else {
+			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',true);
+			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',true);
+			$pdf->Cell(25,5,'',1,0,'C',true);
+			$pdf->Cell(17.5,5,'',1,0,'C',true);
+			$pdf->Cell(15,5,'',1,0,'C',true);
+			$pdf->Cell(20,5,'',1,0,'C',true);
+			$pdf->Cell(20,5,'',1,0,'C',true);
+			$pdf->Cell(20,5,'',1,0,'C',true);
+			$pdf->Cell(13,5,'(Susp.)',1,0,'C',true);	
+		}*/
 		if ($i == 24) {
 			break;	
 		}

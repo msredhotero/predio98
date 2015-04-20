@@ -11,12 +11,16 @@ if (!isset($_SESSION['usua_predio']))
 include ('../includes/funcionesUsuarios.php');
 include ('../includes/funcionesHTML.php');
 include ('../includes/funcionesFUNC.php');
+include ('../includes/funciones.php');
+include ('../includes/funcionesGrupos.php');
+include ('../includes/funcionesDATOS.php');
 
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
 $serviciosFUNC = new ServiciosFUNC();
-
-
+$serviciosFunciones = new Servicios();
+$serviciosZonas = new ServiciosG();
+$serviciosDatos = new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
@@ -24,7 +28,41 @@ $fecha = date('Y-m-d');
 $resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Dashboard",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
-$resFechas = $serviciosFUNC->TraerProgramaPorFecha(3,21,'Fecha 6');
+
+//////////////// Tipos de Torneo ///////////////////
+
+$cadTT = '';
+$resTorneos = $serviciosFunciones->traerTipoTorneo();
+while ($rowTT = mysql_fetch_array($resTorneos)) {
+	$cadTT = $cadTT.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';	
+}
+
+///////////////////////////////////////////////////
+
+//////////////// Tipos de Zonas ///////////////////
+
+$cadZ = '';
+$resZonas = $serviciosZonas->TraerGrupos();
+while ($rowZ = mysql_fetch_array($resZonas)) {
+	$cadZ = $cadZ.'<option value="'.$rowZ[0].'">'.$rowZ[1].'</option>';	
+}
+
+///////////////////////////////////////////////////
+
+
+//////////////// Tipos de Fechas ///////////////////
+
+$cadF = '';
+$resFechas = $serviciosFunciones->TraerFecha();
+while ($rowF = mysql_fetch_array($resFechas)) {
+	$cadF = $cadF.'<option value="'.$rowF[0].'">'.$rowF[1].'</option>';	
+}
+
+///////////////////////////////////////////////////
+
+
+/*
+$resFechas = $serviciosFUNC->TraerProgramaPorFecha(3,21,'Fecha 7');
 
 
 $torneo11ca = $serviciosFUNC->TraerFixturePorZonaTorneo(1,19);
@@ -37,10 +75,11 @@ $torneo11sc = $serviciosFUNC->TraerFixturePorZonaTorneo(2,21);
 $torneo7a = $serviciosFUNC->TraerFixturePorZonaTorneo(3,19);
 $torneo7b = $serviciosFUNC->TraerFixturePorZonaTorneo(3,20);
 $torneo7c = $serviciosFUNC->TraerFixturePorZonaTorneo(3,21);
-
+*/
 
 
 ///////////////// goleadores  ////////////////////////////
+/*
 $goleadores11ca = $serviciosFUNC->Amarillas(1,19);
 $goleadores11cb = $serviciosFUNC->Amarillas(1,20);
 
@@ -51,7 +90,7 @@ $goleadores11sc = $serviciosFUNC->Amarillas(2,21);
 $goleadores7a = $serviciosFUNC->Amarillas(3,19);
 $goleadores7b = $serviciosFUNC->Amarillas(3,20);
 $goleadores7c = $serviciosFUNC->Amarillas(3,21);
-
+*/
 /////////////////////////////////////////////////////////
 ?>
 
@@ -120,647 +159,119 @@ $goleadores7c = $serviciosFUNC->Amarillas(3,21);
         </div>
     	<div class="cuerpoBox">
     		<form class="form-inline formulario" role="form">
-            	<div class="row">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:750px; margin-left:20px; font-weight:bold;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="5" align="center" style="font-size:1.9em;">RESULTADOS ZONA C</td>
-                        </tr>
-                        <?php while ($row = mysql_fetch_array($resFechas)) { ?>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" bgcolor="#bfbfbf" width="40px" style="padding:1px 6px;"><?php echo $row['resultadoa']; ?></td>
-                            <td align="center" style="padding:1px 6px;"><?php echo $row['equipo1']; ?></td>
-                            <td align="center" style="padding:1px 6px;" bgcolor="#bfbfbf">Horario <?php echo $row['hora']; ?></td>
-                            <td align="center" style="padding:1px 6px;"><?php echo (utf8_encode($row['equipo2']) == 'GUARDA LA JARRA QUE VIENE LUIS' ? 'GUARDA LA JARRA' : utf8_encode($row['equipo2'])); ?></td>
-                            <td align="center" style="padding:1px 6px;" bgcolor="#bfbfbf" width="40px"><?php echo $row['resultadob']; ?></td>
-                        </tr>
-                    	<?php } ?>
-                    </table>
-                
-                </div>
-            
-            </form>
-    	</div>
-    </div>
-    
-    
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Torneo Futbol 11 Con Off-Side</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-            	<div class="row">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo11ca)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo11cb)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						$amarillas = 0;
-						$dni = 9999999;
-						$primero = 0;
-						while ($row1 = mysql_fetch_array($goleadores11ca)) { 
-						
-						?>
-                            <tr style="font-size:1.5em;">
-                                <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                                <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                                <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                                <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                                
-                            </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores11cb)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-            
-            </form>
-    	</div>
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Torneo Futbol 11 Sin Off-Side</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-            	<div class="row">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo11sa)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo11sb)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA C</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo11sc)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
             	
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores11sa)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores11sb)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
+                <div class="row">
+                	<div class="form-group col-md-6">
+                     <label class="control-label" style="text-align:left" for="torneo">Torneo</label>
+                        <div class="input-group col-md-12">
+                            <select id="reftorneo" class="form-control" name="reftorneo">
+                                <option value="0">--Seleccione--</option>
+                                <?php echo $cadTT; ?>
+                                    
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group col-md-6">
+                     <label class="control-label" style="text-align:left" for="torneo">Zona</label>
+                        <div class="input-group col-md-12">
+                            <select id="refzona" class="form-control" name="refzona">
+                                <option value="0">--Seleccione--</option>
+                                <?php echo $cadZ; ?>
+                                    
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group col-md-6">
+                     <label class="control-label" style="text-align:left" for="torneo">Fecha</label>
+                        <div class="input-group col-md-12">
+                            <select id="reffecha" class="form-control" name="reffecha">
+                                <option value="0">--Seleccione--</option>
+                                <?php echo $cadF; ?>
+                                    
+                            </select>
+                        </div>
+                    </div>
                 
                 </div>
                 
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA C</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores11sc)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
+                <div class="row">
+                    <div class="alert"> </div>
+                    <div id="load"> </div>
                 </div>
-                
+                <div class="row">
+                    <div class="col-md-12">
+                    <ul class="list-inline" style="margin-top:15px;">
+                        <li>
+                       	 <button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Buscar</button>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            
             </form>
     	</div>
     </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Torneo Futbol 7</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Resultados</p>
         	
         </div>
-    	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-            	<div class="row">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo7a)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo7b)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS ZONA C</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">POSICION</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">PTS</td>
-                            <td align="center" style="padding:1px 6px;">PJ</td>
-                            <td align="center" style="padding:1px 6px;">PG</td>
-                            <td align="center" style="padding:1px 6px;">PE</td>
-                            <td align="center" style="padding:1px 6px;">PP</td>
-                            <td align="center" style="padding:1px 6px;">GF</td>
-                            <td align="center" style="padding:1px 6px;">GC</td>
-                            <td align="center" style="padding:1px 6px;">DIF</td>
-                            <td align="center" style="padding:1px 6px;">F.P.</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($torneo7c)) { ?>
-                        <tr style="font-size:1.5em;">
-							<td align="right" style="padding:1px 6px;"><?php echo $i; ?></td>
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['pts']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['partidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['ganados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['empatados']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['perdidos']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesafavor']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['golesencontra']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['diferencia']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['puntos']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-            
-            
-            	<div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA A</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores7a)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA B</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores7b)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-                
-                
-                <div class="row" style="margin-top:20px;">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
-                    	<tr bgcolor="#bfbfbf">
-                        	<td colspan="3" align="center" style="font-size:1.9em;">AMARILLAS ZONA C</td>
-                        </tr>
-                        <tr style="font-size:1.5em;">
-                        	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
-                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
-                            <td align="center" style="padding:1px 6px;">CANTIDAD</td>
-                        </tr>
-                        <?php 
-						$i =1;
-						while ($row1 = mysql_fetch_array($goleadores7c)) { ?>
-                        <tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;"><?php echo utf8_encode($row1['apyn']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo utf8_encode($row1['nombre']); ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['cantidad']; ?></td>
-                            <td align="right" style="padding:1px 6px;"><?php echo $row1['tipofecha']; ?></td>
-                        </tr>
-                    	<?php 
-						$i = $i + 1;
-						} ?>
-                    </table>
-                
-                </div>
-            </form>
-    	</div>
+    	<div class="cuerpoBox" id="resultados">
+        
+        </div>
+        
     </div>
-
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Posiciones</p>
+        	
+        </div>
+    	<div class="cuerpoBox" id="posiciones">
+        
+        </div>
+        
+    </div>
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Goleadores</p>
+        	
+        </div>
+    	<div class="cuerpoBox" id="goleadores">
+        
+        </div>
+        
+    </div>
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Amarillas</p>
+        	
+        </div>
+    	<div class="cuerpoBox" id="amarillas">
+        
+        </div>
+        
+    </div>
+    
+    
+    <div class="boxInfoLargo">
+        <div id="headBoxInfo">
+        	<p style="color: #fff; font-size:18px; height:16px;">Suspendidos</p>
+        	
+        </div>
+    	<div class="cuerpoBox" id="suspendidos">
+        
+        </div>
+        
+    </div>
     
     
    
@@ -774,6 +285,76 @@ $goleadores7c = $serviciosFUNC->Amarillas(3,21);
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	$('#buscar').click(function(e) {
+        $.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						reffecha: $('#reffecha').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'traerResultadosPorTorneoZonaFecha'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultados').html(response);
+						
+				}
+		});
+		
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'TraerFixturePorZonaTorneo'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#posiciones').html(response);
+						
+				}
+		});
+		
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'Goleadores'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#goleadores').html(response);
+						
+				}
+		});
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						reffecha: $('#reffecha').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'Suspendidos'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#suspendidos').html(response);
+						
+				}
+		});
+    });
 	
 	 $( '#dialogDetalle' ).dialog({
 		autoOpen: false,

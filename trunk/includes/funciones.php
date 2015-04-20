@@ -848,6 +848,34 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		return $this-> query($sql,0);
 	}
 	
+	function TraerUltimasDosFechas() {
+		$sql = "select
+					distinct f.reffecha 
+				from		dbfixture f
+				order by	f.refFecha desc
+				limit 2";
+		return $this-> query($sql,0);		
+	}
+	
+	function TraerUltimaFecha() {
+		$sql = "select
+					distinct f.reffecha 
+				from		dbfixture f
+				order by	f.refFecha desc
+				limit 1";
+		return $this-> query($sql,0);		
+	}
+	
+	function TraerUltimaFechaActivo() {
+		$sql = "select
+					distinct f.reffecha 
+				from		dbfixture f
+				where 		chequeado = 1
+				order by	f.refFecha desc
+				limit 1";
+		return $this-> query($sql,0);		
+	}
+	
 	
 	function TraerIdFecha($fecha) {
 		$sql = "select * from tbfechas where idfecha=".$fecha;
@@ -881,6 +909,16 @@ $sql = "update tbconducta
 set
 refequipo = ".$refequipo.",puntos = ".$puntos."
 where idconducta =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function modificarConductaPorEquipo($refequipo,$puntos) {
+$sql = "update tbconducta
+set
+puntos = puntos + ".$puntos."
+where refequipo =".$refequipo;
 $res = $this->query($sql,0);
 return $res;
 }
@@ -937,6 +975,50 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 		return $this-> query($sql,1);
 		//return $sql;
 	}
+
+
+
+
+
+function insertarSuspendidosFechas($refjugador,$refequipo,$reffecha) {
+$sql = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
+values ('',".$refjugador.",".$refequipo.",".$reffecha.")";
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarSuspendidosFechas($id,$refjugador,$refequipo,$reffecha) {
+$sql = "update dbsuspendidosfechas
+set
+refjugador = ".$refjugador.",refequipo = ".$refequipo.",reffecha = ".$reffecha."
+where idsuspendidofecha =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarSuspendidosFechas($refjugador,$refequipo) {
+$sql = "delete from dbsuspendidosfechas where refjugador =".$refjugador." and refequipo = ".$refequipo;
+$res = $this->query($sql,0);
+return $res;
+} 
+
+function traerSuspendidosPorFechas($refjugador,$refequipo) {
+	$sql = "select sp.idsuspendidofecha, sp.refjugador, sp.refequipo, sp.reffecha
+			from dbsuspendidosfechas sp 
+			where sp.refjugador =".$refjugador." and sp.refequipo =".$refequipo;	
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+
+
+
+
+
+
+
 	
 	
 	function traerPlanillas() {
@@ -1032,7 +1114,7 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 					join		tbfechas ff
 					on			ff.idfecha = f.reffecha
 					) t
-					where t.tipofecha = 'Fecha 6' 
+					where t.tipofecha = 'Fecha 7' 
 					order by t.idfixture";	
 		
 		return $this-> query($sql,0);
