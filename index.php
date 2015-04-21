@@ -1,6 +1,23 @@
 <?php
 
 
+include ('includes/funcionesUsuarios.php');
+include ('includes/funcionesHTML.php');
+include ('includes/funcionesFUNC.php');
+include ('includes/funciones.php');
+include ('includes/funcionesGrupos.php');
+include ('includes/funcionesDATOS.php');
+
+$serviciosUsuario = new ServiciosUsuarios();
+$serviciosHTML = new ServiciosHTML();
+$serviciosFUNC = new ServiciosFUNC();
+$serviciosFunciones = new Servicios();
+$serviciosZonas = new ServiciosG();
+$serviciosDatos = new ServiciosDatos();
+
+$fecha = date('Y-m-d');
+
+
 
 
 
@@ -106,7 +123,118 @@
 
     });
   </script>
-      
+     
+     
+     
+     <script type="text/javascript">
+$(document).ready(function(){
+	
+	
+	function TraerResultados(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: reffecha,
+						zona: zona,
+						accion: 'traerResultadosPorTorneoZonaFechaPagina'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultados').html(response);
+						
+				}
+		});
+	}
+	
+	TraerResultados(1,19,29,'Zona B');
+	
+	$('#buscar').click(function(e) {
+        
+		
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'TraerFixturePorZonaTorneo'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#posiciones').html(response);
+						
+				}
+		});
+		
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'Goleadores'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#goleadores').html(response);
+						
+				}
+		});
+		
+		$.ajax({
+				data:  {reftorneo: $('#reftorneo').val(),
+						refzona: $('#refzona').val(),
+						reffecha: $('#reffecha').val(),
+						zona: $('#refzona option:selected').text(),
+						accion: 'Suspendidos'},
+				url:   '../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#suspendidos').html(response);
+						
+				}
+		});
+    });
+	
+	 $( '#dialogDetalle' ).dialog({
+		autoOpen: false,
+		resizable: false,
+		width:800,
+		height:740,
+		modal: true,
+		buttons: {
+			"Ok": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+
+	 $( '#dialog2' ).dialog({
+		autoOpen: false,
+		resizable: false,
+		width:800,
+		height:740,
+		modal: true,
+		buttons: {
+			"Ok": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+	
+
+});
+</script> 
 </head>
 
 
@@ -119,7 +247,7 @@
         </div>
     	<div class="header-container">
             <header class="wrapper clearfix">
-                <div align="center">
+                <div align="center" style="margin-bottom:-55px; margin-left:-25px;">
                 <a href="index.php"><img src="imagenes/logo2.png"></a>
                 </div>
                
@@ -129,9 +257,9 @@
                         <li class="menuA"><a href="#">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="#">Reglamento</a></li>
-                        <li class="menuA"><a href="#">Desarrollo</a></li>
-                        <li class="menuA"></li>
                         <li class="menuA"><a href="#">Premios</a></li>
+                        <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
+                        <li class="menuA"><a href="#">Desarrollo</a></li>
                         <li class="menuA"><a href="#">Servicios</a></li>
                         <li class="menuA"><a href="#">Fotos</a></li>
                         <li class="menuA"><a href="#">Contacto</a></li>
@@ -214,6 +342,17 @@
                             <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
                         </ul>
                     </div>
+                    <br>
+                    <div class="col-md-6" align="center" style="margin-top:15px;">
+                    	
+                        <h4 class="textoTrazoTitulos"> Zonas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-4 foncesoI" style="display:none;">
                 	<div class="col-md-6" align="center">
@@ -226,6 +365,18 @@
                             <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
                         </ul>
                     </div>
+                    <br>
+                    <div class="col-md-6" align="center" style="margin-top:15px;">
+                    	
+                        <h4 class="textoTrazoTitulos"> Zonas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-md-4 fsieteI" style="display:none;">
                 	<div class="col-md-6" align="center">
@@ -236,6 +387,18 @@
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
                             <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6" align="center" style="margin-top:15px;">
+                    	
+                        <h4 class="textoTrazoTitulos"> Zonas</h4>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
+                    	<ul>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
                         </ul>
                     </div>
                 </div>
@@ -258,7 +421,7 @@
                                 <h3 class="panel-title">Noticias</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <div class="callbacks_container">
                                   <ul class="rslides" id="slider4">
                                     <li>
@@ -343,7 +506,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Noticias de Predio</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
@@ -355,7 +518,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Ultimo Momento</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
@@ -368,7 +531,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Fixture</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
@@ -379,7 +542,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 11 c/ off-side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 c/Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -393,7 +556,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 11 s/ off-side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 s/Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -409,7 +572,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Fútbol 7 <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -425,31 +588,25 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                                 </ul>
                             	
-                                <table class="table table-responsive table-striped">
-                                	<tbody>
+                                <table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+                                	<caption id="zona" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
+                                	<thead>
                                     	<tr>
-                                        	<td>Equipo A</td>
-                                            <td align="center">0</td>
-                                            <td align="center">2</td>
-                                            <td align="right">Equipos B</td>
+                                        	<th style="text-align:center">Result. A</th>
+                                            <th style="text-align:center">Equipo A</th>
+                                            <th style="text-align:center">Horario</th>
+                                            <th style="text-align:center">Equipo B</th>
+                                            <th style="text-align:center">Result. B</th>
+                                            
                                         </tr>
-                                        <tr>
-                                        	<td>Equipo C</td>
-                                            <td align="center">3</td>
-                                            <td align="center">2</td>
-                                            <td align="right">Equipos D</td>
-                                        </tr>
-                                        <tr>
-                                        	<td>Equipo E</td>
-                                            <td align="center">1</td>
-                                            <td align="center">4</td>
-                                            <td align="right">Equipos F</td>
-                                        </tr>
+                                    </thead>
+                                    <tbody id="resultados" style="padding:2px;">
+                                    	
 
                                     </tbody>
                                 </table>
 								<button type="button" class="btn btn-info btn-lg" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Fecha 2
+                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Fecha 7
                                 </button>
                                 <ul class="list-inline" style="margin-top:15px;">
                                 	<li>
@@ -476,7 +633,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Proxima Fecha</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <h5>In semper consequat</h5>
                                 <div align="center">
                                 <div id="calendario" align="center">
@@ -495,7 +652,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">El tiempo en La Plata</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body">
+                              <div class="panel-body-predio">
                                 <div id="cont_56e6c96ebc37c4741354591bec3723d6">
   <span id="h_56e6c96ebc37c4741354591bec3723d6">Tiempo La Plata</span>
   <script type="text/javascript" async src="http://www.tiempo.com/wid_loader/56e6c96ebc37c4741354591bec3723d6"></script>
