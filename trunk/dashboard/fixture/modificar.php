@@ -94,7 +94,7 @@ while ($rowH = mysql_fetch_array($resHorarios)) {
 
 
 $refdescripcion = array(0 => $cadRef,1=>$cadRefb,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
-$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","hora"); 
+$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","Hora"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
@@ -142,7 +142,9 @@ if ($_SESSION['refroll_predio'] != 1) {
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-
+	<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">
+    <script src="../../js/bootstrap-timepicker.min.js"></script>
 	<style type="text/css">
 		
   
@@ -229,9 +231,19 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
 <script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
 
+<script src="../../js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/bootstrap-datetimepicker.es.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function(){
-
+	
+	$('#timepicker2').timepicker({
+		minuteStep: 15,
+		showSeconds: false,
+		showMeridian: false,
+		defaultTime: false
+		});
+		
 	$('.volver').click(function(event){
 		 
 		url = "index.php";
@@ -301,7 +313,7 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
-		
+
 		if (validador() == "")
         {
 			//información del formulario
@@ -357,6 +369,19 @@ $(document).ready(function(){
 		}
     });
 
+});
+</script>
+<script type="text/javascript">
+$('.form_date').datetimepicker({
+	language:  'es',
+	weekStart: 1,
+	todayBtn:  1,
+	autoclose: 1,
+	todayHighlight: 1,
+	startView: 2,
+	minView: 2,
+	forceParse: 0,
+	format: 'dd/mm/yyyy'
 });
 </script>
 <?php } ?>

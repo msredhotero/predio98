@@ -433,7 +433,7 @@ class Servicios {
 											<input class="form-control" value="'.mysql_result($resMod,0,$row[0]).'" size="50" type="text" value="" readonly>
 											<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 										</div>
-										<input type="hidden" name="'.$campo.'" id="'.$campo.'" value="" />
+										<input type="hidden" name="'.$campo.'" id="'.$campo.'" value="'.mysql_result($resMod,0,$row[0]).'" />
 									</div>
 									
 									';
