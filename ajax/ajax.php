@@ -1008,9 +1008,9 @@ function modificarFixture($serviciosZonasEquipos) {
 	$reftorneoge_b 	= $_POST['reftorneoge_b'];
 	$resultado_b 	= $_POST['resultado_b'];
 	$fechajuego 	= $_POST['fechajuego'];
-	$refFecha 		= $_POST['refFecha'];
+	$refFecha 		= $_POST['reffecha'];
 	$cancha 		= $_POST['cancha'];
-	$horario 		= $_POST['horario'];
+	$horario 		= $_POST['hora'];
 	
 	$res = $serviciosZonasEquipos->modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario);
 	if ($res == true) {

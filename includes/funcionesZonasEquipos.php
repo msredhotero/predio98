@@ -499,14 +499,38 @@ class ServiciosZonasEquipos {
 	}
 	
 	
-	function modificarFixtureTodo($id) {
+	function modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario) {
+		
+		$sqlH = "select
+				h.idhorario,h.horario
+				from tbhorarios h
+				where		h.idhorario = ".$horario;
+		$resH = mysql_result($this-> query($sqlH,0),0,1);
+		$horario = $resH;
+		
+		$sqlC = "select
+				h.cancha
+				from tbcanchas h
+				where		h.idcancha = ".$cancha;
+		$resC = mysql_result($this-> query($sqlC,0),0,0);
+		$cancha = $resC;
+		
+		if ($resultado_a == '') {
+			$resultado_a = 'null';	
+		}
+		
+		if ($resultado_b == '') {
+			$resultado_b = 'null';	
+		}
+		
+		
 		$sql = "update dbfixture
 		set
-		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',hora = '".$horario."'
+		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',Hora = '".$horario."'
 		where Idfixture =".$id;
 		
 		$res = $this->query($sql,0);
-		return $res;
+		return 1;
 	} 
 	
 	
