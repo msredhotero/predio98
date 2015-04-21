@@ -312,7 +312,7 @@ class ServiciosDatos {
 
 left join dbreemplazo rr on rr.refequipo = fix.idequipo
 
-				order by fix.pts desc,fix.diferencia desc,fix.golesafavor desc,fix.golesencontra desc,fix.ganados desc';
+				order by fix.pts desc, fix.puntos,fix.diferencia desc,fix.golesafavor desc,fix.golesencontra,fix.ganados desc';
 		$res = $this->query($sql,0);
 		return $res;	
 	}

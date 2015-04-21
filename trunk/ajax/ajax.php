@@ -215,6 +215,9 @@ switch ($accion) {
 	case 'traerResultadosPorTorneoZonaFecha':
 		traerResultadosPorTorneoZonaFecha($serviciosDatos);
 		break;
+	case 'traerResultadosPorTorneoZonaFechaPagina':
+		traerResultadosPorTorneoZonaFechaPagina($serviciosDatos);
+		break;
 	case 'TraerFixturePorZonaTorneo':
 		TraerFixturePorZonaTorneo($serviciosDatos);
 		break;
@@ -256,6 +259,29 @@ function traerResultadosPorTorneoZonaFecha($serviciosDatos) {
                     $cad = $cad.'</table>
                 
                 </div>';
+	echo $cad;
+}
+
+/* Reportes */
+function traerResultadosPorTorneoZonaFechaPagina($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	
+	$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$idfecha);
+	
+	$cad = '';
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center">'.$row['resultadoa'].'</td>
+                            <td align="center">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center">'.$row['hora'].'</td>
+                            <td align="center">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center">'.$row['resultadob'].'</td>
+                        </tr>';
+                    	}
+
 	echo $cad;
 }
 
