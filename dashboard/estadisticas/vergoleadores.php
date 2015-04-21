@@ -24,26 +24,34 @@ $serviciosEquipos	= new ServiciosE();
 
 $fecha = date('Y-m-d');
 
-$id = $_GET['id'];
 
-$resGoleadores = $serviciosJugadores->traerAmonestadosPorId($id);
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Estadisticas",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Amonestado",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
-
-
-$resEquipos = $serviciosEquipos->TraerEquipos();
 
 /////////////////////// Opciones de la pagina  ////////////////////
 
-$lblTitulosingular	= "Amonestado";
-$lblTituloplural	= "Amonestados";
-$lblEliminarObs		= "Si elimina el Amonestado se eliminara todo el contenido de este";
-$accionEliminar		= "eliminarAmonestados";
+$lblTitulosingular	= "Estadistica";
+$lblTituloplural	= "Estadisticas";
+$lblEliminarObs		= "Si elimina la Estadistica se eliminara todo el contenido de este";
+$accionEliminar		= "eliminarEstadisticas";
 
 /////////////////////// Fin de las opciones /////////////////////
 
 
 
+/////////////////////// Opciones para la creacion del view  /////////////////////
+$cabeceras 		= "<th>Nombre</th>
+				<th>DNI</th>
+				<th>Equipo</th>
+				<th>Fecha</th>
+				<th>Goles</th>";
+
+
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->traerGoleadores(),99);
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -114,93 +122,18 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <h3><?php echo $lblTituloplural; ?></h3>
 
+    
+
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Modificar <?php echo $lblTitulosingular; ?></p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Goleadores Cargados</p>
         	
         </div>
     	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-        	<div class="row">
-
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="refequipos">Equipos</label>
-                    <div class="input-group col-md-12">
-                    	<select id="refequipo" class="form-control" name="refequipo">
-                    		<option value="<?php echo mysql_result($resGoleadores,0,4); ?>"><?php echo mysql_result($resGoleadores,0,5); ?></option>
-							<?php
-								while ($row = mysql_fetch_array($resEquipos)) {
-							?>
-                            		<option value="<?php echo $row[0]; ?>"><?php echo utf8_encode($row[1]); ?></option>
-                            <?php	
-								}
-							?>
-                    	</select>
-                    </div>
-                </div>
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Jugadores</label>
-                    <div class="input-group col-md-12">
-                    	<select id="refjugador" class="form-control" name="refjugador">
-                    		<option value="<?php echo mysql_result($resGoleadores,0,1); ?>"><?php echo utf8_encode(mysql_result($resGoleadores,0,2)).' - '.mysql_result($resGoleadores,0,3); ?></option>
-                    	</select>
-                    </div>
-                </div>
-                
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Fecha</label>
-                    <div class="input-group col-md-12">
-                    	<select id="reffixture" class="form-control" name="reffixture">
-                    		<option value="<?php echo mysql_result($resGoleadores,0,'idfixture'); ?>"><?php echo utf8_encode(mysql_result($resGoleadores,0,2)).' - '.mysql_result($resGoleadores,0,'tipofecha'); ?></option>
-                    	</select>
-                    </div>
-                </div>
-                
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Amarillas</label>
-                    <div class="input-group col-md-12">
-                    	<input type="text" id="amarillas" name="amarillas" class="form-control" value="<?php echo mysql_result($resGoleadores,0,'amarillas'); ?>" required/>
-                    </div>
-                </div>
-            
-            </div>
-            
-            
-            
-            <div class='row'>
-                <div class='alert'>
-                
-                </div>
-                <div id='load'>
-                
-                </div>
-            </div>
-			
-            
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Modificar</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <input type="hidden" id="accion" name="accion" value="modificarAmonestados" />
-            <input type="hidden" id="id" name="id" value="<?php echo $id; ?>" />
-            </form>
+        	<?php echo $lstCargados; ?>
+       
     	</div>
     </div>
-
     
    
 </div>
@@ -208,18 +141,35 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 </div>
 
-<div id="dialog2" title="Eliminar <?php echo $lblTitulosingular; ?>">
+<div id="dialog2" title="Eliminar Amonestado">
     	<p>
         	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            ¿Esta seguro que desea eliminar el <?php echo $lblTitulosingular; ?>?.<span id="proveedorEli"></span>
+            ¿Esta seguro que desea eliminar el Amonestado?.<span id="proveedorEli"></span>
         </p>
-        <p><strong>Importante: </strong><?php echo $lblEliminarObs; ?></p>
+     
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
 
 
+<div id="dialog22" title="Eliminar Goleador">
+    	<p>
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar el Goleador?.<span id="proveedorEli"></span>
+        </p>
+  
+        <input type="hidden" value="" id="idEliminar2" name="idEliminar2">
+</div>
+
+<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+<script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
+
+
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	$('#example').dataTable({
+		"order": [[ 1, "asc" ]]
+	} );
 	
 	 $('#refequipo').change(function() {
 		$.ajax({
@@ -251,15 +201,7 @@ $(document).ready(function(){
 		});
 	});
 
-	
-	$('.volver').click(function(event){
-		 
-		url = "index.php";
-		$(location).attr('href',url);
-	});//fin del boton modificar
-	
-	
-	$('.varborrar').click(function(event){
+	$("#example").on("click",'.varborrar', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -273,7 +215,39 @@ $(document).ready(function(){
 		  }
 	});//fin del boton eliminar
 	
+	$("#example").on("click",'.varmodificar', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificaramonestados.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
+	
+	$("#example").on("click",'.varborrargoleadores', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar2").val(usersid);
+			$("#dialog22").dialog("open");
 
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$("#example").on("click",'.varmodificargoleadores', function(){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificargoleadores.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
 
 	 $( "#dialog2" ).dialog({
 		 	
@@ -286,15 +260,16 @@ $(document).ready(function(){
 				    "Eliminar": function() {
 	
 						$.ajax({
-									data:  {id: $('#idEliminar').val(), accion: '<?php echo $accionEliminar; ?>'},
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarAmonestados'},
 									url:   '../../ajax/ajax.php',
 									type:  'post',
 									beforeSend: function () {
 											
 									},
 									success:  function (response) {
-											url = "index.php";
-											$(location).attr('href',url);
+											$('.'+$('#idEliminar').val()).fadeOut( "slow", function() {
+												$(this).remove();
+											});
 											
 									}
 							});
@@ -313,6 +288,45 @@ $(document).ready(function(){
 		 
 	 		}); //fin del dialogo para eliminar
 	
+	
+	$( "#dialog22" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:240,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar2').val(), accion: 'eliminarGoleadores'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											$('.'+$('#idEliminar2').val()).fadeOut( "slow", function() {
+												$(this).remove();
+											});
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
 	
 	function validador(){
 		$error = "";
@@ -338,11 +352,11 @@ $(document).ready(function(){
 			$("#reffixture").attr("placeholder",$error);
 		}
 		
-		if ($("#amarillas").val() == "") {
+		if (($("#goles").val() == "") && ($("#amarillas").val() == "")) {
 			
-			$error = "Es obligatorio el campo Amarillas.";
-			$("#amarillas").addClass("alert-danger");
-			$("#amarillas").attr("placeholder",$error);
+			$error = "Es obligatorio el campo Goles o el campo Amarillas.";
+			$("#goles").addClass("alert-danger");
+			$("#goles").attr("placeholder",$error);
 		}
 		
 		return $error;
@@ -379,17 +393,38 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se Modifico exitosamente el <strong>Amarillas</strong>. ');
-											$(".alert").delay(3000).queue(function(){
-												/*aca lo que quiero hacer 
-												  después de los 2 segundos de retraso*/
-												$(this).dequeue(); //continúo con el siguiente ítem en la cola
-												
-											});
-											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
                                             
+											
+											$("#load").html('');
+											//url = "index.php";
+											//$(location).attr('href',url);
+											var str =  $("#refjugador option:selected").html();	
+											var res = str.split(" - ");
+                                            
+											var str2 =  $("#reffixture option:selected").html();	
+											var res2 = str.split(" - ");
+											if ($("#goles").val() != "") {
+												
+												$('#resultadosgoleadores').prepend('<tr><td>'+res[0]+'</td>'+
+																				   '<td>'+res[1]+'</td>'+
+																				   '<td>'+$("#refequipo option:selected").html()+'</td>'+
+																				   '<td>'+res2[0]+'</td>'+
+																				   '<td>'+$("#goles").val()+'</td>'+
+																				   '<td style="color:#f00;">Nuevo</td></tr>');
+											
+											$(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong>Goleador</strong>. ');
+											}
+											
+											if ($("#amarillas").val() != "") {
+												
+												$('#resultados').prepend('<tr><td>'+res[0]+'</td>'+
+																				   '<td>'+res[1]+'</td>'+
+																				   '<td>'+$("#refequipo option:selected").html()+'</td>'+
+																				   '<td>'+res2[0]+'</td>'+
+																				   '<td>'+$("#amarillas").val()+'</td>'+
+																				   '<td style="color:#f00;">Nuevo</td></tr>');
+											$(".alert2").html('<strong>Ok!</strong> Se cargo exitosamente el <strong>Amonestado</strong>. ');
+											}
 											
                                         } else {
                                         	$(".alert").removeClass("alert-danger");
