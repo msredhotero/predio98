@@ -27,23 +27,6 @@ $fecha = date('Y-m-d');
 
 $resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Estadisticas",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
-
-$resEquipos = $serviciosEquipos->TraerEquipos();
-
-//// autocompletar /////////
-
-$res = $serviciosJugadores->TraerJugadores();
-
-$arreglo_php = array();
-if(mysql_num_rows($res)==0)
-   array_push($arreglo_php, "No hay datos");
-else{
-  while($palabras = mysql_fetch_array($res)){
-    array_push($arreglo_php, utf8_encode($palabras["apyn"]));
-  }
-}
-
-
 /////////////////////// Opciones de la pagina  ////////////////////
 
 $lblTitulosingular	= "Estadistica";
@@ -53,23 +36,10 @@ $accionEliminar		= "eliminarEstadisticas";
 
 /////////////////////// Fin de las opciones /////////////////////
 
-$cadRef = '';
-$cadRef2 = '';
-while ($rowTT = mysql_fetch_array($resEquipos)) {
-	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
-	
-}
-
-$cadRef2 = $cadRef;
-
 
 
 /////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "<th>Nombre</th>
-				<th>DNI</th>
-				<th>Equipo</th>
-				<th>Fecha</th>
-				<th>Goles</th>";
+
 
 $cabeceras2 		= "<th>Nombre</th>
 				<th>DNI</th>
@@ -78,17 +48,7 @@ $cabeceras2 		= "<th>Nombre</th>
 				<th>Amarillas</th>";
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-$resUltimasDosFechas = $serviciosFunciones->TraerUltimasDosFechas();
-
-$fech = '';
-while ($rowFechas = mysql_fetch_array($resUltimasDosFechas)) {
-	$fech = $fech.$rowFechas[0].',';	
-}
-
-$fech = substr($fech,0,strlen($fech)-1);
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->traerGoleadoresPorFecha($fech),99);
-$lstCargados2 	= $serviciosFunciones->camposTablaView($cabeceras2,$serviciosJugadores->traerAmonestadosPorFecha($fech),5);
+$lstCargados2 	= $serviciosFunciones->camposTablaView($cabeceras2,$serviciosJugadores->traerAmonestados(),5);
 
 
 
@@ -149,19 +109,6 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
-    
-    <script>
-	  $(function(){
-		var autocompletar = new Array();
-		<?php //Esto es un poco de php para obtener lo que necesitamos
-		 for($p = 0;$p < count($arreglo_php); $p++){ //usamos count para saber cuantos elementos hay ?>
-		   autocompletar.push('<?php echo $arreglo_php[$p]; ?>');
-		 <?php } ?>
-		 $("#apyn").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
-		   source: autocompletar //Le decimos que nuestra fuente es el arreglo
-		 });
-	  });
-	</script>
 </head>
 
 <body>
@@ -173,179 +120,8 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <h3><?php echo $lblTituloplural; ?></h3>
 
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Cargar <?php echo $lblTitulosingular; ?></p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-        	<div class="row">
 
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="refequipos">Equipos</label>
-                    <div class="input-group col-md-12">
-                    	<select id="refequipo" class="form-control" name="refequipo">
-                    		<option value="0">--Seleccione--</option>
-							<?php echo $cadRef2; ?>
-								
-                    	</select>
-                    </div>
-                </div>
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Jugadores</label>
-                    <div class="input-group col-md-12">
-                    	<ul class="list-inline">
-                        	<li>
-                                <select id="refjugador" class="form-control" name="refjugador">
-                                    
-                                </select>
-                            </li>
-                            <li>
-                            	<button type="button" class="btn btn-success" id="cargarjugador">Agregar</button>
-                            </li>
-                    </div>
-                </div>
-                
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Fecha</label>
-                    <div class="input-group col-md-12">
-                    	<select id="reffixture" class="form-control" name="reffixture">
-                    		
-                    	</select>
-                    </div>
-                </div>
-                
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Goles</label>
-                    <div class="input-group col-md-12">
-                    	<input type="text" id="goles" name="goles" class="form-control" required/>
-                    </div>
-                </div>
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Amarillas</label>
-                    <div class="input-group col-md-12">
-                    	<input type="text" id="amarillas" name="amarillas" class="form-control" required/>
-                    </div>
-                </div>
-            
-            </div>
-            
-            
-            
-            <div class='row' style="margin-left:15px; margin-right:15px;">
-                <div class='alert'>
-                
-                </div>
-                <div class='alert alert2'>
-                
-                </div>
-                <div id='load'>
-                
-                </div>
-            </div>
-			
-            
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                    </li>
-                    <li>
-                    	<button type="button" class="btn btn-info" id="vergoleadores" style="margin-left:0px;">Ver Goleadores</button>
-                    </li>
-                    <li>
-                    	<button type="button" class="btn btn-info" id="veramonestados" style="margin-left:0px;">Ver Amonestados</button>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <input type="hidden" id="accion" name="accion" value="insertarEstadistica" />
-            </form>
-    	</div>
-    </div>
-
-
-
-	  
-<div id="crearFjugador" style=" z-index:9; display:none; height:auto; background-color:#CCC; margin-top:-32%; width:79%;" class="boxInfoLargo">
- 	<form class="form-inline formulario2" role="form">
-                    <div class="form-group col-md-6">
-                    
-                        <label class="control-label" style="text-align:left" for="apyn">Apellido Y Nombre</label>
-                        <div class="input-group col-md-12">
-                            <input id="apyn" class="form-control" type="text" required placeholder="Ingrese el Apellido Y Nombre..." name="apyn">
-                        </div>
-                    
-                    </div>
-                    
-                    
-                    <div class="form-group col-md-6">
-                        <label class="control-label" style="text-align:left" for="idequipo">Equipo</label>
-                        <div class="input-group col-md-12">
-                            <select id="idequipo" class="form-control" name="idequipo">
-                                <?php echo $cadRef; ?>
-                            </select>
-                        </div>
-                    </div>
-                
-                
-                    <div class="form-group col-md-6">
-                        <label class="control-label" style="text-align:left" for="dni">Dni</label>
-                        <div class="input-group col-md-12">
-                            <input id="dni" class="form-control" type="text" required placeholder="Ingrese el Dni..." name="dni">
-                        </div>
-                    </div>
-                
-                
-                    <div class="form-group col-md-6">
-                        <label class="control-label" style="text-align:left" for="chequeado">Invitado</label>
-                        <div class="input-group col-md-12 fontcheck">
-                            <input id="invitado" class="form-control" type="checkbox" required style="width:50px;" name="invitado">
-                            <p>Si/No</p>
-                        </div>
-                    </div>
-                    <input id="accion" type="hidden" value="insertarJugadores" name="accion">
-                    <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-success" id="crearjugador" style="margin-left:0px;">Crear</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-default" id="cerrar" style="margin-left:0px;">Cerrar</button>
-                    </li>
-                </ul>
-                </div>
- 	</form>
-</div>
-
-
-
-
-
-
-
-
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Goleadores Cargados</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<?php echo $lstCargados; ?>
-            
-    	</div>
-    </div>
     
-  
-
-
-
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
         	<p style="color: #fff; font-size:18px; height:16px;">Amonestados Cargados</p>
@@ -381,11 +157,15 @@ if ($_SESSION['refroll_predio'] != 1) {
         <input type="hidden" value="" id="idEliminar2" name="idEliminar2">
 </div>
 
-
-
+<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
+<script src="../../bootstrap/js/dataTables.bootstrap.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	$('#example').dataTable({
+		"order": [[ 1, "asc" ]]
+	} );
 	
 	 $('#refequipo').change(function() {
 		$.ajax({
@@ -417,7 +197,7 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.varborrar').click(function(event){
+	$("#example").on("click",'.varborrar', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -431,7 +211,7 @@ $(document).ready(function(){
 		  }
 	});//fin del boton eliminar
 	
-	$('.varmodificar').click(function(event){
+	$("#example").on("click",'.varmodificar', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			url = "modificaramonestados.php?id=" + usersid;
@@ -442,34 +222,7 @@ $(document).ready(function(){
 	});//fin del boton modificar
 	
 	
-	$('#vergoleadores').click(function(event){
-
-		window.open('vergoleadores.php','_blank');
-
-	});//fin del boton modificar
-	
-	$('#veramonestados').click(function(event){
-
-		window.open('veramonestados.php','_blank');
-
-	});//fin del boton modificar
-	
-	
-	
-	$('#cargarjugador').click(function(event){
-
-		$("#crearFjugador").show(100);
-
-	});//fin del boton abrir
-	
-	$('#cerrar').click(function(event){
-
-		$("#crearFjugador").hide(100);
-
-	});//fin del boton cerrar
-	
-	
-	$('.varborrargoleadores').click(function(event){
+	$("#example").on("click",'.varborrargoleadores', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar2").val(usersid);
@@ -483,7 +236,7 @@ $(document).ready(function(){
 		  }
 	});//fin del boton eliminar
 	
-	$('.varmodificargoleadores').click(function(event){
+	$("#example").on("click",'.varmodificargoleadores', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			url = "modificargoleadores.php?id=" + usersid;
@@ -531,91 +284,6 @@ $(document).ready(function(){
 		 
 		 
 	 		}); //fin del dialogo para eliminar
-			
-			
-			
-			
-			
-			
-			
-			
-			
-	// para cargar al jugador
-	
-	
-	
-	//al enviar el formulario
-    $('#crearjugador').click(function(){
-		
-
-			//información del formulario
-			var formData = new FormData($(".formulario2")[0]);
-			var message = "";
-			//hacemos la petición ajax  
-			$.ajax({
-				url: '../../ajax/ajax.php',  
-				type: 'POST',
-				// Form data
-				//datos del formulario
-				data: formData,
-				//necesario para subir archivos via ajax
-				cache: false,
-				contentType: false,
-				processData: false,
-				//mientras enviamos el archivo
-				beforeSend: function(){
-					$("#load3").html('<img src="../../imagenes/load13.gif" width="50" height="50" />');       
-				},
-				//una vez finalizado correctamente
-				success: function(data){
-
-					if (data == '') {
-                                            $(".alert3").removeClass("alert-danger");
-											$(".alert3").removeClass("alert-info");
-                                            $(".alert3").addClass("alert-success");
-                                            $(".alert3").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
-											$(".alert3").delay(3000).queue(function(){
-												/*aca lo que quiero hacer 
-												  después de los 2 segundos de retraso*/
-												$(this).dequeue(); //continúo con el siguiente ítem en la cola
-												
-											});
-											$("#load").html('');
-											url = "index.php";
-											//$(location).attr('href',url);
-                                            
-											
-                                        } else {
-                                        	$(".alert3").removeClass("alert-danger");
-                                            $(".alert3").addClass("alert-danger");
-                                            $(".alert3").html('<strong>Error!</strong> '+data);
-                                            $("#load3").html('');
-                                        }
-				},
-				//si ha ocurrido un error
-				error: function(){
-					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
-                    $("#load").html('');
-				}
-			});
-		
-    });
-	
-	
-	
-	
-	
-	
-	// finnn del cargar jugador		
-			
-			
-			
-			
-			
-			
-			
-			
-			
 	
 	
 	$( "#dialog22" ).dialog({

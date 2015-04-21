@@ -210,7 +210,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                 <div class="form-group col-md-6">
                 	<label class="control-label" style="text-align:left" for="chequeado">Invitado</label>
                 	<div class="input-group col-md-12 fontcheck">
-                        <input id="invitado" class="form-control" type="checkbox" required="" style="width:50px;" name="invitado">
+                        <input id="invitado" class="form-control" type="checkbox" required style="width:50px;" name="invitado">
                         <p>Si/No</p>
                 	</div>
                 </div>
@@ -276,7 +276,7 @@ $(document).ready(function(){
 		"order": [[ 2, "asc" ]]
 	} );	
 	
-	$('.varborrar').click(function(event){
+	$("#example").on("click",'.varborrar', function(){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
