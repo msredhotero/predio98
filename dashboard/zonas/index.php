@@ -13,11 +13,13 @@ include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
 include ('../../includes/funcionesGrupos.php');
+include ('../../includes/funcionesDATOS.php');
 
 $serviciosFunciones = new Servicios();
 $serviciosUsuario 	= new ServiciosUsuarios();
 $serviciosHTML 		= new ServiciosHTML();
 $serviciosGrupos 	= new ServiciosG();
+$serviciosDatos		= new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
@@ -61,7 +63,7 @@ $formulario 	= $serviciosFunciones->camposTabla("insertarGrupo",$tabla,$lblCambi
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosGrupos->TraerGrupos(),1);
 
-
+$resZonasTorneos = $serviciosDatos->traerZonasPorTorneo($_SESSION['idtorneo_predio']);
 
 if ($_SESSION['refroll_predio'] != 1) {
 
@@ -137,9 +139,22 @@ if ($_SESSION['refroll_predio'] != 1) {
         	
         </div>
     	<div class="cuerpoBox">
+        	<div class="row" align="center">
+            	<ul class="list-inline">
+                	<li>
+                    	Seleccione para cargar datos por zonas
+                    </li>
+                	<?php while ($row = mysql_fetch_array($resZonasTorneos)) { ?>
+                	<li>
+                    	<a href="equiposzonas.php?zona=<?php echo $row[0]; ?>"><button type="button" class="btn btn-info" style="margin-left:0px;"><?php echo $row[1]; ?></button></a>
+                    </li>
+					<?php } ?>
+                </ul>
+            </div>
+            <div class="row">
     		<form class="form-inline formulario" role="form">
         	<?php echo $formulario; ?>
-            
+            </div>
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">

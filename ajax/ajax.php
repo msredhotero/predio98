@@ -95,6 +95,9 @@ switch ($accion) {
 	case 'modificarJugadores':
 		modificarJugadores($serviciosJugadores);
 		break;
+	case 'modificarJugadoresEx':
+		modificarJugadoresEx($serviciosJugadores);
+		break;
 	case 'eliminarJugadores':
 		eliminarJugadores($serviciosJugadores);
 		break;
@@ -747,6 +750,25 @@ function modificarJugadores($serviciosJugadores) {
 		echo 'Huvo un error al MODIFICAR datos';
 	}
 	
+}
+
+function modificarJugadoresEx($serviciosJugadores) {
+	$id 		= $_POST['id'];
+	$apyn 		= $_POST['apyn'];
+	$idequipo 	= $_POST['idequipo'];
+	$dni 		= $_POST['dni'];
+	
+	$invitado	= $_POST['invitado'];
+
+	
+	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado);
+	
+	
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al MODIFICAR datos';
+	}
 }
 function eliminarJugadores($serviciosJugadores) {
 	$id = $_POST['id'];
