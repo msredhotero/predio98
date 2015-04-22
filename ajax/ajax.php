@@ -230,6 +230,15 @@ switch ($accion) {
 	case 'Suspendidos':
 		Suspendidos($serviciosDatos);
 		break;
+	case 'FixturePagina':
+		FixturePagina($serviciosDatos);
+		break;
+	case 'TraerJugadoresFixtureA':
+		TraerJugadoresFixtureA($serviciosDatos);
+		break;
+	case 'TraerJugadoresFixtureB':
+		TraerJugadoresFixtureB($serviciosDatos);
+		break;
 	/* Fin reportes */
 }
 
@@ -284,6 +293,109 @@ function traerResultadosPorTorneoZonaFechaPagina($serviciosDatos) {
                             <td align="center">'.$row['resultadob'].'</td>
                         </tr>';
                     	}
+
+	echo $cad;
+}
+
+
+
+function TraerJugadoresFixtureA($serviciosDatos) {
+	$idfixture	= $_POST['idfixture'];
+
+	
+	$res = $serviciosDatos->TraerJugadoresFixtureA($idfixture);
+	
+	$cad = '';
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+							
+                        	<td align="center">'.$row['RojasA'].'</td>
+                            <td align="center">'.$row['amarillasA'].'</td>
+                            <td align="center">'.$row['golesA'].'</td>
+                            <td align="right" style="font-size:0.9em;">'.(substr(utf8_encode($row['apynA']),0,17)).'</td>
+							<td></td>
+                        </tr>';
+                    	}
+
+	echo $cad;
+}
+
+
+function TraerJugadoresFixtureB($serviciosDatos) {
+	$idfixture	= $_POST['idfixture'];
+
+	
+	$res = $serviciosDatos->TraerJugadoresFixtureB($idfixture);
+	
+	$cad = '';
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+							<td></td>
+                            <td align="left" style="font-size:0.9em;">'.(substr(utf8_encode($row['apynB']),0,17)).'</td>
+							<td align="center">'.$row['golesB'].'</td>
+							<td align="center">'.$row['amarillasB'].'</td>
+							<td align="center">'.$row['RojasB'].'</td>
+							
+                        </tr>';
+                    	}
+
+	echo $cad;
+}
+
+
+function FixturePagina($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	$cad = '';
+	
+	for ($i=23;$i<=$idfecha;$i++) {
+		$cad = $cad.'
+				<div class="col-md-6">
+				<div class="panel panel-predio" style="margin-top:20px;">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - '.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                </div>
+                                <div class="panel-body-predio">
+                                	';
+									
+		$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
+		
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+                                	<caption id="zonaExp" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
+                                	<thead>
+                                    	<tr>
+                                        	<th style="text-align:center">Result. A</th>
+                                            <th style="text-align:center">Equipo A</th>
+                                            <th style="text-align:center">Horario</th>
+                                            <th style="text-align:center">Equipo B</th>
+                                            <th style="text-align:center">Result. B</th>
+                                            <th style="text-align:center">Ver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+	
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center">'.$row['resultadoa'].'</td>
+                            <td align="center">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center">'.$row['hora'].'</td>
+                            <td align="center">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center">'.$row['resultadob'].'</td>
+							<td><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                        </tr>';
+                    	}
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						</div>';	
+		
+		
+	}
+
 
 	echo $cad;
 }

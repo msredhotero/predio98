@@ -848,6 +848,11 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		return $this-> query($sql,0);
 	}
 	
+	function TraerFechaPorId($id) {
+		$sql = "select * from tbfechas where idfecha =".$id;
+		return $this-> query($sql,0);
+	}
+	
 	function TraerUltimasDosFechas() {
 		$sql = "select
 					distinct f.reffecha 
@@ -1119,6 +1124,35 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 		
 		return $this-> query($sql,0);
 	}
+	
+	
+	function UltimaFecha() {
+		$sql = "select ff.idfecha,ff.tipofecha 
+				from dbfixture fi
+				inner
+				join tbfechas ff
+				on	ff.idfecha = fi.reffecha 
+				where fi.chequeado = 1
+				group by ff.idfecha,ff.tipofecha
+				order by ff.idfecha desc 
+				limit 1";	
+		return $this-> query($sql,0);
+	}
+	
+	
+	function NuevaFecha($reffecha) {
+		$sql = "select month(fi.fechajuego) as mes,day(fi.fechajuego) as dia
+				from dbfixture fi
+				inner
+				join tbfechas ff
+				on	ff.idfecha = fi.reffecha 
+				where fi.chequeado = 0 and fi.reffecha = ".$reffecha."
+				group by fi.fechajuego 
+				limit 1";	
+		return $this-> query($sql,0);
+	}
+	
+	
 	
 	
 	function query($sql,$accion) {

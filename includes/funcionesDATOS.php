@@ -9,6 +9,11 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosDatos {
 	
+	function TraerFechaPorId($id) {
+		$sql = "select * from tbfechas where idfecha =".$id;
+		return $this-> query($sql,0);
+	}
+	
 	function traerZonasPorTorneo($idtorneo) {
 		$sql = "select tge.refgrupo,g.nombre 
 				from dbtorneoge tge 
@@ -33,7 +38,8 @@ class ServiciosDatos {
 		       (select ea.nombre from dbequipos ea where ea.idequipo = t.equipob) as equipo2, 
 		       t.fechajuego,
 		       t.fecha,
-		       t.hora
+		       t.hora,
+			   t.idfixture
 		 
 				from (
 				select 
@@ -433,6 +439,79 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 			$restan = mysql_result($resRest,0,0);	
 		}
 		return $restan;
+	}
+	
+	
+	function TraerJugadoresFixtureA($idfixture) {
+		$sql = "
+				select
+				j.idjugador as idjugadorA,
+				(case when ss.idsuspendido is not null then '1' else null end) as RojasA,
+				a.amarillas as amarillasA,
+				g.goles as golesA,
+				j.apyn as apynA
+				from		dbjugadores j
+				inner
+				join		dbequipos e
+				on			j.idequipo = e.idequipo
+				inner
+				join		dbtorneoge tge
+				on			tge.refequipo = e.idequipo
+				inner
+				join		dbfixture fi
+				on			fi.reftorneoge_a = tge.idtorneoge 
+				
+				left
+				join		tbgoleadores g
+				on			g.refjugador = j.idjugador and g.refequipo = j.idequipo and g.reffixture = fi.idfixture
+				
+				left
+				join		tbamonestados a
+				on			a.refjugador = j.idjugador and a.refequipo = j.idequipo and a.reffixture = fi.idfixture and a.amarillas <> 2
+				
+				left
+				join		tbsuspendidos ss
+				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos = 'Roja Directa' or ss.motivos = 'Doble Amarilla')
+				
+				where		fi.idfixture = ".$idfixture;
+		return $this-> query($sql,0);	
+		
+	}
+	
+	function TraerJugadoresFixtureB($idfixture) {
+		$sql = "
+				select
+				j.idjugador as idjugadorB,
+				(case when ss.idsuspendido is not null then '1' else null end) as RojasB,
+				a.amarillas as amarillasB,
+				g.goles as golesB,
+				j.apyn as apynB
+				from		dbjugadores j
+				inner
+				join		dbequipos e
+				on			j.idequipo = e.idequipo
+				inner
+				join		dbtorneoge tge
+				on			tge.refequipo = e.idequipo
+				inner
+				join		dbfixture fi
+				on			fi.reftorneoge_b = tge.idtorneoge 
+				
+				left
+				join		tbgoleadores g
+				on			g.refjugador = j.idjugador and g.refequipo = j.idequipo and g.reffixture = fi.idfixture
+				
+				left
+				join		tbamonestados a
+				on			a.refjugador = j.idjugador and a.refequipo = j.idequipo and a.reffixture = fi.idfixture and a.amarillas <> 2
+				
+				left
+				join		tbsuspendidos ss
+				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos = 'Roja Directa' or ss.motivos = 'Doble Amarilla')
+				
+				where		fi.idfixture = ".$idfixture;
+		return $this-> query($sql,0);	
+		
 	}
 	
 	

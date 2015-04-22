@@ -632,7 +632,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                         </button>
                                     </li>
                                     <li>
-                                        <button id="btnfixture" type="button" class="btn btn-success" aria-label="Left Align">
+                                        <button type="button" class="btn btn-success" aria-label="Left Align">
                                             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Fixture
                                         </button>
                                     </li>
@@ -745,11 +745,6 @@ $(document).ready(function(){
 				}
 		});
 	}
-	
-	$('#btnfixture').click(function() {
-		url = "fixture.php";
-		$(location).attr('href',url);
-	});
 	
 	$('#zonaAtoneoA').click(function() {
 		TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
