@@ -9,6 +9,21 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosDatos {
 	
+	function traerZonasPorTorneo($idtorneo) {
+		$sql = "select tge.refgrupo,g.nombre 
+				from dbtorneoge tge 
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+				where tp.idtipotorneo =".$idtorneo." 
+				group by	refgrupo,nombre ";
+		return $this->query($sql,0);	
+	}
+	
 	function traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$idfecha) {
 		$sql = "select 
 

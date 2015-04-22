@@ -94,6 +94,7 @@ class ServiciosJ {
 		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = '".$dni."', idequipo = ".$idequipo." 
 				, invitado = ".$invitado." 
 				where idjugador =".$id;
+		//return $sql;
 		$this->query($sql,0);
 		return 1;
 	}

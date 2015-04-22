@@ -181,7 +181,7 @@ if ($_SESSION['refroll_predio'] != 1) {
     	<div class="cuerpoBox">
     		<form class="form-inline formulario" role="form">
         	<div class="row">
-
+				
                 <div class="form-group col-md-6">
                	 <label class="control-label" style="text-align:left" for="refequipos">Equipos</label>
                     <div class="input-group col-md-12">

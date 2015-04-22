@@ -665,10 +665,28 @@ class ServiciosZonasEquipos {
 	
 	function TraerEquiposZonasPorId($id) {
 		$sql  = "select 
-			IdTorneoGE, refgrupo, refequipo, reftorneo, prioridad
+			idtorneoge, refgrupo, refequipo, reftorneo, prioridad
 		from
 			dbtorneoge 
-		where IdTorneoGE = ".$id;
+		where idtorneoge = ".$id;
+		return $this->query($sql,0);
+	}
+	
+	function TraerEquiposZonasPorTorneoZona($idTorneo,$idZona) {
+		$sql  = "select e.idequipo, e.nombre
+				from dbtorneoge tge 
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+				inner
+				join	dbequipos e
+				on		e.idequipo = tge.refequipo
+				where tp.idtipotorneo = ".$idTorneo." and g.idgrupo = ".$idZona."
+				group by	e.idequipo, e.nombre";
 		return $this->query($sql,0);
 	}
 	
