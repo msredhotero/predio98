@@ -737,7 +737,7 @@ function cambiarTorneo($idtipotorneo,$idtorneo) {
 	session_start();
 	$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
 	
-	$_SESSION['idtorneo_predio'] = $idtorneo;
+	$_SESSION['idtorneo_predio'] = $idtipotorneo;
 	
 	return true;
 }

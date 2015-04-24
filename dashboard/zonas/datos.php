@@ -160,7 +160,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                         </tbody>
                     		<?php while ($row = mysql_fetch_array($resJugadores)) { ?>
 							<tr id="fila<?php echo $row[0]; ?>">
-                       			<td><input id="apyn<?php echo $row[0]; ?>" class="form-control" type="text" value="<?php echo $row['apyn']; ?>" required placeholder="Apyn..." name="apyn">
+                       			<td><input id="apyn<?php echo $row[0]; ?>" class="form-control" type="text" value="<?php echo utf8_encode($row['apyn']); ?>" required placeholder="Apyn..." name="apyn">
                                 </td>
                                 <td><input id="dni<?php echo $row[0]; ?>" class="form-control" value="<?php echo $row['dni']; ?>" type="text" required placeholder="Dni..." name="dni">
                                 </td>
