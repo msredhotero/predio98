@@ -142,8 +142,12 @@ if ($_SESSION['refroll_predio'] != 1) {
         	<div class="row" align="center">
             	<ul class="list-inline">
                 	<li>
-                    	Seleccione para cargar datos por zonas
+                    	Seleccione una zona para cargar datos de los jugadores y los equipos
                     </li>
+                </ul>
+            </div>
+            <div class="row" align="center">
+                <ul class="list-inline">
                 	<?php while ($row = mysql_fetch_array($resZonasTorneos)) { ?>
                 	<li>
                     	<a href="equiposzonas.php?zona=<?php echo $row[0]; ?>"><button type="button" class="btn btn-info" style="margin-left:0px;"><?php echo $row[1]; ?></button></a>
