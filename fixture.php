@@ -450,7 +450,7 @@ $(document).ready(function(){
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 c/Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -464,7 +464,7 @@ $(document).ready(function(){
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 s/Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -504,6 +504,11 @@ $(document).ready(function(){
                               </div>
                             </div>
                         </div>
+                        </div>
+                        
+                        <div class="col-md-12" id="load" align="center" style="text-align:center;">
+                        	
+                            
                         </div>
                         
                         <div class="col-md-12" id="resultados">
@@ -567,9 +572,9 @@ border-radius: 0em 0em 0.6em 0.6em;">
                     	<tr>
                         	<th><img src="imagenes/icoRoja.png"></th>
                             <th><img src="imagenes/icoAmarilla.png"></th>
-                            <th>Goles</th>
+                            <th><img src="imagenes/pelotaweb.png"></th>
                             <th id="equipoA"></th>
-                            <th style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
+                            <th id="resA" style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
                         </tr>
                     </thead>
                     <tbody id="resultadosDetallesA">
@@ -583,9 +588,9 @@ border-radius: 0em 0em 0.6em 0.6em;">
                 	<thead>
                     	<tr>
 
-                            <th style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
+                            <th id="resB" style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
                             <th id="equipoB"></th>
-                            <th>Goles</th>
+                            <th><img src="imagenes/pelotaweb.png"></th>
                             <th><img src="imagenes/icoAmarilla.png"></th>
                             <th><img src="imagenes/icoRoja.png"></th>
                         </tr>
@@ -632,11 +637,12 @@ $(document).ready(function(){
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
-						
+					
+					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
 				},
 				success:  function (response) {
 						$('#resultados').html(response);
-						
+						$("#load").html('');
 				}
 		});
 	}
@@ -704,7 +710,7 @@ $(document).ready(function(){
 	
 	
 	$("#resultados").on("click",'.varModificar', function(){
-		alert('asd');
+
 		idfixture =  $(this).attr("id");
 		$.ajax({
 				data:  {idfixture: idfixture,
@@ -712,11 +718,15 @@ $(document).ready(function(){
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
-						
+					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
 				},
 				success:  function (response) {
 						$('#resultadosDetallesA').html(response);
-						
+						$("#load").html('');
+						$('#equipoA').html($('#equipoA'+idfixture).text());
+						$('#equipoB').html($('#equipoB'+idfixture).text());
+						$('#resA').html($('#resA'+idfixture).text());
+						$('#resB').html($('#resB'+idfixture).text());
 				}
 		});
 		

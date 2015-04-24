@@ -166,7 +166,7 @@ class ServiciosDatos {
 				        on g.idgrupo = tge.refgrupo
 				
 				where g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo."
-				order by fecha
+				order by fecha desc
 				) as t
 				where t.fecha = '".$idfecha."'";
 		$res = $this->query($sql,0);
@@ -199,7 +199,11 @@ class ServiciosDatos {
 			(case when rr.idreemplazo is null then fix.pts else fix.pts + rr.puntos end) as pts,
 			fix.idequipo,
 			fix.puntos,
-			fix.equipoactivo
+			fix.equipoactivo,
+			cast((fix.golesafavor / fix.partidos) as decimal(4,2)) as porcentajegoles,
+			round((fix.pts * 100) / (fix.partidos * 3)) as efectividad,
+			(select count(*) from tbsuspendidos where refequipo = fix.idequipo and (motivos = "Roja Directa" or motivos = "Doble Amarilla")) as rojas,
+			(select sum(amarillas) from tbamonestados where refequipo = fix.idequipo and amarillas <> 2) as amarillas
 			from
 			(
 				select 
