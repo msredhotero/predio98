@@ -166,7 +166,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                                 </td>
                                 <td>
                                 	<select id="invitado<?php echo $row[0]; ?>" class="form-control" name="invitado">
-                                		<?php if ($row['invitado'] == 1) { ?>
+                                		<?php if ($row['invitado'] == chr(0x01)) { ?>
                                         <option value="0">No</option>
                                         <option value="1" selected>Si</option>
                                         <?php } else { ?>
@@ -312,6 +312,9 @@ $(document).ready(function(){
 
 		  if (!isNaN(usersid)) {
 		  		modificarJugador(usersid,$('#apyn'+usersid).val(), <?php echo $idEquipo; ?>,$('#dni'+usersid).val(),$("#invitado"+usersid).val());
+				$(this).html('Modificado');
+				$(this).removeClass('btn-warning');
+				$(this).addClass('btn-success');
 		  } else {
 			alert("Error, vuelva a realizar la acción.");	
 		  }
