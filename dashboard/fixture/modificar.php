@@ -88,8 +88,11 @@ $resHorarios 	= $serviciosFunciones->TraerHorarios($_SESSION['torneo_predio']);
 
 $cadRef4 = '';
 while ($rowH = mysql_fetch_array($resHorarios)) {
-	$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'">'.utf8_encode($rowH[1]).'</option>';
-	
+	if (mysql_result($resResultado,0,'Hora') == $rowH[1]) {
+		$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'" selected>'.utf8_encode($rowH[1]).'</option>';
+	} else {
+		$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'">'.utf8_encode($rowH[1]).'</option>';
+	}
 }
 
 
@@ -170,11 +173,11 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <div id="content">
 
-<h3>Equipos</h3>
+<h3>Fixture</h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Modificar de Equipos</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Modificar de Fixture</p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -341,7 +344,7 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se modifico exitosamente el <strong>Equipo</strong>. ');
+                                            $(".alert").html('<strong>Ok!</strong> Se modifico exitosamente el <strong>Fixture</strong>. ');
 											$(".alert").delay(3000).queue(function(){
 												/*aca lo que quiero hacer 
 												  después de los 2 segundos de retraso*/
