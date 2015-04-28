@@ -10,6 +10,7 @@ include ('../includes/funcionesEquipos.php');
 include ('../includes/funcionesGrupos.php');
 include ('../includes/funcionesZonasEquipos.php');
 include ('../includes/funcionesNoticias.php');
+include ('../includes/funcionesDATOS.php');
 
 $serviciosUsuarios  = new ServiciosUsuarios();
 $serviciosFunciones = new Servicios();
@@ -19,6 +20,8 @@ $serviciosEquipos	= new ServiciosE();
 $serviciosGrupos	= new ServiciosG();
 $serviciosZonasEquipos	= new ServiciosZonasEquipos();
 $serviciosNoticias = new ServiciosNoticias();
+$serviciosDatos = new ServiciosDatos();
+
 $fecha = date('Y-m-d');
 
 require('fpdf.php');
@@ -151,27 +154,27 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 		$pdf->Ln();
 		$pdf->SetX(5);
 		
-		/*if ($rowJ['suspendido'] == '0') {*/
+		if ($rowJ['suspendido'] == '0') {
 			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',false);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',false);
 			$pdf->Cell(25,5,'',1,0,'C',false);
 			$pdf->Cell(17.5,5,'',1,0,'C',false);
 			$pdf->Cell(15,5,'',1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',false);
-			$pdf->Cell(20,5,'',1,0,'C',false);
+			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador(30,$rowJ['idjugador']),1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',false);
 			$pdf->Cell(13,5,'Si/No',1,0,'C',false);
-		/*} else {
+		} else {
 			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',true);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',true);
 			$pdf->Cell(25,5,'',1,0,'C',true);
 			$pdf->Cell(17.5,5,'',1,0,'C',true);
 			$pdf->Cell(15,5,'',1,0,'C',true);
 			$pdf->Cell(20,5,'',1,0,'C',true);
-			$pdf->Cell(20,5,'',1,0,'C',true);
+			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador(30,$rowJ['idjugador']),1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',true);
 			$pdf->Cell(13,5,'(Susp.)',1,0,'C',true);	
-		}*/
+		}
 		if ($i == 24) {
 			break;	
 		}

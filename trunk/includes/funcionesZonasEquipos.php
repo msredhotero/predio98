@@ -499,7 +499,7 @@ class ServiciosZonasEquipos {
 	}
 	
 	
-	function modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario) {
+	function modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario,$chequeado) {
 		
 		$sqlH = "select
 				h.idhorario,h.horario
@@ -526,7 +526,7 @@ class ServiciosZonasEquipos {
 		
 		$sql = "update dbfixture
 		set
-		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',Hora = '".$horario."'
+		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',hora = '".$horario."', chequeado = '".$chequeado."' 
 		where Idfixture =".$id;
 		
 		$res = $this->query($sql,0);

@@ -227,11 +227,17 @@ switch ($accion) {
 	case 'Goleadores':
 		Goleadores($serviciosDatos);
 		break;
+	case 'GoleadoresPagina':
+		GoleadoresPagina($serviciosDatos);
+		break;
 	case 'Suspendidos':
 		Suspendidos($serviciosDatos);
 		break;
 	case 'FixturePagina':
 		FixturePagina($serviciosDatos);
+		break;
+	case 'FixturePaginaChico':
+		FixturePaginaChico($serviciosDatos);
 		break;
 	case 'TraerJugadoresFixtureA':
 		TraerJugadoresFixtureA($serviciosDatos);
@@ -241,6 +247,15 @@ switch ($accion) {
 		break;
 	case 'TraerFixturePorZonaTorneoPagina';
 		TraerFixturePorZonaTorneoPagina($serviciosDatos);
+		break;
+	case 'AmarillasAcumuladasPagina';
+		AmarillasAcumuladasPagina($serviciosDatos);
+		break;
+	case 'AmarillasAcumuladas';
+		AmarillasAcumuladas($serviciosDatos);
+		break;
+	case 'FairPlay';
+		FairPlay($serviciosDatos);
 		break;
 	/* Fin reportes */
 }
@@ -359,7 +374,7 @@ function FixturePagina($serviciosDatos) {
 				<div class="panel panel-predio" style="margin-top:20px;">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
-                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                                 </div>
                                 <div class="panel-body-predio">
                                 	';
@@ -367,7 +382,7 @@ function FixturePagina($serviciosDatos) {
 		$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
 		
 		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
-                                	<caption id="zonaExp" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
+                                	
                                 	<thead>
                                     	<tr>
                                         	<th style="text-align:center">Result. A</th>
@@ -404,17 +419,75 @@ function FixturePagina($serviciosDatos) {
 }
 
 
+function FixturePaginaChico($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	$cad = '';
+	
+	for ($i=$idfecha;$i>=23;$i--) {
+		$cad = $cad.'
+				<div class="col-md-12">
+				<div class="panel panel-predio" style="margin-top:0;">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio">
+                                	';
+									
+		$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
+		
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+                                	
+                                	<thead>
+                                    	<tr>
+                                        	<th style="text-align:center;padding:3px;">Result. A</th>
+                                            <th style="text-align:center;padding:3px;">Equipo A</th>
+                                            <th style="text-align:center;padding:3px;">Horario</th>
+                                            <th style="text-align:center;padding:3px;">Equipo B</th>
+                                            <th style="text-align:center;padding:3px;">Result. B</th>
+                                            <th style="text-align:center;padding:3px;">Ver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+	
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center" style="padding:3px;">'.$row['hora'].'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
+							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                        </tr>';
+                    	}
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						</div>';	
+		
+		
+	}
+
+
+	echo $cad;
+}
+
+
 function TraerFixturePorZonaTorneo($serviciosDatos) {
 	
 	$idtorneo	= $_POST['reftorneo'];
 	$idzona		= $_POST['refzona'];
 	$zona		= $_POST['zona'];
-	
-	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona);
+	$idfecha	= $_POST['reffecha'];
+	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona,$idfecha);
 	
 	$cad2 = '
 	<div class="row">
-                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
+                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:5px;">
                     	<tr bgcolor="#bfbfbf">
                         	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS '.$zona.'</td>
                         </tr>
@@ -470,15 +543,16 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 	$idtorneo	= $_POST['reftorneo'];
 	$idzona		= $_POST['refzona'];
 	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
 	
-	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona);
+	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona,$idfecha);
 	$cad2 = '';
 	$cad2 = $cad2.'
 				<div class="col-md-12">
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.$zona.'</h3>
-                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                                 </div>
                                 <div class="panel-body-predio" style="padding:5px 20px;">
                                 	';
@@ -546,13 +620,64 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 
 
 
+function GoleadoresPagina($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res3 = $serviciosDatos->Goleadores($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<td align="left">Nombre y Apellido</td>
+                            <td align="left">Equipo</td>
+                            <td align="center">Goles</td>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						while ($row1 = mysql_fetch_array($res3)) {
+                        $cad3 = $cad3.'<tr>
+                            <td align="left" style="padding:1px;">'.utf8_encode($row1['apyn']).'</td>
+                            <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
+                            <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
+ 
+                        </tr>';
+         
+						$i = $i + 1;
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						</div>';
+	echo $cad3;
+}
+
+
 
 function Goleadores($serviciosDatos) {
 	$idtorneo	= $_POST['reftorneo'];
 	$idzona		= $_POST['refzona'];
 	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
 	
-	$res3 = $serviciosDatos->Goleadores($idtorneo,$idzona);
+	$res3 = $serviciosDatos->Goleadores($idtorneo,$idzona,$idfecha);
 	
 	$cad3 = '
 	<div class="row" style="margin-top:20px;">
@@ -590,13 +715,13 @@ function Suspendidos($serviciosDatos) {
 	$idfecha	= $_POST['reffecha'];
 	$zona		= $_POST['zona'];
 	
-	$res4 = $serviciosDatos->Suspendidos($idtorneo,$idzona);
+	$res4 = $serviciosDatos->SuspendidosNuevo($idtorneo,$idzona,$idfecha);
 	
 	$cad4 = '
 	<div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
                     	<tr bgcolor="#bfbfbf">
-                        	<td colspan="4" align="center" style="font-size:1.9em;">GOLEADORES '.$zona.'</td>
+                        	<td colspan="4" align="center" style="font-size:1.9em;">SUSPENDIDOS '.$zona.'</td>
                         </tr>
                         <tr style="font-size:1.5em;">
                         	<td align="center" style="padding:1px 6px;">NOMBRE Y APELLIDO</td>
@@ -623,6 +748,142 @@ function Suspendidos($serviciosDatos) {
                 
                 </div>';
 	echo $cad4;
+}
+
+
+function AmarillasAcumuladasPagina($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res3 = $serviciosDatos->traerAcumuladosAmarillasPorTorneoZona($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<td align="left">Nombre y Apellido</td>
+                            <td align="left">Equipo</td>
+                            <td align="center">Amarillas</td>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						while ($row1 = mysql_fetch_array($res3)) {
+                        $cad3 = $cad3.'<tr>
+                            <td align="left" style="padding:1px;">'.utf8_encode($row1['apyn']).'</td>
+                            <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
+                            <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
+ 
+                        </tr>';
+         
+						$i = $i + 1;
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						</div>';
+	echo $cad3;
+}
+
+
+
+
+
+function AmarillasAcumuladas($serviciosDatos) {
+	
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res2 = $serviciosDatos->traerAcumuladosAmarillasPorTorneoZona($idtorneo,$idzona,$idfecha);
+	
+	$cad2 = '
+	<div class="row">
+                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:5px;">
+                    	<tr bgcolor="#bfbfbf">
+                        	<td colspan="11" align="center" style="font-size:1.9em;">AMARILLAS '.$zona.'</td>
+                        </tr>
+                        <tr style="font-size:1.5em;">
+                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
+                            <td align="center" style="padding:1px 6px;">JUGADOR</td>
+							<td align="center" style="padding:1px 6px;">DNI</td>
+                            <td align="center" style="padding:1px 6px;">AMARILLAS</td>
+                        </tr>';
+
+						$i =1;
+						$puntos = 0;
+						while ($row1 = mysql_fetch_array($res2)) {
+						
+							
+				
+							$cad2 = $cad2.'<tr style="font-size:1.5em;">
+								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
+								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
+								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['dni']).'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'</td>
+							</tr>';
+
+						}
+                    $cad2 = $cad2.'</table>
+                
+                </div>';
+	echo $cad2;
+}
+
+
+
+function FairPlay($serviciosDatos) {
+	
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res2 = $serviciosDatos->fairplay($idtorneo,$idzona);
+	
+	$cad2 = '
+	<div class="row">
+                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:5px;">
+                    	<tr bgcolor="#bfbfbf">
+                        	<td colspan="11" align="center" style="font-size:1.9em;">FairPlay '.$zona.'</td>
+                        </tr>
+                        <tr style="font-size:1.5em;">
+                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
+                            <td align="center" style="padding:1px 6px;">PUNTOS</td>
+                        </tr>';
+
+						$i =1;
+						$puntos = 0;
+						while ($row1 = mysql_fetch_array($res2)) {
+						
+							
+				
+							$cad2 = $cad2.'<tr style="font-size:1.5em;">
+								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
+								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['puntos']).'</td>
+							</tr>';
+
+						}
+                    $cad2 = $cad2.'</table>
+                
+                </div>';
+	echo $cad2;
 }
 /* Fin reportes */
 
@@ -963,6 +1224,7 @@ function modificarJugadoresEx($serviciosJugadores) {
 	
 	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado);
 	
+	//echo $res;
 	
 	if ($res == true) {
 		echo '';
@@ -1259,8 +1521,13 @@ function modificarFixture($serviciosZonasEquipos) {
 	$refFecha 		= $_POST['reffecha'];
 	$cancha 		= $_POST['cancha'];
 	$horario 		= $_POST['hora'];
-	
-	$res = $serviciosZonasEquipos->modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario);
+	if (isset($_POST['chequeado'])) {
+		$chequeado = 1;
+	} else {
+		$chequeado = 0;
+	}
+
+	$res = $serviciosZonasEquipos->modificarFixtureTodo($id,$reftorneoge_a,$resultado_a,$reftorneoge_b,$resultado_b,$fechajuego,$refFecha,$cancha,$horario,$chequeado);
 	if ($res == true) {
 		echo '';
 	} else {

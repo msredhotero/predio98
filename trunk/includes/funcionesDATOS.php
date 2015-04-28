@@ -185,7 +185,7 @@ class ServiciosDatos {
 		return $puntos;
 	}
 	
-	function TraerFixturePorZonaTorneo($idtorneo,$zona) {
+	function TraerFixturePorZonaTorneo($idtorneo,$zona,$idfecha) {
 		$sql = '
 			select
 			fix.nombre,
@@ -273,7 +273,7 @@ class ServiciosDatos {
 				inner join tbfechas f ON fi.refFecha = f.idfecha
 				where tge.refgrupo = '.$zona.'
 				and tp.idtipotorneo = '.$idtorneo.'
-				
+				and fi.reffecha <= '.$idfecha.' 
 				UNION all
 				
 				SELECT
@@ -327,7 +327,7 @@ class ServiciosDatos {
 				inner join tbfechas f ON fi.refFecha = f.idfecha
 				where tge.refgrupo = '.$zona.'
 				and tp.idtipotorneo = '.$idtorneo.'
-				
+				and fi.reffecha <= '.$idfecha.' 
 				) as r
 				inner
 				join	(select refequipo,sum(puntos) as puntos from tbconducta group by refequipo) fp
@@ -344,7 +344,7 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 	
 	
 	
-	function Goleadores($idtorneo,$zona) {
+	function Goleadores($idtorneo,$zona,$idfecha) {
 		$sql = 'select
 				t.apyn,t.nombre,t.cantidad
 				from
@@ -377,7 +377,7 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 					join tbtipotorneo tp
 					on t.reftipotorneo = tp.idtipotorneo
 				
-					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
+					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.' and fi.reffecha <= '.$idfecha.'
 
 				) r
 				group by r.apyn, r.nombre
@@ -431,6 +431,41 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 				group by r.apyn, r.nombre, r.motivos,r.reffecha,r.cantidadfechas, r.refjugador, r.refequipo
 				) t
 				order by t.cantidad desc';
+			return $this-> query($sql,0);
+	}
+	
+	
+	function SuspendidosNuevo($idtorneo,$zona,$reffecha) {
+		$sql = 'select
+				r.apyn, r.nombre, r.motivos, r.cantidadfechas as cantidad,r.reffecha, r.refjugador, r.refequipo
+				from
+				(
+				select
+				j.apyn, e.nombre, ss.motivos, ss.cantidadfechas,min(sp.reffecha) - 1 as reffecha, ss.refjugador, ss.refequipo
+				from		tbsuspendidos ss
+				inner
+				join		dbsuspendidosfechas sp
+				on			ss.refjugador = sp.refjugador and ss.refequipo = sp.refequipo
+				inner
+				join	dbjugadores j
+				on		j.idjugador = ss.refjugador
+				inner
+				join	dbequipos e
+				on		e.idequipo = ss.refequipo
+				inner
+				join	dbtorneoge tge
+				on		tge.refequipo = ss.refequipo
+				inner 
+									join dbtorneos t
+									on tge.reftorneo = t.idtorneo and t.activo = 1
+				
+									inner 
+									join tbtipotorneo tp
+									on t.reftipotorneo = tp.idtipotorneo
+				where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.' and sp.reffecha <= '.$reffecha.' +1
+				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo
+				) r
+				order by r.cantidadfechas desc';
 			return $this-> query($sql,0);
 	}
 	
@@ -858,7 +893,7 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 	}
 	
 	
-	function traerAcumuladosAmarillasPorTorneo($idtipoTorneo) {
+	function traerAcumuladosAmarillasPorTorneo($idtipoTorneo,$idfecha) {
 		$sql = "select
 				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
 				from
@@ -897,12 +932,121 @@ left join dbreemplazo rr on rr.refequipo = fix.idequipo
 					and a.amarillas <> 2
 					group by a.refequipo, e.nombre, j.apyn, j.dni
 				) t
-					where (cantidad <> 3 and ultimafecha < 29) or (cantidad = 3 and ultimafecha = 29) or (cantidad < 3 and ultimafecha = 29)
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
 					
 					order by t.nombre, t.apyn";	
 		return $this-> query($sql,0);
 	}
 	
+	
+	function traerAcumuladosAmarillasPorTorneoZona($idtipoTorneo,$idzona,$idfecha) {
+		$sql = "select
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
+				from
+				(
+				select
+					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
+					from		tbamonestados a
+					inner
+					join		dbequipos e
+					on			e.idequipo = a.refequipo
+					inner
+					join		dbjugadores j
+					on			j.idjugador = a.refjugador
+					inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = fi.reffecha
+					where	refequipo in (select
+											distinct e.idequipo
+											from		dbtorneoge tge
+											inner
+											join		dbequipos e
+											on			e.idequipo = tge.refequipo
+											inner
+											join		dbfixture fix
+											on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+											inner
+											join		dbtorneos t
+											on			t.idtorneo = tge.reftorneo
+											inner
+											join		tbtipotorneo tp
+											on			tp.idtipotorneo = t.reftipotorneo
+											where		tp.idtipotorneo =".$idtipoTorneo." and tge.refgrupo = ".$idzona.")
+					and a.amarillas <> 2
+					group by a.refequipo, e.nombre, j.apyn, j.dni
+				) t
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
+					
+					order by (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) desc,t.nombre, t.apyn";	
+		return $this-> query($sql,0);
+	}
+	
+	
+	
+	function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador) {
+		$sql = "select
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
+				from
+				(
+				select
+					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
+					from		tbamonestados a
+					inner
+					join		dbequipos e
+					on			e.idequipo = a.refequipo
+					inner
+					join		dbjugadores j
+					on			j.idjugador = a.refjugador
+					inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = fi.reffecha
+					where		j.idjugador = ".$idjugador."
+					and a.amarillas <> 2
+					group by a.refequipo, e.nombre, j.apyn, j.dni
+					
+				) t
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
+					
+					order by t.nombre, t.apyn";	
+		$res = $this-> query($sql,0);
+		if (mysql_num_rows($res)>0) {
+			return mysql_result($res,0,'cantidad');
+		}
+		return 0;
+	}
+	
+	
+	function fairplay($idtipoTorneo,$idzona) {
+		$sql = "select
+				e.nombre, ss.puntos
+				
+				from		tbconducta ss
+				
+				inner
+				join	dbequipos e
+				on		e.idequipo = ss.refequipo
+				inner
+				join	dbtorneoge tge
+				on		tge.refequipo = ss.refequipo
+				inner 
+									join dbtorneos t
+									on tge.reftorneo = t.idtorneo and t.activo = 1
+				
+									inner 
+									join tbtipotorneo tp
+									on t.reftipotorneo = tp.idtipotorneo
+				
+				where	tp.idtipotorneo = ".$idtipoTorneo." and tge.refgrupo = ".$idzona." 
+				group by e.nombre, ss.puntos
+				order by ss.puntos desc";
+		return $this-> query($sql,0);
+	}
 	
 	/* fin de las funciones de los suspendidos */
 	

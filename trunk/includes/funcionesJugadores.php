@@ -91,7 +91,7 @@ class ServiciosJ {
 
 	
 	function modificarJugadores($apyn,$dni,$idequipo,$id,$invitado) {
-		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = '".$dni."', idequipo = ".$idequipo." 
+		$sql = "update dbjugadores set apyn = '".utf8_decode($apyn)."', dni = ".$dni.", idequipo = ".$idequipo." 
 				, invitado = ".$invitado." 
 				where idjugador =".$id;
 		//return $sql;
@@ -178,19 +178,77 @@ function traerGoleadoresPorId($id) {
 	return $res;
 }
 
+
+
+function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador) {
+		$sql = "select
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
+				from
+				(
+				select
+					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
+					from		tbamonestados a
+					inner
+					join		dbequipos e
+					on			e.idequipo = a.refequipo
+					inner
+					join		dbjugadores j
+					on			j.idjugador = a.refjugador
+					inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = fi.reffecha
+					where		j.idjugador = ".$idjugador."
+					and a.amarillas <> 2
+					group by a.refequipo, e.nombre, j.apyn, j.dni
+					
+				) t
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
+					
+					order by t.nombre, t.apyn";	
+		$res = $this-> query($sql,0);
+		if (mysql_num_rows($res)>0) {
+			return mysql_result($res,0,'cantidad');
+		}
+		return 0;
+	}
+	
+	
 function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 	$sql = "insert into tbamonestados(idamonestado,refjugador,refequipo,reffixture,amarillas)
 	values ('',".$refjugador.",".$refequipo.",".$reffixture.",".$amarillas.")";
 	
 	$res = $this->query($sql,1);
 	if ((integer)$res > 0) {
+		
+		$sqlFixFecha = "select reffecha from dbfixture where idfixture =".$reffixture;
+		$resFixFecha = $this->query($sqlFixFecha,0);
+			
+		$fechaJuego = mysql_result($resFixFecha,0,0);
+			
 		if ($amarillas == 1) {
-
+			
+			
+			
+			$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador($fechaJuego,$refjugador);
+			
 			$sql = "update tbconducta
 					set
 					puntos = puntos + 1
 					where refequipo =".$refequipo;
 			$res2 = $this->query($sql,0);	
+			
+			if ($cantidad == 3) {
+				$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
+				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulación de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
+				$res4 = $this->query($sqlSuspendido,1);
+				
+				$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
+				values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).")";
+				$res5 = $this->query($sql5,1);
+			}
 		}
 		
 		if ($amarillas == 2) {
@@ -199,7 +257,15 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 					set
 					puntos = puntos + 3
 					where refequipo =".$refequipo;
-			$res3 = $this->query($sql,0);	
+			$res3 = $this->query($sql,0);
+			
+			$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
+			values ('',".$refequipo.",".$refjugador.",'Doble Amarilla','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
+			$res4 = $this->query($sqlSuspendido,1);
+			
+			$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
+			values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).")";
+			$res5 = $this->query($sql5,1);
 		}
 	}
 	return $res;
@@ -263,6 +329,17 @@ function insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fe
 $sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion)
 values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_decode($cantidadfechas)."','".$fechacreacion."')";
 $res = $this->query($sql,1);
+
+if ($motivos == 'Roja Directa') {
+	$sql3 = "update tbconducta
+			set
+			puntos = puntos + 3
+			where refequipo =".$refequipo;
+	$res3 = $this->query($sql3,0);
+	
+		
+}
+
 return $res;
 }
 
