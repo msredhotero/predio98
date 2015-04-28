@@ -1119,7 +1119,7 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 					join		tbfechas ff
 					on			ff.idfecha = f.reffecha
 					) t
-					where t.tipofecha = 'Fecha 7' 
+					where t.tipofecha = 'Fecha 8' 
 					order by t.idfixture";	
 		
 		return $this-> query($sql,0);

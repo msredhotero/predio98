@@ -27,7 +27,7 @@ body {
 
 .content {
     height: 100%;
-    margin: 20px auto;
+    margin: 5px auto;
     width: 90%;
 	/*background: url(../imagenes/contenedor2.png) repeat;*/
 	background-color:#FFF;
@@ -75,8 +75,8 @@ body {
 }
 
 .header-container img {
-	width:16%;
-	margin-top:20px;
+	width:12%;
+	margin-top:5px;
 	margin-left:20px;
 	margin-bottom:20px;
 }
@@ -288,7 +288,7 @@ margin-right:6px;
 /* slide noticias */
 
 .rslides {
-  margin: 0 auto 40px;
+  margin: 0 auto 10px;
 }
 
 
@@ -301,9 +301,9 @@ margin-right:6px;
   -webkit-box-shadow: 0 0 1px rgba(255,255,255,.3), inset 0 0 5px rgba(0,0,0,1.0);
   font-size: 18px;
   list-style: none;
-  margin: 0 auto 50px;
+  margin: 0 auto 10px;
   max-width: 540px;
-  padding: 10px 0;
+  padding: 5px 0;
   text-align: center;
   width: 100%;
   }
@@ -316,7 +316,7 @@ margin-right:6px;
 
 .rslides_tabs a {
   width: auto;
-  line-height: 20px;
+  line-height: 10px;
   padding: 9px 20px;
   height: auto;
   background: transparent;
@@ -334,7 +334,7 @@ margin-right:6px;
   }
   
 .callbacks_container {
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   position: relative;
   float: left;
   width: 100%;

@@ -37,6 +37,19 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$mes = "------";
 }
 
+if (!isset($_GET['zona'])) {
+	$idZona = 19;
+} else {
+	$idZona = $_GET['zona'];
+}
+
+if (!isset($_GET['zona'])) {
+	$idTorneo = 1;
+} else {
+	$idTorneo = $_GET['idtorneo'];
+}
+
+
 
 ?>
 
@@ -142,116 +155,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
   </script>
      
      
-     
-     <script type="text/javascript">
-$(document).ready(function(){
-	
-	
-	function TraerResultados(reftorneo, refzona, reffecha, zona) {
-		$.ajax({
-				data:  {reftorneo: reftorneo,
-						refzona: refzona,
-						reffecha: reffecha,
-						zona: zona,
-						accion: 'traerResultadosPorTorneoZonaFechaPagina'},
-				url:   'ajax/ajax.php',
-				type:  'post',
-				beforeSend: function () {
-						
-				},
-				success:  function (response) {
-						$('#resultados').html(response);
-						
-				}
-		});
-	}
-	
-	TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
-	
-	$('#buscar').click(function(e) {
-        
-		
-		
-		$.ajax({
-				data:  {reftorneo: $('#reftorneo').val(),
-						refzona: $('#refzona').val(),
-						zona: $('#refzona option:selected').text(),
-						accion: 'TraerFixturePorZonaTorneo'},
-				url:   '../ajax/ajax.php',
-				type:  'post',
-				beforeSend: function () {
-						
-				},
-				success:  function (response) {
-						$('#posiciones').html(response);
-						
-				}
-		});
-		
-		
-		$.ajax({
-				data:  {reftorneo: $('#reftorneo').val(),
-						refzona: $('#refzona').val(),
-						zona: $('#refzona option:selected').text(),
-						accion: 'Goleadores'},
-				url:   '../ajax/ajax.php',
-				type:  'post',
-				beforeSend: function () {
-						
-				},
-				success:  function (response) {
-						$('#goleadores').html(response);
-						
-				}
-		});
-		
-		$.ajax({
-				data:  {reftorneo: $('#reftorneo').val(),
-						refzona: $('#refzona').val(),
-						reffecha: $('#reffecha').val(),
-						zona: $('#refzona option:selected').text(),
-						accion: 'Suspendidos'},
-				url:   '../ajax/ajax.php',
-				type:  'post',
-				beforeSend: function () {
-						
-				},
-				success:  function (response) {
-						$('#suspendidos').html(response);
-						
-				}
-		});
-    });
-	
-	 $( '#dialogDetalle' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
 
-	 $( '#dialog2' ).dialog({
-		autoOpen: false,
-		resizable: false,
-		width:800,
-		height:740,
-		modal: true,
-		buttons: {
-			"Ok": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
-	
-
-});
-</script> 
 </head>
 
 
@@ -430,258 +334,54 @@ $(document).ready(function(){
                 <article>
                     
                     <section>
-                        <div class="col-md-7">
+                        <div class="col-md-12" align="center" style="text-align:center;">
+                        	<h3><img src="imagenes/logo2-chico.png" > Zona A</h3>
+                            
+                        </div>
                         
-                        <!-- Slideshow 4 -->
-                        	<div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Noticias</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <div class="callbacks_container">
-                                  <ul class="rslides" id="slider4">
-                                    <li>
-                                      
-                                        <h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">CERO TOLERANCIA / HORARIOS DE LA FECHA 2 
-                                      	<button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-										</button>
-									  </p>
-                                    </li>
-                                    <li>
-                                      	<h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">COMIENZO DEL TORNEO ESTE SÁBADO 7-3 
-                                      <button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-										</button>
-                                      </p>
-                                    </li>
-                                    <li>
-                                      	<h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">CRONOGRAMA A SEGUIR 
-                                      <button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-									  </button>
-                                      </p>
-                                    </li>
-                                  </ul>
-                                </div>
-                                
-                              </div>
-                              <div class="panel-footer">
-                              <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lorem ipsum dolor sit</h5>
-                              <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Martes 10 de Marzo, 18:30:23</h6>
-                              	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in.</p>
-                              </div>
-                            </div>
-                            
-                            <div id="noticias">
-                            	<img src="imagenes/tarjeta-2013-ano-nuevo.jpg">
-                                <div class="textoTrazoTitulosN">
-                                	FELIZ AÑO NUEVO
-                                </div>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; font-style:italic; height:8px; margin-bottom:10px; ">Lunes 9 de Marzo, 12:00:41</h6>
-                                <div id="parrafo">
-                                	Estimados jugadores
-Les queremos agradecer por cumplir con nosotros nuestro primer año completo de trayectoria como organización de torneos. (Si bien el predio tiene 15 años, desde agosto del 2013 nos animamos a la organización).
-Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como somos nuevos tenemos miles de cosas que mejorar pero por otro lado sabemos que, con mucha buena onda, estamos marcando y vamos a seguir marcando una diferencia en la Ciudad de La Plata por la cantidad de cosas que nos diferencian del resto, con árbitros con mucha experiencia, que van a tener sus errores como todos, pero que no dejan de dar lo mejor de ellos en cada partido, con dos pelotas de Primera División de A.F.A
-                                </div>
-                              
-                            <div class="abajo">
-                                <div align="right" class="abajo_text">
-                                    <a href="#">Continuar leyendo</a>
-                                </div>
-                                <div class="abajo_bg"></div>
-                            </div>  
-                            </div>
-                            
-                            
-                            
-                            <div class="help-block events">
-                            	
-                            </div>
-                            
+                        
+                        <div class="col-md-12" id="load" align="center" style="text-align:center;">
+                        	
                             
                         </div>
-                        <div class="col-md-5">
-                        	<div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Noticias de Predio</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                              </div>
-                            </div>
-                            
-                            <div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Ultimo Momento</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
-                              </div>
-                            </div>
-                            
-                            
-                            <div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Fixture</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
-                                
-                                
-
-                                <ul class="nav nav-pills">
-                            
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 c/Off-Side <b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoA" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoA" class="zona">Zona B</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 s/Off-Side <b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoB" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoB" class="zona">Zona B</li>
-                                            
-                                            <li id="zonaCtoneoB" class="zona">Zona C</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 7<b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoC" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoC" class="zona">Zona B</li>
-                                            
-                                            <li id="zonaCtoneoC" class="zona">Zona C</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                </ul>
-                            	
-                                <table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
-                                	<caption id="zonaExp" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
-                                	<thead>
-                                    	<tr>
-                                        	<th style="text-align:center">Result. A</th>
-                                            <th style="text-align:center">Equipo A</th>
-                                            <th style="text-align:center">Horario</th>
-                                            <th style="text-align:center">Equipo B</th>
-                                            <th style="text-align:center">Result. B</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody id="resultados" style="padding:2px;">
-                                    	
-
-                                    </tbody>
-                                </table>
-								<button type="button" class="btn btn-info btn-lg" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <?php echo $UltimaFecha; ?>
-                                </button>
-                                <ul class="list-inline" style="margin-top:15px;">
-                                	<li>
-                                    	<button type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Posiciones
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Fixture
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Datos
-                                        </button>
-                                    </li>
-                                </ul>
-                              </div>
-                            </div>
-                            
-                            <div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Proxima Fecha</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <h5>In semper consequat</h5>
-                                <div align="center">
-                                <div id="calendario" align="center">
-                                	<h4><?php echo $mes; ?></h4>
-                                    <p><?php echo $dia; ?></p>
-                                </div>
-                                </div>
-                                
-                                
-                              </div>
-                            </div>
-                            
-                            
-                            <div class="panel panel-predio" style="margin-top:20px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">El tiempo en La Plata</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <div id="cont_56e6c96ebc37c4741354591bec3723d6">
-  <span id="h_56e6c96ebc37c4741354591bec3723d6">Tiempo La Plata</span>
-  <script type="text/javascript" async src="http://www.tiempo.com/wid_loader/56e6c96ebc37c4741354591bec3723d6"></script>
-</div>
-                              </div>
-                            </div>
+                        
+                        <div class="col-md-12" id="resultados">
+                        	
                             
                         </div>
+                        
+                        <div class="col-md-4" id="resultadosGoles" style="margin:0; padding:0;">
+                        	
+                            
+                        </div>
+                        
+                        <div class="col-md-4" style="margin:0; padding:0;">
+                        	<div class="col-md-12" id="resultadosAmarillas" style="margin:0; padding:0;">
+                        	
+                            
+                        	</div>
+                            
+                            <div class="col-md-12" id="resultadosRojas" style="margin:0; padding:0;">
+                        	
+                            
+                        	</div>
+                            
+                            <div class="col-md-12" id="resultadosSuspendidos" style="margin:0; padding:0;">
+                        	
+                            
+                        	</div>
+                            
+                        </div>
+                        
+                        <div class="col-md-4" id="resultadosFixture" style="margin:0; padding:0;">
+                        	
+                            
+                        </div>
+                        
+                        
                     </section>
-                    
-                </article>
-
+                </article>        
+				
                 
 
             </div> <!-- #main -->
@@ -715,6 +415,70 @@ border-radius: 0em 0em 0.6em 0.6em;">
         </footer>
     </div>  -->
 </div>
+
+
+
+
+
+<div id="dialogModificar" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width:70%;">
+    	<div class="modal-content">	
+        	<div class="modal-header">
+            	<button class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Detalle del Partido</h4>
+            </div>
+            
+            <div class="modal-body">
+            	<div class="row">
+            	<div class="col-md-6">
+				<table class="table table-responsive table-striped">
+                	<thead>
+                    	<tr>
+                        	<th><img src="imagenes/icoRoja.png"></th>
+                            <th><img src="imagenes/icoAmarilla.png"></th>
+                            <th><img src="imagenes/pelotaweb.png"></th>
+                            <th id="equipoA"></th>
+                            <th id="resA" style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultadosDetallesA">
+                    
+                    </tbody>
+                
+                </table>
+				</div>
+                <div class="col-md-6">
+				<table class="table table-responsive table-striped">
+                	<thead>
+                    	<tr>
+
+                            <th id="resB" style="width:20px; background-color:#36F; color:#FFF; padding:3px 8px;"></th>
+                            <th id="equipoB"></th>
+                            <th><img src="imagenes/pelotaweb.png"></th>
+                            <th><img src="imagenes/icoAmarilla.png"></th>
+                            <th><img src="imagenes/icoRoja.png"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultadosDetallesB">
+                    
+                    </tbody>
+                
+                </table>
+				</div>
+                </div>
+
+            </div><!-- fin del body -->
+      </div><!-- fin del content -->
+        
+      </div><!-- fin del dialog -->
+</div><!-- fin del dialogCrear -->
+
+
+
+
+
+
+
     <footer class="clearfix">
     
     
@@ -731,20 +495,92 @@ $(document).ready(function(){
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
-						reffecha: reffecha,
+						reffecha: <?php echo $IdUltimaFecha; ?>,
 						zona: zona,
-						accion: 'traerResultadosPorTorneoZonaFechaPagina'},
+						accion: 'TraerFixturePorZonaTorneoPagina'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+					
+					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
+				},
+				success:  function (response) {
+						$('#resultados').html(response);
+						$("#load").html('');
+				}
+		});
+	}
+	
+	TraerResultados(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	
+	function TraerResultadosFixture(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: <?php echo $IdUltimaFecha; ?>,
+						zona: zona,
+						accion: 'FixturePaginaChico'},
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
 						
 				},
 				success:  function (response) {
-						$('#resultados').html(response);
+						$('#resultadosFixture').html(response);
 						
 				}
 		});
 	}
+	
+	TraerResultadosFixture(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	
+	
+	function TraerResultadosGoles(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: <?php echo $IdUltimaFecha; ?>,
+						zona: zona,
+						accion: 'GoleadoresPagina'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultadosGoles').html(response);
+						
+				}
+		});
+	}
+	
+	TraerResultadosGoles(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	
+	
+	
+	function TraerResultadosAmarillasAcumuladas(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: <?php echo $IdUltimaFecha; ?>,
+						zona: zona,
+						accion: 'AmarillasAcumuladasPagina'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultadosAmarillas').html(response);
+						
+				}
+		});
+	}
+	
+	TraerResultadosAmarillasAcumuladas(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	
+	
+	
 	
 	$('#zonaAtoneoA').click(function() {
 		TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
@@ -804,6 +640,45 @@ $(document).ready(function(){
 		e.preventDefault();
         $('#submenu').hide(500);
     });
+	
+	
+	$("#resultadosFixture").on("click",'.varModificar', function(){
+
+		idfixture =  $(this).attr("id");
+		$.ajax({
+				data:  {idfixture: idfixture,
+						accion: 'TraerJugadoresFixtureA'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
+				},
+				success:  function (response) {
+						$('#resultadosDetallesA').html(response);
+						$("#load").html('');
+						$('#equipoA').html($('#equipoA'+idfixture).text());
+						$('#equipoB').html($('#equipoB'+idfixture).text());
+						$('#resA').html($('#resA'+idfixture).text());
+						$('#resB').html($('#resB'+idfixture).text());
+				}
+		});
+		
+		$.ajax({
+				data:  {idfixture: idfixture,
+						accion: 'TraerJugadoresFixtureB'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultadosDetallesB').html(response);
+						
+				}
+		});
+	});
+	
+	
 	
 	$('#futbolco').hover(function(e) {
         /*$('.foncecoI').removeClass('hidden');

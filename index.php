@@ -125,7 +125,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 
       // Slideshow 4
       $("#slider4").responsiveSlides({
-        auto: false,
+        auto: true,
         pager: false,
         nav: true,
         speed: 500,
@@ -433,14 +433,14 @@ $(document).ready(function(){
                         <div class="col-md-7">
                         
                         <!-- Slideshow 4 -->
-                        	<div class="panel panel-predio" style="margin-top:20px;">
+                        	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
                               <div class="panel-body-predio">
                                 <div class="callbacks_container">
-                                  <ul class="rslides" id="slider4">
+                                  <ul class="rslides" id="slider4" style="padding:0; margin-top:-10px;">
                                     <li>
                                       
                                         <h3>In semper consequat</h3>
@@ -483,9 +483,9 @@ $(document).ready(function(){
                                 
                               </div>
                               <div class="panel-footer">
-                              <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lorem ipsum dolor sit</h5>
-                              <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Martes 10 de Marzo, 18:30:23</h6>
-                              	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in.</p>
+                              	<h3>Noticias Predio98.com.ar <button type="button" class="btn btn-info" aria-label="Left Align">
+  											Ver Todas <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+									  </button></h3>
                               </div>
                             </div>
                             
@@ -518,40 +518,42 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             
                         </div>
                         <div class="col-md-5">
-                        	<div class="panel panel-predio" style="margin-top:20px;">
+                        	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias de Predio</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
                               </div>
-                              <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>
+                              <div class="panel-body-predio" style="line-height:16px;">
+                                <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>-->
+                                <br>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
                               </div>
                             </div>
                             
-                            <div class="panel panel-predio" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Ultimo Momento</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
-                              <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>
+                              <div class="panel-body-predio" style="line-height:16px;">
+                                <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>-->
+                                <br>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
                               </div>
                             </div>
                             
                             
-                            <div class="panel panel-predio" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Fixture</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
                               <div class="panel-body-predio">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
+                                <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>-->
                                 
                                 
 
@@ -645,10 +647,10 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                               </div>
                             </div>
                             
-                            <div class="panel panel-predio" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Proxima Fecha</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
                               <div class="panel-body-predio">
                                 <h5>In semper consequat</h5>
@@ -664,10 +666,10 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                             </div>
                             
                             
-                            <div class="panel panel-predio" style="margin-top:20px;">
+                            <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">El tiempo en La Plata</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
                               <div class="panel-body-predio">
                                 <div id="cont_56e6c96ebc37c4741354591bec3723d6">

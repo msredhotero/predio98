@@ -146,27 +146,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
      <script type="text/javascript">
 $(document).ready(function(){
 	
-	
-	function TraerResultados(reftorneo, refzona, reffecha, zona) {
-		$.ajax({
-				data:  {reftorneo: reftorneo,
-						refzona: refzona,
-						reffecha: reffecha,
-						zona: zona,
-						accion: 'traerResultadosPorTorneoZonaFechaPagina'},
-				url:   'ajax/ajax.php',
-				type:  'post',
-				beforeSend: function () {
-						
-				},
-				success:  function (response) {
-						$('#resultados').html(response);
-						
-				}
-		});
-	}
-	
-	TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+
 	
 	$('#buscar').click(function(e) {
         
