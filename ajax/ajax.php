@@ -735,14 +735,16 @@ function Suspendidos($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res4)) {
 							$restantes = $serviciosDatos->traerFechasRestantes($idfecha,$row1['refjugador'],$row1['refequipo']);
 							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
-                        $cad4 = $cad4.'<tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
-                            <td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
-                            <td align="right" style="padding:1px 6px;">'.utf8_encode($row1['motivos']).'</td>
- 							<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
-                        </tr>';
-         
-						$i = $i + 1;
+							if ($restantes != 0) { 
+								$cad4 = $cad4.'<tr style="font-size:1.5em;">
+									<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
+									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
+									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['motivos']).'</td>
+									<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
+								</tr>';
+								
+								$i = $i + 1;
+							}
 						}
                     $cad4 = $cad4.'</table>
                 
