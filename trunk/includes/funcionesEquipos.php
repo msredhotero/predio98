@@ -21,6 +21,7 @@ class ServiciosE {
 				facebooksubcapitan from dbequipos order by nombre";
 		return $this-> query($sql,0);
 	}
+
 	
 	function TraerIdEquipo($id) {
 		$sql = "select * from dbequipos where idequipo = ".$id;
