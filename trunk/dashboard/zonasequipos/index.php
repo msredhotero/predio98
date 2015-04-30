@@ -85,12 +85,12 @@ while ($rowER = mysql_fetch_array($resEquiposRR)) {
 }
 
 
-$ultimaFecha = $serviciosFunciones->TraerUltimaFechaActivo();
+$refultimaFecha = $serviciosFunciones->TraerUltimaFechaActivo();
 
-if (mysql_num_rows($ultimaFecha)>0) {
-	$ultimaFeche = mysql_result($ultimaFecha,0,0);
+if (mysql_num_rows($refultimaFecha)>0) {
+	$ultimaFecha = mysql_result($refultimaFecha,0,0);
 } else {
-	$ultimaFeche = 0;
+	$ultimaFecha = 0;
 }
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
@@ -254,7 +254,7 @@ if ($_SESSION['refroll_predio'] != 1) {
             <div class="row" style="padding:0 15px;">
             <h4>Reemplazar Equipos</h4>
             <div class="help-block">Recuerde que el equipo reemplazado se inhabilitará, y el equipo que lo reemplaza tomará los puntos, puntos de fairplay y goles en contra del ultimo en la tabla de posiciones</div>
-            <form class="form-inline" role="form">
+            <form class="form-inline formulario2" role="form">
             	<div class="row">
                     <div class="form-group col-md-6">
                         <label class="control-label" style="text-align:left" for="refgrupo">Equipo A Reemplazar</label>
@@ -282,7 +282,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                     <div class="col-md-12" align="center">
                     <ul class="list-inline" style="margin-top:15px;">
                         <li>
-                            <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Cambiar</button>
+                            <button type="button" class="btn btn-warning" id="cambiar" style="margin-left:0px;">Cambiar</button>
                         </li>
                     </ul>
                     </div>
@@ -290,9 +290,12 @@ if ($_SESSION['refroll_predio'] != 1) {
                 <div class="row alert-info" id="datosequipoultimo" style="padding:0 15px; display:none;">
                 	<h4>Datos del ultimo equipo de la zona del equipo a reeplazar</h4>
                     <p><b>Equipo: </b> <span id="ultimoequipo"></span></p>
-                    <p><b>Puntos: </b><input type="text" required="" name="puntos" id="puntos" class="form-control"></p>
-                    <p><b>Puntos FairPlay: </b><input type="text" required="" name="puntosfp" id="puntosfp" class="form-control"></p>
-                    <p><b>Goles en Contra: </b><input type="text" required="" name="golesec" id="golesec" class="form-control"></p>
+                    <input type="hidden" id="idequiporeemp" name="idequiporeemp" value=""/>
+                    <input type="hidden" id="accion" name="accion" value="reemplazarEquipos"/>
+                    <input type="hidden" id="reffechar" name="reffechar" value="<?php echo $ultimaFecha; ?>"/>
+                    <p><b>Puntos: </b><input type="text" required name="puntos" id="puntos" class="form-control"></p>
+                    <p><b>Puntos FairPlay: </b><input type="text" required name="puntosfp" id="puntosfp" class="form-control"></p>
+                    <p><b>Goles en Contra: </b><input type="text" required name="golesec" id="golesec" class="form-control"></p>
                 </div>
             </form>
             </div>
@@ -337,7 +340,10 @@ $(document).ready(function(){
 	
 	$('#refequipor').change(function() {
 		$.ajax({
-				data:  {idequipo: $('#refequipor').val(), accion: 'eliminarZonasEquipos'},
+				data:  {refequipo: $('#refequipor').val(),
+						reftorneo: <?php echo $_SESSION['idtorneo_predio']; ?>, 
+						reffecha: <?php echo $ultimaFecha; ?>,  
+						accion: 'TraerZonaPorTorneoEquipo'},
 				url:   '../../ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
@@ -345,9 +351,17 @@ $(document).ready(function(){
 				},
 				success:  function (response) {
 						
-						$('.'+$('#idEliminar').val()).fadeOut( "slow", function() {
-							$(this).remove();
-						  });
+						if(response){
+							resultObj = eval (response);
+							$('#idequiporeemp').val(resultObj[1]);
+							$('#ultimoequipo').html(resultObj[0]);
+							$('#puntos').val(resultObj[2]);
+							$('#puntosfp').val(resultObj[3]);
+							$('#golesec').val(resultObj[4]);
+							$('#datosequipoultimo').show(200);
+						}else{
+							$('#datosequipoultimo').hide(200);
+						}
 						
 						url = "index.php";
 						//$(location).attr('href',url);
@@ -478,6 +492,74 @@ $(document).ready(function(){
                     $("#load").html('');
 				}
 			});
+		}
+    });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//al enviar el formulario
+    $('#cambiar').click(function(){
+		
+		if (($('#refequipor').val() != 0) && ($('#refequiporr').val() != 0))
+        {
+			//información del formulario
+			var formData = new FormData($(".formulario2")[0]);
+			var message = "";
+			//hacemos la petición ajax  
+			$.ajax({
+				url: '../../ajax/ajax.php',  
+				type: 'POST',
+				// Form data
+				//datos del formulario
+				data: formData,
+				//necesario para subir archivos via ajax
+				cache: false,
+				contentType: false,
+				processData: false,
+				//mientras enviamos el archivo
+				beforeSend: function(){
+					$("#load").html('<img src="../../imagenes/load13.gif" width="50" height="50" />');       
+				},
+				//una vez finalizado correctamente
+				success: function(data){
+
+					if (data == '') {
+                                            $(".alert").removeClass("alert-danger");
+											$(".alert").removeClass("alert-info");
+                                            $(".alert").addClass("alert-success");
+                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong>Equipo a la Zona</strong>. ');
+											$(".alert").delay(3000).queue(function(){
+												/*aca lo que quiero hacer 
+												  después de los 2 segundos de retraso*/
+												$(this).dequeue(); //continúo con el siguiente ítem en la cola
+												
+											});
+											$("#load").html('');
+											url = "index.php";
+											//$(location).attr('href',url);
+                                            
+											
+                                        } else {
+                                        	$(".alert").removeClass("alert-danger");
+                                            $(".alert").addClass("alert-danger");
+                                            $(".alert").html('<strong>Error!</strong> '+data);
+                                            $("#load").html('');
+                                        }
+				},
+				//si ha ocurrido un error
+				error: function(){
+					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
+                    $("#load").html('');
+				}
+			});
+		} else {
+			alert("Debe seleccionar ambos equipos");	
 		}
     });
 

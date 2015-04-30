@@ -164,6 +164,12 @@ switch ($accion) {
 	case 'eliminarZonasEquipos':
 		eliminarZonasEquipos($serviciosZonasEquipos);
 		break; 
+	case 'TraerZonaPorTorneoEquipo':
+		TraerZonaPorTorneoEquipo($serviciosZonasEquipos,$serviciosDatos);
+		break;
+	case 'reemplazarEquipos':
+		reemplazarEquipos($serviciosZonasEquipos);
+		break;
 	/* fin torneo-zonas-equipos */
 	
 	
@@ -1144,7 +1150,8 @@ function eliminarEquipos($serviciosEquipos) {
 function insertarConducta($serviciosFunciones) {
 	$refequipo = $_POST['refequipo'];
 	$puntos = $_POST['puntos'];
-	$res = $serviciosFunciones->modificarConductaPorEquipo($refequipo,$puntos);
+	$reffecha =$_POST['reffecha'];
+	$res = $serviciosFunciones->modificarConductaPorEquipo($refequipo,$puntos,$reffecha);
 	if ($res == true) {
 		echo '';
 	} else {
@@ -1487,6 +1494,58 @@ $id = $_POST['id'];
 $res = $serviciosZonasEquipos->eliminarZonasEquipos($id);
 echo $res;
 } 
+
+
+function TraerZonaPorTorneoEquipo($serviciosZonasEquipos,$serviciosDatos) {
+
+	$refequipo 		= $_POST['refequipo'];
+	$reffecha		= $_POST['reffecha'];
+	
+	$res = $serviciosZonasEquipos->TraerZonaPorTorneoEquipo($refequipo);
+	
+	$idequipo = 0;
+	$nombre = '';
+	$pts = 0;
+	$ptsfp = 0;
+	$golesc = 0;
+	
+	if (mysql_num_rows($res)>0) {
+		$idzona = mysql_result($res,0,0);
+		$reftorneo = mysql_result($res,0,2);
+		$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($reftorneo,$idzona,$reffecha);
+		
+		while ($row = mysql_fetch_array($res2)) {
+			if ($row['equipoactivo'] != 1) {
+			$idequipo = $row['idequipo'];
+			$nombre = utf8_encode($row['nombre']);
+			$pts = $row['pts'];
+			$ptsfp = $row['puntos'];
+			$golesc = $row['golesencontra'];
+			}
+		}
+	}
+///	$datos = array('nombre'=>$nombre,'idequipo'=>$idequipo,'pts'=>$pts,'ptsfp'=>$ptsfp,'golesc'=>$golesc);
+	$datos = array($nombre,$idequipo,$pts,$ptsfp,$golesc);
+	echo json_encode($datos);
+}
+
+
+function reemplazarEquipos($serviciosZonasEquipos) {
+	$equipoReemplazado		=	$_POST['refequipor'];
+	$equipoAReemplazado		=	$_POST['refequiporr'];
+	$pts					=	$_POST['puntos'];
+	$golesencontra			=	$_POST['golesec'];
+	$ptsfairplay			=	$_POST['puntosfp'];
+	$reffecha				=	$_POST['reffechar'];
+	
+	$res = $serviciosZonasEquipos->reemplazarEquipos($equipoReemplazado,$equipoAReemplazado,$pts,$golesencontra,$ptsfairplay,$reffecha);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+
 /* fin torneo-zonas-equipos */
 
 

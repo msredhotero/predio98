@@ -36,8 +36,8 @@ $accionEliminar		= "eliminarConducta";
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
 $tabla 			= "tbconducta";
 
-$lblCambio	 	= array("refequipo");
-$lblreemplazo	= array("Equipo");
+$lblCambio	 	= array("refequipo","reffecha");
+$lblreemplazo	= array("Equipo","Fecha");
 
 $resTipoTorneo 	= $serviciosEquipos->TraerEquipos();
 
@@ -47,8 +47,17 @@ while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
 	
 }
 
-$refdescripcion = array(0 => $cadRef);
-$refCampo[] 	= "refequipo"; 
+
+$resFechas 	= $serviciosFunciones->TraerFecha();
+
+$cadFecha = '';
+while ($rowFF = mysql_fetch_array($resFechas)) {
+	$cadFecha = $cadFecha.'<option value="'.$rowFF[0].'">'.utf8_encode($rowFF[1]).'</option>';
+	
+}
+
+$refdescripcion = array(0 => $cadRef,1=>$cadFecha);
+$refCampo 	=  array("refequipo","reffecha"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
@@ -56,7 +65,8 @@ $refCampo[] 	= "refequipo";
 
 /////////////////////// Opciones para la creacion del view  /////////////////////
 $cabeceras 		= "	<th>Equipo</th>
-				<th>Puntos</th>";
+				<th>Puntos</th>
+				<th>Fecha</th>";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
@@ -65,7 +75,7 @@ $cabeceras 		= "	<th>Equipo</th>
 
 $formulario 	= $serviciosFunciones->camposTabla("insertarConducta",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),2);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),3);
 
 
 
