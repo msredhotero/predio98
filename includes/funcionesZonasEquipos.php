@@ -662,6 +662,23 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
+	function TraerZonaPorTorneoEquipo($idEquipo) {
+		$sql  = "select g.idgrupo, g.nombre,tp.idtipotorneo
+				from dbtorneoge tge 
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+				inner
+				join	dbequipos e
+				on		e.idequipo = tge.refequipo
+				where e.idequipo = ".$idEquipo."
+				group by	e.idequipo, e.nombre,tp.idtipotorneo";
+		return $this->query($sql,0);
+	}
 	
 	function TraerEquiposZonasPorId($id) {
 		$sql  = "select 
@@ -705,6 +722,52 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);	
 	}
 	
+	
+	function reemplazarEquipos($equipoReemplazado,$equipoQueReemplaza,$pts,$golesencontra,$ptsfairplay,$reffecha) {
+		$sql = "insert into dbreemplazo
+							(idreemplazo,
+							refequipo,
+							refequiporeemplazado,
+							puntos,
+							golesencontra)
+				values
+					('',
+					".$equipoQueReemplaza.",
+					".$equipoReemplazado.",
+					".$pts.",
+					".$golesencontra.")";
+		$res = $this->query($sql,1);
+		if ((integer)$res > 0) {
+			//inserto el fairplay
+			$sqlEx = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			where c.refequipo =".$equipoQueReemplaza." and c.reffecha =".$reffecha;
+			$resEx = $this->query($sqlEx,0);
+			
+			if (mysql_num_rows($resEx)>0) {
+				//si existe le sumo
+				$sqlCM = "update tbconducta
+				set
+				puntos = puntos + ".$ptsfairplay."
+				where refequipo =".$equipoQueReemplaza;
+				$this->query($sqlCM,0);
+				
+			} else {
+				//sino existe lo inserto
+				$sqlConducta = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
+				values ('',".$equipoQueReemplaza.",".$ptsfairplay.",".$reffecha.")";
+				$this->query($sqlConducta,1);
+			}
+			
+			
+			//inserto la baja del equipo
+			$sqlBaja = "update dbtorneoge set activo = '1' where refequipo =".$equipoReemplazado;
+			$this->query($sqlBaja,0);
+			
+			return $res;
+		}
+		return '';
+	}
 	
 	function query($sql,$accion) {
 		

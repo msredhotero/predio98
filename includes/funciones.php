@@ -901,9 +901,9 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		return $this-> query($sql,0);
 	}
 	
-	function insertarConducta($refequipo,$puntos) {
-$sql = "insert into tbconducta(idconducta,refequipo,puntos)
-values ('',".$refequipo.",".$puntos.")";
+	function insertarConducta($refequipo,$puntos,$reffecha) {
+$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
+values ('',".$refequipo.",".$puntos.",".$reffecha.")";
 $res = $this->query($sql,1);
 return $res;
 }
@@ -918,14 +918,32 @@ $res = $this->query($sql,0);
 return $res;
 }
 
+function traerConductaPorFechaEquipo($refequipo,$reffecha) {
+	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			where c.refequipo =".$refequipo." and c.reffecha =".$reffecha;
+	$res = $this->query($sql,0);
+	return $res;
+}
 
-function modificarConductaPorEquipo($refequipo,$puntos) {
-$sql = "update tbconducta
-set
-puntos = puntos + ".$puntos."
-where refequipo =".$refequipo;
-$res = $this->query($sql,0);
-return $res;
+function modificarConductaPorEquipo($refequipo,$puntos,$reffecha) {
+
+	$existe = $this->traerConductaPorFechaEquipo($refequipo,$reffecha);
+	
+	if (mysql_num_rows($existe)>0) {
+		//si existe le sumo
+		$sql = "update tbconducta
+		set
+		puntos = puntos + ".$puntos."
+		where refequipo =".$refequipo;
+		$res = $this->query($sql,0);
+		
+	} else {
+		//sino existe lo inserto
+		$res = $this->insertarConducta($refequipo,$puntos,$reffecha);
+	}
+	
+	return $res;
 }
 
 
@@ -936,9 +954,10 @@ return $res;
 } 
 
 function traerConducta() {
-	$sql = "select c.idconducta,e.nombre,c.puntos from tbconducta c
+	$sql = "select c.idconducta,e.nombre,c.puntos,f.tipofecha from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
-			order by e.nombre";
+			inner join tbfechas f on f.idfecha = c.reffecha
+			order by e.nombre,c.reffecha desc";
 	$res = $this->query($sql,0);
 	return $res;
 }
