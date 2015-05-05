@@ -268,6 +268,15 @@ switch ($accion) {
 
 //////////////////////////Traer datos */
 
+function toArray($query)
+{
+    $res = array();
+    while ($row = @mysql_fetch_assoc($query)) {
+        $res[] = $row;
+    }
+    return $res;
+}
+
 
 /* Reportes */
 function traerResultadosPorTorneoZonaFecha($serviciosDatos) {
@@ -516,7 +525,7 @@ function TraerFixturePorZonaTorneo($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res2)) {
 						
 							
-							if ($row1['equipoactivo'] == false) {	
+							if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {	
 							$cad2 = $cad2.'<tr style="font-size:1.5em;">
 								<td align="right" style="padding:1px 6px;">'.$i.'</td>
 								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
@@ -657,6 +666,7 @@ function GoleadoresPagina($serviciosDatos) {
                         
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
+						if ($row1['equipoactivo'] == false) {	
                         $cad3 = $cad3.'<tr>
                             <td align="left" style="padding:1px;">'.utf8_encode($row1['apyn']).'</td>
                             <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
@@ -665,6 +675,7 @@ function GoleadoresPagina($serviciosDatos) {
                         </tr>';
          
 						$i = $i + 1;
+						}
 						}
                     $cad3 = $cad3.'</tbody>
                                 </table>
@@ -699,6 +710,7 @@ function Goleadores($serviciosDatos) {
                         
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
+						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
                         $cad3 = $cad3.'<tr style="font-size:1.5em;">
                             <td align="left" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
                             <td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
@@ -707,6 +719,7 @@ function Goleadores($serviciosDatos) {
                         </tr>';
          
 						$i = $i + 1;
+						}
 						}
                     $cad3 = $cad3.'</table>
                 
@@ -722,6 +735,8 @@ function Suspendidos($serviciosDatos) {
 	$zona		= $_POST['zona'];
 	
 	$res4 = $serviciosDatos->SuspendidosNuevo($idtorneo,$idzona,$idfecha);
+	
+	$res5 = $serviciosDatos->SuspendidosPorSiempre($idtorneo,$idzona,$idfecha);
 	
 	$cad4 = '
 	<div class="row" style="margin-top:20px;">
@@ -739,7 +754,10 @@ function Suspendidos($serviciosDatos) {
 						$i =1;
 						$restantes = 0;
 						while ($row1 = mysql_fetch_array($res4)) {
-							$restantes = $serviciosDatos->traerFechasRestantes($idfecha,$row1['refjugador'],$row1['refequipo']);
+							
+							if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
+							$restantes = $serviciosDatos->traerFechasRestantes($idfecha,$row1['refjugador'],$row1['refequipo'],$row1['refsuspendido']);
+							//echo $restantes;
 							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
 							if ($restantes != 0) { 
 								$cad4 = $cad4.'<tr style="font-size:1.5em;">
@@ -751,6 +769,22 @@ function Suspendidos($serviciosDatos) {
 								
 								$i = $i + 1;
 							}
+							}
+						}
+						
+						
+						while ($row2 = mysql_fetch_array($res5)) {
+
+
+								$cad4 = $cad4.'<tr style="font-size:1.5em;">
+									<td align="left" style="padding:1px 6px;">'.utf8_encode($row2['apyn']).'</td>
+									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['nombre']).'</td>
+									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['motivos']).'</td>
+									<td align="right" style="padding:1px 6px;">Todas</td>
+								</tr>';
+								
+								$i = $i + 1;
+
 						}
                     $cad4 = $cad4.'</table>
                 
@@ -839,14 +873,14 @@ function AmarillasAcumuladas($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res2)) {
 						
 							
-				
+						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
 							$cad2 = $cad2.'<tr style="font-size:1.5em;">
 								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
 								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
 								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['dni']).'</td>
 								<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'</td>
 							</tr>';
-
+						}
 						}
                     $cad2 = $cad2.'</table>
                 
@@ -863,7 +897,7 @@ function FairPlay($serviciosDatos) {
 	$zona		= $_POST['zona'];
 	$idfecha	= $_POST['reffecha'];
 	
-	$res2 = $serviciosDatos->fairplay($idtorneo,$idzona);
+	$res2 = $serviciosDatos->fairplay($idtorneo,$idzona,$idfecha);
 	
 	$cad2 = '
 	<div class="row">
@@ -1211,6 +1245,12 @@ function modificarJugadores($serviciosJugadores) {
 		$invitado = 0;
 	}
 	
+	if (isset($_POST['expulsado'])) {
+		$invitado = 1;
+	} else {
+		$invitado = 0;
+	}
+	
 	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado);
 	
 	
@@ -1229,9 +1269,9 @@ function modificarJugadoresEx($serviciosJugadores) {
 	$dni 		= $_POST['dni'];
 	
 	$invitado	= $_POST['invitado'];
-
+	$expulsado	= $_POST['expulsado'];
 	
-	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado);
+	$res = $serviciosJugadores->modificarJugadores($apyn,$dni,$idequipo,$id,$invitado,$expulsado);
 	
 	//echo $res;
 	
@@ -1364,17 +1404,18 @@ function insertarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
 	$motivos = str_replace("'",'',trim($_POST['motivos']));
 	$cantidadfechas = $_POST['cantidadfechas'];
 	$fechacreacion = date('Y-m-d');
+	$reffixture = $_POST['reffixture'];
 	
 	
 	
 	
-	$res = $serviciosSuspendidos->insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion);
+	$res = $serviciosSuspendidos->insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture);
 	if ((integer)$res > 0) {
 		$resFechas = $serviciosFunciones->TraerFecha();
 		$cad = 'fecha';
 		while ($rowFS = mysql_fetch_array($resFechas)) {
 			if (isset($_POST[$cad.$rowFS[0]])) {
-				$serviciosFunciones->insertarSuspendidosFechas($refjugador,$refequipo,$rowFS[0]);
+				$serviciosFunciones->insertarSuspendidosFechas($refjugador,$refequipo,$rowFS[0],$res);
 			}
 		}
 		echo '';
@@ -1389,7 +1430,9 @@ function modificarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
 	$motivos = str_replace("'",'',trim($_POST['motivos']));
 	$cantidadfechas = $_POST['cantidadfechas'];
 	$fechacreacion = date('Y-m-d');
-	$res = $serviciosSuspendidos->modificarSuspendidos($id,$refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion);
+	$reffixture = $_POST['reffixture'];
+	
+	$res = $serviciosSuspendidos->modificarSuspendidos($id,$refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture);
 	
 	
 	
@@ -1399,7 +1442,7 @@ function modificarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
 			$cad = 'fecha';
 			while ($rowFS = mysql_fetch_array($resFechas)) {
 				if (isset($_POST[$cad.$rowFS[0]])) {
-					$serviciosFunciones->insertarSuspendidosFechas($refjugador,$refequipo,$rowFS[0]);
+					$serviciosFunciones->insertarSuspendidosFechas($refjugador,$refequipo,$rowFS[0],$id);
 				}
 			}
 		echo '';
