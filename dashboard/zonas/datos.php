@@ -136,7 +136,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <h3><?php echo $Equipo; ?></h3>
 
-    <div class="boxInfoLargo">
+    <div class="boxInfoLargo" style="min-height:500px;">
         <div id="headBoxInfo">
         	<p style="color: #fff; font-size:18px; height:16px;">Modificar Jugadores Por Equipos</p>
         	
@@ -152,6 +152,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                                 <th>Apyn</th>
                                 <th>Dni</th>
                                 <th>Invitado</th>
+                                <th>Expulsado</th>
                                 <th align="center">Acciones</th>
                             </tr>
                         </thead>
@@ -175,6 +176,19 @@ if ($_SESSION['refroll_predio'] != 1) {
                                         <?php } ?>
                                     </select>
                                 </td>
+                                <td>
+                                	<select id="expulsado<?php echo $row[0]; ?>" class="form-control" name="expulsado">
+                                		<?php if ($row['expulsado'] == chr(0x01)) { ?>
+                                        <option value="0">No</option>
+                                        <option value="1" selected>Si</option>
+                                        <?php } else { ?>
+                                        <option value="0" selected>No</option>
+                                        <option value="1">Si</option>
+                                        <?php } ?>
+                                        
+                                    </select>
+                                    <?php  //echo $row['expulsado']; ?>
+                                </td>
                                 <td><button type="button" class="btn btn-warning varmodificar" id="<?php echo $row[0]; ?>" style="margin-left:0px;">Modificar</button>
                                 </td>
                                 
@@ -196,7 +210,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 
 
-<div id="crearFjugador" style=" z-index:9; display:none; height:auto; background-color:#CCC; margin-top:-100%; width:79%;" class="boxInfoLargo">
+<div id="crearFjugador" style=" z-index:9; display:none; height:auto; background-color:#CCC;position:absolute; top:20%; width:79%;" class="boxInfoLargo">
  	<form class="form-inline formulario2" role="form">
                     <div class="form-group col-md-6">
                     
@@ -284,13 +298,14 @@ $(document).ready(function(){
 	
 	*/
 	
-	function modificarJugador(id,apyn,idequipo,dni,invitado) {
+	function modificarJugador(id,apyn,idequipo,dni,invitado,expulsado) {
 		$.ajax({
 				data:  {id: id,
 						apyn: apyn,
 						idequipo: idequipo,
 						dni: dni,
 						invitado: invitado,
+						expulsado: expulsado,
 						accion: 'modificarJugadoresEx'},
 				url:   '../../ajax/ajax.php',
 				type:  'post',
@@ -311,7 +326,7 @@ $(document).ready(function(){
 		  usersid =  $(this).attr("id");
 
 		  if (!isNaN(usersid)) {
-		  		modificarJugador(usersid,$('#apyn'+usersid).val(), <?php echo $idEquipo; ?>,$('#dni'+usersid).val(),$("#invitado"+usersid).val());
+		  		modificarJugador(usersid,$('#apyn'+usersid).val(), <?php echo $idEquipo; ?>,$('#dni'+usersid).val(),$("#invitado"+usersid).val(), $("#expulsado"+usersid).val());
 				$(this).html('Modificado');
 				$(this).removeClass('btn-warning');
 				$(this).addClass('btn-success');

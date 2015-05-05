@@ -212,6 +212,14 @@ if ($_SESSION['refroll_predio'] != 1) {
                     </div>
                 </div>
             	
+                <div class="form-group col-md-6">
+               	 <label class="control-label" style="text-align:left" for="reftorneo">Fecha</label>
+                    <div class="input-group col-md-12">
+                    	<select id="reffixture" class="form-control" name="reffixture">
+                    		
+                    	</select>
+                    </div>
+                </div>
                 
                 <div class="form-group col-md-12">
                	 <label class="control-label" style="text-align:left" for="reftorneo">Motivos</label>
@@ -305,6 +313,20 @@ $(document).ready(function(){
 			},
 			success:  function (response) {
 				$('#refjugador').html(response);
+					
+			}
+		});
+		
+		$.ajax({
+			data:  {refequipo: $('#refequipo').val(),
+					accion: 'traerFixturePorEquipo'},
+			url:   '../../ajax/ajax.php',
+			type:  'post',
+			beforeSend: function () {
+				$('#reffixture').html('')	
+			},
+			success:  function (response) {
+				$('#reffixture').html(response);
 					
 			}
 		});

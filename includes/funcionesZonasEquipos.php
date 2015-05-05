@@ -762,7 +762,7 @@ class ServiciosZonasEquipos {
 			
 			//inserto la baja del equipo
 			$sqlBaja = "update dbtorneoge set activo = '1' where refequipo =".$equipoReemplazado;
-			$this->query($sqlBaja,0);
+			//$this->query($sqlBaja,0);
 			
 			return $res;
 		}

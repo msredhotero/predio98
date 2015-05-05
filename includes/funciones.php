@@ -1004,9 +1004,9 @@ mail($correo, "ComplejoShowBol", "Te enviaron un correo. Nombre: ".$nombre.", As
 
 
 
-function insertarSuspendidosFechas($refjugador,$refequipo,$reffecha) {
-$sql = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
-values ('',".$refjugador.",".$refequipo.",".$reffecha.")";
+function insertarSuspendidosFechas($refjugador,$refequipo,$reffecha,$refsuspendido) {
+$sql = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
+values ('',".$refjugador.",".$refequipo.",".$reffecha.",".$refsuspendido.")";
 $res = $this->query($sql,1);
 return $res;
 }
@@ -1045,7 +1045,7 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 
 	
 	
-	function traerPlanillas() {
+	function traerPlanillas($idtorneo,$reffecha) {
 		$sql = "select
 					*
 					from (
@@ -1069,7 +1069,8 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 						f.idfixture,
 						ff.tipofecha,
 						f.cancha,
-						DATE_FORMAT(f.Hora,'%k:%i') AS hora
+						DATE_FORMAT(f.Hora,'%k:%i') AS hora,
+						ff.idfecha
 					
 						from		dbtorneoge tge
 						inner
@@ -1091,7 +1092,7 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 						inner
 						join		tbfechas ff
 						on			ff.idfecha = f.reffecha
-						
+						where tp.idtipotorneo in (".$idtorneo.")
 						union all
 						
 						
@@ -1115,7 +1116,8 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 					f.idfixture,
 					ff.tipofecha,
 					f.cancha,
-					DATE_FORMAT(f.Hora,'%k:%i') AS hora
+					DATE_FORMAT(f.Hora,'%k:%i') AS hora,
+					ff.idfecha
 					
 					from		dbtorneoge tge
 					inner
@@ -1137,10 +1139,11 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 					inner
 					join		tbfechas ff
 					on			ff.idfecha = f.reffecha
+					where		tp.idtipotorneo in (".$idtorneo.")
 					) t
-					where t.tipofecha = 'Fecha 8' 
+					where t.idfecha = ".$reffecha."
 					order by t.idfixture";	
-		
+		//return $sql;
 		return $this-> query($sql,0);
 	}
 	
