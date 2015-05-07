@@ -8,6 +8,83 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosJ {
 	
+	function buscarJugadores($tipobusqueda,$busqueda) {
+		switch ($tipobusqueda) {
+			case '1':
+				$sql = "select j.idjugador,
+								e.nombre,
+								j.apyn,
+								j.dni,
+								(case when j.invitado = 1 then 'Si' else 'No' end) as invitado,
+								(case when j.expulsado = 1 then 'Si' else 'No' end) as expulsado 
+								
+						from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where e.nombre like '%".$busqueda."%'
+				order by e.nombre,j.apyn";
+				break;
+			case '2':
+				$sql = "select j.idjugador,
+								e.nombre,
+								j.apyn,
+								j.dni,
+								(case when j.invitado = 1 then 'Si' else 'No' end) as invitado,
+								(case when j.expulsado = 1 then 'Si' else 'No' end) as expulsado 
+								
+						from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where j.apyn like '%".$busqueda."%'
+				order by e.nombre,j.apyn";
+				break;
+			case '3':
+				$sql = "select j.idjugador,
+								e.nombre,
+								j.apyn,
+								j.dni,
+								(case when j.invitado = 1 then 'Si' else 'No' end) as invitado,
+								(case when j.expulsado = 1 then 'Si' else 'No' end) as expulsado 
+								
+						from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where j.dni like '%".$busqueda."%'
+				order by e.nombre,j.apyn";
+				break;
+			case '4':
+				$sql = "select j.idjugador,
+								e.nombre,
+								j.apyn,
+								j.dni,
+								(case when j.invitado = 1 then 'Si' else 'No' end) as invitado,
+								(case when j.expulsado = 1 then 'Si' else 'No' end) as expulsado 
+								
+						from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where j.invitado = ".$busqueda."
+				order by e.nombre,j.apyn";
+				break;
+			case '5':
+				$sql = "select j.idjugador,
+								e.nombre,
+								j.apyn,
+								j.dni,
+								(case when j.invitado = 1 then 'Si' else 'No' end) as invitado,
+								(case when j.expulsado = 1 then 'Si' else 'No' end) as expulsado 
+								
+						from dbjugadores j
+		        inner join dbequipos e
+		        on j.idequipo = e.idequipo
+				where j.expulsado = ".$busqueda."
+				order by e.nombre,j.apyn";
+				break;
+		
+		}
+		return $this->query($sql,0);
+	}
+	
 	function TraerJugadores() {
 		$sql = "select idjugador,apyn,dni from dbjugadores order by apyn";
 		return $this->query($sql,0);
@@ -22,7 +99,7 @@ class ServiciosJ {
 	}
 	
 	function TraerJugadoresPorId($id) {
-		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,e.idequipo,j.invitado from dbjugadores j
+		$sql = "select j.idjugador,j.apyn,j.dni,e.nombre,e.idequipo,j.invitado,j.expulsado from dbjugadores j
 		        inner join dbequipos e
 		        on j.idequipo = e.idequipo
 				where idjugador = ".$id;

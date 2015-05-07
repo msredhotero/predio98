@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 if (!isset($_SESSION['usua_predio']))
@@ -8,78 +9,31 @@ if (!isset($_SESSION['usua_predio']))
 } else {
 
 
-include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funciones.php');
+include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
-include ('../../includes/funcionesJugadores.php');
-include ('../../includes/funcionesEquipos.php');
 include ('../../includes/funcionesGrupos.php');
+include ('../../includes/funcionesDATOS.php');
 include ('../../includes/funcionesZonasEquipos.php');
 
+$serviciosFunciones = new Servicios();
 $serviciosUsuario 	= new ServiciosUsuarios();
 $serviciosHTML 		= new ServiciosHTML();
-$serviciosFunciones = new Servicios();
-$serviciosJugadores = new ServiciosJ();
-$serviciosEquipos	= new ServiciosE();
-$serviciosGrupos	= new ServiciosG();
-$serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$serviciosGrupos 	= new ServiciosG();
+$serviciosDatos		= new ServiciosDatos();
+$serviciosZonasEquipos = new ServiciosZonasEquipos();
 
 $fecha = date('Y-m-d');
 
-//$resProductos = $serviciosProductos->traerProductosLimite(6);
 $resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Fixture",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
+/////////////////////// Opciones de la pagina  ////////////////////
 
+$lblTitulosingular	= "Chequear";
+$lblTituloplural	= "Chequear";
 
-
-/////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbfixture";
-
-$lblCambio	 	= array("reftorneoge_a","resultado_a","reftorneoge_b","resultado_b","fechajuego","refFecha","cancha");
-$lblreemplazo	= array("Zona-Equipo 1","Resultado 1","Zona-Equipo 2","Resultado 2","Fecha Juego","Fecha","Cancha");
-
-$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonas();
-
-$cadRef = '';
-while ($rowTT = mysql_fetch_array($resZonasEquipos)) {
-	$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).' - '.utf8_encode($rowTT[2]).'</option>';
-	
-}
-
-
-$resFechas 	= $serviciosFunciones->TraerFecha();
-
-$cadRef2 = '';
-while ($rowZ = mysql_fetch_array($resFechas)) {
-	$cadRef2 = $cadRef2.'<option value="'.$rowZ[0].'">'.utf8_encode($rowZ[1]).'</option>';
-	
-}
-
-$resCanchas 	= $serviciosFunciones->TraerCanchas();
-
-$cadRef3 = '';
-while ($rowC = mysql_fetch_array($resCanchas)) {
-	$cadRef3 = $cadRef3.'<option value="'.$rowC[0].'">'.utf8_encode($rowC[1]).'</option>';
-	
-}
-
-
-$resHorarios 	= $serviciosFunciones->TraerHorarios($_SESSION['torneo_predio']);
-
-$cadRef4 = '';
-while ($rowH = mysql_fetch_array($resHorarios)) {
-	$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'">'.utf8_encode($rowH[1]).'</option>';
-	
-}
-
-
-$refdescripcion = array(0 => $cadRef,1=>$cadRef,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
-$refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","Hora"); 
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
+/////////////////////// Fin de las opciones /////////////////////
 
 /////////////////////// Opciones para la creacion del view  /////////////////////
 $cabeceras 		= "	<th>Equipo 1</th>
@@ -93,14 +47,22 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
+$cadF = '';
+$resFechas = $serviciosFunciones->TraerFecha();
+while ($rowF = mysql_fetch_array($resFechas)) {
+	$cadF = $cadF.'<option value="'.$rowF[0].'">'.$rowF[1].'</option>';	
+}
 
 
-
-$formulario 	= $serviciosFunciones->camposTabla("insertarFixture",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerFixtureSinChequear(),8);
 
 
+if ($_SESSION['refroll_predio'] != 1) {
+
+} else {
+
+	
+}
 
 
 ?>
@@ -134,9 +96,7 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">
-    <script src="../../js/bootstrap-timepicker.min.js"></script>
+
 	<style type="text/css">
 		
   
@@ -163,42 +123,56 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
 
 <div id="content">
 
-<h3>Fixture</h3>
+<h3>Fixture-Chequear</h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga del Fixture</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Seleccione la fecha para activar masivamente todos los resultados</p>
         	
         </div>
     	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-            <div class="row" style="margin-left:25px; margin-right:25px;">
-    		<?php echo $formulario; ?>
-            </div>
-            
-            <div class="row" style="margin-left:25px; margin-right:25px;">
-                <div class="alert"> </div>
-                <div id="load"> </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="chequearF" style="margin-left:0px;">Chequear Fixture</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="conductaF" style="margin-left:0px;">Cargar Conducta al Fixture</button>
-                    </li>
-                </ul>
+        	<div class="row" align="center">
+            	<form class="form-inline formulario" role="form">
+            	
+                <div class="row">
+                	<div class="form-group col-md-6">
+
+                    
+                    
+                    <div class="form-group col-md-8">
+                     <label class="control-label" style="text-align:left" for="torneo">Fecha</label>
+                        <div class="input-group col-md-12">
+                            <select id="reffecha" class="form-control" name="reffecha">
+                                <option value="0">--Seleccione--</option>
+                                <?php echo $cadF; ?>
+                                    
+                            </select>
+                        </div>
+                    </div>
+                
                 </div>
-            </div>
+                
+                <div class="row">
+                    <div class="alert"> </div>
+                    <div id="load"> </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                    <ul class="list-inline" style="margin-top:15px;">
+                        <li>
+                       	 <button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Chequear</button>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+            
             </form>
+            </div>
+           
     	</div>
     </div>
-
+    
+    
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
         	<p style="color: #fff; font-size:18px; height:16px;">Fixture Cargados</p>
@@ -208,7 +182,7 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         	<?php echo $lstCargados; ?>
     	</div>
     </div>
-    
+  
    
 </div>
 
@@ -223,33 +197,11 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
 
-<script src="../../js/bootstrap-datetimepicker.min.js"></script>
-<script src="../../js/bootstrap-datetimepicker.es.js"></script>
-
-
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$('#timepicker2').timepicker({
-		minuteStep: 15,
-		showSeconds: false,
-		showMeridian: false,
-		defaultTime: false
-		});
-	 <?php 
-		echo $serviciosHTML->validacion($tabla);
-	
-	?>
-	
-	$('#chequearF').click( function() {
-		url = "chequear.php";
-		$(location).attr('href',url);
-	});
-	
-	$('#conductaF').click( function() {
-		url = "conductafixture.php";
-		$(location).attr('href',url);
-	});
+
+
 	
 	 $('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
@@ -388,20 +340,6 @@ $(document).ready(function(){
 
 });
 </script>
-<script type="text/javascript">
-$('.form_date').datetimepicker({
-	language:  'es',
-	weekStart: 1,
-	todayBtn:  1,
-	autoclose: 1,
-	todayHighlight: 1,
-	startView: 2,
-	minView: 2,
-	forceParse: 0,
-	format: 'dd/mm/yyyy'
-});
-</script>
-
 
 <?php } ?>
 </body>
