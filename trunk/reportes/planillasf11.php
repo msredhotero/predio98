@@ -165,7 +165,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 		$pdf->SetX(5);
 		
 		if ($rowJ['suspendido'] == '0') {
-			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',false);
+			$pdf->Cell(49.5,5,strtoupper($rowJ['apyn']),1,0,'L',false);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',false);
 			$pdf->Cell(25,5,'',1,0,'C',false);
 			$pdf->Cell(17.5,5,'',1,0,'C',false);
@@ -175,7 +175,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 			$pdf->Cell(20,5,'',1,0,'C',false);
 			$pdf->Cell(13,5,'Si/No',1,0,'C',false);
 		} else {
-			$pdf->Cell(49.5,5,$rowJ['apyn'],1,0,'L',true);
+			$pdf->Cell(49.5,5,strtoupper($rowJ['apyn']),1,0,'L',true);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',true);
 			$pdf->Cell(25,5,'',1,0,'C',true);
 			$pdf->Cell(17.5,5,'',1,0,'C',true);

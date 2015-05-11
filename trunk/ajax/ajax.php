@@ -670,7 +670,7 @@ function GoleadoresPagina($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res3)) {
 						if ($row1['equipoactivo'] == false) {	
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;">'.utf8_encode($row1['apyn']).'</td>
+                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
@@ -714,7 +714,7 @@ function Goleadores($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res3)) {
 						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
                         $cad3 = $cad3.'<tr style="font-size:1.5em;">
-                            <td align="left" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
+                            <td align="left" style="padding:1px 6px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
                             <td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'</td>
  
@@ -763,7 +763,7 @@ function Suspendidos($serviciosDatos) {
 							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
 							if ($restantes != 0) { 
 								$cad4 = $cad4.'<tr style="font-size:1.5em;">
-									<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
+									<td align="left" style="padding:1px 6px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
 									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
 									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['motivos']).'</td>
 									<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
@@ -779,7 +779,7 @@ function Suspendidos($serviciosDatos) {
 
 
 								$cad4 = $cad4.'<tr style="font-size:1.5em;">
-									<td align="left" style="padding:1px 6px;">'.utf8_encode($row2['apyn']).'</td>
+									<td align="left" style="padding:1px 6px;">'.strtoupper(utf8_encode($row2['apyn'])).'</td>
 									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['nombre']).'</td>
 									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['motivos']).'</td>
 									<td align="right" style="padding:1px 6px;">Todas</td>
@@ -827,7 +827,7 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;">'.utf8_encode($row1['apyn']).'</td>
+                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
@@ -878,7 +878,7 @@ function AmarillasAcumuladas($serviciosDatos) {
 						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
 							$cad2 = $cad2.'<tr style="font-size:1.5em;">
 								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
-								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['apyn']).'</td>
+								<td align="right" style="padding:1px 6px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
 								<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['dni']).'</td>
 								<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'</td>
 							</tr>';
