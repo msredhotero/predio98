@@ -807,6 +807,25 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
+	
+	function TraerZonaPorTorneoEquipo($idTorneo,$idEquipo) {
+		$sql  = "select g.idgrupo, g.nombre
+				from dbtorneoge tge 
+				inner join dbgrupos g on tge.refgrupo = g.idgrupo
+				inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+				inner
+				join	dbequipos e
+				on		e.idequipo = tge.refequipo
+				where tp.idtipotorneo = ".$idTorneo." and e.idequipo = ".$idEquipo."
+				group by	e.idequipo, e.nombre";
+		return $this->query($sql,0);
+	}
+	
 	function TraerFixturePorId($id) {
 		$sql = "SELECT idfixture,
 					reftorneoge_a,
