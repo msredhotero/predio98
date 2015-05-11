@@ -367,8 +367,8 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulación de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
 				$res4 = $this->query($sqlSuspendido,1);
 				
-				$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
-				values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).")";
+				$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
+				values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
 				$res5 = $this->query($sql5,1);
 			}
 		}
@@ -385,8 +385,8 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			values ('',".$refequipo.",".$refjugador.",'Doble Amarilla','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
 			$res4 = $this->query($sqlSuspendido,1);
 			
-			$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha)
-			values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).")";
+			$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
+			values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
 			$res5 = $this->query($sql5,1);
 		}
 	}
@@ -475,7 +475,7 @@ function traerAmonestadosPorId($id) {
 
 
 function insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture) {
-$sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion)
+$sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
 values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_decode($cantidadfechas)."','".$fechacreacion."',".$reffixture.")";
 $res = $this->query($sql,1);
 
