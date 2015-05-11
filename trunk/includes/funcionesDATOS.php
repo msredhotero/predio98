@@ -173,6 +173,8 @@ class ServiciosDatos {
 		return $res;
 	}
 	
+	
+	
 	function traerPuntosReemplazo($idequipo) {
 		$sqlR = "select puntos from dbreemplazo where refequipo = ".$idequipo;
 		$resRR = $this->query($sqlR,0);	
@@ -1080,6 +1082,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 					on			ff.idfecha = fi.reffecha
 					where		j.idjugador = ".$idjugador."
 					and a.amarillas <> 2
+					and fi.reffecha <= ".$idfecha."
 					group by a.refequipo, e.nombre, j.apyn, j.dni
 					
 				) t
