@@ -171,7 +171,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 			$pdf->Cell(17.5,5,'',1,0,'C',false);
 			$pdf->Cell(15,5,'',1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',false);
-			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador(30,$rowJ['idjugador']),1,0,'C',false);
+			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador($reffecha,$rowJ['idjugador']),1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',false);
 			$pdf->Cell(13,5,'Si/No',1,0,'C',false);
 		} else {
@@ -181,7 +181,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 			$pdf->Cell(17.5,5,'',1,0,'C',true);
 			$pdf->Cell(15,5,'',1,0,'C',true);
 			$pdf->Cell(20,5,'',1,0,'C',true);
-			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador(30,$rowJ['idjugador']),1,0,'C',false);
+			$pdf->Cell(20,5,$serviciosDatos->traerAcumuladosAmarillasPorTorneoZonaJugador($reffecha,$rowJ['idjugador']),1,0,'C',false);
 			$pdf->Cell(20,5,'',1,0,'C',true);
 			$pdf->Cell(13,5,'(Susp.)',1,0,'C',true);	
 		}
