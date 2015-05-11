@@ -1050,6 +1050,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 											on			tp.idtipotorneo = t.reftipotorneo
 											where		tp.idtipotorneo =".$idtipoTorneo." and tge.refgrupo = ".$idzona.")
 					and a.amarillas <> 2
+					and fi.reffecha <= ".$idfecha."
 					group by a.refequipo, e.nombre, j.apyn, j.dni
 				) t
 					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
