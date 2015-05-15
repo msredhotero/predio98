@@ -36,14 +36,9 @@ $lblTituloplural	= "Chequear";
 /////////////////////// Fin de las opciones /////////////////////
 
 /////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Equipo 1</th>
-				<th>Resultado 1</th>
-				<th>Resultado 2</th>
-				<th>Equipo 2</th>
-				<th>Zona</th>
-				<th>Fecha Juego</th>
-				<th>Fecha</th>
-				<th>Hora</th>";
+$cabeceras 		= "	<th>Equipo</th>
+					<th>Fecha</th>
+				";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
@@ -54,7 +49,7 @@ while ($rowF = mysql_fetch_array($resFechas)) {
 }
 
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerFixtureSinChequear(),8);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerFixtureSinTablaConducta(),2);
 
 
 if ($_SESSION['refroll_predio'] != 1) {
@@ -127,14 +122,17 @@ if ($_SESSION['refroll_predio'] != 1) {
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Seleccione la fecha para activar masivamente todos los resultados</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Seleccione la fecha para cargar masivamente la carga de puntos de la tabla conducta</p>
         	
         </div>
     	<div class="cuerpoBox">
         	<div class="row" align="center">
             	<form class="form-inline formulario" role="form">
-            	
+            	<div class="alert alert-info" style="margin:0 15px;">
+                <h4>Cada vez que empiece una fecha nueva debera cargar esta tabla para poder sumarizar los puntos del FairPlay de cada equipo en una fecha arbitraria.</h4>
+                </div>
                 <div class="row">
+                	
                 	<div class="form-group col-md-6">
 
                     
@@ -160,7 +158,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                     <div class="col-md-12">
                     <ul class="list-inline" style="margin-top:15px;">
                         <li>
-                       	 <button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Chequear</button>
+                       	 <button id="cargar" class="btn btn-primary" style="margin-left:0px;" type="button">Cargar Tabla de conducta</button>
                         </li>
                     </ul>
                     </div>
@@ -175,7 +173,7 @@ if ($_SESSION['refroll_predio'] != 1) {
     
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Fixture Cargados</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Conducta de Fixture sin cargar</p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -188,154 +186,36 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 
 </div>
-<div id="dialog2" title="Eliminar Fixture">
-    	<p>
-        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-            ¿Esta seguro que desea eliminar el fixture?.<span id="proveedorEli"></span>
-        </p>
-        <p><strong>Importante: </strong>Si elimina el fixture se perderan todos los datos de este</p>
-        <input type="hidden" value="" id="idEliminar" name="idEliminar">
-</div>
+
 
 
 <script type="text/javascript">
 $(document).ready(function(){
 
-
-	
-	 $('.varborrar').click(function(event){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			$("#idEliminar").val(usersid);
-			$("#dialog2").dialog("open");
-
-			
-			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
-			//$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton eliminar
-
-	$("#example").on("click",'.varmodificar', function(){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			
-			url = "modificar.php?id=" + usersid;
-			$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton modificar
-
-	 $( "#dialog2" ).dialog({
-		 	
-			    autoOpen: false,
-			 	resizable: false,
-				width:600,
-				height:240,
-				modal: true,
-				buttons: {
-				    "Eliminar": function() {
-	
-						$.ajax({
-									data:  {id: $('#idEliminar').val(), accion: 'eliminarFixture'},
-									url:   '../../ajax/ajax.php',
-									type:  'post',
-									beforeSend: function () {
-											
-									},
-									success:  function (response) {
-											url = "index.php";
-											$(location).attr('href',url);
-											
-									}
-							});
-						$( this ).dialog( "close" );
-						$( this ).dialog( "close" );
-							$('html, body').animate({
-	           					scrollTop: '1000px'
-	       					},
-	       					1500);
-				    },
-				    Cancelar: function() {
-						$( this ).dialog( "close" );
-				    }
-				}
-		 
-		 
-	 		}); //fin del dialogo para eliminar
-	
-	
-	//al enviar el formulario
-    $('#cargar').click(function(){
-		
-		if (validador() == "")
-        {
-			//información del formulario
-			var formData = new FormData($(".formulario")[0]);
-			var message = "";
-			//hacemos la petición ajax  
+$('#cargar').click(function() {
+		if ($('#reffecha').val() == 0) {
+			alert("Error, debe seleccionar una fecha.");	
+		} else {
 			$.ajax({
-				url: '../../ajax/ajax.php',  
-				type: 'POST',
-				// Form data
-				//datos del formulario
-				data: formData,
-				//necesario para subir archivos via ajax
-				cache: false,
-				contentType: false,
-				processData: false,
-				//mientras enviamos el archivo
-				beforeSend: function(){
-					$("#load").html('<img src="../../imagenes/load13.gif" width="50" height="50" />');       
-				},
-				//una vez finalizado correctamente
-				success: function(data){
-
-					if (data == '') {
-                                            $(".alert").removeClass("alert-danger");
-											$(".alert").removeClass("alert-info");
-                                            $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong>Fixture</strong>. ');
-											$(".alert").delay(3000).queue(function(){
-												/*aca lo que quiero hacer 
-												  después de los 2 segundos de retraso*/
-												$(this).dequeue(); //continúo con el siguiente ítem en la cola
-												
-											});
-											$("#load").html('');
-											//url = "index.php";
-											var a = $('#reftorneoge_a option:selected').html();
-											var b = $('#reftorneoge_b option:selected').html();
-											a = a.split(' - ');
-											b = b.split(' - ');
-											
-											$('#resultados').prepend('<tr><td>' + a[1] + '</td><td></td><td></td><td>' + 
-																		+ b[1] + '</td><td>' + 
-																		a[0] + '</td><td>' + 
-																		$('#fechajuego option:selected').html() + '</td><td>' + 
-																		$('#reffecha option:selected').html() + '</td><td>' + 
-																		$('#hora option:selected').html() + '</td><td style="color:#f00;">Nuevo</td></tr>').fadeIn(300);
-											
-											//$(location).attr('href',url);
-                                            
-											
-                                        } else {
-                                        	$(".alert").removeClass("alert-danger");
-                                            $(".alert").addClass("alert-danger");
-                                            $(".alert").html('<strong>Error!</strong> '+data);
-                                            $("#load").html('');
-                                        }
-				},
-				//si ha ocurrido un error
-				error: function(){
-					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
-                    $("#load").html('');
-				}
+					data:  {reffecha: $('#reffecha').val(), 
+							accion: 'cargarTablaConducta'},
+					url:   '../../ajax/ajax.php',
+					type:  'post',
+					beforeSend: function () {
+							
+					},
+					success:  function (response) {
+							url = "conductafixture.php";
+							$(location).attr('href',url);
+							
+					}
 			});
 		}
-    });
+	});
+	
+
+
+
 	
 
 });

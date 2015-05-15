@@ -160,7 +160,7 @@ if ($_SESSION['refroll_predio'] != 1) {
                     <div class="col-md-12">
                     <ul class="list-inline" style="margin-top:15px;">
                         <li>
-                       	 <button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Chequear</button>
+                       	 <button id="chequear" class="btn btn-primary" style="margin-left:0px;" type="button">Chequear</button>
                         </li>
                     </ul>
                     </div>
@@ -175,10 +175,10 @@ if ($_SESSION['refroll_predio'] != 1) {
     
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Fixture Cargados</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Fixture Cargados sin Chequear</p>
         	
         </div>
-    	<div class="cuerpoBox">
+    	<div class="cuerpoBox" id="modificar">
         	<?php echo $lstCargados; ?>
     	</div>
     </div>
@@ -201,7 +201,26 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 
-
+	$('#chequear').click(function() {
+		if ($('#reffecha').val() == 0) {
+			alert("Error, debe seleccionar una fecha.");	
+		} else {
+			$.ajax({
+					data:  {reffecha: $('#reffecha').val(), 
+							accion: 'chequearPorFecha'},
+					url:   '../../ajax/ajax.php',
+					type:  'post',
+					beforeSend: function () {
+							
+					},
+					success:  function (response) {
+							url = "chequear.php";
+							$(location).attr('href',url);
+							
+					}
+			});
+		}
+	});
 	
 	 $('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
