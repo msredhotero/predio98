@@ -807,8 +807,102 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
+	function TraerFixtureSinTablaConducta() {
+		$sql  = "select 
+					e.idequipo, e.nombre,ff.tipofecha
+				from
+					dbtorneoge tge
+						inner join
+					dbgrupos g ON tge.refgrupo = g.idgrupo
+						inner join
+					dbtorneos t ON tge.reftorneo = t.idtorneo
+						and t.activo = 1
+						inner join
+					tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+						inner join
+					dbequipos e ON e.idequipo = tge.refequipo
+						inner join
+					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+						left join
+					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo
+						inner join
+					tbfechas ff ON ff.idfecha = fix.reffecha
+				where cc.idconducta is null
+				group by	e.idequipo, e.nombre,ff.tipofecha
+				order by e.nombre,ff.tipofecha desc";
+		return $this->query($sql,0);
+	}
 	
-	function TraerZonaPorTorneoEquipo($idTorneo,$idEquipo) {
+		function insertarConducta($refequipo,$puntos,$reffecha) {
+		$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
+		values ('',".$refequipo.",".$puntos.",".$reffecha.")";
+		$res = $this->query($sql,1);
+		return $res;
+		}
+		
+		
+		function modificarConducta($id,$refequipo,$puntos) {
+		$sql = "update tbconducta
+		set
+		refequipo = ".$refequipo.",puntos = ".$puntos."
+		where idconducta =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+		}
+
+function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
+	$sql = "select c.puntos,e.idequipo from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			where c.refequipo =".$refequipo." and c.reffecha <=".$reffecha."
+			 order by c.reffecha desc";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+	function cargarTablaConducta($reffecha) {
+		$sql  = "select 
+					e.idequipo, e.nombre,ff.tipofecha
+				from
+					dbtorneoge tge
+						inner join
+					dbgrupos g ON tge.refgrupo = g.idgrupo
+						inner join
+					dbtorneos t ON tge.reftorneo = t.idtorneo
+						and t.activo = 1
+						inner join
+					tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+						inner join
+					dbequipos e ON e.idequipo = tge.refequipo
+						inner join
+					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+						left join
+					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo
+						inner join
+					tbfechas ff ON ff.idfecha = fix.reffecha
+				where fix.reffecha = ".$reffecha." and cc.idconducta is null
+				group by	e.idequipo, e.nombre,ff.tipofecha";
+		$res = $this->query($sql,0);
+		
+		if (mysql_num_rows($res)>0) {
+			while ($row6 = mysql_fetch_array($res)) {
+				if (($reffecha - 1) == 22) {
+					$puntos = 0;
+				} else {
+					$resPuntos = $this->traerPuntosConductaPorFechaEquipo($row6[0],$reffecha-1);
+					if (mysql_num_rows($resPuntos)>0) {
+						$puntos = mysql_result($resPuntos,0,0);	
+					}
+				}
+				$this->insertarConducta($row6[0],$puntos,$reffecha);				
+			}
+		}
+		
+		return true;
+		
+	}
+	
+	
+	function TraerZonaPorTorneoEquipoNuevo($idTorneo,$idEquipo) {
 		$sql  = "select g.idgrupo, g.nombre
 				from dbtorneoge tge 
 				inner join dbgrupos g on tge.refgrupo = g.idgrupo
@@ -826,6 +920,11 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
+	function chequearPorFecha($reffecha) {
+		$sql = "update dbfixture set chequeado = 1 where reffecha = ".$reffecha;
+		return $this->query($sql,0);	
+	}
+	
 	function TraerFixturePorId($id) {
 		$sql = "SELECT idfixture,
 					reftorneoge_a,
@@ -840,7 +939,7 @@ class ServiciosZonasEquipos {
 				where idfixture = ".$id;
 		return $this->query($sql,0);	
 	}
-	
+
 	
 	function reemplazarEquipos($equipoReemplazado,$equipoQueReemplaza,$pts,$golesencontra,$ptsfairplay,$reffecha) {
 		$sql = "insert into dbreemplazo

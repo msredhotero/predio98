@@ -172,6 +172,12 @@ switch ($accion) {
 	case 'reemplazarEquipos':
 		reemplazarEquipos($serviciosZonasEquipos);
 		break;
+	case 'chequearPorFecha':
+		chequearPorFecha($serviciosZonasEquipos);
+		break;
+	case 'cargarTablaConducta':
+		cargarTablaConducta($serviciosZonasEquipos);
+		break;
 	/* fin torneo-zonas-equipos */
 	
 	
@@ -1657,6 +1663,30 @@ function reemplazarEquipos($serviciosZonasEquipos) {
 		echo 'Huvo un error al insertar datos';
 	}
 }
+
+
+function chequearPorFecha($serviciosZonasEquipos) {
+	$reffecha		=	$_POST['reffecha'];	
+	
+	$res = $serviciosZonasEquipos->chequearPorFecha($reffecha);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al chequear los datos';
+	}
+}
+
+function cargarTablaConducta($serviciosZonasEquipos) {
+	$reffecha		=	$_POST['reffecha'];	
+	
+	$res = $serviciosZonasEquipos->cargarTablaConducta($reffecha);
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al chequear los datos';
+	}
+}
+
 
 /* fin torneo-zonas-equipos */
 
