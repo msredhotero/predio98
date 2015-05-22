@@ -143,7 +143,7 @@ class ServiciosJ {
 						(case when s.refjugador is null then '0' else '1' end) as suspendido
 					from dbjugadores j 
 					left join (select distinct refjugador from dbsuspendidosfechas where reffecha = ".$reffecha.") s on j.idjugador = s.refjugador
-					where j.idequipo = ".$idequipo." and j.invitado = 0
+					where j.idequipo = ".$idequipo." and j.invitado = 0 and j.expulsado = 0
 					
 					union all
 					
@@ -155,7 +155,18 @@ class ServiciosJ {
 						(case when s.refjugador is null then '0' else '1' end) as suspendido
 					from dbjugadores j 
 					inner join (select distinct refjugador from dbsuspendidosfechas where reffecha = ".$reffecha.") s on j.idjugador = s.refjugador
-					where j.idequipo = ".$idequipo." and j.invitado = 1 
+					where j.idequipo = ".$idequipo." and j.invitado = 1 and j.expulsado = 0
+					
+					union all
+					
+					
+					select j.idjugador,
+						j.apyn,
+						j.dni ,
+						j.invitado,
+						1 as suspendido
+					from dbjugadores j 
+					where j.idequipo = ".$idequipo." and j.expulsado = 1
 					) as f
 					
 					order by f.apyn";
