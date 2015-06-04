@@ -609,7 +609,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res2)) {
 						
 							
-							if ($row1['equipoactivo'] == false) {	
+							//if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {	
 							$cad2 = $cad2.'
 							<tr>
 								<td align="center">'.$i.'</td>
@@ -630,7 +630,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 							</tr>';
 					
 							$i = $i + 1;
-							}
+							//}
 						}
                     $cad2 = $cad2.'</tbody>
                                 </table>
@@ -655,7 +655,7 @@ function GoleadoresPagina($serviciosDatos) {
 				<div class="col-md-12">
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
-                                	<h3 class="panel-title">'.$zona.'</h3>
+                                	<h3 class="panel-title">'.$zona.' Goleadores</h3>
                                 	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                                 </div>
                                 <div class="panel-body-predio" style="padding:5px 20px;">
@@ -674,7 +674,7 @@ function GoleadoresPagina($serviciosDatos) {
                         
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
-						if ($row1['equipoactivo'] == false) {	
+						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
                         $cad3 = $cad3.'<tr>
                             <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
