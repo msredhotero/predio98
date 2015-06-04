@@ -196,9 +196,9 @@ class ServiciosDatos {
 			fix.empatados,
 			fix.perdidos,
 			fix.golesafavor,
-			(case when rr.idreemplazo is null then fix.golesencontra else fix.golesencontra + rr.golesencontra end) as golesencontra,
+			(case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end) as golesencontra,
 			fix.diferencia,
-			(case when rr.idreemplazo is null then fix.pts else fix.pts + rr.puntos end) as pts,
+			(case when rr.idreemplazo is null then fix.pts + COALESCE(rrr.puntos,0) else fix.pts + rr.puntos end) as pts,
 			fix.idequipo,
 			fix.puntos,
 			fix.equipoactivo,
@@ -341,7 +341,7 @@ class ServiciosDatos {
 
 left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffecha <= '.$idfecha.'
 left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.'
-				order by fix.pts desc, fix.puntos,fix.diferencia desc,fix.golesafavor desc,fix.golesencontra,fix.ganados desc';
+				order by (case when rr.idreemplazo is null then fix.pts + COALESCE(rrr.puntos,0) else fix.pts + rr.puntos end) desc, fix.puntos,fix.diferencia desc,fix.golesafavor desc,(case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end),fix.ganados desc';
 		$res = $this->query($sql,0);
 		return $res;	
 	}
