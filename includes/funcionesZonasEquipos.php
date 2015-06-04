@@ -947,7 +947,8 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
 							refequipo,
 							refequiporeemplazado,
 							puntos,
-							golesencontra)
+							golesencontra,
+							reffecha)
 				values
 					('',
 					".$equipoQueReemplaza.",
