@@ -93,6 +93,14 @@ if (mysql_num_rows($refultimaFecha)>0) {
 	$ultimaFecha = 0;
 }
 
+
+$resFechas 	= $serviciosFunciones->TraerFecha();
+
+$cadRefFR = '';
+while ($rowFR = mysql_fetch_array($resFechas)) {
+	$cadRefFR = $cadRefFR.'<option value="'.$rowFR[0].'">'.utf8_encode($rowFR[1]).'</option>';
+	
+}
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
@@ -273,6 +281,16 @@ if ($_SESSION['refroll_predio'] != 1) {
                             <select id="refequiporr" class="form-control" name="refequiporr">
                                 <option value="0">--Seleccione--</option>
                             	<?php echo $cadEquiposR; ?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                        <label class="control-label" style="text-align:left" for="refgrupo">Fecha</label>
+                        <div class="input-group col-md-12">
+                            <select id="fecharr" class="form-control" name="fecharr">
+                                <option value="0">--Seleccione--</option>
+                            	<?php echo $cadRefFR; ?>
                             </select>
                         </div>
                     </div>

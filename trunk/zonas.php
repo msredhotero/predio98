@@ -21,7 +21,7 @@ $resUltimaFecha = $serviciosFunciones->UltimaFecha();
 
 if (mysql_num_rows($resUltimaFecha)>0) {
 	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0);
+	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0) - 1;
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
@@ -270,8 +270,8 @@ if (!isset($_GET['zona'])) {
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=19&idtorneo=1">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=20&idtorneo=1">Zona B</a></li>
                         </ul>
                     </div>
                 </div>
@@ -293,9 +293,9 @@ if (!isset($_GET['zona'])) {
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=19&idtorneo=2">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=20&idtorneo=2">Zona B</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=21&idtorneo=2">Zona C</a></li>
                         </ul>
                     </div>
                 </div>
@@ -317,9 +317,9 @@ if (!isset($_GET['zona'])) {
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
+                        	<li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=19&idtorneo=3">Zona A</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=20&idtorneo=3">Zona B</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=21&idtorneo=3">Zona C</a></li>
                         </ul>
                     </div>
                 </div>
@@ -335,7 +335,22 @@ if (!isset($_GET['zona'])) {
                     
                     <section>
                         <div class="col-md-12" align="center" style="text-align:center;">
-                        	<h3><img src="imagenes/logo2-chico.png" > Zona A</h3>
+                        	<h3><img src="imagenes/logo2-chico.png" >
+                            <?php
+								switch ($_GET['zona']) {
+									case 19:
+										echo "Zona A";
+										break;
+									case 20:	
+										echo "Zona B";
+										break;
+									case "21":
+										echo "Zona c";
+										break;
+									
+								}
+							?>
+                            </h3>
                             
                         </div>
                         
