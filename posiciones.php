@@ -21,7 +21,7 @@ $resUltimaFecha = $serviciosFunciones->UltimaFecha();
 
 if (mysql_num_rows($resUltimaFecha)>0) {
 	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0);
+	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0) - 1;
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
