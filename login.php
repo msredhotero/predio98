@@ -174,7 +174,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
             </div>
 
             <div align="center">
-				<div align="center"><p style="color:#E9E9E9; font-size:28px;">Acceso al panel de control de Carnes Victoria</p></div>
+				<div align="center"><p style="color:#E9E9E9; font-size:28px;">Acceso al panel de control</p></div>
                 <br>
             </div>
 			<form role="form" class="form-horizontal">
