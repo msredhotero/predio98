@@ -490,11 +490,16 @@ $sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cant
 values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_decode($cantidadfechas)."','".$fechacreacion."',".$reffixture.")";
 $res = $this->query($sql,1);
 
-if ($motivos == 'Roja Directa') {
+
+if (strpos($motivos,'Roja Directa') !== false) {
+	$sqlFixFecha = "select reffecha from dbfixture where idfixture =".$reffixture;
+	$resFixFecha = $this->query($sqlFixFecha,0);
+	$fechaJuego = mysql_result($resFixFecha,0,0);
+	
 	$sql3 = "update tbconducta
 			set
 			puntos = puntos + 3
-			where refequipo =".$refequipo;
+			where refequipo =".$refequipo." and reffecha =".$fechaJuego;
 	$res3 = $this->query($sql3,0);
 	
 		
