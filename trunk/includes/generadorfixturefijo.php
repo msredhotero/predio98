@@ -90,7 +90,8 @@ function traerEquipos() {
 					on t.reftipotorneo = tp.idtipotorneo
 
 					
-					where	tp.idtipotorneo = 3 and tge.refgrupo = 19
+					where	tp.idtipotorneo = 3 and tge.refgrupo = 21
+					limit 12
 			
 				";
 

@@ -1657,6 +1657,9 @@ function reemplazarEquipos($serviciosZonasEquipos) {
 	$reffecha				=	$_POST['fecharr'];
 	
 	$res = $serviciosZonasEquipos->reemplazarEquipos($equipoReemplazado,$equipoAReemplazado,$pts,$golesencontra,$ptsfairplay,$reffecha);
+	
+	//echo $res;
+	
 	if ((integer)$res > 0) {
 		echo '';
 	} else {

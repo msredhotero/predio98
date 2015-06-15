@@ -546,7 +546,9 @@ $(document).ready(function(){
 				},
 				//una vez finalizado correctamente
 				success: function(data){
-
+					
+					alert(data);
+					
 					if (data == '') {
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
