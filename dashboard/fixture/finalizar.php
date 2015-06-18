@@ -15,6 +15,7 @@ include ('../../includes/funcionesJugadores.php');
 include ('../../includes/funcionesEquipos.php');
 include ('../../includes/funcionesGrupos.php');
 include ('../../includes/funcionesZonasEquipos.php');
+include ('../../includes/generadorfixturefijo.php');
 
 $serviciosUsuario 	= new ServiciosUsuarios();
 $serviciosHTML 		= new ServiciosHTML();
@@ -23,6 +24,7 @@ $serviciosJugadores = new ServiciosJ();
 $serviciosEquipos	= new ServiciosE();
 $serviciosGrupos	= new ServiciosG();
 $serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$Generar = new GenerarFixture();
 
 $fecha = date('Y-m-d');
 
@@ -96,13 +98,27 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 
 
-$formulario 	= $serviciosFunciones->camposTabla("insertarFixture",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+$fixtureGenerardo = $Generar->Generar(38,19);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),98);
+$array = $Generar->devolverCantFilas(38,19);
 
+$filas = $array["filas"] * $array["columnas"];
 
+$fecha = 1;
+for ($i=1; $i<=$filas;$i++) {
+	
+	$date = explode("/",$_POST["datepicker".$fecha]);
+	$nuevaFecha = $date[2]."-".$date[1]."-".$date[0];
+	$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,22+$fecha,$_POST["horario".$i],$_POST["cancha".$i]);
+	//echo "aaaaaaaaaaaaaaaaaaaaaaa".$nuevaFecha;
+	if (($i % 5) == 0) {
+		$fecha += 1;
+	}
+}
 
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
 
+header('Location: generarfixture.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -134,8 +150,8 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">
+	<!--<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">-->
     <script src="../../js/bootstrap-timepicker.min.js"></script>
 	<style type="text/css">
 		
@@ -154,6 +170,49 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         $('#navigation').perfectScrollbar();
       });
     </script>
+<script>
+
+  $(function() {
+
+ //Array para dar formato en español
+
+  $.datepicker.regional['es'] =
+  {
+  closeText: 'Cerrar',
+  prevText: 'Previo',
+  nextText: 'Próximo',
+
+  monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+  monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+  'Jul','Ago','Sep','Oct','Nov','Dic'],
+  monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+  dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+  dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
+  dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+  dateFormat: 'dd/mm/yy', firstDay: 0,
+  initStatus: 'Selecciona la fecha', isRTL: false};
+
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+ //miDate: fecha de comienzo D=días | M=mes | Y=año
+ //maxDate: fecha tope D=días | M=mes | Y=año
+    $( "#datepicker1" ).datepicker({ minDate: "", maxDate: "+2M +10D" });
+	$( "#datepicker2" ).datepicker({ minDate: "", maxDate: "+3M +10D" });
+	$( "#datepicker3" ).datepicker({ minDate: "", maxDate: "+4M +10D" });
+	$( "#datepicker4" ).datepicker({ minDate: "", maxDate: "+5M +10D" });
+	$( "#datepicker5" ).datepicker({ minDate: "", maxDate: "+6M +10D" });
+	$( "#datepicker6" ).datepicker({ minDate: "", maxDate: "+7M +10D" });
+	$( "#datepicker7" ).datepicker({ minDate: "", maxDate: "+8M +10D" });
+	$( "#datepicker8" ).datepicker({ minDate: "", maxDate: "+9M +10D" });
+	$( "#datepicker9" ).datepicker({ minDate: "", maxDate: "+10M +10D" });
+	$( "#datepicker10" ).datepicker({ minDate: "", maxDate: "+11M +10D" });
+	$( "#datepicker11" ).datepicker({ minDate: "", maxDate: "+12M +10D" });
+	$( "#datepicker12" ).datepicker({ minDate: "", maxDate: "+13M +10D" });
+	$( "#datepicker13" ).datepicker({ minDate: "", maxDate: "+14M +10D" });
+	$( "#datepicker14" ).datepicker({ minDate: "", maxDate: "+15M +10D" });
+  });
+  </script>
+
 </head>
 
 <body>
@@ -171,34 +230,7 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         	
         </div>
     	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
-            <div class="row" style="margin-left:25px; margin-right:25px;">
-    		<?php echo $formulario; ?>
-            </div>
-            
-            <div class="row" style="margin-left:25px; margin-right:25px;">
-                <div class="alert"> </div>
-                <div id="load"> </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-primary" id="generar" style="margin-left:0px;">Generar Fixture</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="chequearF" style="margin-left:0px;">Chequear Fixture</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="conductaF" style="margin-left:0px;">Cargar Conducta al Fixture</button>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            </form>
+    		<h1>Fixture Generado Correctamente</h1>
     	</div>
     </div>
 
@@ -226,8 +258,8 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
 
-<script src="../../js/bootstrap-datetimepicker.min.js"></script>
-<script src="../../js/bootstrap-datetimepicker.es.js"></script>
+<!--<script src="../../js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/bootstrap-datetimepicker.es.js"></script>-->
 
 
 
@@ -249,17 +281,12 @@ $(document).ready(function(){
 		$(location).attr('href',url);
 	});
 	
-	$('#generar').click( function() {
-		url = "generarfixture.php";
-		$(location).attr('href',url);
-	});
-	
 	$('#conductaF').click( function() {
 		url = "conductafixture.php";
 		$(location).attr('href',url);
 	});
 	
-	$('.varborrar').click(function(event){
+	 $('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -272,22 +299,6 @@ $(document).ready(function(){
 			alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton eliminar
-	
-	
-	$('.estadistica').click(function(event){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			url = "../estadisticas/estadisticas.php?id="+usersid;
-			$(location).attr('href',url);
-
-			
-			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
-			//$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton estadisticas
-	
 
 	$("#example").on("click",'.varmodificar', function(){
 		  usersid =  $(this).attr("id");
@@ -413,18 +424,31 @@ $(document).ready(function(){
 });
 </script>
 <script type="text/javascript">
-$('.form_date').datetimepicker({
-	language:  'es',
-	weekStart: 1,
-	todayBtn:  1,
-	autoclose: 1,
-	todayHighlight: 1,
-	startView: 2,
-	minView: 2,
-	forceParse: 0,
-	format: 'dd/mm/yyyy'
-});
-</script>
+	$(".form_date1").datetimepicker({
+		language:  "es",
+		weekStart: 1,
+		todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		format: "dd/mm/yyyy"
+	});
+	</script>
+    <script type="text/javascript">
+	$(".form_date2").datetimepicker({
+		language:  "es",
+		weekStart: 1,
+		todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		format: "dd/mm/yyyy"
+	});
+	</script>
 
 
 <?php } ?>

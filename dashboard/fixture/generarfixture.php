@@ -15,6 +15,7 @@ include ('../../includes/funcionesJugadores.php');
 include ('../../includes/funcionesEquipos.php');
 include ('../../includes/funcionesGrupos.php');
 include ('../../includes/funcionesZonasEquipos.php');
+include ('../../includes/generadorfixturefijo.php');
 
 $serviciosUsuario 	= new ServiciosUsuarios();
 $serviciosHTML 		= new ServiciosHTML();
@@ -23,6 +24,7 @@ $serviciosJugadores = new ServiciosJ();
 $serviciosEquipos	= new ServiciosE();
 $serviciosGrupos	= new ServiciosG();
 $serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$Generar = new GenerarFixture();
 
 $fecha = date('Y-m-d');
 
@@ -94,15 +96,11 @@ $cabeceras 		= "	<th>Equipo 1</th>
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
 
+$fixtureGenerardo = $Generar->Generar(38,19);
 
-$formulario 	= $serviciosFunciones->camposTabla("insertarFixture",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),98);
-
-
-
-
+//die(var_dump($fixtureGenerardo));
 ?>
 
 <!DOCTYPE HTML>
@@ -134,8 +132,8 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
 	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
-    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">
+	<!--<link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">-->
     <script src="../../js/bootstrap-timepicker.min.js"></script>
 	<style type="text/css">
 		
@@ -154,6 +152,55 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         $('#navigation').perfectScrollbar();
       });
     </script>
+<script>
+
+  $(function() {
+
+ //Array para dar formato en español
+
+  $.datepicker.regional['es'] =
+  {
+  closeText: 'Cerrar',
+  prevText: 'Previo',
+  nextText: 'Próximo',
+
+  monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+  monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+  'Jul','Ago','Sep','Oct','Nov','Dic'],
+  monthStatus: 'Ver otro mes', yearStatus: 'Ver otro año',
+  dayNames: ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'],
+  dayNamesShort: ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'],
+  dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sa'],
+  dateFormat: 'dd/mm/yy', firstDay: 0,
+  initStatus: 'Selecciona la fecha', isRTL: false};
+
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+ //miDate: fecha de comienzo D=días | M=mes | Y=año
+ //maxDate: fecha tope D=días | M=mes | Y=año
+    $( "#datepicker1" ).datepicker({ minDate: "", maxDate: "+2M +10D" });
+	$( "#datepicker2" ).datepicker({ minDate: "", maxDate: "+3M +10D" });
+	$( "#datepicker3" ).datepicker({ minDate: "", maxDate: "+4M +10D" });
+	$( "#datepicker4" ).datepicker({ minDate: "", maxDate: "+5M +10D" });
+	$( "#datepicker5" ).datepicker({ minDate: "", maxDate: "+6M +10D" });
+	$( "#datepicker6" ).datepicker({ minDate: "", maxDate: "+7M +10D" });
+	$( "#datepicker7" ).datepicker({ minDate: "", maxDate: "+8M +10D" });
+	$( "#datepicker8" ).datepicker({ minDate: "", maxDate: "+9M +10D" });
+	$( "#datepicker9" ).datepicker({ minDate: "", maxDate: "+10M +10D" });
+	$( "#datepicker10" ).datepicker({ minDate: "", maxDate: "+11M +10D" });
+	$( "#datepicker11" ).datepicker({ minDate: "", maxDate: "+12M +10D" });
+	$( "#datepicker12" ).datepicker({ minDate: "", maxDate: "+13M +10D" });
+	$( "#datepicker13" ).datepicker({ minDate: "", maxDate: "+14M +10D" });
+	$( "#datepicker14" ).datepicker({ minDate: "", maxDate: "+15M +10D" });
+	$( "#datepicker15" ).datepicker({ minDate: "", maxDate: "+16M +10D" });
+	$( "#datepicker16" ).datepicker({ minDate: "", maxDate: "+17M +10D" });
+	$( "#datepicker17" ).datepicker({ minDate: "", maxDate: "+18M +10D" });
+	$( "#datepicker18" ).datepicker({ minDate: "", maxDate: "+19M +10D" });
+	$( "#datepicker19" ).datepicker({ minDate: "", maxDate: "+20M +10D" });
+	$( "#datepicker20" ).datepicker({ minDate: "", maxDate: "+21M +10D" });
+  });
+  </script>
+
 </head>
 
 <body>
@@ -171,9 +218,82 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         	
         </div>
     	<div class="cuerpoBox">
-    		<form class="form-inline formulario" role="form">
+    		<form class="form-inline formulario" role="form" method="post" action="finalizar.php">
             <div class="row" style="margin-left:25px; margin-right:25px;">
-    		<?php echo $formulario; ?>
+    		<?php 
+			//die(var_dump($fixtureGenerardo));
+			$total = 1;
+			if (count($fixtureGenerardo)>0) {
+			for ($i=0;$i<=8;$i++) {
+			echo '<div class="form-group col-md-12">
+				
+				<div class="panel panel-default">
+					  <div class="panel-heading">
+						<h3 class="panel-title">Fecha '.($i + 1).'</h3>
+					  </div>
+					  <div class="panel-body">
+					  <div class="form-group col-md-3">
+					  	<label>Equipo A</label>
+					  </div>
+					  <div class="form-group col-md-3">
+					  	<label>Horario</label>
+					  </div>
+					  <div class="form-group col-md-3">
+					  	<label>Cancha</label>
+					  </div>
+					  <div class="form-group col-md-3">
+					  	<label>Equipo B</label>
+					  </div>';
+			foreach ($fixtureGenerardo as $item) {
+				$lstEquipos = explode("***",$item[$i]);
+				
+				echo '
+					  	<div class="form-group col-md-3">
+						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control">
+                                
+                                <option value="'.$lstEquipos[2].'">'.$lstEquipos[0].'</option>
+                                '.$cadRef.'
+                         </select>
+						 </div>
+						 
+						 <div class="form-group col-md-3">
+						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control">
+                                
+                                '.$cadRef4.'    
+                         </select>
+						 </div>
+						 
+						 
+						  <div class="form-group col-md-3">
+						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control">
+                                '.$cadRef3.'
+                         </select>
+						 </div>
+						 
+						 
+						 <div class="form-group col-md-3">
+						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control">
+                                <option value="'.$lstEquipos[3].'">'.$lstEquipos[1].'</option>
+                                '.$cadRef.' 
+                         </select>
+						 </div>';
+						 $total += 1;
+			}
+			echo '
+				
+				
+				Fecha Juego '.($i + 1).' <input type="text" id="datepicker'.($i + 1).'" name="datepicker'.($i + 1).'" value="'.date('d/m/Y').'" />
+				
+				</div>
+					</div></div>
+					';
+			}
+			echo '<input type="hidden" id="cantfechas" name="cantfechas" value="'.($i + 1).'" />';
+			echo '<input type="hidden" id="total" name="total" value="'.$total.'" />';
+			} else {
+				echo '<h2>Ya fue Cargado el Fixture completo para este torneo';	
+			}
+			?>
             </div>
             
             <div class="row" style="margin-left:25px; margin-right:25px;">
@@ -184,17 +304,12 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
                     <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                    	<?php if (count($fixtureGenerardo)>0) { ?>
+                        <button type="submit" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        <?php } ?>
+                        <button type="button" class="btn btn-default" id="volver" style="margin-left:0px;">Volver</button>
                     </li>
-                    <li>
-                        <button type="button" class="btn btn-primary" id="generar" style="margin-left:0px;">Generar Fixture</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="chequearF" style="margin-left:0px;">Chequear Fixture</button>
-                    </li>
-                    <li>
-                        <button type="button" class="btn btn-success" id="conductaF" style="margin-left:0px;">Cargar Conducta al Fixture</button>
-                    </li>
+
                 </ul>
                 </div>
             </div>
@@ -226,8 +341,8 @@ $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasE
         <input type="hidden" value="" id="idEliminar" name="idEliminar">
 </div>
 
-<script src="../../js/bootstrap-datetimepicker.min.js"></script>
-<script src="../../js/bootstrap-datetimepicker.es.js"></script>
+<!--<script src="../../js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../js/bootstrap-datetimepicker.es.js"></script>-->
 
 
 
@@ -249,8 +364,8 @@ $(document).ready(function(){
 		$(location).attr('href',url);
 	});
 	
-	$('#generar').click( function() {
-		url = "generarfixture.php";
+	$('#volver').click( function() {
+		url = "index.php";
 		$(location).attr('href',url);
 	});
 	
@@ -259,7 +374,7 @@ $(document).ready(function(){
 		$(location).attr('href',url);
 	});
 	
-	$('.varborrar').click(function(event){
+	 $('.varborrar').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -272,22 +387,6 @@ $(document).ready(function(){
 			alert("Error, vuelva a realizar la acción.");	
 		  }
 	});//fin del boton eliminar
-	
-	
-	$('.estadistica').click(function(event){
-		  usersid =  $(this).attr("id");
-		  if (!isNaN(usersid)) {
-			url = "../estadisticas/estadisticas.php?id="+usersid;
-			$(location).attr('href',url);
-
-			
-			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
-			//$(location).attr('href',url);
-		  } else {
-			alert("Error, vuelva a realizar la acción.");	
-		  }
-	});//fin del boton estadisticas
-	
 
 	$("#example").on("click",'.varmodificar', function(){
 		  usersid =  $(this).attr("id");
@@ -340,7 +439,7 @@ $(document).ready(function(){
 	
 	
 	//al enviar el formulario
-    $('#cargar').click(function(){
+    $('#cargar2').click(function(){
 		
 		if (validador() == "")
         {
@@ -412,19 +511,7 @@ $(document).ready(function(){
 
 });
 </script>
-<script type="text/javascript">
-$('.form_date').datetimepicker({
-	language:  'es',
-	weekStart: 1,
-	todayBtn:  1,
-	autoclose: 1,
-	todayHighlight: 1,
-	startView: 2,
-	minView: 2,
-	forceParse: 0,
-	format: 'dd/mm/yyyy'
-});
-</script>
+
 
 
 <?php } ?>
