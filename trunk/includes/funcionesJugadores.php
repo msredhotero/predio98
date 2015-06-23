@@ -412,7 +412,7 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			
 		$fechaJuego = mysql_result($resFixFecha,0,0);
 		$refTorneo = mysql_result($resFixFecha,0,1);
-		$refTipoTorneo = mysql_result($resFixFecha,0,1);
+		$refTipoTorneo = mysql_result($resFixFecha,0,2);
 			
 		if ($amarillas == 1) {
 			
