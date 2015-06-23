@@ -1030,15 +1030,15 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					inner
 					join		dbjugadores j
 					on			j.idjugador = a.refjugador
-					inner
-					join		dbfixture fi
+					inner 
+					join 		(select idfixture,reffecha from dbfixture fix
+									inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
+									or fix.reftorneoge_b = tge.idtorneoge
+									inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
+									and tt.reftipotorneo = ".$idtipoTorneo."
+									and tt.activo = 1
+									group by idfixture,reffecha) fi
 					on			fi.idfixture = a.reffixture
-					inner
-                    join		dbtorneoge tge
-                    on			fi.reftorneoge_a = tge.idtorneoge or fi.reftorneoge_b = tge.idtorneoge
-                    inner
-                    join		dbtorneos tt
-                    on			tt.idtorneo = tge.reftorneo and tt.reftipotorneo = ".$idtipoTorneo." and tt.activo = 1
 					inner
 					join		tbfechas ff
 					on			ff.idfecha = fi.reffecha
