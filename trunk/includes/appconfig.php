@@ -5,18 +5,18 @@ date_default_timezone_set('America/Buenos_Aires');
 class appconfig {
 
 function conexion() {
-		/*
+		
 		$hostname = "localhost";
-		$database = "db_prediobck5";
+		$database = "db_prediobck6";
 		$username = "root";
 		$password = "";
-		*/
 		
+		/*
 		$hostname = "localhost";
 		$database = "wwwpredi_98nicolas";
 		$username = "wwwpredi_98nico";
 		$password = "nicolaspredio98";
-		
+		*/
 		
 		/*
 		$hostname = "localhost";
