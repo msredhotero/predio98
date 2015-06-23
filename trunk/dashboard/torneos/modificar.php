@@ -175,6 +175,9 @@ if ($_SESSION['refroll_predio'] != 1) {
                         <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
                     </li>
                     <li>
+                        <button type="button" class="btn btn-danger varhistorial" id="<?php echo $id; ?>" style="margin-left:0px;">Pasar al Historial</button>
+                    </li>
+                    <li>
                         <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
                     </li>
                 </ul>
@@ -218,6 +221,33 @@ $(document).ready(function(){
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
 			$("#dialog2").dialog("open");
+
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	
+	$('.varhistorial').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$.ajax({
+					data:  {id: usersid, 
+							accion: 'pasarAlHistorial'},
+					url:   '../../ajax/ajax.php',
+					type:  'post',
+					beforeSend: function () {
+							
+					},
+					success:  function (response) {
+							url = "index.php";
+							$(location).attr('href',url);
+							
+					}
+			});
 
 			
 			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;

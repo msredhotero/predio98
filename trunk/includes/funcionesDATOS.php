@@ -15,7 +15,7 @@ class ServiciosDatos {
 	}
 	
 	function traerZonasPorTorneo($idtorneo) {
-		$sql = "select tge.refgrupo,g.nombre 
+		$sql = "select tge.refgrupo,g.nombre, t.idtorneo 
 				from dbtorneoge tge 
 				inner join dbgrupos g on tge.refgrupo = g.idgrupo
 				inner 
@@ -25,7 +25,7 @@ class ServiciosDatos {
 				        join tbtipotorneo tp
 				        on t.reftipotorneo = tp.idtipotorneo
 				where tp.idtipotorneo =".$idtorneo." 
-				group by	refgrupo,nombre ";
+				group by	refgrupo,nombre, t.idtorneo ";
 		return $this->query($sql,0);	
 	}
 	
@@ -223,13 +223,15 @@ class ServiciosDatos {
 		        (sum(case when r.resultado_a = r.resultado_b then 1 else 0 end) * 1)) as pts,
 		        r.idequipo,
 				fp.puntos,
-				(case when r.equipoactivo = 0 then false else true end) as equipoactivo
+				(case when r.equipoactivo = 0 then false else true end) as equipoactivo,
+		r.idtorneo
 		
 				from (
 				SELECT
 				e.idequipo,
 				e.nombre,
 				t.activo,
+				t.idtorneo,
 				f.tipofecha,
 				fi.hora,
 				(case when fi.resultado_a is null then (select
@@ -278,18 +280,20 @@ class ServiciosDatos {
 				where tge.refgrupo = '.$zona.'
 				and tp.idtipotorneo = '.$idtorneo.'
 				and fi.reffecha <= '.$idfecha.' 
+				and t.activo = 1
 				UNION all
 				
 				SELECT
 				e.idequipo,
 				e.nombre,
 				t.activo,
+				t.idtorneo,
 				f.tipofecha,
 				fi.hora,
 				(case when fi.resultado_b is null then (select
 															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
 															from		tbgoleadores gg
-															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
+															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 														
 						from dbtorneoge tge
 						inner 
 						join dbtorneos t
@@ -320,7 +324,7 @@ class ServiciosDatos {
 				else fi.resultado_a end) as resultado_a,
 				fi.reffecha,
 				tge.refgrupo,
-				tge.activo as equipoactivo
+				tge.activo as equipoactivo	
 				FROM
 				dbtorneoge tge
 				Inner Join dbequipos e ON tge.refequipo = e.idequipo
@@ -332,10 +336,13 @@ class ServiciosDatos {
 				where tge.refgrupo = '.$zona.'
 				and tp.idtipotorneo = '.$idtorneo.'
 				and fi.reffecha <= '.$idfecha.' 
+				and t.activo = 1
 				) as r
 				inner
-				join	(select refequipo,puntos as puntos from tbconducta where reffecha ='.$idfecha.') fp
-				on		r.idequipo = fp.refequipo
+				join	(select refequipo,puntos as puntos, reftorneo from tbconducta where reffecha ='.$idfecha.'
+				) fp
+				on		r.idequipo = fp.refequipo and fp.reftorneo = r.idtorneo
+				inner join dbtorneos t ON t.idtorneo = fp.reftorneo and t.activo = 1
 				group by r.nombre,r.idequipo 
 ) as fix
 
@@ -1027,6 +1034,12 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					join		dbfixture fi
 					on			fi.idfixture = a.reffixture
 					inner
+                    join		dbtorneoge tge
+                    on			fi.reftorneoge_a = tge.idtorneoge or fi.reftorneoge_b = tge.idtorneoge
+                    inner
+                    join		dbtorneos tt
+                    on			tt.idtorneo = tge.reftorneo and tt.reftipotorneo = ".$idtipoTorneo." and tt.activo = 1
+					inner
 					join		tbfechas ff
 					on			ff.idfecha = fi.reffecha
 					
@@ -1044,7 +1057,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 											on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
 											inner
 											join		dbtorneos t
-											on			t.idtorneo = tge.reftorneo
+											on			t.idtorneo = tge.reftorneo and t.activo = 1
 											inner
 											join		tbtipotorneo tp
 											on			tp.idtipotorneo = t.reftipotorneo
@@ -1073,17 +1086,24 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 					join		dbequipos e
 					on			e.idequipo = a.refequipo
 					inner
+					join		dbtorneoge tge
+					on			tge.refequipo = a.refequipo
+					inner
+					join		dbtorneos t
+					on			t.idtorneo = tge.reftorneo		
+					inner
 					join		dbjugadores j
 					on			j.idjugador = a.refjugador
 					inner
 					join		dbfixture fi
-					on			fi.idfixture = a.reffixture
+					on			fi.idfixture = a.reffixture and tge.idtorneoge = fi.reftorneoge_a
 					inner
 					join		tbfechas ff
 					on			ff.idfecha = fi.reffecha
 					where		j.idjugador = ".$idjugador."
 					and a.amarillas <> 2
 					and fi.reffecha <= ".$idfecha."
+					and t.activo = 1
 					group by a.refequipo, e.nombre, j.apyn, j.dni
 					
 				) t
@@ -1111,12 +1131,12 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 				join	dbtorneoge tge
 				on		tge.refequipo = ss.refequipo
 				inner 
-									join dbtorneos t
-									on tge.reftorneo = t.idtorneo and t.activo = 1
-				
-									inner 
-									join tbtipotorneo tp
-									on t.reftipotorneo = tp.idtipotorneo
+				join dbtorneos t
+				on tge.reftorneo = t.idtorneo and t.activo = 1 and t.idtorneo = ss.reftorneo
+
+				inner 
+				join tbtipotorneo tp
+				on t.reftipotorneo = tp.idtipotorneo
 				
 				where	tp.idtipotorneo = ".$idtipoTorneo." and tge.refgrupo = ".$idzona." and ss.reffecha = ".$reffecha."
 				group by e.nombre, ss.puntos

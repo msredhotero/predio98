@@ -58,9 +58,9 @@ if (mysql_num_rows($respusu) > 0) {
 		$_SESSION['email_predio'] = mysql_result($resppass,0,1);
 		$_SESSION['refroll_predio'] = mysql_result($resppass,0,3);
 		
-		$sqlTorneo = "select descripciontorneo from tbtipotorneo where idtipotorneo =".$torneo;
+		$sqlTorneo = "select descripciontorneo,idtipotorneo from tbtipotorneo where idtipotorneo =".$torneo;
 		$_SESSION['torneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,0);
-		$_SESSION['idtorneo_predio'] = $torneo;
+		$_SESSION['idtorneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,1);
 	}
 	
 }	else {

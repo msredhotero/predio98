@@ -355,10 +355,16 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 	$res = $this->query($sql,1);
 	if ((integer)$res > 0) {
 		
-		$sqlFixFecha = "select reffecha from dbfixture where idfixture =".$reffixture;
+		$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
+						from dbfixture fix 
+						inner join dbtorneoge tge
+						on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+						where fix.idfixture = ".$reffixture."
+						group by fix.reffecha, tge.reftorneo";
 		$resFixFecha = $this->query($sqlFixFecha,0);
 			
 		$fechaJuego = mysql_result($resFixFecha,0,0);
+		$refTorneo = mysql_result($resFixFecha,0,1);
 			
 		if ($amarillas == 1) {
 			
@@ -370,7 +376,7 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			$sql = "update tbconducta
 					set
 					puntos = puntos + 1
-					where refequipo =".$refequipo." and reffecha =".$fechaJuego;
+					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 			$res2 = $this->query($sql,0);	
 			
 			if ($cantidad == 3) {
@@ -389,7 +395,7 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			$sql = "update tbconducta
 					set
 					puntos = puntos + 3
-					where refequipo =".$refequipo." and reffecha =".$fechaJuego;
+					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 			$res3 = $this->query($sql,0);
 			
 			$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
@@ -424,12 +430,22 @@ $resC = $this->query($sqlC,0);
 $reffixture = mysql_result($resC,0,1);
 $refequipo = mysql_result($resC,0,0);
 $resamarillas = mysql_result($resC,0,2);
-
+/*
 $sqlFixFecha = "select reffecha from dbfixture where idfixture =".$reffixture;
 		$resFixFecha = $this->query($sqlFixFecha,0);
 			
 		$fechaJuego = mysql_result($resFixFecha,0,0);
-
+*/
+$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
+				from dbfixture fix 
+				inner join dbtorneoge tge
+				on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+				where fix.idfixture = ".$reffixture."
+				group by fix.reffecha, tge.reftorneo";
+$resFixFecha = $this->query($sqlFixFecha,0);
+	
+$fechaJuego = mysql_result($resFixFecha,0,0);
+$refTorneo = mysql_result($resFixFecha,0,1);
 //////////// descuento de la tabla de conducta  ////////////////		
 if ($resamarillas == 2) {
 	$descuento = 3;	
@@ -439,7 +455,7 @@ if ($resamarillas == 2) {
 $sqlFP = "update tbconducta
 					set
 					puntos = puntos - ".$descuento."
-					where refequipo =".$refequipo." and reffecha =".$fechaJuego;
+					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 $this->query($sqlFP,0);
 
 
@@ -492,14 +508,23 @@ $res = $this->query($sql,1);
 
 
 if (strpos($motivos,'Roja Directa') !== false) {
-	$sqlFixFecha = "select reffecha from dbfixture where idfixture =".$reffixture;
-	$resFixFecha = $this->query($sqlFixFecha,0);
-	$fechaJuego = mysql_result($resFixFecha,0,0);
 	
+	$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
+				from dbfixture fix 
+				inner join dbtorneoge tge
+				on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+				where fix.idfixture = ".$reffixture."
+				group by fix.reffecha, tge.reftorneo";
+	$resFixFecha = $this->query($sqlFixFecha,0);
+		
+	$fechaJuego = mysql_result($resFixFecha,0,0);
+	$refTorneo = mysql_result($resFixFecha,0,1);
+
+
 	$sql3 = "update tbconducta
 			set
 			puntos = puntos + 3
-			where refequipo =".$refequipo." and reffecha =".$fechaJuego;
+			where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 	$res3 = $this->query($sql3,0);
 	
 		

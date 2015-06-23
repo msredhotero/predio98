@@ -634,6 +634,7 @@ class Servicios {
 			
 	}
 
+
 	Function TraerUsuario($nombre,$pass) {
 		
 		require_once 'appconfig.php';
@@ -954,9 +955,12 @@ return $res;
 } 
 
 function traerConducta() {
-	$sql = "select c.idconducta,e.nombre,c.puntos,f.tipofecha from tbconducta c
+	$sql = "select c.idconducta,e.nombre,c.puntos,f.tipofecha , t.nombre
+			from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
 			inner join tbfechas f on f.idfecha = c.reffecha
+			inner join dbtorneos t on t.idtorneo = c.reftorneo
+			where t.activo = 1
 			order by e.nombre,c.reffecha desc";
 	$res = $this->query($sql,0);
 	return $res;
@@ -1028,10 +1032,10 @@ $res = $this->query($sql,0);
 return $res;
 } 
 
-function traerSuspendidosPorFechas($refjugador,$refequipo) {
+function traerSuspendidosPorFechas($refjugador,$refequipo,$idSuspendido) {
 	$sql = "select sp.idsuspendidofecha, sp.refjugador, sp.refequipo, sp.reffecha
 			from dbsuspendidosfechas sp 
-			where sp.refjugador =".$refjugador." and sp.refequipo =".$refequipo;	
+			where sp.refjugador =".$refjugador." and sp.refequipo =".$refequipo." and refsuspendido =".$idSuspendido;	
 	$res = $this->query($sql,0);
 	return $res;
 }
@@ -1092,7 +1096,7 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 						inner
 						join		tbfechas ff
 						on			ff.idfecha = f.reffecha
-						where tp.idtipotorneo in (".$idtorneo.")
+						where tp.idtipotorneo in (".$idtorneo.") and t.activo = 1
 						union all
 						
 						
@@ -1139,7 +1143,7 @@ function traerSuspendidosPorFechas($refjugador,$refequipo) {
 					inner
 					join		tbfechas ff
 					on			ff.idfecha = f.reffecha
-					where		tp.idtipotorneo in (".$idtorneo.")
+					where		tp.idtipotorneo in (".$idtorneo.") and t.activo = 1
 					) t
 					where t.idfecha = ".$reffecha."
 					order by t.idfixture";	
