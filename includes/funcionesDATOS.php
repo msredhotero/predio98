@@ -1040,6 +1040,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 									inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
 									and tt.reftipotorneo = ".$idtipoTorneo."
 									and tt.activo = 1
+									and fix.reffecha = ".$idfecha."
 									group by idfixture,reffecha) fi
 					on			fi.idfixture = a.reffixture
 					inner
