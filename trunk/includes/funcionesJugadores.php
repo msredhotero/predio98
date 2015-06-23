@@ -312,7 +312,8 @@ function traerGoleadoresPorId($id) {
 
 
 
-function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador) {
+function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador,$idtipoTorneo) {
+		/*
 		$sql = "select
 				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
 				from
@@ -339,7 +340,51 @@ function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador) {
 				) t
 					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
 					
-					order by t.nombre, t.apyn";	
+					order by t.nombre, t.apyn";	*/
+					
+		$sql = "select
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio
+				from
+				(
+				select
+					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
+					, (case when rr.idreemplazo is null then false else true end) as reemplzado
+					, (case when rrr.idreemplazo is null then 0 else 1 end) as volvio
+					from		tbamonestados a
+					inner
+					join		dbequipos e
+					on			e.idequipo = a.refequipo
+					inner
+					join		dbjugadores j
+					on			j.idjugador = a.refjugador
+					/*inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture*/
+					inner 
+					join 		(select idfixture,reffecha from dbfixture fix
+									inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
+									or fix.reftorneoge_b = tge.idtorneoge
+									inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
+									and tt.reftipotorneo = ".$idtipoTorneo."
+									and tt.activo = 1
+									group by idfixture,reffecha) fi
+					on			fi.idfixture = a.reffixture
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = fi.reffecha
+					
+left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= ".$idfecha."
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = ".$idtipoTorneo."
+					
+					where	j.idjugador = ".$idjugador."
+					and a.amarillas <> 2
+					and fi.reffecha <= ".$idfecha."
+					group by a.refequipo, e.nombre, j.apyn, j.dni
+				) t
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.") or (cantidad > 3 and ultimafecha = ".$idfecha.")
+					
+					order by (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) desc,t.nombre, t.apyn";
+								
 		$res = $this-> query($sql,0);
 		if (mysql_num_rows($res)>0) {
 			return mysql_result($res,0,'cantidad');
@@ -355,23 +400,26 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 	$res = $this->query($sql,1);
 	if ((integer)$res > 0) {
 		
-		$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
+		$sqlFixFecha = "select fix.reffecha, tge.reftorneo, t.reftipotorneo
 						from dbfixture fix 
 						inner join dbtorneoge tge
 						on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+						inner join dbtorneos t 
+						on  t.idtorneo = tge.reftorneo
 						where fix.idfixture = ".$reffixture."
-						group by fix.reffecha, tge.reftorneo";
+						group by fix.reffecha, tge.reftorneo, t.reftipotorneo";
 		$resFixFecha = $this->query($sqlFixFecha,0);
 			
 		$fechaJuego = mysql_result($resFixFecha,0,0);
 		$refTorneo = mysql_result($resFixFecha,0,1);
+		$refTipoTorneo = mysql_result($resFixFecha,0,1);
 			
 		if ($amarillas == 1) {
 			
 			//// verificar que este en la tabla de conducta  ///
 			//// si esta modificar los puntos /////
 			
-			$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador($fechaJuego,$refjugador);
+			$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador($fechaJuego,$refjugador,$refTipoTorneo);
 			
 			$sql = "update tbconducta
 					set
