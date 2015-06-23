@@ -1030,6 +1030,9 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					inner
 					join		dbjugadores j
 					on			j.idjugador = a.refjugador
+					/*inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture*/
 					inner 
 					join 		(select idfixture,reffecha from dbfixture fix
 									inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
@@ -1066,7 +1069,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 					and fi.reffecha <= ".$idfecha."
 					group by a.refequipo, e.nombre, j.apyn, j.dni
 				) t
-					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.") or (cantidad > 3 and ultimafecha = ".$idfecha.")
 					
 					order by (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) desc,t.nombre, t.apyn";	
 		return $this-> query($sql,0);
