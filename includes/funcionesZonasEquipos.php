@@ -194,7 +194,7 @@ class ServiciosZonasEquipos {
 					 
 					 ) w
 					 where w.idequipoa = ".$idequipo." or w.idequipob = ".$idequipo." 
-					 order by w.nombre,w.fecha,w.hora";
+					 order by w.idfixture desc,w.nombre,w.hora";
 
 		return $this-> query($sql,0);
 	}
@@ -731,13 +731,16 @@ class ServiciosZonasEquipos {
 	
 	function TraerEquiposSinZona() {
 		$sql  = "select
-					e.IdEquipo, e.Nombre
+					e.idequipo, e.nombre
 				from		dbequipos e
 				left
 				join		dbtorneoge tge
-				on			tge.refequipo = e.IdEquipo
-				where		tge.IdTorneoGE is null
-				order by e.Nombre";
+				on			tge.refequipo = e.idequipo
+				inner
+				join		dbtorneos t
+				on			t.idtorneo = tge.reftorneo
+				where		tge.idtorneoge is null and t.activo = 1
+				order by e.nombre";
 		return $this->query($sql,0);
 		
 	}
@@ -756,7 +759,27 @@ class ServiciosZonasEquipos {
 			inner
 							join		tbtipotorneo tp
 							on			tp.idtipotorneo = t.reftipotorneo
-			where tp.descripciontorneo = '".$_SESSION['torneo_predio']."'
+			where tp.descripciontorneo = '".$_SESSION['torneo_predio']."' and t.activo = 1
+			order by g.nombre, e.nombre";
+		return $this->query($sql,0);
+	}
+	
+	
+	function TraerEquiposZonasPorZonas($idzona) {
+		$sql  = "select 
+			tge.idtorneoge, g.nombre, e.nombre, t.nombre, tge.prioridad
+		from
+			dbequipos e
+				inner join
+			dbtorneoge tge ON tge.refequipo = e.idequipo
+				inner join
+			dbgrupos g ON g.idgrupo = tge.refgrupo
+				inner join
+			dbtorneos t ON t.idtorneo = tge.reftorneo
+			inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = t.reftipotorneo
+			where tp.descripciontorneo = '".$_SESSION['torneo_predio']."' and t.activo = 1 and tge.refgrupo = ".$idzona."
 			order by g.nombre, e.nombre";
 		return $this->query($sql,0);
 	}
@@ -832,9 +855,9 @@ class ServiciosZonasEquipos {
 		return $this->query($sql,0);
 	}
 	
-		function insertarConducta($refequipo,$puntos,$reffecha) {
-		$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
-		values ('',".$refequipo.",".$puntos.",".$reffecha.")";
+		function insertarConducta($refequipo,$puntos,$reffecha,$reftorneo) {
+		$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha,reftorneo)
+		values ('',".$refequipo.",".$puntos.",".$reffecha.",".$reftorneo.")";
 		$res = $this->query($sql,1);
 		return $res;
 		}
@@ -860,7 +883,7 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
 
 	function cargarTablaConducta($reffecha) {
 		$sql  = "select 
-					e.idequipo, e.nombre,ff.tipofecha
+					e.idequipo, e.nombre,ff.tipofecha, t.idtorneo
 				from
 					dbtorneoge tge
 						inner join
@@ -875,11 +898,13 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
 						inner join
 					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
 						left join
-					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo
+					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo and cc.reftorneo = t.idtorneo
 						inner join
 					tbfechas ff ON ff.idfecha = fix.reffecha
 				where fix.reffecha = ".$reffecha." and cc.idconducta is null
 				group by	e.idequipo, e.nombre,ff.tipofecha";
+		
+		//return $sql;
 		$res = $this->query($sql,0);
 		
 		if (mysql_num_rows($res)>0) {
@@ -892,7 +917,7 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
 						$puntos = mysql_result($resPuntos,0,0);	
 					}
 				}
-				$this->insertarConducta($row6[0],$puntos,$reffecha);				
+				$this->insertarConducta($row6[0],$puntos,$reffecha,$row6[3]);				
 			}
 		}
 		

@@ -1683,6 +1683,8 @@ function cargarTablaConducta($serviciosZonasEquipos) {
 	$reffecha		=	$_POST['reffecha'];	
 	
 	$res = $serviciosZonasEquipos->cargarTablaConducta($reffecha);
+	//echo $res;
+	
 	if ((integer)$res > 0) {
 		echo '';
 	} else {

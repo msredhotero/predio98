@@ -75,7 +75,7 @@ $cabeceras 		= "	<th>Equipo</th>
 
 $formulario 	= $serviciosFunciones->camposTabla("insertarConducta",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),3);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosFunciones->traerConducta(),4);
 
 
 

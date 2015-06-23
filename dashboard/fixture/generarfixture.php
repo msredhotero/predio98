@@ -41,7 +41,7 @@ $tabla 			= "dbfixture";
 $lblCambio	 	= array("reftorneoge_a","resultado_a","reftorneoge_b","resultado_b","fechajuego","refFecha","cancha");
 $lblreemplazo	= array("Zona-Equipo 1","Resultado 1","Zona-Equipo 2","Resultado 2","Fecha Juego","Fecha","Cancha");
 
-$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonas();
+$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonasPorZonas($_GET['idzona']);
 
 $cadRef = '';
 while ($rowTT = mysql_fetch_array($resZonasEquipos)) {
@@ -98,8 +98,9 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
 
-$fixtureGenerardo = $Generar->Generar(38,19);
+$fixtureGenerardo = $Generar->Generar($_GET['idtorneo'],$_GET['idzona']);
 
+$cantFechas = mysql_num_rows($resZonasEquipos) - 1;
 //die(var_dump($fixtureGenerardo));
 ?>
 
@@ -219,36 +220,33 @@ $fixtureGenerardo = $Generar->Generar(38,19);
         </div>
     	<div class="cuerpoBox">
     		<form class="form-inline formulario" role="form" method="post" action="finalizar.php">
-            <div class="row" style="margin-left:25px; margin-right:25px;">
+            <div class="row" style="margin-left:5px; margin-right:5px;">
     		<?php 
 			//die(var_dump($fixtureGenerardo));
 			$total = 1;
 			if (count($fixtureGenerardo)>0) {
-			for ($i=0;$i<=8;$i++) {
-			echo '<div class="form-group col-md-12">
-				
-				<div class="panel panel-default">
-					  <div class="panel-heading">
+			for ($i=0;$i<$cantFechas;$i++) {
+			echo '
+
 						<h3 class="panel-title">Fecha '.($i + 1).'</h3>
-					  </div>
-					  <div class="panel-body">
-					  <div class="form-group col-md-3">
+
+					  <div class="form-group col-md-4">
 					  	<label>Equipo A</label>
 					  </div>
-					  <div class="form-group col-md-3">
+					  <div class="form-group col-md-2">
 					  	<label>Horario</label>
 					  </div>
-					  <div class="form-group col-md-3">
+					  <div class="form-group col-md-2">
 					  	<label>Cancha</label>
 					  </div>
-					  <div class="form-group col-md-3">
+					  <div class="form-group col-md-4">
 					  	<label>Equipo B</label>
 					  </div>';
 			foreach ($fixtureGenerardo as $item) {
 				$lstEquipos = explode("***",$item[$i]);
 				
 				echo '
-					  	<div class="form-group col-md-3">
+					  	<div class="form-group col-md-4">
 						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control">
                                 
                                 <option value="'.$lstEquipos[2].'">'.$lstEquipos[0].'</option>
@@ -256,7 +254,7 @@ $fixtureGenerardo = $Generar->Generar(38,19);
                          </select>
 						 </div>
 						 
-						 <div class="form-group col-md-3">
+						 <div class="form-group col-md-2">
 						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control">
                                 
                                 '.$cadRef4.'    
@@ -264,14 +262,14 @@ $fixtureGenerardo = $Generar->Generar(38,19);
 						 </div>
 						 
 						 
-						  <div class="form-group col-md-3">
+						  <div class="form-group col-md-2">
 						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control">
                                 '.$cadRef3.'
                          </select>
 						 </div>
 						 
 						 
-						 <div class="form-group col-md-3">
+						 <div class="form-group col-md-4">
 						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control">
                                 <option value="'.$lstEquipos[3].'">'.$lstEquipos[1].'</option>
                                 '.$cadRef.' 
@@ -284,8 +282,7 @@ $fixtureGenerardo = $Generar->Generar(38,19);
 				
 				Fecha Juego '.($i + 1).' <input type="text" id="datepicker'.($i + 1).'" name="datepicker'.($i + 1).'" value="'.date('d/m/Y').'" />
 				
-				</div>
-					</div></div>
+		
 					';
 			}
 			echo '<input type="hidden" id="cantfechas" name="cantfechas" value="'.($i + 1).'" />';

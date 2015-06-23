@@ -62,7 +62,7 @@ while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
 
 $resFechas = $serviciosFunciones->TraerFecha();
 
-$resFS = $serviciosFunciones->traerSuspendidosPorFechas( mysql_result($resResultado,0,'idjugador'),mysql_result($resResultado,0,'refequipo'));
+$resFS = $serviciosFunciones->traerSuspendidosPorFechas( mysql_result($resResultado,0,'idjugador'),mysql_result($resResultado,0,'refequipo'),$id);
 
 
 	while ($subrow = mysql_fetch_array($resFS)) {
