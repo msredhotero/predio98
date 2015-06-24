@@ -287,6 +287,8 @@ $cantFechas = mysql_num_rows($resZonasEquipos) - 1;
 			}
 			echo '<input type="hidden" id="cantfechas" name="cantfechas" value="'.($i + 1).'" />';
 			echo '<input type="hidden" id="total" name="total" value="'.$total.'" />';
+			echo '<input type="hidden" id="idtorneo" name="idtorneo" value="'.$_GET['idtorneo'].'" />';
+			echo '<input type="hidden" id="idzona" name="idzona" value="'.$_GET['idzona'].'" />';
 			} else {
 				echo '<h2>Ya fue Cargado el Fixture completo para este torneo';	
 			}

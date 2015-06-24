@@ -44,6 +44,43 @@ switch ($accion) {
 	case 'modificarCliente':
 		modificarCliente($serviciosUsuarios);
 		break;
+
+/* PARA Sedes */
+case 'insertarSedes':
+insertarSedes($serviciosFunciones);
+break;
+case 'modificarSedes':
+modificarSedes($serviciosFunciones);
+break;
+case 'eliminarSedes':
+eliminarSedes($serviciosFunciones);
+break;
+
+/* Fin */
+/* PARA Horarios */
+case 'insertarHorarios':
+insertarHorarios($serviciosFunciones);
+break;
+case 'modificarHorarios':
+modificarHorarios($serviciosFunciones);
+break;
+case 'eliminarHorarios':
+eliminarHorarios($serviciosFunciones);
+break;
+
+/* Fin */
+/* PARA Canchas */
+case 'insertarCanchas':
+insertarCanchas($serviciosFunciones);
+break;
+case 'modificarCanchas':
+modificarCanchas($serviciosFunciones);
+break;
+case 'eliminarCanchas':
+eliminarCanchas($serviciosFunciones);
+break;
+
+/* Fin */
 	
 	/* para los torneos */
 	case 'insertarTorneo':
@@ -284,6 +321,95 @@ function toArray($query)
     }
     return $res;
 }
+
+/* PARA Canchas */
+function insertarCanchas($serviciosCanchas) {
+$cancha = $_POST['cancha'];
+$res = $serviciosCanchas->insertarCanchas($cancha);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarCanchas($serviciosCanchas) {
+$id = $_POST['id'];
+$cancha = $_POST['cancha'];
+$res = $serviciosCanchas->modificarCanchas($id,$cancha);
+if ($res == true) {
+echo '';
+} else {
+echo 'Huvo un error al modificar datos';
+}
+}
+function eliminarCanchas($serviciosCanchas) {
+$id = $_POST['id'];
+$res = $serviciosCanchas->eliminarCanchas($id);
+echo $res;
+}
+
+/* Fin */ 
+
+/* PARA Horarios */
+function insertarHorarios($serviciosHorarios) {
+$horario = $_POST['horario'];
+$reftipotorneo = $_POST['reftipotorneo'];
+$res = $serviciosHorarios->insertarHorarios($horario,$reftipotorneo);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarHorarios($serviciosHorarios) {
+$id = $_POST['id'];
+$horario = $_POST['horario'];
+$reftipotorneo = $_POST['reftipotorneo'];
+$res = $serviciosHorarios->modificarHorarios($id,$horario,$reftipotorneo);
+if ($res == true) {
+echo '';
+} else {
+echo 'Huvo un error al modificar datos';
+}
+}
+function eliminarHorarios($serviciosHorarios) {
+$id = $_POST['id'];
+$res = $serviciosHorarios->eliminarHorarios($id);
+echo $res;
+}
+
+/* Fin */ 
+
+
+/* PARA Sedes */
+function insertarSedes($serviciosSedes) {
+$nombre = $_POST['nombre'];
+$direccion = $_POST['direccion'];
+$res = $serviciosSedes->insertarSedes($nombre,$direccion);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarSedes($serviciosSedes) {
+$id = $_POST['id'];
+$nombre = $_POST['nombre'];
+$direccion = $_POST['direccion'];
+$res = $serviciosSedes->modificarSedes($id,$nombre,$direccion);
+if ($res == true) {
+echo '';
+} else {
+echo 'Huvo un error al modificar datos';
+}
+}
+function eliminarSedes($serviciosSedes) {
+$id = $_POST['id'];
+$res = $serviciosSedes->eliminarSedes($id);
+echo $res;
+}
+
+/* Fin */ 
 
 
 /* Reportes */
@@ -1125,7 +1251,8 @@ function traerTorneoPorTipoTorneo($serviciosFunciones) {
 
 function cambiarTorneo($serviciosFunciones) {
 	$idtipotorneo		=	$_POST['reftipotorneo'];
-	$idtorneo			=	$_POST['reftorneo'];
+	$idtorneo = '';
+	//$idtorneo			=	$_POST['reftorneo'];
 	
 	$res = $serviciosFunciones->cambiarTorneo($idtipotorneo,$idtorneo);
 	//echo $res;
