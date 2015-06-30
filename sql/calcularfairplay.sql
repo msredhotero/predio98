@@ -1,9 +1,12 @@
 select
-t.tipofecha, t.nombre, sum(t.puntos) as puntos
+*
+from (
+select
+t.tipofecha, t.nombre, sum(t.puntos) as puntos, t.idequipo, t.idfecha
 from
 (
 	select
-	f.tipofecha,e.nombre, sum(a.amarillas) as puntos, f.idfecha
+	f.tipofecha,e.nombre, sum(a.amarillas) as puntos, f.idfecha, e.idequipo
 	from		tbamonestados a
 	inner
 	join		dbequipos e
@@ -14,8 +17,13 @@ from
 	inner
 	join		tbfechas f
 	on			f.idfecha = fix.reffecha
-	where		a.amarillas = 1
-	group by 	f.tipofecha,e.nombre, f.idfecha
+	inner
+	join		dbtorneoge tge
+	on			tge.refequipo = e.idequipo
+				and fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge 
+
+	where		a.amarillas = 1 and tge.reftorneo = 37
+	group by 	f.tipofecha,e.nombre, f.idfecha, e.idequipo
 	
 /*
 	union all
@@ -38,7 +46,7 @@ from
 	union all
 
 	select
-	f.tipofecha,e.nombre, sum(3) as puntos, sp.idfecha
+	f.tipofecha,e.nombre, sum(3) as puntos, sp.idfecha, e.idequipo
 	from		tbsuspendidos a
 	inner
 	join		dbequipos e
@@ -49,7 +57,26 @@ from
 	inner
 	join		tbfechas f
 	on			f.idfecha = sp.idfecha -1
-	group by 	f.tipofecha,e.nombre, sp.idfecha
+	inner
+	join		dbfixture fix
+	on			fix.idfixture = a.reffixture
+	inner
+	join		dbtorneoge tge
+	on			tge.refequipo = e.idequipo
+				and fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge 
+
+	where		tge.reftorneo = 37
+	group by 	f.tipofecha,e.nombre, sp.idfecha, e.idequipo
 ) as t
-group by t.tipofecha, t.nombre
-order by    t.nombre,t.idfecha
+
+group by t.tipofecha, t.nombre, t.idequipo, t.idfecha
+) as tt
+
+inner
+join		dbtorneoge tge
+on			tge.refequipo = tt.idequipo and tge.reftorneo = 37
+inner
+join		dbfixture fix
+on			fix.reftorneoge_a = tge.idtorneoge and fix.reffecha = tt.idfecha
+where		tt.idfecha = 24
+order by 	2
