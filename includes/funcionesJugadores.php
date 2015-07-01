@@ -560,7 +560,7 @@ function traerAmonestadosPorId($id) {
 function insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture) {
 $sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
 values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_decode($cantidadfechas)."','".$fechacreacion."',".$reffixture.")";
-//$res = $this->query($sql,1);
+$res = $this->query($sql,1);
 
 
 if (strpos($motivos,'Roja Directa') !== false) {
