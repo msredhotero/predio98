@@ -1622,7 +1622,7 @@ function insertarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
 		}
 		echo '';
 	} else {
-		echo 'Huvo un error al insertar datos';
+		echo 'Huvo un error al insertar datos'.$res;
 	}
 }
 function modificarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {

@@ -1101,27 +1101,27 @@ function traerSuspendidosPorFechas($refjugador,$refequipo,$idSuspendido) {
 						
 						
 						select 
-					e.Nombre,
-					e.nombrecapitan,
-					e.telefonocapitan,
-					e.emailcapitan,
-					e.facebookcapitan,
-					e.nombresubcapitan,
-					e.telefonosubcapitan,
-					e.emailsubcapitan,
-					e.facebooksubcapitan,
-					g.nombre as zona,
-					g.idgrupo,
-					t.nombre as torneo,
-					t.idtorneo,
-					tp.idtipotorneo,
-					tp.descripciontorneo,
-					e.idequipo,
-					f.idfixture,
-					ff.tipofecha,
-					f.cancha,
-					DATE_FORMAT(f.Hora,'%k:%i') AS hora,
-					ff.idfecha
+							e.nombre,
+							e.nombrecapitan,
+							e.telefonocapitan,
+							e.emailcapitan,
+							e.facebookcapitan,
+							e.nombresubcapitan,
+							e.telefonosubcapitan,
+							e.emailsubcapitan,
+							e.facebooksubcapitan,
+							g.nombre as zona,
+							t.idtorneo,
+							tp.idtipotorneo,
+							g.idgrupo,
+							t.nombre as torneo,
+							tp.descripciontorneo,
+							e.idequipo,
+							f.idfixture,
+							ff.tipofecha,
+							f.cancha,
+							DATE_FORMAT(f.Hora, '%k:%i') AS hora,
+							ff.idfecha
 					
 					from		dbtorneoge tge
 					inner
