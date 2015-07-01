@@ -513,12 +513,20 @@ $res = $this->query($sql,0);
 return $res;
 } 
 
-function traerAmonestados() {
+function traerAmonestados($idtipoTorneo) {
 	$sql = "select g.idamonestado,j.apyn, j.dni, e.nombre, ff.tipofecha, g.amarillas 
 			from tbamonestados g 
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
-			inner join dbfixture f on f.idfixture = g.reffixture
+			inner 
+			join 		(select idfixture,reffecha from dbfixture fix
+							inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
+							or fix.reftorneoge_b = tge.idtorneoge
+							inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
+							and tt.reftipotorneo in (".$idtipoTorneo.")
+							and tt.activo = 1
+							group by idfixture,reffecha) f
+			on f.idfixture = g.reffixture
 			inner join tbfechas ff on f.reffecha = ff.idfecha";
 	$res = $this->query($sql,0);
 	return $res;
@@ -552,7 +560,7 @@ function traerAmonestadosPorId($id) {
 function insertarSuspendidos($refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture) {
 $sql = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
 values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_decode($cantidadfechas)."','".$fechacreacion."',".$reffixture.")";
-$res = $this->query($sql,1);
+//$res = $this->query($sql,1);
 
 
 if (strpos($motivos,'Roja Directa') !== false) {
@@ -564,7 +572,7 @@ if (strpos($motivos,'Roja Directa') !== false) {
 				where fix.idfixture = ".$reffixture."
 				group by fix.reffecha, tge.reftorneo";
 	$resFixFecha = $this->query($sqlFixFecha,0);
-		
+		//return $sqlFixFecha;
 	$fechaJuego = mysql_result($resFixFecha,0,0);
 	$refTorneo = mysql_result($resFixFecha,0,1);
 
@@ -574,7 +582,7 @@ if (strpos($motivos,'Roja Directa') !== false) {
 			puntos = puntos + 3
 			where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 	$res3 = $this->query($sql3,0);
-	
+	//return $sql3;
 		
 }
 

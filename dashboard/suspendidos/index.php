@@ -377,7 +377,7 @@ $(document).ready(function(){
 									},
 									success:  function (response) {
 											url = "index.php";
-											$(location).attr('href',url);
+											//$(location).attr('href',url);
 											
 									}
 							});
