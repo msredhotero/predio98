@@ -563,28 +563,28 @@ values ('',".$refequipo.",".$refjugador.",'".utf8_decode($motivos)."','".utf8_de
 $res = $this->query($sql,1);
 
 
-if (strpos($motivos,'Roja Directa') !== false) {
-	
-	$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
-				from dbfixture fix 
-				inner join dbtorneoge tge
-				on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
-				where fix.idfixture = ".$reffixture."
-				group by fix.reffecha, tge.reftorneo";
-	$resFixFecha = $this->query($sqlFixFecha,0);
-		//return $sqlFixFecha;
-	$fechaJuego = mysql_result($resFixFecha,0,0);
-	$refTorneo = mysql_result($resFixFecha,0,1);
-
-
-	$sql3 = "update tbconducta
-			set
-			puntos = puntos + 3
-			where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
-	$res3 = $this->query($sql3,0);
-	//return $sql3;
+	if (strpos($motivos,'Roja Directa') !== false) {
 		
-}
+		$sqlFixFecha = "select fix.reffecha, tge.reftorneo 
+					from dbfixture fix 
+					inner join dbtorneoge tge
+					on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+					where fix.idfixture = ".$reffixture."
+					group by fix.reffecha, tge.reftorneo";
+		$resFixFecha = $this->query($sqlFixFecha,0);
+			//return $sqlFixFecha;
+		$fechaJuego = mysql_result($resFixFecha,0,0);
+		$refTorneo = mysql_result($resFixFecha,0,1);
+	
+	
+		$sql3 = "update tbconducta
+				set
+				puntos = puntos + 3
+				where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
+		$res3 = $this->query($sql3,0);
+		//return $sql3;
+			
+	}
 
 return $res;
 }
@@ -609,6 +609,27 @@ function eliminarSuspendidos($id) {
 
 
 $resS = $this->traerSuspendidosPorId($id);
+    //////////////////////// TRAIGO los datos para descontar el FairPlay ///////////////////////
+	$sqlFixFecha = "select fix.reffecha, tge.reftorneo, t.reftipotorneo
+					from dbfixture fix 
+					inner join dbtorneoge tge
+					on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
+					inner join dbtorneos t 
+					on  t.idtorneo = tge.reftorneo
+					where fix.idfixture = ".mysql_result($resS,0,'reffixture')."
+					group by fix.reffecha, tge.reftorneo, t.reftipotorneo";
+	$resFixFecha = $this->query($sqlFixFecha,0);
+		
+	$fechaJuego = mysql_result($resFixFecha,0,0);
+	$refTorneo = mysql_result($resFixFecha,0,1);
+	$refTipoTorneo = mysql_result($resFixFecha,0,2);
+
+	$sqlFP = "update tbconducta
+					set
+					puntos = puntos - 3
+					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
+	$this->query($sqlFP,0);
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 $sql2 = "delete from dbsuspendidosfechas where refjugador =".mysql_result($resS,0,'idjugador')." and refequipo = ".mysql_result($resS,0,'refequipo')." and refsuspendido =".$id;
 $res2 = $this->query($sql2,0);

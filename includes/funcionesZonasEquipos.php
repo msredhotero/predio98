@@ -872,10 +872,10 @@ class ServiciosZonasEquipos {
 		return $res;
 		}
 
-function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
+function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha,$idtorneo) {
 	$sql = "select c.puntos,e.idequipo from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
-			where c.refequipo =".$refequipo." and c.reffecha <=".$reffecha."
+			where c.refequipo =".$refequipo." and c.reffecha <=".$reffecha." and c.reftorneo = ".$idtorneo." 
 			 order by c.reffecha desc";
 	$res = $this->query($sql,0);
 	return $res;
@@ -912,7 +912,7 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha) {
 				if (($reffecha - 1) == 22) {
 					$puntos = 0;
 				} else {
-					$resPuntos = $this->traerPuntosConductaPorFechaEquipo($row6[0],$reffecha-1);
+					$resPuntos = $this->traerPuntosConductaPorFechaEquipo($row6[0],$reffecha-1,$row6[3]);
 					if (mysql_num_rows($resPuntos)>0) {
 						$puntos = mysql_result($resPuntos,0,0);	
 					}
