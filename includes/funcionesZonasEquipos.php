@@ -1074,7 +1074,91 @@ function insertarReemplazos($refequipo,$refequiporeemplazado,$puntos,$golesencon
 $sql = "insert into dbreemplazo(idreemplazo,refequipo,refequiporeemplazado,puntos,golesencontra,reffecha,reftorneo)
 values ('',".$refequipo.",".$refequiporeemplazado.",".$puntos.",".$golesencontra.",".$reffecha.",".$reftorneo.")";
 $res = $this->query($sql,1);
-return $res;
+
+
+////////////////////////////// VERIFICO el Fixture para cambiar las fechas con el equipo nuevo  ///////////////////////
+$sqlFixA = "select
+						distinct f.idfixture
+						from		dbtorneoge tge
+						inner
+						join		dbfixture f
+						on			tge.idtorneoge = f.reftorneoge_a
+						where		f.reffecha >= ".$reffecha." and tge.refequipo = ".$equipoReemplazado;
+		$resFixA = $this->query($sqlFixA,0);
+		
+		$sqlFixB = "select
+						distinct f.idfixture
+						from		dbtorneoge tge
+						inner
+						join		dbfixture f
+						on			tge.idtorneoge = f.reftorneoge_b
+						where		f.reffecha >= ".$reffecha." and tge.refequipo = ".$equipoReemplazado;
+		$resFixB = $this->query($sqlFixB,0);
+		
+		$sqlTGE = "select tge.refgrupo,tge.reftorneo 
+					from dbtorneoge tge 
+					where tge.refequipo = ".$equipoReemplazado;
+		$resTGE = $this->query($sqlTGE,0);
+		
+//		
+		
+		if (mysql_num_rows($resTGE)>0) {
+			$idZona = mysql_result($resTGE,0,0);
+			$idTorneoNuevo = mysql_result($resTGE,0,1);
+			$existe = $this->TraerIdTorneoGE($idZona,$equipoQueReemplaza,$idTorneoNuevo);
+			
+			if (mysql_num_rows($existe)>0) {
+				$idTorneoGENuevo = mysql_result($existe,0,'idtorneoeg');
+			} else {
+				$idTorneoGENuevo = $this->insertarZonasEquipos($idZona,$idTorneoNuevo,$equipoQueReemplaza,1);
+			}
+		}
+
+
+if ((integer)$res > 0) {
+			
+			if (mysql_num_rows($resTGE)>0) {
+				//update del fixture del equipo que sale
+				while ($rowTA = mysql_fetch_array($resFixA)) {
+					$sqlUpdateA = "update dbfixture set reftorneoge_a = ".$idTorneoGENuevo." where idfixture = ".$rowTA[0];
+					$this->query($sqlUpdateA,0);
+				}
+				
+				while ($rowTB = mysql_fetch_array($resFixB)) {
+					$sqlUpdateB = "update dbfixture set reftorneoge_b = ".$idTorneoGENuevo." where idfixture = ".$rowTB[0];
+					$this->query($sqlUpdateB,0);
+				}
+			}
+			
+			//inserto el fairplay
+			$sqlEx = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
+			inner join dbequipos e on e.idequipo = c.refequipo 
+			where c.refequipo =".$equipoQueReemplaza." and c.reffecha =".$reffecha;
+			$resEx = $this->query($sqlEx,0);
+			
+			if (mysql_num_rows($resEx)>0) {
+				//si existe le sumo
+				$sqlCM = "update tbconducta
+				set
+				puntos = puntos + ".$ptsfairplay."
+				where refequipo =".$equipoQueReemplaza;
+				$this->query($sqlCM,0);
+				
+			} else {
+				//sino existe lo inserto
+				$sqlConducta = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
+				values ('',".$equipoQueReemplaza.",".$ptsfairplay.",".$reffecha.")";
+				$this->query($sqlConducta,1);
+			}
+			
+			
+			//inserto la baja del equipo
+			$sqlBaja = "update dbtorneoge set activo = '1' where refequipo =".$equipoReemplazado;
+			//$this->query($sqlBaja,0);
+			
+			return $res;
+		}
+		return '';
 }
 
 
