@@ -215,6 +215,19 @@ break;
 	case 'cargarTablaConducta':
 		cargarTablaConducta($serviciosZonasEquipos);
 		break;
+		
+	/* PARA Reemplazos */
+	case 'insertarReemplazos':
+		insertarReemplazos($serviciosReemplazos);
+		break;
+	case 'modificarReemplazos':
+		modificarReemplazos($serviciosReemplazos);
+		break;
+	case 'eliminarReemplazos':
+		eliminarReemplazos($serviciosReemplazos);
+		break;
+	/* Fin */
+	
 	/* fin torneo-zonas-equipos */
 	
 	
@@ -1692,6 +1705,49 @@ echo $res;
 
 
 /* para los torneo-zonas-equipos */
+
+/* PARA Reemplazos */
+function insertarReemplazos($serviciosReemplazos) {
+	$refequipo 				= $_POST['refequipo'];
+	$refequiporeemplazado 	= $_POST['refequiporeemplazado'];
+	$puntos 				= $_POST['puntos'];
+	$golesencontra 			= $_POST['golesencontra'];
+	$reffecha 				= $_POST['reffecha'];
+	$reftorneo 				= $_POST['reftorneo'];
+
+	$res = $serviciosReemplazos->insertarReemplazos($refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo);
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
+}
+function modificarReemplazos($serviciosReemplazos) {
+	$id 					= $_POST['id'];
+	$refequipo 				= $_POST['refequipo'];
+	$refequiporeemplazado 	= $_POST['refequiporeemplazado'];
+	$puntos 				= $_POST['puntos'];
+	$golesencontra 			= $_POST['golesencontra'];
+	$reffecha 				= $_POST['reffecha'];
+	$reftorneo 				= $_POST['reftorneo'];
+	
+	$res = $serviciosReemplazos->modificarReemplazos($id,$refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo);
+	
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+}
+
+function eliminarReemplazos($serviciosReemplazos) {
+	$id = $_POST['id'];
+	$res = $serviciosReemplazos->eliminarReemplazos($id);
+	echo $res;
+}
+
+/* Fin */ 
 
 function insertarZonasEquipos($serviciosZonasEquipos) {
 	$refgrupo 		= $_POST['refgrupo'];

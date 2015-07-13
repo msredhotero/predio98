@@ -33,8 +33,8 @@ function query($sql,$accion) {
 }
 
 
-$tabla = "dbsuspendidosfechas";
-$nombre = "SuspendidosFechas";
+$tabla = "dbreemplazo";
+$nombre = "Reemplazos";
 
 $sql	=	"show columns from ".$tabla;
 $res 	=	query($sql,0);
@@ -164,7 +164,12 @@ if ($res == false) {
 			".$cuerpoVariablePOST."
 			
 			"."$"."res = "."$"."servicios".$nombre."->modificar".$nombre."("."$"."id,".$cuerpoVariableComunes."); <br>
-			echo "."$"."res; <br>
+			
+			if ("."$"."res == true) { <br>
+				echo ''; <br>
+			} else { <br>
+				echo 'Huvo un error al modificar datos'; <br>
+			} <br>
 		} <br>
 
 		function eliminar".$nombre."("."$"."servicios".$nombre.") { <br>
@@ -194,7 +199,7 @@ if ($res == false) {
 	
 		<br>
 		<br>
-		function modificar'.$nombre.'($id) { <br>
+		function modificar'.$nombre.'($id,'.$cuerpoVariableComunes.') { <br>
 			$sql = "update '.$tabla.' <br>
 					set <br>
 						'.$cuerpoVariableUpdate.' <br>
@@ -209,12 +214,25 @@ if ($res == false) {
 			$res = $this->query($sql,0); <br>
 			return $res; <br>
 		} <br>
-	
+		 <br>
+		  <br>
+		function traer'.$nombre.'() { <br>
+			$sql = "select '.$clave.','.$cuerpoSQL.' from '.$tabla.' order by 1"; <br>
+			$res = $this->query($sql,0); <br>
+			return $res; <br>	
+		} <br>
+		 <br>
+		  <br>
+		function traer'.$nombre.'PorId($id) { <br>
+			$sql = "select '.$clave.','.$cuerpoSQL.' from '.$tabla.' where '.$clave.' =".$id; <br>
+			$res = $this->query($sql,0); <br>
+			return $res; <br>	
+		} <br>
 	';
 	
 
 	
-	echo $includes."<br><br><br>".$ajaxFunciones."<br><br><br>".$ajaxFuncionesController;
+	echo "<br><br>/*   PARA ".$nombre." */<br><br>".$includes."<br>/* Fin */<br>/*   PARA ".$nombre." */<br>".$ajaxFunciones."<br>/* Fin */<br><br>/*   PARA ".$nombre." */<br>".$ajaxFuncionesController."<br>/* Fin */";
 }
 
 

@@ -1067,6 +1067,64 @@ function traerPuntosConductaPorFechaEquipo($refequipo,$reffecha,$idtorneo) {
 		return '';
 	}
 	
+	
+/* PARA Reemplazos */
+
+function insertarReemplazos($refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo) {
+$sql = "insert into dbreemplazo(idreemplazo,refequipo,refequiporeemplazado,puntos,golesencontra,reffecha,reftorneo)
+values ('',".$refequipo.",".$refequiporeemplazado.",".$puntos.",".$golesencontra.",".$reffecha.",".$reftorneo.")";
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarReemplazos($id,$refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo) {
+$sql = "update dbreemplazo
+set
+refequipo = ".$refequipo.",refequiporeemplazado = ".$refequiporeemplazado.",puntos = ".$puntos.",golesencontra = ".$golesencontra.",reffecha = ".$reffecha.",reftorneo = ".$reftorneo."
+where idreemplazo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarReemplazos($id) {
+$sql = "delete from dbreemplazo where idreemplazo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function traerReemplazos() {
+$sql = "select 
+			idreemplazo,
+			(select e.nombre from dbequipos e where e.idequipo = r.refequipo) as nombrea,
+			(select e.nombre from dbequipos e where e.idequipo = r.refequiporeemplazado) as nombreb,
+			r.puntos,
+			r.golesencontra,
+			f.tipofecha,
+			tt.descripciontorneo,
+			r.refequipo,
+			r.refequiporeemplazado,
+			r.reffecha,
+			r.reftorneo 
+			from dbreemplazo r 
+			left join tbtipotorneo tt on tt.idtipotorneo = r.reftorneo
+			left join tbfechas f on f.idfecha = r.reffecha
+			order by 1 desc";
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function traerReemplazosPorId($id) {
+$sql = "select idreemplazo,refequipo,refequiporeemplazado,puntos,golesencontra,reffecha,reftorneo from dbreemplazo where idreemplazo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+/* Fin */	
+	
 	function query($sql,$accion) {
 		
 		
