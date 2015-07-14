@@ -98,6 +98,9 @@ break;
 	case 'cambiarTorneo':
 		cambiarTorneo($serviciosFunciones);
 		break;
+	case 'traerZonaPorTorneos':
+		traerZonaPorTorneos($serviciosFunciones);
+		break;
 		
 	/* fin torneos */
 	
@@ -750,7 +753,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res2)) {
 						
 							
-							//if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {	
+							if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
 							$cad2 = $cad2.'
 							<tr>
 								<td align="center">'.$i.'</td>
@@ -771,7 +774,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 							</tr>';
 					
 							$i = $i + 1;
-							//}
+							}
 						}
                     $cad2 = $cad2.'</tbody>
                                 </table>
@@ -1190,6 +1193,14 @@ echo $res;
 
 /* para los torneos */
 
+function traerZonaPorTorneos($serviciosFunciones) {
+	$idTorneo	= 	$_POST["reftorneo"];
+	
+	$res	= $serviciosFunciones->traerZonaPorTorneos($idTorneo);
+	
+	echo json_encode(toArray($res));	
+	
+}
 function insertarTorneo($serviciosFunciones) {
 	$nombre			=	$_POST['nombre'];
 	$fechacreacion	=	$_POST['fechacreacion'];
@@ -1282,6 +1293,14 @@ function cambiarTorneo($serviciosFunciones) {
 	
 /* para los equipos */
 
+function traerEquipoPorZonaTorneos($serviciosEquipos) {
+	$refTorneo		= $_POST['reftorneo'];
+	$refZona		= $_POST['refzona'];
+	
+	$res	= $serviciosEquipos->traerEquipoPorZonaTorneos($refTorneo,$refZona);
+	
+	echo json_encode(toArray($res));
+}
 function insertarEquipos($serviciosEquipos) {
 	$Nombre 			= $_POST['nombre'];
 	$nombrecapitan 		= $_POST['nombrecapitan'];
@@ -1637,7 +1656,7 @@ function insertarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
 		}
 		echo '';
 	} else {
-		echo 'Huvo un error al insertar datos'.$res;
+		echo 'Huvo un error al insertar datos';
 	}
 }
 function modificarSuspendidos($serviciosSuspendidos,$serviciosFunciones) {
@@ -1716,8 +1735,9 @@ function insertarReemplazos($serviciosReemplazos) {
 	$golesencontra 			= $_POST['golesencontra'];
 	$reffecha 				= $_POST['reffecha'];
 	$reftorneo 				= $_POST['reftorneo'];
-
-	$res = $serviciosReemplazos->insertarReemplazos($refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo);
+	$ptsfairplay			= $_POST['fairplay'];
+	
+	$res = $serviciosReemplazos->insertarReemplazos($refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo,$ptsfairplay);
 	
 	if ((integer)$res > 0) {
 		echo '';

@@ -760,17 +760,6 @@ function TraerTorneosClientes() {
 		$sql = "select * from dbtorneos where idtorneo >23 and activo = 0 order by idtorneo";
 		return $this-> query($sql,0);
 	}
-
-function cambiarTorneo($idtipotorneo,$idtorneo) {
-	
-	$resTP = $this->TraerTorneoPorTipoTorneo($idtipotorneo);
-	session_start();
-	$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
-	
-	$_SESSION['idtorneo_predio'] = $idtipotorneo;
-	
-	return true;
-}
 	
 	
 function deshactivarTorneos($idtorneo,$idtipotorneo) {
@@ -786,14 +775,34 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		return $this-> query($sql,0);
 	}
 	
-	function TraerTorneoPorTipoTorneo($idtipotorneo) {
-		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
-				inner join
-				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
-				where tt.idtipotorneo = ".$idtipotorneo;
+function traerZonaPorTorneos($refTorneo) {
+		$sql = "select z.idgrupo,z.nombre 
+				from dbgrupos z 
+				inner join dbtorneoge tge on tge.refgrupo = z.idgrupo 
+				where tge.reftorneo = ".$refTorneo." 
+				group by z.idgrupo,z.nombre ";	
 		return $this-> query($sql,0);
 	}
+	function TraerTorneoPorTipoTorneo($idtipotorneo) {
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+				right join
+				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
+				where tt.idtipotorneo = ".$idtipotorneo;
+		$res = $this-> query($sql,0);
+
+			return $res;
+	}
 	
+	function cambiarTorneo($idtipotorneo,$idtorneo) {
+	
+		$resTP = $this->TraerTorneoPorTipoTorneo($idtipotorneo);
+		session_start();
+		$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
+		
+		$_SESSION['idtorneo_predio'] = $idtipotorneo;
+		
+		return true;
+	}
 	
 	
 	function insertarTorneo($nombre,$fechacrea,$activo,$actual,$reftipotorneo) {
@@ -804,6 +813,8 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		//return $sql;
 		$res = $this-> query($sql,1);
 		
+		$this->deshactivarTorneos($res,$reftipotorneo);
+
 		return $res;
 	}
 	
@@ -828,7 +839,10 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		if ($res == false) {
 			return 'Error al insertar datos';
 		} else {
-			return '';
+			if ($activo == '1') {
+				$this->deshactivarTorneos($idtorneo,$reftipotorneo);
+			}
+			return $res;
 		}	
 
 		
