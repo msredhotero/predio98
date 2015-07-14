@@ -238,13 +238,13 @@ break;
 		break;
 	/* PARA Reemplazos */
 	case 'insertarReemplazos':
-		insertarReemplazos($serviciosReemplazos);
+		insertarReemplazos($serviciosZonasEquipos);
 		break;
 	case 'modificarReemplazos':
-		modificarReemplazos($serviciosReemplazos);
+		modificarReemplazos($serviciosZonasEquipos);
 		break;
 	case 'eliminarReemplazos':
-		eliminarReemplazos($serviciosReemplazos);
+		eliminarReemplazos($serviciosZonasEquipos);
 		break;
 	/* Fin */
 
