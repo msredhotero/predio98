@@ -197,6 +197,14 @@ if ($_SESSION['refroll_predio'] != 1) {
                 	<button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Buscar</button>
                 </div>
             </div>
+            
+            <div class="form-group col-md-6">
+             <label class="control-label" style="text-align:left" for="torneo">Puntos Fair Play</label>
+                <div class="input-group col-md-12">
+                    <input type="text" class="form-control" id="fairplay" name="fairplay" value="0" />
+                </div>
+
+            </div>
             </form>
             
     	</div>
