@@ -8,6 +8,15 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosE {
 	
+	function traerEquipoPorZonaTorneos($idTorneo, $idZona) {
+		$sql = "select e.idequipo, e.nombre 
+				from dbequipos e
+				inner join dbtorneoge tge 
+				on	tge.refequipo = e.idequipo 
+				where	tge.reftorneo = ".$idTorneo." and tge.refgrupo =".$idZona;
+		return $this-> query($sql,0);	
+	}
+
 	function TraerEquipos() {
 		$sql = "select IdEquipo,
 				Nombre,
@@ -96,6 +105,51 @@ return $res;
 	
 	
 	
+function insertarPuntosEquipos($refequipo,$puntos,$amarillas,$azules,$rojas,$reffixture,$reffecha,$reftorneo) {
+$sql = "insert into tbpuntosequipos(idpuntosequipo,refequipo,puntos,amarillas,azules,rojas,reffixture,reffecha,reftorneo)
+values ('',".$refequipo.",".($puntos == '' ? 'null' : $puntos).",".($amarillas == '' ? 'null' : $amarillas).",".($azules == '' ? 'null' : $azules).",".($rojas == '' ? 'null' : $rojas).",".$reffixture.",".$reffecha.",".$reftorneo.")";
+//return $sql;
+$res = $this->query($sql,1);
+return $res;
+}
+
+
+function modificarPuntosEquipos($id,$refequipo,$puntos,$amarillas,$azules,$rojas,$reffixture,$reffecha,$reftorneo) {
+$sql = "update tbpuntosequipos
+set
+refequipo = ".$refequipo.",puntos = ".($puntos == '' ? 'null' : $puntos).",amarillas = ".($amarillas == '' ? 'null' : $amarillas).",azules = ".($azules == '' ? 'null' : $azules).",rojas = ".($rojas == '' ? 'null' : $rojas).",reffixture = ".$reffixture.",reffecha = ".$reffecha.",reftorneo = ".$reftorneo."
+where idpuntosequipo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function eliminarPuntosEquipos($id) {
+$sql = "delete from tbpuntosequipos where idpuntosequipo =".$id;
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function traerPuntosEquipos() {
+$sql = "select idpuntosequipo,refequipo,puntos,amarillas,azules,rojas,reffixture,reffecha,reftorneo from tbpuntosequipos order by 1";
+$res = $this->query($sql,0);
+return $res;
+}
+
+
+function traerPuntosEquiposPorId($id) {
+$sql = "select idpuntosequipo,refequipo,puntos,amarillas,azules,rojas,reffixture,reffecha,reftorneo from tbpuntosequipos where idpuntosequipo =".$id;
+$res = $this->query($sql,0);
+return $res;
+} 
+
+
+function traerPuntosEquiposPorFixtureEquipoFechaTorneo($refFixture, $refEquipo, $resFecha, $refTorneo) {
+$sql = "select idpuntosequipo,refequipo,puntos,amarillas,azules,rojas,reffixture,reffecha,reftorneo from tbpuntosequipos where reffixture =".$refFixture." and reffecha =".$resFecha." and reftorneo =".$refTorneo." and refequipo =".$refEquipo;
+$res = $this->query($sql,0);
+return $res;
+} 	
 	
 	
 	
