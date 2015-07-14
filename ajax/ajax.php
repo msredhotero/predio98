@@ -215,7 +215,9 @@ break;
 	case 'cargarTablaConducta':
 		cargarTablaConducta($serviciosZonasEquipos);
 		break;
-		
+	case 'calcularTablaConducta':
+		calcularTablaConducta($serviciosZonasEquipos);
+		break;
 	/* PARA Reemplazos */
 	case 'insertarReemplazos':
 		insertarReemplazos($serviciosReemplazos);
@@ -1875,6 +1877,18 @@ function cargarTablaConducta($serviciosZonasEquipos) {
 	}
 }
 
+function calcularTablaConducta($serviciosZonasEquipos) {
+	$reffecha		=	$_POST['reffecha'];	
+	
+	$res = $serviciosZonasEquipos->calcularTablaConducta($reffecha);
+	//echo $res;
+	
+	if ((integer)$res > 0) {
+		echo '';
+	} else {
+		echo 'Huvo un error al chequear los datos';
+	}
+}
 
 /* fin torneo-zonas-equipos */
 
