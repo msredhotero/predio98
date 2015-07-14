@@ -591,6 +591,10 @@ return $res;
 
 
 function modificarSuspendidos($id,$refequipo,$refjugador,$motivos,$cantidadfechas,$fechacreacion,$reffixture) {
+
+$sqlSF = "update dbsuspendidosfechas set refjugador = ".$refjugador." where refsuspendido =".$id;
+$this->query($sqlSF,0);
+
 $sql = "update tbsuspendidos
 set
 refequipo = ".$refequipo.",
@@ -616,7 +620,7 @@ $resS = $this->traerSuspendidosPorId($id);
 					on  tge.idtorneoge = fix.reftorneoge_a or tge.idtorneoge = fix.reftorneoge_b
 					inner join dbtorneos t 
 					on  t.idtorneo = tge.reftorneo
-					where fix.idfixture = ".mysql_result($resS,0,'reffixture')."
+					where fix.idfixture = ".mysql_result($resS,0,8)."
 					group by fix.reffecha, tge.reftorneo, t.reftipotorneo";
 	$resFixFecha = $this->query($sqlFixFecha,0);
 		
@@ -627,7 +631,7 @@ $resS = $this->traerSuspendidosPorId($id);
 	$sqlFP = "update tbconducta
 					set
 					puntos = puntos - 3
-					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
+					where refequipo =".mysql_result($resS,0,'refequipo')." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 	$this->query($sqlFP,0);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
