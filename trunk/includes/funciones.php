@@ -786,7 +786,12 @@ return $res;
 	}
 	
 	function TraerTorneos() {
-		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,
+		(CASE WHEN t.activo =1
+		THEN  '1'
+		ELSE  '0'
+		END
+		) AS activo,tt.descripciontorneo from dbtorneos t
 				inner join
 				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
 				order by idtorneo desc";
@@ -794,7 +799,12 @@ return $res;
 	}
 	
 	function TraerIdTorneos($id) {
-		$sql = "SELECT idtorneo,nombre,date_format(fechacreacion, '%d/%m/%Y') as fechacreacion,activo,actual,reftipotorneo FROM dbtorneos where idtorneo = ".$id;
+		$sql = "SELECT idtorneo,nombre,date_format(fechacreacion, '%d/%m/%Y') as fechacreacion,
+				(CASE WHEN activo =1
+				THEN  '1'
+				ELSE  '0'
+				END
+				) AS activo,actual,reftipotorneo FROM dbtorneos where idtorneo = ".$id;
 		return $this-> query($sql,0);
 	}
 	
@@ -826,7 +836,12 @@ function traerZonaPorTorneos($refTorneo) {
 		return $this-> query($sql,0);
 	}
 	function TraerTorneoPorTipoTorneo($idtipotorneo) {
-		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,
+				(CASE WHEN t.activo =1
+				THEN  '1'
+				ELSE  '0'
+				END
+				) AS activo,tt.descripciontorneo from dbtorneos t
 				right join
 				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
 				where tt.idtipotorneo = ".$idtipotorneo;
@@ -851,7 +866,7 @@ function traerZonaPorTorneos($refTorneo) {
 		$nombre = str_replace("'","",$nombre);
 		$nombre = utf8_decode($nombre);
 		
-		$sql = "insert into dbtorneos(idtorneo,nombre,fechacreacion,activo,actual,reftipotorneo) values ('','".$nombre."', '".$fechacrea."', ".$activo.",".$actual.",".$reftipotorneo.")";
+		$sql = "insert into dbtorneos(idtorneo,nombre,fechacreacion,activo,actual,reftipotorneo) values ('','".$nombre."', '".$fechacrea."', '".$activo."','".$actual."',".$reftipotorneo.")";
 		//return $sql;
 		$res = $this-> query($sql,1);
 		

@@ -72,12 +72,12 @@ $cabeceras2		= "	<th>Título</th>
 
 $formulario 	= $serviciosFunciones->camposTabla("insertarNoticiasPrincipales",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosNoticias->traerNoticiaPrincipal(),3);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosNoticias->traerNoticiaPrincipal(),97);
 
 
 $formulario2 	= $serviciosFunciones->camposTabla("insertarNoticiasPredio",$tabla2,$lblCambio2,$lblreemplazo2,$refdescripcion,$refCampo);
 
-$lstCargados2 	= $serviciosFunciones->camposTablaView($cabeceras2,$serviciosNoticias->traerNoticiaPredio(),3);
+$lstCargados2 	= $serviciosFunciones->camposTablaView($cabeceras2,$serviciosNoticias->traerNoticiaPredio(),98);
 
 
 
@@ -276,7 +276,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	 $('.varborrar').click(function(event){
+	 $('.varborrarprincipal').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
 			$("#idEliminar").val(usersid);
@@ -290,10 +290,35 @@ $(document).ready(function(){
 		  }
 	});//fin del boton eliminar
 	
-	$('.varmodificar').click(function(event){
+	$('.varborrarpredio').click(function(event){
 		  usersid =  $(this).attr("id");
 		  if (!isNaN(usersid)) {
-			url = "modificar.php?id=" + usersid;
+			$("#idEliminar").val(usersid);
+			$("#dialog3").dialog("open");
+
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+	
+	$('.varmodificarpredio').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificarpredio.php?id=" + usersid;
+			$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton modificar
+	
+	
+	$('.varmodificarprincipal').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			url = "modificarprincipal.php?id=" + usersid;
 			$(location).attr('href',url);
 		  } else {
 			alert("Error, vuelva a realizar la acción.");	
@@ -311,7 +336,7 @@ $(document).ready(function(){
 				    "Eliminar": function() {
 	
 						$.ajax({
-									data:  {id: $('#idEliminar').val(), accion: '<?php echo $accionEliminar; ?>'},
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarNoticiasPrincipales'},
 									url:   '../../ajax/ajax.php',
 									type:  'post',
 									beforeSend: function () {
@@ -338,11 +363,55 @@ $(document).ready(function(){
 		 
 	 		}); //fin del dialogo para eliminar
 	
+	 $( "#dialog3" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:240,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar').val(), accion: 'eliminarNoticiasPredio'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											url = "index.php";
+											$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
 	
 	<?php 
 		echo $serviciosHTML->validacion($tabla);
 	
 	?>
+	
+	
+
+	
+	
+	
+	
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
@@ -400,6 +469,64 @@ $(document).ready(function(){
 				}
 			});
 		}
+    });
+	
+	
+	//al enviar el formulario
+    $('#cargar2').click(function(){
+		
+
+			//información del formulario
+			var formData = new FormData($(".formulario2")[0]);
+			var message = "";
+			//hacemos la petición ajax  
+			$.ajax({
+				url: '../../ajax/ajax.php',  
+				type: 'POST',
+				// Form data
+				//datos del formulario
+				data: formData,
+				//necesario para subir archivos via ajax
+				cache: false,
+				contentType: false,
+				processData: false,
+				//mientras enviamos el archivo
+				beforeSend: function(){
+					$("#load").html('<img src="../../imagenes/load13.gif" width="50" height="50" />');       
+				},
+				//una vez finalizado correctamente
+				success: function(data){
+
+					if (data == '') {
+                                            $(".alert").removeClass("alert-danger");
+											$(".alert").removeClass("alert-info");
+                                            $(".alert").addClass("alert-success");
+                                            $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
+											$(".alert").delay(3000).queue(function(){
+												/*aca lo que quiero hacer 
+												  después de los 2 segundos de retraso*/
+												$(this).dequeue(); //continúo con el siguiente ítem en la cola
+												
+											});
+											$("#load").html('');
+											url = "index.php";
+											$(location).attr('href',url);
+                                            
+											
+                                        } else {
+                                        	$(".alert").removeClass("alert-danger");
+                                            $(".alert").addClass("alert-danger");
+                                            $(".alert").html('<strong>Error!</strong> '+data);
+                                            $("#load").html('');
+                                        }
+				},
+				//si ha ocurrido un error
+				error: function(){
+					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
+                    $("#load").html('');
+				}
+			});
+
     });
 
 });

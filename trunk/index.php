@@ -7,6 +7,7 @@ include ('includes/funcionesFUNC.php');
 include ('includes/funciones.php');
 include ('includes/funcionesGrupos.php');
 include ('includes/funcionesDATOS.php');
+include ('includes/funcionesNoticias.php');
 
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
@@ -14,6 +15,7 @@ $serviciosFUNC = new ServiciosFUNC();
 $serviciosFunciones = new Servicios();
 $serviciosZonas = new ServiciosG();
 $serviciosDatos = new ServiciosDatos();
+$serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
@@ -37,6 +39,27 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$mes = "------";
 }
 
+
+/////////////////////////////////////////////////***    NOTICIAS   *******////////////////////////////////////////////////
+
+$resNoticiaPrincipal 	= $serviciosNoticias->traerUltimaNoticiaPrincipal();
+
+if (mysql_num_rows($resNoticiaPrincipal)>0) {
+	$Principal = utf8_encode(mysql_result($resNoticiaPrincipal,0,2));	
+} else {
+	$Principal = '';
+}
+
+$resNoticiaPredio		= $serviciosNoticias->traerUltimaNoticiaPredio();
+
+if (mysql_num_rows($resNoticiaPredio)>0) {
+	$Predio = utf8_encode(mysql_result($resNoticiaPredio,0,2));	
+} else {
+	$Predio = '';
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 ?>
 
@@ -527,7 +550,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>-->
                                 <br>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                                <p><?php echo $Predio; ?></p>
                               </div>
                             </div>
                             
@@ -540,7 +563,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>-->
                                 <br>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper.</p>
+                                <p><?php echo $Principal; ?></p>
                               </div>
                             </div>
                             

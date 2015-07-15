@@ -11,18 +11,59 @@ if (!isset($_SESSION['usua_predio']))
 include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
+include ('../../includes/funcionesNoticias.php');
 
 $serviciosFunciones = new Servicios();
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
+$serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"NoticiasGenerales",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
-$resTorneoActual = $serviciosFunciones->TraerTorneosActivo($_SESSION['torneo_predio']);
 
-$resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
+$id = $_GET['id'];
+
+$resResultado = $serviciosNoticias->traerNoticiaPredioPorId($id);
+
+/////////////////////// Opciones de la pagina  ////////////////////
+
+$lblTitulosingular	= "Noticia";
+$lblTituloplural	= "Noticias";
+$lblEliminarObs		= "Borrar la noticia del Predio";
+$accionEliminar		= "eliminarNoticiasPredio";
+
+/////////////////////// Fin de las opciones /////////////////////
+
+
+/////////////////////// Opciones para la creacion del formulario  /////////////////////
+
+$tabla 		= "dbnoticiapredio";
+
+$lblCambio	 	= array("titulo","noticiapredio","fechacreacion");
+$lblreemplazo	= array("Título","Noticia Predio","Fecha Creación");
+
+
+
+$cadRef = '';
+
+$refdescripcion[] = "";
+$refCampo[] 	= ""; 
+//////////////////////////////////////////////  FIN de los opciones //////////////////////////
+
+
+$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idnoticiapredio","modificarNoticiasPredio",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+
+
+
+if ($_SESSION['refroll_predio'] != 1) {
+
+} else {
+
+	
+}
+
 
 ?>
 
@@ -83,49 +124,22 @@ $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
 
 <div id="content">
 
-<h3>Torneos</h3>
+<h3><?php echo $lblTituloplural; ?></h3>
 
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Cambiar de Torneo</p>
+        	<p style="color: #fff; font-size:18px; height:16px;">Modificación de <?php echo $lblTituloplural; ?></p>
         	
         </div>
     	<div class="cuerpoBox">
         	<form class="form-inline formulario" role="form">
-        	<div class="row">
-            	<div class="col-md-11 alert-info" style="margin-left:20px;">
-                	<h4>Torneo Actual: <?php echo utf8_encode(mysql_result($resTorneoActual,0,1)); ?> - <?php echo utf8_encode(mysql_result($resTorneoActual,0,4)); ?></h4>
-                </div>
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Tipo de Torneo</label>
-                    <div class="input-group col-md-12">
-                    	<select id="reftipotorneo" class="form-control" name="reftipotorneo">
-                        	<option value="0">----Seleccionar----</option>
-                    		<?php
-								while ($row = mysql_fetch_array($resTipoTorneos)) {
-							?>
-                            		<option value="<?php echo $row[0]; ?>"><?php echo utf8_encode($row[1]); ?></option>
-                            <?php	
-								}
-							?>
-                    	</select>
-                    </div>
-                </div>
-                
-                <div class="form-group col-md-6">
-               	 <label class="control-label" style="text-align:left" for="reftorneo">Tipo de Torneo</label>
-                    <div class="input-group col-md-12">
-                    	<select id="reftorneo" class="form-control" name="reftorneo">
-                    		
-                    	</select>
-                    </div>
-                </div>
-            
+        	
+			<div class="row">
+			<?php echo $formulario; ?>
             </div>
             
             
-            
-            <div class='row'>
+            <div class='row' style="margin-left:25px; margin-right:25px;">
                 <div class='alert'>
                 
                 </div>
@@ -133,28 +147,42 @@ $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
                 
                 </div>
             </div>
-			
             
             <div class="row">
                 <div class="col-md-12">
                 <ul class="list-inline" style="margin-top:15px;">
                     <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Cambiar</button>
+                        <button type="button" class="btn btn-warning" id="cargar" style="margin-left:0px;">Modificar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-danger varborrar" id="<?php echo $id; ?>" style="margin-left:0px;">Eliminar</button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn btn-default volver" style="margin-left:0px;">Volver</button>
                     </li>
                 </ul>
                 </div>
             </div>
-            <input type="hidden" id="accion" name="accion" value="cambiarTorneo" />
             </form>
     	</div>
     </div>
-  
+
+
+   
 </div>
 
 
 </div>
 
 
+<div id="dialog2" title="Eliminar <?php echo $lblTitulosingular; ?>">
+    	<p>
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar el <?php echo $lblTitulosingular; ?>?.<span id="proveedorEli"></span>
+        </p>
+        <p><strong>Importante: </strong><?php echo $lblEliminarObs; ?></p>
+        <input type="hidden" value="" id="idEliminar" name="idEliminar">
+</div>
 <script src="../../js/bootstrap-datetimepicker.min.js"></script>
 <script src="../../js/bootstrap-datetimepicker.es.js"></script>
 
@@ -162,27 +190,75 @@ $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$('#reftipotorneo').change(function() {
-		$.ajax({
-			data:  {reftipotorneo: $('#reftipotorneo').val(),
-					accion: 'traerTorneoPorTipoTorneo'},
-			url:   '../../ajax/ajax.php',
-			type:  'post',
-			beforeSend: function () {
-				$('#reftorneo').html('')	
-			},
-			success:  function (response) {
-				$('#reftorneo').html(response);
-					
-			}
-	});
-	});
+	$('.volver').click(function(event){
+		 
+		url = "index.php";
+		$(location).attr('href',url);
+	});//fin del boton modificar
+	
+	$('.varborrar').click(function(event){
+		  usersid =  $(this).attr("id");
+		  if (!isNaN(usersid)) {
+			$("#idEliminar").val(usersid);
+			$("#dialog2").dialog("open");
+
+			
+			//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+			//$(location).attr('href',url);
+		  } else {
+			alert("Error, vuelva a realizar la acción.");	
+		  }
+	});//fin del boton eliminar
+
+	 $( "#dialog2" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:240,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $('#idEliminar').val(), accion: '<?php echo $accionEliminar; ?>'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											url = "index.php";
+											$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	 		}); //fin del dialogo para eliminar
+	
+	
+	<?php 
+		echo $serviciosHTML->validacion($tabla);
+	
+	?>
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
 		
-		/*if (validador() == "")
-        {*/
+		if (validador() == "")
+        {
 			//información del formulario
 			var formData = new FormData($(".formulario")[0]);
 			var message = "";
@@ -208,7 +284,7 @@ $(document).ready(function(){
                                             $(".alert").removeClass("alert-danger");
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cambio exitosamente el <strong>Torneo</strong>. ');
+                                            $(".alert").html('<strong>Ok!</strong> Se Modifico exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
 											$(".alert").delay(3000).queue(function(){
 												/*aca lo que quiero hacer 
 												  después de los 2 segundos de retraso*/
@@ -216,8 +292,7 @@ $(document).ready(function(){
 												
 											});
 											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
+											
                                             
 											
                                         } else {
@@ -233,7 +308,7 @@ $(document).ready(function(){
                     $("#load").html('');
 				}
 			});
-		/*}*/
+		}
     });
 
 });
