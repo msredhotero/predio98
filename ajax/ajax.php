@@ -278,13 +278,13 @@ break;
 		break; 
 	
 	case 'insertarNoticiasPredio':
-		insertarNoticiasPredio($serviciosNoticiasPredio);
+		insertarNoticiasPredio($serviciosNoticias);
 		break;
 	case 'modificarNoticiasPredio':
-		modificarNoticiasPredio($serviciosNoticiasPredio);
+		modificarNoticiasPredio($serviciosNoticias);
 		break;
 	case 'eliminarNoticiasPredio':
-		eliminarNoticiasPredio($serviciosNoticiasPredio);
+		eliminarNoticiasPredio($serviciosNoticias);
 		break; 
 			
 	case 'insertarNoticias':

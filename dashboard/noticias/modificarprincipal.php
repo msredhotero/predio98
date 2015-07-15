@@ -11,66 +11,49 @@ if (!isset($_SESSION['usua_predio']))
 include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
+include ('../../includes/funcionesNoticias.php');
 
 $serviciosFunciones = new Servicios();
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
+$serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"NoticiasGenerales",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 $id = $_GET['id'];
 
-$resResultado = $serviciosFunciones->TraerIdTorneos($id);
+$resResultado = $serviciosNoticias->traerNoticiaPrincipalPorId($id);
 
 /////////////////////// Opciones de la pagina  ////////////////////
 
-$lblTitulosingular	= "Torneo";
-$lblTituloplural	= "Torneos";
-$lblEliminarObs		= "Si elimina el torneo se eliminara todo el contenido de este";
-$accionEliminar		= "eliminarTorneo";
+$lblTitulosingular	= "Noticia";
+$lblTituloplural	= "Noticias";
+$lblEliminarObs		= "Borrar la noticia Principal";
+$accionEliminar		= "eliminarNoticiasPrincipales";
 
 /////////////////////// Fin de las opciones /////////////////////
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbtorneos";
 
-$lblCambio	 	= array("reftipotorneo","FechaCreacion");
-$lblreemplazo	= array("Tipo Torneo","Fecha Creación");
+$tabla 			= "dbnoticiaprincipal";
 
-$resTipoTorneo 	= $serviciosFunciones->traerTipoTorneo();
+$lblCambio	 	= array("titulo","noticiaprincipal","fechacreacion");
+$lblreemplazo	= array("Título","Noticia Principal","Fecha Creación");
+
+
 
 $cadRef = '';
-while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
-	if (mysql_result($resResultado,0,'reftipotorneo') == $rowTT[0]) {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).'</option>';
-	} else {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
-	}
-}
 
-$refdescripcion = array(0 => $cadRef);
-$refCampo[] 	= "reftipotorneo"; 
+$refdescripcion[] = "";
+$refCampo[] 	= ""; 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
-
-
-/////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Nombre</th>
-				<th>Fecha Creación</th>
-				<th>Activo</th>
-				<th>Tipo Torneo</th>";
-
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
-
-$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idtorneo","modificarTorneo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idnoticiaprincipal","modificarNoticiasPrincipales",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
 
 
