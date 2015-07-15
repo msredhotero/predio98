@@ -1056,7 +1056,13 @@ function cargarTablaConducta($reffecha) {
 		if (mysql_num_rows($res)>0) {
 			while ($row6 = mysql_fetch_array($res)) {
 				if (($reffecha - 1) == 22) {
-					$puntos = 0;
+					$resPuntosB = $this->traerCalculoPorFechaTorneoEquipo($row6[0],$reffecha,$row6[3]);
+					if (mysql_num_rows($resPuntosB)>0) {
+						$puntosB = mysql_result($resPuntosB,0,2);	
+					} else {
+						$puntosB = 0;	
+					}
+					$puntos = 0 + (integer)$puntosB;
 				} else {
 					$resPuntosA = $this->traerPuntosConductaPorFechaEquipo($row6[0],$reffecha-1,$row6[3]);
 					$resPuntosB = $this->traerCalculoPorFechaTorneoEquipo($row6[0],$reffecha,$row6[3]);
@@ -1327,6 +1333,13 @@ if ((integer)$res > 0) {
 
 
 function modificarReemplazos($id,$refequipo,$refequiporeemplazado,$puntos,$golesencontra,$reffecha,$reftorneo) {
+
+$resReemplazo = $this->traerReemplazosPorId($id);
+
+$refEquipoActual = mysql_result($resReemplazo,0,'refequipo');
+$refEquipoReempActual = mysql_result($resReemplazo,0,'refequiporeemplazado');
+
+
 $sql = "update dbreemplazo
 set
 refequipo = ".$refequipo.",refequiporeemplazado = ".$refequiporeemplazado.",puntos = ".$puntos.",golesencontra = ".$golesencontra.",reffecha = ".$reffecha.",reftorneo = ".$reftorneo."
@@ -1359,6 +1372,7 @@ $res = $this->query($sql,0);
 						where		t.activo = 1 and f.reffecha >= ".$reffecha." and tge.refequipo = ".$refequiporeemplazado;
 		$resFixB = $this->query($sqlFixB,0);
 		
+		//////////////////////// LO uso solo para encontrar el torneo y la zona a la que va a pertenecer el equipo ///////////////
 		$sqlTGE = "select tge.refgrupo,tge.reftorneo 
 					from dbtorneoge tge 
 					inner
@@ -1368,10 +1382,12 @@ $res = $this->query($sql,0);
 		$resTGE = $this->query($sqlTGE,0);
 		
 	
-		
+
 		if (mysql_num_rows($resTGE)>0) {
 			$idZona = mysql_result($resTGE,0,0);
 			$idTorneoNuevo = mysql_result($resTGE,0,1);
+			
+			///// VERIFICO que exista el torneoge del equipo que entra //////////////////////////////////
 			$existe = $this->TraerIdTorneoGE($idZona,$refequipo,$idTorneoNuevo);
 			
 			if (mysql_num_rows($existe)>0) {
@@ -1381,6 +1397,8 @@ $res = $this->query($sql,0);
 			}
 		}
 		
+	
+	if (($refEquipoActual != $refequipo) && ($refEquipoReempActual != $refequiporeemplazado)) {
 		if (mysql_num_rows($resTGE)>0) {
 			//update del fixture del equipo que sale
 			while ($rowTA = mysql_fetch_array($resFixA)) {
@@ -1393,6 +1411,7 @@ $res = $this->query($sql,0);
 				$this->query($sqlUpdateB,0);
 			}
 		}
+	}
 
 
 return $res;
