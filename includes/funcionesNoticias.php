@@ -34,7 +34,13 @@ class ServiciosNoticias {
 	}
 	
 	function traerNoticiaPrincipal() {
-		$sql = "select * from dbnoticiaprincipal order by fechacreacion";
+		$sql = "select idnoticiaprincipal,titulo,noticiaprincipal,fechacreacion from dbnoticiaprincipal order by fechacreacion";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	function traerUltimaNoticiaPrincipal() {
+		$sql = "select * from dbnoticiaprincipal order by idnoticiaprincipal desc limit 1";
 		$res = $this->query($sql,0);
 		return $res;
 	}
@@ -73,7 +79,13 @@ return $res;
 
 
 	function traerNoticiaPredio() {
-		$sql = "select * from dbnoticiapredio order by fechacreacion";
+		$sql = "select idnoticiapredio,titulo,noticiapredio,fechacreacion from dbnoticiapredio order by fechacreacion";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	function traerUltimaNoticiaPredio() {
+		$sql = "select * from dbnoticiapredio order by idnoticiapredio desc limit 1";
 		$res = $this->query($sql,0);
 		return $res;
 	}

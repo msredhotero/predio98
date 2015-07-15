@@ -26,16 +26,40 @@ class Servicios {
 	function camposTablaView($cabeceras,$datos,$cantidad) {
 		$cadView = '';
 		$cadRows = '';
-		if ($cantidad == 99) {
+		switch ($cantidad) {
+			case 99:
 				$cantidad = 5;
 				$classMod = 'varmodificargoleadores';
 				$classEli = 'varborrargoleadores';
 				$idresultados = "resultadosgoleadores";
-			} else {
+				break;
+			case 98:
+				$cantidad = 3;
+				$classMod = 'varmodificarpredio';
+				$classEli = 'varborrarpredio';
+				$idresultados = "resultadospredio";
+				break;
+			case 97:
+				$cantidad = 3;
+				$classMod = 'varmodificarprincipal';
+				$classEli = 'varborrarprincipal';
+				$idresultados = "resultadosprincipal";
+				break;
+			default:
 				$classMod = 'varmodificar';
 				$classEli = 'varborrar';
 				$idresultados = "resultados";
-			}
+		}
+		/*if ($cantidad == 99) {
+			$cantidad = 5;
+			$classMod = 'varmodificargoleadores';
+			$classEli = 'varborrargoleadores';
+			$idresultados = "resultadosgoleadores";
+		} else {
+			$classMod = 'varmodificar';
+			$classEli = 'varborrar';
+			$idresultados = "resultados";
+		}*/
 		while ($row = mysql_fetch_array($datos)) {
 			$cadsubRows = '';
 			$cadRows = $cadRows.'
@@ -460,19 +484,37 @@ class Servicios {
 										';
 										
 									} else {
-										$label = ucwords($label);
-										$campo = strtolower($row[0]);
-										
-										$form	=	$form.'
-										
-										<div class="form-group col-md-6">
-											<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
-											<div class="input-group col-md-12">
-												<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+										if ((integer)(str_replace('varchar(','',$row[1])) > 200) {
+											$label = ucwords($label);
+											$campo = strtolower($row[0]);
+											
+											$form	=	$form.'
+											
+											<div class="form-group col-md-6">
+												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+												<div class="input-group col-md-12">
+													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.utf8_encode(mysql_result($resMod,0,$row[0])).'</textarea>
+												</div>
+												
 											</div>
-										</div>
-										
-										';
+											
+											';
+											
+										} else {
+											$label = ucwords($label);
+											$campo = strtolower($row[0]);
+											
+											$form	=	$form.'
+											
+											<div class="form-group col-md-6">
+												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+												<div class="input-group col-md-12">
+													<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+												</div>
+											</div>
+											
+											';
+										}
 									}
 								}
 							}
