@@ -846,7 +846,7 @@ class ServiciosZonasEquipos {
 						inner join
 					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
 						left join
-					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo
+					tbconducta cc ON cc.reffecha = fix.reffecha and cc.refequipo = e.idequipo and t.idtorneo = cc.reftorneo
 						inner join
 					tbfechas ff ON ff.idfecha = fix.reffecha
 				where cc.idconducta is null
