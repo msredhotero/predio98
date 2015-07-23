@@ -24,6 +24,13 @@ function conexion() {
 		$username = "estudio";
 		$password = "pro369";
 		*/
+		
+		/*
+		$hostname = "localhost";
+		$database = "u849094071_predi";
+		$username = "u849094071_nico";
+		$password = "nicolaspredio98";
+		*/
 		$conexion = array("hostname" => $hostname,
 						  "database" => $database,
 						  "username" => $username,
