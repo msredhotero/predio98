@@ -512,7 +512,7 @@ margin-right:6px;
 
 #noticias .abajo_text {
 	position:relative;
-	z-index:500;
+	z-index:9;
 	text-align:right;
 	padding-top:6px;
 }

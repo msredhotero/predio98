@@ -109,7 +109,6 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
 <title>Predio 98 | Fúlbol 11 | Fútbol 7</title>
 
 
-
 <link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
@@ -132,6 +131,36 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
 <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>     
 
 <style>
+	body {
+		overflow: hidden;
+	}
+	
+	/* Preloader */
+
+	#preloader {
+		position:fixed;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		background-color: #0c0c0c; /* change if the mask should have another color then white */
+		z-index:99; /* makes sure it stays on top */
+	}
+	
+	#status {
+		width:800px;
+		height:600px;
+		position:absolute;
+		margin-left:-400px;
+		left:50%; /* centers the loading animation horizontally one the screen */
+		
+		top:200px;; /* centers the loading animation vertically one the screen */
+		background-image:url(imagenes/loading2.gif); /* path to your loading animation */
+		background-repeat:no-repeat;
+		background-position:center;
+		/*margin:-100px 0 0 -100px; /* is width and height divided by two */
+	}
+	
     label {
         padding-bottom:6px;
 		padding-top:6px;
@@ -280,6 +309,13 @@ $(document).ready(function(){
 
 
 <body>
+
+<!-- Preloader -->
+<div id="preloader">
+	<div align="center" id="flashear"><img src="imagenes/marca.png"/></div>
+    <div id="status"></div>
+</div>
+            
 <div style="background-color:#000; height:auto; margin-top:-20px; padding-top:20px;">
     <div class="clearfix content">
     	<div class="row">
@@ -294,15 +330,15 @@ $(document).ready(function(){
                 
                 <nav id="menu">
                     <ul class="clearfix contenedorMenu">
-                        <li class="menuA"><a href="#">Inicio</a></li>
+                        <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
-                        <li class="menuA"><a href="#">Reglamento</a></li>
-                        <li class="menuA"><a href="#">Premios</a></li>
+                        <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="#">Desarrollo</a></li>
-                        <li class="menuA"><a href="#">Servicios</a></li>
-                        <li class="menuA"><a href="#">Fotos</a></li>
-                        <li class="menuA"><a href="#">Contacto</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="servicios.html">Servicios</a></li>
+                        <li class="menuA"><a href="fotos.html">Fotos</a></li>
+                        <li class="menuA"><a href="contacto.html">Contacto</a></li>
                     </ul>
                     <a href="#" id="pull">Menú</a>
                 </nav>
@@ -749,6 +785,19 @@ border-radius: 0em 0em 0.6em 0.6em;">
 
 
 	</footer>
+
+<!-- Preloader -->
+<script type="text/javascript">
+	//<![CDATA[
+		$(window).load(function() { // makes sure the whole site is loaded
+
+			$('#status').fadeOut(1200); // will first fade out the loading animation
+			$('#preloader').delay(1200).fadeOut('slow'); // will fade out the white DIV that covers the website.
+			$('body').delay(650).css({'overflow':'visible'});
+		})
+	//]]>
+</script>
+        
 <script type="text/javascript">
 $(document).ready(function(){
 	
