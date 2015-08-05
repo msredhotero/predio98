@@ -323,6 +323,10 @@ break;
 	case 'FixturePaginaChico':
 		FixturePaginaChico($serviciosDatos);
 		break;
+	case 'FixturePaginaChicoDos':
+		FixturePaginaChicoDos($serviciosDatos);
+		break;
+		
 	case 'TraerJugadoresFixtureA':
 		TraerJugadoresFixtureA($serviciosDatos);
 		break;
@@ -694,6 +698,65 @@ function FixturePaginaChico($serviciosDatos) {
 }
 
 
+
+function FixturePaginaChicoDos($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	$cad = '';
+	
+	for ($i=$idfecha;$i>=$idfecha-1;$i--) {
+		$cad = $cad.'
+				<div class="col-md-12">
+				<div class="panel panel-predio" style="margin-top:0;">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding-bottom:0px;">
+                                	';
+									
+		$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
+		
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:0 2px;">
+                                	
+                                	<thead>
+                                    	<tr>
+                                        	<th style="text-align:center;padding:3px;">Result. A</th>
+                                            <th style="text-align:center;padding:3px;">Equipo A</th>
+                                            <th style="text-align:center;padding:3px;">Horario</th>
+                                            <th style="text-align:center;padding:3px;">Equipo B</th>
+                                            <th style="text-align:center;padding:3px;">Result. B</th>
+                                            <th style="text-align:center;padding:3px;">Ver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+	
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center" style="padding:3px;">'.$row['hora'].'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
+							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                        </tr>';
+                    	}
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						</div>';	
+		
+		
+	}
+
+
+	echo $cad;
+}
+
+
 function TraerFixturePorZonaTorneo($serviciosDatos) {
 	
 	$idtorneo	= $_POST['reftorneo'];
@@ -775,11 +838,11 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
                                 	';
 	$cad2 = $cad2.'
 	<div class="row">
-                	<table class="table table-responsive table-striped" style="font-size:1em; padding:2px;">
+                	<table class="table table-responsive table-striped" style="font-size:1em; padding:0px;">
 
                         <thead>
 							<tr>
-								<th align="center">POSICION</th>
+								<th align="center">POS.</th>
 								<th align="center">EQUIPO</th>
 								<th align="center">PTS</th>
 								<th align="center">PJ</th>
@@ -791,7 +854,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 								<th align="center">DIF</th>
 								<th align="center">F.P.</th>
 								<th align="center">% Goles</th>
-								<th align="center">EFECTIVIDAD</th>
+								<th align="center">EFECT.</th>
 								<th align="center"><img src="imagenes/icoRoja.png"></th>
                             	<th align="center"><img src="imagenes/icoAmarilla.png"></th>
 							</tr>
