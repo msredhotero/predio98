@@ -17,14 +17,34 @@ $serviciosDatos = new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
-$resUltimaFecha = $serviciosFunciones->UltimaFecha();
+$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
+$resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
+$resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
-if (mysql_num_rows($resUltimaFecha)>0) {
-	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0) - 1;
+if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
+	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0) - 1;
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
+}
+
+
+if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
+	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0) - 1;
+} else {
+	$UltimaFechaB = "Fecha 1";
+	$IdUltimaFechaB = 23;
+}
+
+
+if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
+	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0) - 1;
+} else {
+	$UltimaFechaC = "Fecha 1";
+	$IdUltimaFechaC = 23;
 }
 
 $resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha + 1);
@@ -100,7 +120,7 @@ if (!isset($_GET['zona'])) {
 
 
 
-<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
+
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 
@@ -120,7 +140,7 @@ if (!isset($_GET['zona'])) {
 <link rel="stylesheet" href="css/normalize.min.css">   
 
 <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>     
-
+<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 <style>
     label {
         padding-bottom:6px;
@@ -360,7 +380,12 @@ if (!isset($_GET['zona'])) {
                             
                         </div>
                         
-                        <div class="col-md-12" id="resultados">
+                        <div class="col-md-8" id="resultados" style="margin:0; padding:0;">
+                        	
+                            
+                        </div>
+                        
+                        <div class="col-md-4" id="resultadosFixture" style="margin:0; padding:0;">
                         	
                             
                         </div>
@@ -388,11 +413,15 @@ if (!isset($_GET['zona'])) {
                             
                         </div>
                         
-                        <div class="col-md-4" id="resultadosFixture" style="margin:0; padding:0;">
+                        <!--<div class="col-md-4" id="resultadosFixture" style="margin:0; padding:0;">
+                        	
+                            
+                        </div>-->
+                        
+                        <div class="col-md-4" id="resultadosSuspendidos" style="margin:0; padding:0;">
                         	
                             
                         </div>
-                        
                         
                     </section>
                 </article>        
@@ -534,7 +563,7 @@ $(document).ready(function(){
 						refzona: refzona,
 						reffecha: <?php echo $IdUltimaFecha; ?>,
 						zona: zona,
-						accion: 'FixturePaginaChico'},
+						accion: 'FixturePaginaChicoDos'},
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {

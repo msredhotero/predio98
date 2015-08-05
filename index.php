@@ -19,15 +19,36 @@ $serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resUltimaFecha = $serviciosFunciones->UltimaFecha();
+$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
+$resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
+$resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
-if (mysql_num_rows($resUltimaFecha)>0) {
-	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0) - 1;
+if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
+	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0) - 1;
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
 }
+
+
+if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
+	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0) - 1;
+} else {
+	$UltimaFechaB = "Fecha 1";
+	$IdUltimaFechaB = 23;
+}
+
+
+if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
+	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0) - 1;
+} else {
+	$UltimaFechaC = "Fecha 1";
+	$IdUltimaFechaC = 23;
+}
+
 
 $resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha );
 
@@ -109,7 +130,7 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
 <title>Predio 98 | Fúlbol 11 | Fútbol 7</title>
 
 
-<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
+
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 
@@ -129,10 +150,11 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
 <link rel="stylesheet" href="css/normalize.min.css">   
 
 <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>     
-
+<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 <style>
 	body {
 		overflow: hidden;
+		
 	}
 	
 	/* Preloader */
@@ -427,6 +449,7 @@ $(document).ready(function(){
                     	<ul>
                         	<li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=19&idtorneo=1">Zona A</a></li>
                             <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=20&idtorneo=1">Zona B</a></li>
+                            <li><span class="glyphicon glyphicon-th"></span> <a href="zonas.php?zona=21&idtorneo=1">Zona C</a></li>
                         </ul>
                     </div>
                 </div>
@@ -495,57 +518,20 @@ $(document).ready(function(){
                         	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Noticias</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px; ">
                               </div>
-                              <div class="panel-body-predio">
-                                <div class="callbacks_container">
-                                  <ul class="rslides" id="slider4" style="padding:0; margin-top:-10px;">
-                                    <li>
-                                      
-                                        <h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">CERO TOLERANCIA / HORARIOS DE LA FECHA 2 
-                                      	<button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-										</button>
-									  </p>
-                                    </li>
-                                    <li>
-                                      	<h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">COMIENZO DEL TORNEO ESTE SÁBADO 7-3 
-                                      <button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-										</button>
-                                      </p>
-                                    </li>
-                                    <li>
-                                      	<h3>In semper consequat</h3>
-                                        <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Lunes 9 de Marzo, 12:00:41</h5>
-                                        
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                                      <p class="caption">CRONOGRAMA A SEGUIR 
-                                      <button type="button" class="btn btn-info" aria-label="Left Align">
-  											Leer <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-									  </button>
-                                      </p>
-                                    </li>
-                                  </ul>
-                                </div>
-                                
-                              </div>
-                              <div class="panel-footer">
-                              	<h3>Noticias Predio98.com.ar <button type="button" class="btn btn-info" aria-label="Left Align">
-  											Ver Todas <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-									  </button></h3>
-                              </div>
+                              <div class="panel-body-predio" style="padding:5px 10px; ">
+                              		<div align="center">
+                                    	<h4>Fin de Semana!!</h4>
+                                    </div>
+                              		<p>/ Jugadores, les dejamos los horarios de este sábado 8.</p>
+                                    <p>/ Por cualquier inconveniente por favor avisar con tiempo.</p>
+                                    <p>/ Recuerden llegar temprano para comenzar a horario, a los 10min. de demora se descuenta un punto y traer DNI o cualquier otro documento de identidad.</p>
+                                    <p>/ Notaran en algunas partes de varias canchas pedazos con tierra negra que fue tirada en las canchas los días lunes 20/7 y martes 21/7 luego de la 1er fecha para nivelar algunas zonas desparejas. La idea es que el césped en esas partes termine de agarrar bien con el comienzo de la primavera siempre que el clima ayude.</p>
+                                    <p>Este año viene muy difícil a comparación de otros años con ese tema.</p>
+                                    
+                                    <p>Buena semana!</p>
+                              </div>  
                             </div>
                             
                             <div id="noticias">
@@ -553,7 +539,7 @@ $(document).ready(function(){
                                 <div class="textoTrazoTitulosN">
                                 	FELIZ AÑO NUEVO
                                 </div>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; font-style:italic; height:8px; margin-bottom:10px; ">Lunes 9 de Marzo, 12:00:41</h6>
+                                <h6 style=" font-family:RobotoThin; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; height:8px; margin-bottom:10px; ">Lunes 9 de Marzo, 12:00:41</h6>
                                 <div id="parrafo">
                                 	Estimados jugadores
 Les queremos agradecer por cumplir con nosotros nuestro primer año completo de trayectoria como organización de torneos. (Si bien el predio tiene 15 años, desde agosto del 2013 nos animamos a la organización).
@@ -615,7 +601,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>-->
                                 
                                 
-
+								<div align="center">
                                 <ul class="nav nav-pills">
                             
                                     <li class="dropdown">
@@ -627,6 +613,8 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                             <li id="zonaAtoneoA" class="zona">Zona A</li>
                             
                                             <li id="zonaBtoneoA" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoA" class="zona">Zona C</li>
                             
                                         </ul>
                             
@@ -665,16 +653,16 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                     </li>
                             
                                 </ul>
-                            	
+                            	</div>
                                 <table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
                                 	<caption id="zonaExp" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
                                 	<thead>
                                     	<tr>
-                                        	<th style="text-align:center">Result. A</th>
-                                            <th style="text-align:center">Equipo A</th>
-                                            <th style="text-align:center">Horario</th>
-                                            <th style="text-align:center">Equipo B</th>
-                                            <th style="text-align:center">Result. B</th>
+                                        	<th style="text-align:center; font-size:1.3em;">Result. A</th>
+                                            <th style="text-align:center; font-size:1.3em;">Equipo A</th>
+                                            <th style="text-align:center; font-size:1.3em;">Horario</th>
+                                            <th style="text-align:center; font-size:1.3em;">Equipo B</th>
+                                            <th style="text-align:center; font-size:1.3em;">Result. B</th>
                                             
                                         </tr>
                                     </thead>
@@ -836,37 +824,42 @@ $(document).ready(function(){
 		$('#zonaExp').html('Zona B');
 	});
 	
+	$('#zonaCtoneoA').click(function() {
+		TraerResultados(1,21,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		$('#zonaExp').html('Zona B');
+	});
+	
 	
 	$('#zonaAtoneoB').click(function() {
-		TraerResultados(2,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(2,19,<?php echo $IdUltimaFechaB; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoB').click(function() {
-		TraerResultados(2,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(2,20,<?php echo $IdUltimaFechaB; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoB').click(function() {
-		TraerResultados(2,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(2,21,<?php echo $IdUltimaFechaB; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
 	
 	$('#zonaAtoneoC').click(function() {
-		TraerResultados(3,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(3,19,<?php echo $IdUltimaFechaC; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoC').click(function() {
-		TraerResultados(3,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(3,20,<?php echo $IdUltimaFechaC; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoC').click(function() {
-		TraerResultados(3,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(3,21,<?php echo $IdUltimaFechaC; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
