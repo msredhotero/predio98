@@ -22,7 +22,7 @@ $serviciosEquipos = new ServiciosE();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],$_SESSION['torneo_predio']);
 
 
 $id = $_GET['id'];

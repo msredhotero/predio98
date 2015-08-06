@@ -219,7 +219,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
                 <div class="col-lg-7">
                   <select class="form-control" id="reftorneo" name="reftorneo" >
                   	<?php while ($rowT = mysql_fetch_array($resTipoTorneos)) { ?>
-						<option value="<?php echo $rowT[0]; ?>"><?php echo utf8_encode($rowT[1]); ?></option>	
+						<option value="<?php echo $rowT[0]; ?>"><?php echo $rowT[1]; ?></option>	
 					<?php } ?>
                   </select>
                 </div>

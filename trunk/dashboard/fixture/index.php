@@ -91,7 +91,8 @@ $cabeceras 		= "	<th>Equipo 1</th>
 				<th>Zona</th>
 				<th>Fecha Juego</th>
 				<th>Fecha</th>
-				<th>Hora</th>";
+				<th>Hora</th>
+				<th>Chequeado</th>";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
@@ -100,7 +101,7 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 $formulario 	= $serviciosFunciones->camposTabla("insertarFixture",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),9);
 
 $resZonasTorneos = $serviciosDatos->traerZonasPorTorneo($_SESSION['idtorneo_predio']);
 
