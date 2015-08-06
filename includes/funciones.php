@@ -323,18 +323,49 @@ class Servicios {
 
 
 
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//  (ATENCION ESTA FUNCION SE REPITE EN FUNCIONESZONASEQUIPOS)
+	function TraerFixturePorId($id) {
+		$sql = "SELECT idfixture,
+					reftorneoge_a,
+					resultado_a,
+					reftorneoge_b,
+					resultado_b,
+					fechajuego,
+					reffecha,
+					hora,
+					cancha,
+					(CASE WHEN chequeado =1
+					THEN  '1'
+					ELSE  '0'
+					END
+					) AS chequeado
+				FROM dbfixture 
+				where idfixture = ".$id;
+		return $this->query($sql,0);	
+	}
 
 
 
 	function camposTablaModificar($id,$lblid,$accion,$tabla,$lblcambio,$lblreemplazo,$refdescripcion,$refCampo) {
 		
-		if ($tabla == 'dbtorneos') {
+		switch ($tabla) {
+			case 'dbtorneos':
+				$resMod = $this->TraerIdTorneos($id);
+				break;
+			case 'dbfixture':
+				$resMod = $this->TraerFixturePorId($id);
+				break;	
+			default:
+				$sqlMod = "select * from ".$tabla." where ".$lblid." = ".$id;
+				$resMod = $this->query($sqlMod,0);
+		}
+		/*if ($tabla == 'dbtorneos') {
 			$resMod = $this->TraerIdTorneos($id);
 		} else {
 			$sqlMod = "select * from ".$tabla." where ".$lblid." = ".$id;
 			$resMod = $this->query($sqlMod,0);
-		}
+		}*/
 		$sql	=	"show columns from ".$tabla;
 		$res 	=	$this->query($sql,0);
 		
@@ -1403,7 +1434,7 @@ return $res;
 		$conex = mysql_connect($hostname,$username,$password) or die ("no se puede conectar".mysql_error());
 		
 		mysql_select_db($database);
-		
+		mysql_query("SET NAMES 'utf8'");
 		        $error = 0;
 		mysql_query("BEGIN");
 		$result=mysql_query($sql,$conex);

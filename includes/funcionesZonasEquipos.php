@@ -350,6 +350,7 @@ class ServiciosZonasEquipos {
 			fi.fechajuego,
 			f.tipofecha as fecha,
 			fi.hora,
+			(case when fi.chequeado = 1 then '1' else '0' end) as chequeado,
 			g.nombre
 					from dbfixture as fi
 					        inner 
@@ -625,7 +626,7 @@ class ServiciosZonasEquipos {
 		
 		$sql = "update dbfixture
 		set
-		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',hora = '".$horario."', chequeado = '".$chequeado."' 
+		reftorneoge_a = ".$reftorneoge_a.",resultado_a = ".$resultado_a.",reftorneoge_b = ".$reftorneoge_b.",resultado_b = ".$resultado_b.",fechajuego = '".$fechajuego."',refFecha = ".$refFecha.",cancha = '".utf8_decode($cancha)."',hora = '".$horario."', chequeado = ".$chequeado."  
 		where Idfixture =".$id;
 		
 		$res = $this->query($sql,0);
@@ -1119,7 +1120,8 @@ function cargarTablaConducta($reffecha) {
 					fechajuego,
 					reffecha,
 					hora,
-					cancha
+					cancha,
+					chequeado
 				FROM dbfixture 
 				where idfixture = ".$id;
 		return $this->query($sql,0);	
@@ -1530,7 +1532,7 @@ return $res;
 		$conex = mysql_connect($hostname,$username,$password) or die ("no se puede conectar".mysql_error());
 		
 		mysql_select_db($database);
-		
+		mysql_query("SET NAMES 'utf8'");
 		        $error = 0;
 		mysql_query("BEGIN");
 		$result=mysql_query($sql,$conex);
