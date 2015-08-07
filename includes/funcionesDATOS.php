@@ -361,17 +361,19 @@ left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.
 	
 	function Goleadores($idtorneo,$zona,$idfecha) {
 		$sql = 'select
-				t.apyn,t.nombre,t.cantidad,t.reemplzado, t.volvio
+				t.apyn,t.nombre,t.cantidad,t.reemplzado, t.volvio, t.refequipo, t.refjugador
 				from
 				(
 				select
-				r.apyn, r.nombre, sum(r.goles) as cantidad,r.reemplzado, r.volvio
+				r.apyn, r.nombre, sum(r.goles) as cantidad,r.reemplzado, r.volvio,r.refequipo, r.refjugador
 				from
 				(
 					select
 					j.apyn, e.nombre, a.goles, 
 					(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
-					(case when rrr.idreemplazo is null then 0 else 1 end) as volvio
+					(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+					a.refequipo,
+					a.refjugador
 					from	tbgoleadores a
 					inner
 					join	dbfixture fi
@@ -400,7 +402,7 @@ left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.' and fi.reffecha <= '.$idfecha.'
 
 				) r
-				group by r.apyn, r.nombre,r.reemplzado, r.volvio
+				group by r.apyn, r.nombre,r.reemplzado, r.volvio,r.refequipo, r.refjugador
 				) t
 				order by t.cantidad desc';
 			return $this-> query($sql,0);
@@ -1020,13 +1022,14 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 	
 	function traerAcumuladosAmarillasPorTorneoZona($idtipoTorneo,$idzona,$idfecha) {
 		$sql = "select
-				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio, t.refjugador
 				from
 				(
 				select
 					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
 					, (case when rr.idreemplazo is null then false else true end) as reemplzado
-					, (case when rrr.idreemplazo is null then 0 else 1 end) as volvio
+					, (case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+					a.refjugador
 					from		tbamonestados a
 					inner
 					join		dbequipos e
@@ -1071,7 +1074,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 											where		tp.idtipotorneo in (".$idtipoTorneo.") and tge.refgrupo = ".$idzona.")
 					and a.amarillas <> 2
 					and fi.reffecha <= ".$idfecha."
-					group by a.refequipo, e.nombre, j.apyn, j.dni
+					group by a.refequipo, e.nombre, j.apyn, j.dni, a.refjugador
 				) t
 					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.") or (cantidad > 3 and ultimafecha = ".$idfecha.")
 					
