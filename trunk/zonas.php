@@ -146,6 +146,10 @@ if (!isset($_GET['zona'])) {
         padding-bottom:6px;
 		padding-top:6px;
     }
+	
+	.main a {
+		color:#17A8F6;
+	}
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
@@ -406,10 +410,10 @@ if (!isset($_GET['zona'])) {
                             
                         	</div>
                             
-                            <div class="col-md-12" id="resultadosSuspendidos" style="margin:0; padding:0;">
+                            <!--<div class="col-md-12" id="resultadosSuspendidos" style="margin:0; padding:0;">
                         	
                             
-                        	</div>
+                        	</div>-->
                             
                         </div>
                         
@@ -624,6 +628,26 @@ $(document).ready(function(){
 	TraerResultadosAmarillasAcumuladas(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
 	
 	
+	function TraerResultadosSuspendidos(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: <?php echo $IdUltimaFecha; ?>,
+						zona: zona,
+						accion: 'SuspendidosPagina'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultadosSuspendidos').html(response);
+						
+				}
+		});
+	}
+	
+	TraerResultadosSuspendidos(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
 	
 	
 	$('#zonaAtoneoA').click(function() {

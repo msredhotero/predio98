@@ -317,6 +317,9 @@ break;
 	case 'Suspendidos':
 		Suspendidos($serviciosDatos);
 		break;
+	case 'SuspendidosPagina':
+		SuspendidosPagina($serviciosDatos);
+		break;
 	case 'FixturePagina':
 		FixturePagina($serviciosDatos);
 		break;
@@ -719,7 +722,7 @@ function FixturePaginaChicoDos($serviciosDatos) {
 									
 		$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
 		
-		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:0 2px;">
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.9em; padding:0 2px;">
                                 	
                                 	<thead>
                                     	<tr>
@@ -870,7 +873,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 							$cad2 = $cad2.'
 							<tr>
 								<td align="center">'.$i.'</td>
-								<td align="left">'.utf8_encode($row1['nombre']).'</td>
+								<td align="left"><a href="equipo.php?eq='.$row1['idequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
 								<td align="center">'.$row1['pts'].'</td>
 								<td align="center">'.$row1['partidos'].'</td>
 								<td align="center">'.$row1['ganados'].'</td>
@@ -912,19 +915,19 @@ function GoleadoresPagina($serviciosDatos) {
 				<div class="col-md-12">
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
-                                	<h3 class="panel-title">'.$zona.' Goleadores</h3>
+                                	<h3 class="panel-title">'.$zona.' - Goleadores</h3>
                                 	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                                 </div>
                                 <div class="panel-body-predio" style="padding:5px 20px;">
                                 	';
 	$cad3 = $cad3.'
 	<div class="row">
-                	<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
 						<thead>
                         <tr>
-                        	<td align="left">Nombre y Apellido</td>
-                            <td align="left">Equipo</td>
-                            <td align="center">Goles</td>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Goles</th>
                         </tr>
 						</thead>
 						<tbody>';
@@ -933,8 +936,8 @@ function GoleadoresPagina($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res3)) {
 						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
-                            <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
+                            <td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
                         </tr>';
@@ -1058,6 +1061,84 @@ function Suspendidos($serviciosDatos) {
 }
 
 
+
+function SuspendidosPagina($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	
+	$res4 = $serviciosDatos->SuspendidosNuevo($idtorneo,$idzona,$idfecha);
+	
+	$res5 = $serviciosDatos->SuspendidosPorSiempre($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - Suspendidos</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Amarillas</th>
+							<th align="center">Cant.</th>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						$restantes = 0;
+						while ($row1 = mysql_fetch_array($res4)) {
+							
+							if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
+							$restantes = $serviciosDatos->traerFechasRestantes($idfecha,$row1['refjugador'],$row1['refequipo'],$row1['refsuspendido']);
+							//echo $restantes;
+							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
+							if ($restantes != 0) { 
+								$cad3 = $cad3.'<tr>
+									<td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+									<td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
+									<td align="left" style="padding:1px;">'.utf8_encode($row1['motivos']).'</td>
+									<td align="center" style="padding:1px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
+								</tr>';
+								
+								$i = $i + 1;
+							}
+							}
+						}
+						
+						
+						while ($row2 = mysql_fetch_array($res5)) {
+
+
+								$cad3 = $cad3.'<tr>
+									<td align="left" style="padding:1px ;">'.strtoupper(utf8_encode($row2['apyn'])).'</td>
+									<td align="left" style="padding:1px ;">'.utf8_encode($row2['nombre']).'</td>
+									<td align="left" style="padding:1px ;">'.utf8_encode($row2['motivos']).'</td>
+									<td align="center" style="padding:1px ;">Todas</td>
+								</tr>';
+								
+								$i = $i + 1;
+
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						</div>';
+	echo $cad3;
+}
+
+
 function AmarillasAcumuladasPagina($serviciosDatos) {
 	$idtorneo	= $_POST['reftorneo'];
 	$idzona		= $_POST['refzona'];
@@ -1070,19 +1151,19 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 				<div class="col-md-12">
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
-                                	<h3 class="panel-title">'.$zona.'</h3>
+                                	<h3 class="panel-title">'.$zona.' - Amarillas</h3>
                                 	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                                 </div>
                                 <div class="panel-body-predio" style="padding:5px 20px;">
                                 	';
 	$cad3 = $cad3.'
 	<div class="row">
-                	<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
 						<thead>
                         <tr>
-                        	<td align="left">Nombre y Apellido</td>
-                            <td align="left">Equipo</td>
-                            <td align="center">Amarillas</td>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Amarillas</th>
                         </tr>
 						</thead>
 						<tbody>';
@@ -1090,8 +1171,8 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
-                            <td align="left" style="padding:1px;">'.utf8_encode($row1['nombre']).'</td>
+                            <td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
                         </tr>';
