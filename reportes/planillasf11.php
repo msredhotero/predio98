@@ -60,7 +60,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->SetFont('Arial','',15);
 	$pdf->SetXY(60,5);
 	$pdf->Cell(30,20,strtoupper($rowE['zona']),1,0,'C',false);
-	$pdf->Cell(115,20,strtoupper($rowE['descripciontorneo']),1,0,'C',false);
+	$pdf->Cell(115,20,strtoupper(utf8_decode($rowE['descripciontorneo'])),1,0,'C',false);
 	$pdf->Ln();
 	$pdf->SetX(60);
 	$pdf->Cell(30,20,strtoupper($rowE['tipofecha']),1,0,'C',false);
@@ -90,7 +90,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'NOMBRE DEL EQUIPO:',1,0,'C',false);
 	$pdf->SetFont('Arial','B',10);
-	$pdf->Cell(152.5,5,strtoupper($rowE['nombre']),1,0,'C',false);
+	$pdf->Cell(152.5,5,strtoupper(utf8_decode($rowE['nombre'])),1,0,'C',false);
 	
 	$pdf->Ln();
 	$pdf->SetX(5);
@@ -98,11 +98,11 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->SetFillColor(155,155,155);
 	$pdf->Cell(47.5,5,'Nombre capitan del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',8);
-	$pdf->Cell(52.5,5,strtoupper($rowE['nombrecapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['nombrecapitan'])),1,0,'L',false);
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'Nombre sub-cap. del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',8);
-	$pdf->Cell(52.5,5,strtoupper($rowE['nombresubcapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['nombresubcapitan'])),1,0,'L',false);
 	
 	$pdf->Ln();
 	$pdf->SetX(5);
@@ -120,22 +120,22 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'Email capitan del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(52.5,5,strtoupper($rowE['emailcapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['emailcapitan'])),1,0,'L',false);
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'Email sub-cap. del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(52.5,5,strtoupper($rowE['emailsubcapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['emailsubcapitan'])),1,0,'L',false);
 	
 	$pdf->Ln();
 	$pdf->SetX(5);
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'Facebook capitan del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(52.5,5,strtoupper($rowE['facebookcapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['facebookcapitan'])),1,0,'L',false);
 	$pdf->SetFont('Arial','',9);
 	$pdf->Cell(47.5,5,'Facebook sub-cap. del equipo:',1,0,'L',true);
 	$pdf->SetFont('Arial','',7);
-	$pdf->Cell(52.5,5,strtoupper($rowE['facebooksubcapitan']),1,0,'L',false);
+	$pdf->Cell(52.5,5,strtoupper(utf8_decode($rowE['facebooksubcapitan'])),1,0,'L',false);
 	
 	$pdf->SetFont('Arial','B',10);
 	$pdf->Ln();
@@ -165,7 +165,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 		$pdf->SetX(5);
 		
 		if ($rowJ['suspendido'] == '0') {
-			$pdf->Cell(49.5,5,strtoupper($rowJ['apyn']),1,0,'L',false);
+			$pdf->Cell(49.5,5,strtoupper(utf8_decode($rowJ['apyn'])),1,0,'L',false);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',false);
 			$pdf->Cell(25,5,'',1,0,'C',false);
 			$pdf->Cell(17.5,5,'',1,0,'C',false);
@@ -175,7 +175,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 			$pdf->Cell(20,5,'',1,0,'C',false);
 			$pdf->Cell(13,5,'Si/No',1,0,'C',false);
 		} else {
-			$pdf->Cell(49.5,5,strtoupper($rowJ['apyn']),1,0,'L',true);
+			$pdf->Cell(49.5,5,strtoupper(utf8_decode($rowJ['apyn'])),1,0,'L',true);
 			$pdf->Cell(20,5,$rowJ['dni'],1,0,'C',true);
 			$pdf->Cell(25,5,'',1,0,'C',true);
 			$pdf->Cell(17.5,5,'',1,0,'C',true);
