@@ -182,158 +182,22 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                 
                 <nav id="menu">
                     <ul class="clearfix contenedorMenu">
-                        <li class="menuA"><a href="#">Inicio</a></li>
+                        <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
-                        <li class="menuA"><a href="#">Reglamento</a></li>
-                        <li class="menuA"><a href="#">Premios</a></li>
+                        <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="#">Desarrollo</a></li>
-                        <li class="menuA"><a href="#">Servicios</a></li>
-                        <li class="menuA"><a href="#">Fotos</a></li>
-                        <li class="menuA"><a href="#">Contacto</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="servicios.html">Servicios</a></li>
+                        <li class="menuA"><a href="fotos.html">Fotos</a></li>
+                        <li class="menuA"><a href="contacto.html">Contacto</a></li>
                     </ul>
                     <a href="#" id="pull">Menú</a>
                 </nav>
             </header>
         </div>
     	
-        <div class="row" style=" background-color:#dadada; z-index:9999999px; display:block; margin-left:10px; margin-right:10px;">
-        	<div id="submenu" style="display:none; z-index:9999999px;">
-            <div style="height:auto; position:relative; ">
-            	<div class="col-md-4" style="padding-top:10px;">
-                	<div class="alert alert-predio alert-dismissible submenu" id="futbolco">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 con Off-side</p> 
-                    </div>
-                    <div class="alert alert-predio alert-dismissible submenu" id="futbolso">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 sin Off-side</p> 
-                    </div>
-                    <div class="alert alert-predio alert-dismissible submenu" id="futbol">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 7</p> 
-                    </div>
-                </div>
-                <div class="col-md-4 foncecoE" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 foncesoE" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 fsieteE" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Estadísticas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 foncecoI" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Información</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
-                        </ul>
-                    </div>
-                    <br>
-                    <div class="col-md-6" align="center" style="margin-top:15px;">
-                    	
-                        <h4 class="textoTrazoTitulos"> Zonas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 foncesoI" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Información</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
-                        </ul>
-                    </div>
-                    <br>
-                    <div class="col-md-6" align="center" style="margin-top:15px;">
-                    	
-                        <h4 class="textoTrazoTitulos"> Zonas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-4 fsieteI" style="display:none;">
-                	<div class="col-md-6" align="center">
-                    	
-                        <h4 class="textoTrazoTitulos"> Información</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="col-md-6" align="center" style="margin-top:15px;">
-                    	
-                        <h4 class="textoTrazoTitulos"> Zonas</h4>
-                    </div>
-                    <div class="col-md-6" style="border-left:1px dashed #333;margin-top:15px;" id="submenuestadisticas">
-                    	<ul>
-                        	<li><span class="glyphicon glyphicon-th"></span> <a href="">Zona A</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona B</a></li>
-                            <li><span class="glyphicon glyphicon-th"></span> <a href="">Zona C</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-            </div>
-            </div>
-        </div>
+        <?php echo $serviciosHTML->menuHTML(); ?>
         
         <div class="main-container">
             <div class="main wrapper clearfix">
@@ -544,7 +408,7 @@ $(document).ready(function(){
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
-						reffecha: <?php echo $IdUltimaFecha; ?>,
+						reffecha: reffecha,
 						zona: zona,
 						accion: 'TraerFixturePorZonaTorneoPagina'},
 				url:   'ajax/ajax.php',
