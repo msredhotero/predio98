@@ -23,7 +23,7 @@ $resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
 if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
 	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0) - 1;
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
@@ -32,7 +32,7 @@ if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
 
 if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
 	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
-	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0) - 1;
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
 } else {
 	$UltimaFechaB = "Fecha 1";
 	$IdUltimaFechaB = 23;
@@ -41,7 +41,7 @@ if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
 
 if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
 	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
-	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0) - 1;
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
 } else {
 	$UltimaFechaC = "Fecha 1";
 	$IdUltimaFechaC = 23;
@@ -384,6 +384,7 @@ if (!isset($_GET['zona'])) {
                             
                         </div>
                         
+                    <div class="row">
                         <div class="col-md-8" id="resultados" style="margin:0; padding:0;">
                         	
                             
@@ -393,23 +394,29 @@ if (!isset($_GET['zona'])) {
                         	
                             
                         </div>
+					</div>
                         
-                        <div class="col-md-4" id="resultadosGoles" style="margin:0; padding:0;">
-                        	
-                            
-                        </div>
                         
-                        <div class="col-md-4" style="margin:0; padding:0;">
-                        	<div class="col-md-12" id="resultadosAmarillas" style="margin:0; padding:0;">
+                        <div class="row" style="margin:0; padding:0;">
+                        	<div class="col-md-4" id="resultadosAmarillas" style="margin:0; padding:0;">
                         	
                             
                         	</div>
                             
-                            <div class="col-md-12" id="resultadosRojas" style="margin:0; padding:0;">
+                            <!--<div class="col-md-4" id="resultadosRojas" style="margin:0; padding:0;">
+                        	
+                            
+                        	</div>-->
+                            
+                            <div class="col-md-4" id="resultadosGoles" style="margin:0; padding:0;">
                         	
                             
                         	</div>
                             
+                            <div class="col-md-4" id="resultadosSuspendidos" style="margin:0; padding:0;">
+                        	
+                            
+                        	</div>
                             <!--<div class="col-md-12" id="resultadosSuspendidos" style="margin:0; padding:0;">
                         	
                             
@@ -422,10 +429,7 @@ if (!isset($_GET['zona'])) {
                             
                         </div>-->
                         
-                        <div class="col-md-4" id="resultadosSuspendidos" style="margin:0; padding:0;">
-                        	
-                            
-                        </div>
+                        
                         
                     </section>
                 </article>        
