@@ -372,13 +372,13 @@ $(document).ready(function(){
             <div style="height:auto; position:relative; ">
             	<div class="col-md-4" style="padding-top:10px;">
                 	<div class="alert alert-predio alert-dismissible submenu" id="futbolco">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 con Off-side</p> 
+                    	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 11 con Off-side</p> 
                     </div>
                     <div class="alert alert-predio alert-dismissible submenu" id="futbolso">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 11 sin Off-side</p> 
+                    	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 11 sin Off-side</p> 
                     </div>
                     <div class="alert alert-predio alert-dismissible submenu" id="futbol">
-                    	<p style="font-size:1.3em;"> Torneo de Fútbol 7</p> 
+                    	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
                 <div class="col-md-4 foncecoE" style="display:none;">
