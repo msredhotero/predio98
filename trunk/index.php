@@ -25,7 +25,7 @@ $resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
 if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
 	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0) - 1;
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
@@ -34,7 +34,7 @@ if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
 
 if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
 	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
-	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0) - 1;
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
 } else {
 	$UltimaFechaB = "Fecha 1";
 	$IdUltimaFechaB = 23;
@@ -43,7 +43,7 @@ if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
 
 if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
 	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
-	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0) - 1;
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
 } else {
 	$UltimaFechaC = "Fecha 1";
 	$IdUltimaFechaC = 23;
@@ -388,12 +388,12 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="posiciones.php?idtorneo=1">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="resultados.php?idtorneo=1">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="goleadores.php?idtorneo=1">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="fairplay.php?idtorneo=1">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="suspendidos.php?idtorneo=1">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
                 </div>
@@ -404,12 +404,12 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="posiciones.php?idtorneo=2">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="resultados.php?idtorneo=2">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="goleadores.php?idtorneo=2">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="fairplay.php?idtorneo=2">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="suspendidos.php?idtorneo=2">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=2">Amonestados</a></li>
                         </ul>
                     </div>
                 </div>
@@ -420,12 +420,12 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Posiciones</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Resultados</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Goleadores</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Fair Play</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Suspendidos</a></li>
-                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="">Amonestados</a></li>
+                        	<li><span class="glyphicon glyphicon-plus-sign"></span> <a href="posiciones.php?idtorneo=1">Posiciones</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="resultados.php?idtorneo=1">Resultados</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="goleadores.php?idtorneo=1">Goleadores</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="fairplay.php?idtorneo=1">Fair Play</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="suspendidos.php?idtorneo=1">Suspendidos</a></li>
+                            <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
                 </div>
@@ -436,8 +436,7 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
                     </div>
                     <br>
@@ -460,8 +459,7 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
                     </div>
                     <br>
@@ -484,8 +482,7 @@ $(document).ready(function(){
                     </div>
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
-                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="">Fixture</a></li>
-                            <li><span class="glyphicon glyphicon-gift"></span> <a href="">Premios</a></li>
+                        	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
                     </div>
                     

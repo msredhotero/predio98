@@ -17,17 +17,38 @@ $serviciosDatos = new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
-$resUltimaFecha = $serviciosFunciones->UltimaFecha();
+$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
+$resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
+$resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
-if (mysql_num_rows($resUltimaFecha)>0) {
-	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0);
+if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
+	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
 }
 
-$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha + 1);
+
+if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
+	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
+} else {
+	$UltimaFechaB = "Fecha 1";
+	$IdUltimaFechaB = 23;
+}
+
+
+if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
+	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
+} else {
+	$UltimaFechaC = "Fecha 1";
+	$IdUltimaFechaC = 23;
+}
+
+
+$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha );
 
 if (mysql_num_rows($resNuevaFehca)>0) {
 	$dia = mysql_result($resNuevaFehca,0,1);
@@ -36,6 +57,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$dia = "0";
 	$mes = "------";
 }
+
 
 
 ?>
@@ -437,6 +459,8 @@ $(document).ready(function(){
                                             <li id="zonaAtoneoA" class="zona">Zona A</li>
                             
                                             <li id="zonaBtoneoA" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoA" class="zona">Zona C</li>
                             
                                         </ul>
                             
@@ -640,37 +664,42 @@ $(document).ready(function(){
 		$('#zonaExp').html('Zona B');
 	});
 	
+	$('#zonaCtoneoA').click(function() {
+		TraerResultados(1,21,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		$('#zonaExp').html('Zona B');
+	});
+	
 	
 	$('#zonaAtoneoB').click(function() {
-		TraerResultados(2,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(2,19,<?php echo $IdUltimaFechaB; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoB').click(function() {
-		TraerResultados(2,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(2,20,<?php echo $IdUltimaFechaB; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoB').click(function() {
-		TraerResultados(2,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(2,21,<?php echo $IdUltimaFechaB; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
 	
 	$('#zonaAtoneoC').click(function() {
-		TraerResultados(3,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(3,19,<?php echo $IdUltimaFechaC; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoC').click(function() {
-		TraerResultados(3,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(3,20,<?php echo $IdUltimaFechaC; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoC').click(function() {
-		TraerResultados(3,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(3,21,<?php echo $IdUltimaFechaC; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
