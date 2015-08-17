@@ -709,7 +709,13 @@ function FixturePaginaChicoDos($serviciosDatos) {
 	$zona		= $_POST['zona'];
 	$cad = '';
 	
-	for ($i=$idfecha;$i>=$idfecha-1;$i--) {
+	if ($idfecha == 23) {
+		$menos = 0;	
+	} else {
+		$menos = 1;	
+	}
+	
+	for ($i=$idfecha;$i>=$idfecha-$menos;$i--) {
 		$cad = $cad.'
 				<div class="col-md-12">
 				<div class="panel panel-predio" style="margin-top:0;">

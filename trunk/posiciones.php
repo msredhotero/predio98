@@ -17,17 +17,39 @@ $serviciosDatos = new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
-$resUltimaFecha = $serviciosFunciones->UltimaFecha();
 
-if (mysql_num_rows($resUltimaFecha)>0) {
-	$UltimaFecha = mysql_result($resUltimaFecha,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFecha,0,0) - 1;
+$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
+$resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
+$resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
+
+if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
+	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
+	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
 } else {
 	$UltimaFecha = "Fecha 1";
 	$IdUltimaFecha = 23;
 }
 
-$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha + 1);
+
+if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
+	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
+	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
+} else {
+	$UltimaFechaB = "Fecha 1";
+	$IdUltimaFechaB = 23;
+}
+
+
+if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
+	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
+	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
+} else {
+	$UltimaFechaC = "Fecha 1";
+	$IdUltimaFechaC = 23;
+}
+
+
+$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha );
 
 if (mysql_num_rows($resNuevaFehca)>0) {
 	$dia = mysql_result($resNuevaFehca,0,1);
@@ -36,6 +58,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$dia = "0";
 	$mes = "------";
 }
+
 
 
 ?>
@@ -85,9 +108,6 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 
 <title>Predio 98 | Fúlbol 11 | Fútbol 7</title>
 
-
-
-<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 
@@ -140,7 +160,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 
     });
   </script>
-     
+<link rel="stylesheet" type="text/css" href="css/estilo.css"/>     
      
 
 </head>
@@ -324,12 +344,12 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                         
                         <div class="col-md-12">
                         <div>
-                        	<div class="panel panel-predio" style="margin-top:20px;">
+                        	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Posiciones</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body-predio" align="center">
+                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
                               <div align="center">
                                 <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Seleccione el Torneo y la Zona</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
@@ -348,6 +368,8 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                                             <li id="zonaAtoneoA" class="zona">Zona A</li>
                             
                                             <li id="zonaBtoneoA" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoA" class="zona">Zona C</li>
                             
                                         </ul>
                             
@@ -551,37 +573,42 @@ $(document).ready(function(){
 		$('#zonaExp').html('Zona B');
 	});
 	
+	$('#zonaCtoneoA').click(function() {
+		TraerResultados(1,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		$('#zonaExp').html('Zona B');
+	});
+	
 	
 	$('#zonaAtoneoB').click(function() {
-		TraerResultados(2,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(2,19,<?php echo $IdUltimaFechaB; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoB').click(function() {
-		TraerResultados(2,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(2,20,<?php echo $IdUltimaFechaB; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoB').click(function() {
-		TraerResultados(2,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(2,21,<?php echo $IdUltimaFechaB; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
 	
 	$('#zonaAtoneoC').click(function() {
-		TraerResultados(3,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultados(3,19,<?php echo $IdUltimaFechaC; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoC').click(function() {
-		TraerResultados(3,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultados(3,20,<?php echo $IdUltimaFechaC; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoC').click(function() {
-		TraerResultados(3,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultados(3,21,<?php echo $IdUltimaFechaC; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
