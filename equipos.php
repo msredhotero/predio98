@@ -133,22 +133,6 @@ if (mysql_num_rows($resNuevaFehca)>0) {
         padding-bottom:6px;
 		padding-top:6px;
     }
-	
-	.centered-pills {  
-    text-align: center
-}
-.centered-pills ul.nav-pills {
-    display: inline-block
-}
-.centered-pills li {
-    display: inline
-}
-.centered-pills a {
-    float: left
-}
-* html .centered-pills ul.nav-pills, *+html .centered-pills ul.nav-pills {
-    display: inline
-}
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
@@ -221,26 +205,27 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                 <article>
                     
                     <section>
-                        <div class="col-md-1">
-                        </div>
-                        <div class="col-md-10">
+                        
+                        <div class="col-md-12">
                         <div>
                         	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Posiciones</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body-predio" align="center" style="padding:5px 10px; background-image:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position: bottom;">
+                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
                               <div align="center">
-                                <h5 style="font-weight:900; font-size:2.4em; color:#FFF; text-shadow: 1px 1px 1px #333333;">Seleccione el Torneo y la Zona</h5>
+                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Seleccione el Torneo y la Zona</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
                                 
                                 
-								<div class="centered-pills"> 
-                                <ul class="nav nav-pills">
+							
+                                <ul class="nav nav-pills" style="margin-left:30%; margin-right:200px;">
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -256,7 +241,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -272,7 +257,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -288,7 +273,6 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                 </ul>
 							</div>
-                            </div>
 								<div style="height:40px;">
                                 
                                 </div>	

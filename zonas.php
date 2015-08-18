@@ -63,7 +63,7 @@ if (!isset($_GET['zona'])) {
 	$idZona = $_GET['zona'];
 }
 
-if (!isset($_GET['zona'])) {
+if (!isset($_GET['idtorneo'])) {
 	$idTorneo = 1;
 } else {
 	$idTorneo = $_GET['idtorneo'];

@@ -1217,7 +1217,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 	
 	function fairplay($idtipoTorneo,$idzona,$reffecha) {
 		$sql = "select
-				e.nombre, ss.puntos
+				e.nombre, ss.puntos, ss.refequipo
 				
 				from		tbconducta ss
 				
@@ -1236,7 +1236,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 				on t.reftipotorneo = tp.idtipotorneo
 				
 				where	tp.idtipotorneo = ".$idtipoTorneo." and tge.refgrupo = ".$idzona." and ss.reffecha = ".$reffecha."
-				group by e.nombre, ss.puntos
+				group by e.nombre, ss.puntos, ss.refequipo
 				order by ss.puntos desc";
 		return $this-> query($sql,0);
 	}

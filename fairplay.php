@@ -49,6 +49,7 @@ if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
 }
 
 
+
 $resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha );
 
 if (mysql_num_rows($resNuevaFehca)>0) {
@@ -59,6 +60,23 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$mes = "------";
 }
 
+if (!isset($_GET['zona'])) {
+	$idZona = 19;
+} else {
+	$idZona = $_GET['zona'];
+}
+
+if (!isset($_GET['idtorneo'])) {
+	$idTorneo = 1;
+} else {
+	if ($_GET['idtorneo'] == '') {
+		$idTorneo = 1;
+	} else {
+		$idTorneo = $_GET['idtorneo'];
+	}
+}
+
+$nombreTipoTorneo = mysql_result($serviciosFunciones->traerTipoTorneoPorId($idTorneo),0,1);
 
 
 ?>
@@ -221,26 +239,27 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                 <article>
                     
                     <section>
+                        <div>
                         <div class="col-md-1">
                         </div>
                         <div class="col-md-10">
-                        <div>
-                        	<div class="panel panel-predio" style="margin-top:5px;">
+                        
+                        	<div class="panel panel-predio" style="margin-top:5px; background:url(imagenes/crossword.png) repeat;">
                               <div class="panel-heading">
-                                <h3 class="panel-title">Posiciones</h3>
+                                <h3 class="panel-title">FairPlay - <?php echo $nombreTipoTorneo; ?></h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
                               </div>
-                              <div class="panel-body-predio" align="center" style="padding:5px 10px; background-image:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position: bottom;">
+                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
                               <div align="center">
-                                <h5 style="font-weight:900; font-size:2.4em; color:#FFF; text-shadow: 1px 1px 1px #333333;">Seleccione el Torneo y la Zona</h5>
+                       
+                                <img src="imagenes/tentativas/fair-play.jpg" width="200" height="200"/>
                                 
-                                
-								<div class="centered-pills"> 
+                              	<div class="centered-pills">
                                 <ul class="nav nav-pills">
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;"">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -256,7 +275,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;"">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -272,7 +291,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;"">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -287,8 +306,8 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                                     </li>
                             
                                 </ul>
+                                </div>
 							</div>
-                            </div>
 								<div style="height:40px;">
                                 
                                 </div>	
@@ -303,10 +322,12 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                         	
                             
                         </div>
-                        
-                        <div class="col-md-12" id="resultados">
+
+                        <div align="center">
+                        	<div id="resultados" style="font-size:1.1em; width:60%;">
                         	
                             
+                        	</div>
                         </div>
                     </section>
                 </article>        
@@ -421,12 +442,23 @@ border-radius: 0em 0em 0.6em 0.6em;">
 $(document).ready(function(){
 	
 	function TraerResultados(reftorneo, refzona, reffecha, zona) {
+		if (reftorneo == 1) {
+			$('.panel-title').html('FairPlay - Torneo Fútbol 11 con Off-Side');	
+		}
+		
+		if (reftorneo == 2) {
+			$('.panel-title').html('FairPlay - Torneo Fútbol 11 sin Off-Side');	
+		}
+		
+		if (reftorneo == 3) {
+			$('.panel-title').html('FairPlay - Torneo Fútbol 7');	
+		}
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
 						reffecha: reffecha,
 						zona: zona,
-						accion: 'TraerFixturePorZonaTorneoPagina'},
+						accion: 'FairPlayPagina'},
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
@@ -440,7 +472,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultados(<?php echo $idTorneo; ?>,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
 	
 	$('#zonaAtoneoA').click(function() {
 		TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');

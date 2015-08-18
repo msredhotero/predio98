@@ -348,6 +348,9 @@ break;
 	case 'FairPlay';
 		FairPlay($serviciosDatos);
 		break;
+	case 'FairPlayPagina';
+		FairPlayPagina($serviciosDatos);
+		break;
 	/* Fin reportes */
 }
 
@@ -1278,6 +1281,58 @@ function FairPlay($serviciosDatos) {
                 
                 </div>';
 	echo $cad2;
+}
+
+
+function FairPlayPagina($serviciosDatos) {
+	
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res2 = $serviciosDatos->fairplay($idtorneo,$idzona,$idfecha);
+	
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - FairPlay</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
+						<thead>
+                        <tr>
+                            <th align="left">Equipo</th>
+                            <th align="center">Puntos</th>
+                        </tr>
+						</thead>
+						<tbody>';
+
+						$i =1;
+						$puntos = 0;
+						while ($row1 = mysql_fetch_array($res2)) {
+						
+							
+				
+							$cad3 = $cad3.'<tr style="font-size:1.5em;">
+								<td align="left" style="padding:1px;"><a href="equipo.php?eq='.utf8_encode($row1['refequipo']).'">'.utf8_encode($row1['nombre']).'</td>
+								<td align="center" style="padding:1px;">'.$row1['puntos'].'</td>
+							</tr>';
+
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						</div>';
+	echo $cad3;
 }
 /* Fin reportes */
 

@@ -59,7 +59,17 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 	$mes = "------";
 }
 
+if (!isset($_GET['zona'])) {
+	$idZona = 19;
+} else {
+	$idZona = $_GET['zona'];
+}
 
+if (!isset($_GET['idtorneo'])) {
+	$idTorneo = 1;
+} else {
+	$idTorneo = $_GET['idtorneo'];
+}
 
 ?>
 
@@ -133,22 +143,6 @@ if (mysql_num_rows($resNuevaFehca)>0) {
         padding-bottom:6px;
 		padding-top:6px;
     }
-	
-	.centered-pills {  
-    text-align: center
-}
-.centered-pills ul.nav-pills {
-    display: inline-block
-}
-.centered-pills li {
-    display: inline
-}
-.centered-pills a {
-    float: left
-}
-* html .centered-pills ul.nav-pills, *+html .centered-pills ul.nav-pills {
-    display: inline
-}
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
@@ -221,26 +215,27 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                 <article>
                     
                     <section>
-                        <div class="col-md-1">
-                        </div>
-                        <div class="col-md-10">
+                        
+                        <div class="col-md-12">
                         <div>
                         	<div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
                                 <h3 class="panel-title">Posiciones</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
                               </div>
-                              <div class="panel-body-predio" align="center" style="padding:5px 10px; background-image:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position: bottom;">
+                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
                               <div align="center">
-                                <h5 style="font-weight:900; font-size:2.4em; color:#FFF; text-shadow: 1px 1px 1px #333333;">Seleccione el Torneo y la Zona</h5>
+                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Seleccione el Torneo y la Zona</h5>
+                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
                                 
                                 
-								<div class="centered-pills"> 
-                                <ul class="nav nav-pills">
+							
+                                <ul class="nav nav-pills" style="margin-left:30%; margin-right:200px;">
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -256,7 +251,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -272,7 +267,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -288,7 +283,6 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                                 </ul>
 							</div>
-                            </div>
 								<div style="height:40px;">
                                 
                                 </div>	
@@ -304,9 +298,11 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                             
                         </div>
                         
-                        <div class="col-md-12" id="resultados">
+                        <div align="center">
+                        	<div id="resultadosSuspendidos" style="font-size:1.3em; width:85%;">
                         	
                             
+                        	</div>
                         </div>
                     </section>
                 </article>        
@@ -420,75 +416,74 @@ border-radius: 0em 0em 0.6em 0.6em;">
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	function TraerResultados(reftorneo, refzona, reffecha, zona) {
+	function TraerResultadosSuspendidos(reftorneo, refzona, reffecha, zona) {
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
 						reffecha: reffecha,
 						zona: zona,
-						accion: 'TraerFixturePorZonaTorneoPagina'},
+						accion: 'SuspendidosPagina'},
 				url:   'ajax/ajax.php',
 				type:  'post',
 				beforeSend: function () {
-					
-					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
+						
 				},
 				success:  function (response) {
-						$('#resultados').html(response);
-						$("#load").html('');
+						$('#resultadosSuspendidos').html(response);
+						
 				}
 		});
 	}
 	
-	TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultadosSuspendidos(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
 	
 	$('#zonaAtoneoA').click(function() {
-		TraerResultados(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
+		TraerResultadosSuspendidos(1,19,<?php echo $IdUltimaFecha; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoA').click(function() {
-		TraerResultados(1,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
+		TraerResultadosSuspendidos(1,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoA').click(function() {
-		TraerResultados(1,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		TraerResultadosSuspendidos(1,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	
 	$('#zonaAtoneoB').click(function() {
-		TraerResultados(2,19,<?php echo $IdUltimaFechaB; ?>,'Zona A');
+		TraerResultadosSuspendidos(2,19,<?php echo $IdUltimaFechaB; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoB').click(function() {
-		TraerResultados(2,20,<?php echo $IdUltimaFechaB; ?>,'Zona B');
+		TraerResultadosSuspendidos(2,20,<?php echo $IdUltimaFechaB; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoB').click(function() {
-		TraerResultados(2,21,<?php echo $IdUltimaFechaB; ?>,'Zona C');
+		TraerResultadosSuspendidos(2,21,<?php echo $IdUltimaFechaB; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
 	
 	$('#zonaAtoneoC').click(function() {
-		TraerResultados(3,19,<?php echo $IdUltimaFechaC; ?>,'Zona A');
+		TraerResultadosSuspendidos(3,19,<?php echo $IdUltimaFechaC; ?>,'Zona A');
 		$('#zonaExp').html('Zona A');
 	});
 	
 	
 	$('#zonaBtoneoC').click(function() {
-		TraerResultados(3,20,<?php echo $IdUltimaFechaC; ?>,'Zona B');
+		TraerResultadosSuspendidos(3,20,<?php echo $IdUltimaFechaC; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
 	});
 	
 	$('#zonaCtoneoC').click(function() {
-		TraerResultados(3,21,<?php echo $IdUltimaFechaC; ?>,'Zona C');
+		TraerResultadosSuspendidos(3,21,<?php echo $IdUltimaFechaC; ?>,'Zona C');
 		$('#zonaExp').html('Zona C');
 	});
 	
