@@ -18,6 +18,14 @@ class Servicios {
 		
 	}
 	
+	function traerTipoTorneoPorId($id) {
+		$sql = "SELECT idtipotorneo,descripciontorneo FROM tbtipotorneo where idtipotorneo =".$id;
+		$res 	=	$this->query($sql,0);
+		
+		return $res;
+		
+	}
+	
 	
 	
 	/* fin */
