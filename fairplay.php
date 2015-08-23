@@ -244,16 +244,12 @@ $nombreTipoTorneo = mysql_result($serviciosFunciones->traerTipoTorneoPorId($idTo
                         </div>
                         <div class="col-md-10">
                         
-                        	<div class="panel panel-predio" style="margin-top:5px; background:url(imagenes/crossword.png) repeat;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">FairPlay - <?php echo $nombreTipoTorneo; ?></h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
-                              </div>
-                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
+                        	
                               <div align="center">
                        
                                 <img src="imagenes/tentativas/fair-play.jpg" width="200" height="200"/>
-                                
+                                <h4 style="padding-top:3px; padding-bottom:20px; color: #CCC; font-size:2em; text-shadow:1px 1px 1px #131313; font-family: 'box';"><span class="lbltorneo"></span><span class="lblzona"></span></h4>
+
                               	<div class="centered-pills">
                                 <ul class="nav nav-pills">
                             
@@ -315,8 +311,7 @@ $nombreTipoTorneo = mysql_result($serviciosFunciones->traerTipoTorneoPorId($idTo
 
                               </div>
                             </div>
-                        </div>
-                        </div>
+
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	

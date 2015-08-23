@@ -219,9 +219,67 @@ if (mysql_num_rows($resNuevaFehca)>0) {
             <div class="main wrapper clearfix">
 
                 <article>
+                    <div align="center" style="height:auto; background:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position:bottom;">
+                    	<h3 style="padding-top:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Posiciones</h3>
+                    	<h4 style="padding-top:3px; padding-bottom:20px; color:#FFF; font-size:2em; text-shadow:1px 1px 1px #131313; font-family: 'box';"><span class="lbltorneo"></span><span class="lblzona"></span></h4>
+                    </div>
                     
                     <section>
-                        <div class="col-md-1">
+                    <div class="centered-pills"> 
+                                <ul class="nav nav-pills">
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li id="zonaAtoneoA" class="zona">Zona A</li>
+                            
+                                            <li id="zonaBtoneoA" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoA" class="zona">Zona C</li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li id="zonaAtoneoB" class="zona">Zona A</li>
+                            
+                                            <li id="zonaBtoneoB" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoB" class="zona">Zona C</li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                    <li class="dropdown">
+                            
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
+                            
+                                        <ul class="dropdown-menu">
+                            
+                                            <li id="zonaAtoneoC" class="zona">Zona A</li>
+                            
+                                            <li id="zonaBtoneoC" class="zona">Zona B</li>
+                                            
+                                            <li id="zonaCtoneoC" class="zona">Zona C</li>
+                            
+                                        </ul>
+                            
+                                    </li>
+                            
+                                </ul>
+							</div>
+                            </div>
+                        <!--<div class="col-md-1">
                         </div>
                         <div class="col-md-10">
                         <div>
@@ -297,7 +355,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
                               </div>
                             </div>
                         </div>
-                        </div>
+                        </div>-->
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	

@@ -205,6 +205,16 @@ if ($_SESSION['refroll_predio'] != 1) {
                 </div>
 
             </div>
+            
+            <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline" style="margin-top:15px;">
+                    <li>
+                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                    </li>
+                </ul>
+                </div>
+            </div>
             </form>
             
     	</div>

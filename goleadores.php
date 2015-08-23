@@ -230,31 +230,21 @@ if (!isset($_GET['idtorneo'])) {
             <div class="main wrapper clearfix">
 
                 <article>
+                    <div align="center" style="height:auto; background:url(imagenes/tentativas/gol2.jpg); background-size:cover; background-position: center; margin-top:-20px; border-bottom:1px solid #CCC;">
+                    	<h3 style="padding-top:30px; padding-bottom:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Goleadores</h3>
+                    </div>
                     
                     <section>
-                        
-                        <div class="col-md-12">
-                        <div>
-                        	<div class="panel panel-predio" style="margin-top:5px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Goleadores</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
-                              </div>
-                              <div class="panel-body-predio" align="center" style="padding:25px 10px; background-image:url(imagenes/tentativas/gol.jpg); background-size:cover; ">
-                              <div align="center">
-                                <h5 style="font-weight:900; font-size:2.4em; color:#FFF; text-shadow: 1px 1px 1px #333333;">Seleccione el Torneo y la Zona</h5>
-                                
-                                
-								<div class="centered-pills"> 
+                    <div class="centered-pills"> 
                                 <ul class="nav nav-pills">
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding: 15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
-                                          <li id="zonaAtoneoA" class="zona">Zona A</li>
+                                            <li id="zonaAtoneoA" class="zona">Zona A</li>
                             
                                             <li id="zonaBtoneoA" class="zona">Zona B</li>
                                             
@@ -266,7 +256,7 @@ if (!isset($_GET['idtorneo'])) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -282,7 +272,7 @@ if (!isset($_GET['idtorneo'])) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -297,17 +287,8 @@ if (!isset($_GET['idtorneo'])) {
                                     </li>
                             
                                 </ul>
-                                </div>
 							</div>
-								<div style="height:40px;">
-                                
-                                </div>	
-
-
-                              </div>
                             </div>
-                        </div>
-                        </div>
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	
