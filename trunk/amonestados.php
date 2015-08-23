@@ -143,9 +143,28 @@ if (!isset($_GET['idtorneo'])) {
         padding-bottom:6px;
 		padding-top:6px;
     }
+	
+		.centered-pills {  
+    text-align: center
+}
+.centered-pills ul.nav-pills {
+    display: inline-block
+}
+.centered-pills li {
+    display: inline
+}
+.centered-pills a {
+    float: left
+}
+* html .centered-pills ul.nav-pills, *+html .centered-pills ul.nav-pills {
+    display: inline
+}
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
+
+<link rel="stylesheet" type="text/css" href="css/estilo.css"/>  
+
 <script src="js/responsiveslides.min.js"></script>
 
   <script>
@@ -170,7 +189,7 @@ if (!isset($_GET['idtorneo'])) {
 
     });
   </script>
-<link rel="stylesheet" type="text/css" href="css/estilo.css"/>     
+   
      
 
 </head>
@@ -213,29 +232,18 @@ if (!isset($_GET['idtorneo'])) {
             <div class="main wrapper clearfix">
 
                 <article>
+                    <div align="center" style="height:auto; background:url(imagenes/tentativas/yellow-card.jpg); background-size:cover; background-position: top; margin-top:-20px; border-bottom:1px solid #CCC;">
+                    	<h3 style="padding-top:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Amonestados</h3>
+                    	<h4 style="padding-top:3px; padding-bottom:20px; color:#FFF; font-size:2em; text-shadow:1px 1px 1px #131313; font-family: 'box';"><span class="lbltorneo"></span><span class="lblzona"></span></h4>
+                    </div>
                     
                     <section>
-                        
-                        <div class="col-md-12">
-                        <div>
-                        	<div class="panel panel-predio" style="margin-top:5px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Posiciones</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-25px;">
-                              </div>
-                              <div class="panel-body-predio" align="center" style="padding:5px 10px; ">
-                              <div align="center">
-                                <h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">Seleccione el Torneo y la Zona</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>
-                                
-                                
-							
-                                <ul class="nav nav-pills" style="margin-left:30%; margin-right:200px;">
+                    <div class="centered-pills"> 
+                                <ul class="nav nav-pills">
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 con Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 con Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -251,7 +259,7 @@ if (!isset($_GET['idtorneo'])) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 11 sin Off-Side <b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -267,7 +275,7 @@ if (!isset($_GET['idtorneo'])) {
                             
                                     <li class="dropdown">
                             
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px;">Fútbol 7<b class="caret"></b></a>
+                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:15px; color: #000099; font-size: 1.4em;text-shadow: 1px 1px 1px #333333;">Fútbol 7<b class="caret"></b></a>
                             
                                         <ul class="dropdown-menu">
                             
@@ -283,15 +291,7 @@ if (!isset($_GET['idtorneo'])) {
                             
                                 </ul>
 							</div>
-								<div style="height:40px;">
-                                
-                                </div>	
-
-
-                              </div>
                             </div>
-                        </div>
-                        </div>
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	
