@@ -223,20 +223,21 @@ if (!isset($_GET['idtorneo'])) {
                     
                     <section>
                         <div class="col-md-12" align="center" style="text-align:center;">
-                        	<h3><img src="imagenes/logo2-chico.png" >
+                        	<h3><img src="imagenes/logo2-chico.png" ><span class="lbltorneo"></span><span class="lblzona"></span>
                             <?php
-								switch ($_GET['zona']) {
+								switch ($idZona) {
 									case 19:
-										echo "Zona A";
+										$Subtitulo = " - Zona A";
 										break;
 									case 20:	
-										echo "Zona B";
+										$Subtitulo = " - Zona B";
 										break;
-									case "21":
-										echo "Zona c";
+									case 21:
+										$Subtitulo = " - Zona c";
 										break;
 									
 								}
+								
 							?>
                             </h3>
                             
@@ -408,6 +409,30 @@ border-radius: 0em 0em 0.6em 0.6em;">
 $(document).ready(function(){
 	
 	function TraerResultados(reftorneo, refzona, reffecha, zona) {
+		switch(reftorneo) {
+			case 1:
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				break;
+			case 2:
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				break;
+			case 3:
+				$('.lbltorneo').html('Torneo Fútbol 7');
+				break;
+		}
+		
+		switch(refzona) {
+			case 19:
+				$('.lblzona').html(' - Zona A');
+				break;
+			case 20:
+				$('.lblzona').html(' - Zona B');
+				break;
+			case 21:
+				$('.lblzona').html(' - Zona C');
+				break;
+		}
+		
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,

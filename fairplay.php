@@ -437,17 +437,30 @@ border-radius: 0em 0em 0.6em 0.6em;">
 $(document).ready(function(){
 	
 	function TraerResultados(reftorneo, refzona, reffecha, zona) {
-		if (reftorneo == 1) {
-			$('.panel-title').html('FairPlay - Torneo Fútbol 11 con Off-Side');	
+		switch(reftorneo) {
+			case 1:
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				break;
+			case 2:
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				break;
+			case 3:
+				$('.lbltorneo').html('Torneo Fútbol 7');
+				break;
 		}
 		
-		if (reftorneo == 2) {
-			$('.panel-title').html('FairPlay - Torneo Fútbol 11 sin Off-Side');	
+		switch(refzona) {
+			case 19:
+				$('.lblzona').html(' - Zona A');
+				break;
+			case 20:
+				$('.lblzona').html(' - Zona B');
+				break;
+			case 21:
+				$('.lblzona').html(' - Zona C');
+				break;
 		}
 		
-		if (reftorneo == 3) {
-			$('.panel-title').html('FairPlay - Torneo Fútbol 7');	
-		}
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
