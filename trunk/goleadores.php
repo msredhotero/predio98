@@ -231,7 +231,8 @@ if (!isset($_GET['idtorneo'])) {
 
                 <article>
                     <div align="center" style="height:auto; background:url(imagenes/tentativas/gol2.jpg); background-size:cover; background-position: center; margin-top:-20px; border-bottom:1px solid #CCC;">
-                    	<h3 style="padding-top:30px; padding-bottom:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Goleadores</h3>
+                    	<h3 style="padding-top:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Goleadores</h3>
+                    	<h4 style="padding-top:3px; padding-bottom:20px; color:#FFF; font-size:2em; text-shadow:1px 1px 1px #131313; font-family: 'box';"><span class="lbltorneo"></span><span class="lblzona"></span></h4>
                     </div>
                     
                     <section>
@@ -413,6 +414,30 @@ border-radius: 0em 0em 0.6em 0.6em;">
 $(document).ready(function(){
 	
 	function TraerResultadosGoles(reftorneo, refzona, reffecha, zona) {
+		switch(reftorneo) {
+			case 1:
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				break;
+			case 2:
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				break;
+			case 3:
+				$('.lbltorneo').html('Torneo Fútbol 7');
+				break;
+		}
+		
+		switch(refzona) {
+			case 19:
+				$('.lblzona').html(' - Zona A');
+				break;
+			case 20:
+				$('.lblzona').html(' - Zona B');
+				break;
+			case 21:
+				$('.lblzona').html(' - Zona C');
+				break;
+		}
+		
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,

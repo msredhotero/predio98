@@ -413,6 +413,30 @@ border-radius: 0em 0em 0.6em 0.6em;">
 $(document).ready(function(){
 	
 	function TraerResultadosSuspendidos(reftorneo, refzona, reffecha, zona) {
+		switch(reftorneo) {
+			case 1:
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				break;
+			case 2:
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				break;
+			case 3:
+				$('.lbltorneo').html('Torneo Fútbol 7');
+				break;
+		}
+		
+		switch(refzona) {
+			case 19:
+				$('.lblzona').html(' - Zona A');
+				break;
+			case 20:
+				$('.lblzona').html(' - Zona B');
+				break;
+			case 21:
+				$('.lblzona').html(' - Zona C');
+				break;
+		}
+		
 		$.ajax({
 				data:  {reftorneo: reftorneo,
 						refzona: refzona,
