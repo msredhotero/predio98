@@ -219,7 +219,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
             <div class="main wrapper clearfix">
 
                 <article>
-                    <div align="center" style="height:auto; background:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position:bottom;">
+                    <div align="center" style="height:auto; background:url(imagenes/tentativas/copa.jpg); background-size:cover; background-position:bottom; margin-top:-20px;">
                     	<h3 style="padding-top:30px; color:#FFF; font-size:8em; text-shadow:2px 2px 2px #131313; font-family: 'box';">Posiciones</h3>
                     	<h4 style="padding-top:3px; padding-bottom:20px; color:#FFF; font-size:2em; text-shadow:1px 1px 1px #131313; font-family: 'box';"><span class="lbltorneo"></span><span class="lblzona"></span></h4>
                     </div>
