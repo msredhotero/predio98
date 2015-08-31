@@ -1061,9 +1061,9 @@ function traerZonaPorTorneos($refTorneo) {
 		return $this-> query($sql,0);
 	}
 	
-	function insertarConducta($refequipo,$puntos,$reffecha) {
-$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha)
-values ('',".$refequipo.",".$puntos.",".$reffecha.")";
+	function insertarConducta($refequipo,$puntos,$reffecha,$reftorneo) {
+$sql = "insert into tbconducta(idconducta,refequipo,puntos,reffecha,reftorneo)
+values ('',".$refequipo.",".$puntos.",".$reffecha.", ".$reftorneo.")";
 $res = $this->query($sql,1);
 return $res;
 }
@@ -1078,29 +1078,29 @@ $res = $this->query($sql,0);
 return $res;
 }
 
-function traerConductaPorFechaEquipo($refequipo,$reffecha) {
+function traerConductaPorFechaEquipo($refequipo,$reffecha,$reftorneo) {
 	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
-			where c.refequipo =".$refequipo." and c.reffecha =".$reffecha;
+			where c.refequipo =".$refequipo." and c.reffecha =".$reffecha." c.reftorneo = ".$reftorneo;
 	$res = $this->query($sql,0);
 	return $res;
 }
 
-function modificarConductaPorEquipo($refequipo,$puntos,$reffecha) {
+function modificarConductaPorEquipo($refequipo,$puntos,$reffecha,$reftorneo) {
 
-	$existe = $this->traerConductaPorFechaEquipo($refequipo,$reffecha);
+	$existe = $this->traerConductaPorFechaEquipo($refequipo,$reffecha,$reftorneo);
 	
 	if (mysql_num_rows($existe)>0) {
 		//si existe le sumo
 		$sql = "update tbconducta
 		set
 		puntos = puntos + ".$puntos."
-		where refequipo =".$refequipo;
+		where refequipo =".$refequipo." and reftorneo =".$reftorneo;
 		$res = $this->query($sql,0);
 		
 	} else {
 		//sino existe lo inserto
-		$res = $this->insertarConducta($refequipo,$puntos,$reffecha);
+		$res = $this->insertarConducta($refequipo,$puntos,$reffecha,$reftorneo);
 	}
 	
 	return $res;

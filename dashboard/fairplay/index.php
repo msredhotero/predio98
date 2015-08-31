@@ -36,8 +36,8 @@ $accionEliminar		= "eliminarConducta";
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
 $tabla 			= "tbconducta";
 
-$lblCambio	 	= array("refequipo","reffecha");
-$lblreemplazo	= array("Equipo","Fecha");
+$lblCambio	 	= array("refequipo","reffecha","reftorneo");
+$lblreemplazo	= array("Equipo","Fecha","Torneo");
 
 $resTipoTorneo 	= $serviciosEquipos->TraerEquipos();
 
@@ -56,8 +56,16 @@ while ($rowFF = mysql_fetch_array($resFechas)) {
 	
 }
 
-$refdescripcion = array(0 => $cadRef,1=>$cadFecha);
-$refCampo 	=  array("refequipo","reffecha"); 
+$resTorneo 	= $serviciosFunciones->TraerTorneos();
+
+$cadTorneo = '';
+while ($rowTO = mysql_fetch_array($resTorneo)) {
+	$cadTorneo = $cadTorneo.'<option value="'.$rowTO[0].'">'.$rowTO[1].' - '.$rowTO[4].'</option>';
+	
+}
+
+$refdescripcion = array(0 => $cadRef,1=>$cadFecha,2=>$cadTorneo);
+$refCampo 	=  array("refequipo","reffecha","reftorneo"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
