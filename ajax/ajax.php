@@ -1611,7 +1611,9 @@ function insertarConducta($serviciosFunciones) {
 	$refequipo = $_POST['refequipo'];
 	$puntos = $_POST['puntos'];
 	$reffecha =$_POST['reffecha'];
-	$res = $serviciosFunciones->modificarConductaPorEquipo($refequipo,$puntos,$reffecha);
+	$reftorneo = $_POST['reftorneo'];
+	
+	$res = $serviciosFunciones->modificarConductaPorEquipo($refequipo,$puntos,$reffecha,$reftorneo);
 	if ($res == true) {
 		echo '';
 	} else {
