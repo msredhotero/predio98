@@ -1081,7 +1081,7 @@ return $res;
 function traerConductaPorFechaEquipo($refequipo,$reffecha,$reftorneo) {
 	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
-			where c.refequipo =".$refequipo." and c.reffecha =".$reffecha." c.reftorneo = ".$reftorneo;
+			where c.refequipo =".$refequipo." and c.reffecha =".$reffecha." and c.reftorneo = ".$reftorneo;
 	$res = $this->query($sql,0);
 	return $res;
 }
@@ -1126,7 +1126,7 @@ function traerConducta() {
 }
 
 function traerConductaPorId($id) {
-	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo from tbconducta c
+	$sql = "select c.idconducta,e.nombre,c.puntos,e.idequipo,c.reffecha,c.reftorneo from tbconducta c
 			inner join dbequipos e on e.idequipo = c.refequipo 
 			where c.idconducta =".$id;
 	$res = $this->query($sql,0);
