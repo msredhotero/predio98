@@ -127,7 +127,18 @@ class ServiciosNoticias {
 	}
 
 /* fin archivos */
+/*
+CREATE TABLE `dbfotos` (
+  `idfoto` int(11) NOT NULL AUTO_INCREMENT,
+  `refnoticia` int(11) NOT NULL,
+  `imagen` varchar(500) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `principal` bit(1) DEFAULT NULL,
+  PRIMARY KEY (`idfoto`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
+
+*/
 
 	function insertarNoticiasPrincipales($titulo,$noticiaprincipal,$fechacreacion) {
 	$sql = "insert into dbnoticiaprincipal(idnoticiaprincipal,titulo,noticiaprincipal,fechacreacion)
