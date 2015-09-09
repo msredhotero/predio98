@@ -34,17 +34,10 @@ $accionEliminar		= "eliminarNoticias";
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbnoticias";
+$tabla 			= "dbnoticiaprincipal";
 
-$lblCambio	 	= array("titulo","parrafo","fechacreacion");
+$lblCambio	 	= array("titulo","noticiaprincipal","fechacreacion");
 $lblreemplazo	= array("Título","Noticia Principal","Fecha Creación");
-
-
-$tabla2 		= "dbnoticiapredio";
-
-$lblCambio2	 	= array("titulo","noticiapredio","fechacreacion");
-$lblreemplazo2	= array("Título","Noticia Predio","Fecha Creación");
-
 
 
 $cadRef = '';
@@ -61,9 +54,6 @@ $cabeceras 		= "	<th>Título</th>
 				<th>Noticia Principal</th>
 				<th>Fecha Creación</th>";
 				
-$cabeceras2		= "	<th>Título</th>
-				<th>Noticia Principal</th>
-				<th>Fecha Creación</th>";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
@@ -74,10 +64,6 @@ $formulario 	= $serviciosFunciones->camposTabla("insertarNoticiasPrincipales",$t
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosNoticias->traerNoticiaPrincipal(),3);
 
-
-$formulario2 	= $serviciosFunciones->camposTabla("insertarNoticiasPredio",$tabla2,$lblCambio2,$lblreemplazo2,$refdescripcion,$refCampo);
-
-$lstCargados2 	= $serviciosFunciones->camposTablaView($cabeceras2,$serviciosNoticias->traerNoticiaPredio(),3);
 
 
 
@@ -138,6 +124,9 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
+    
+    <script src="../../ckeditor/ckeditor.js"></script>
+	<script src="js/sample.js"></script>
 </head>
 
 <body>
@@ -156,9 +145,7 @@ if ($_SESSION['refroll_predio'] != 1) {
         	
         </div>
     	<div class="cuerpoBox">
-        	<div class="help-block">
-            	* Recuerde que para agregar un salto de linea o enter debe ingresar la palabra "<span><</span>br>"
-            </div>
+
         	<form class="form-inline formulario" role="form">
         	<?php echo $formulario; ?>
             
@@ -202,56 +189,6 @@ if ($_SESSION['refroll_predio'] != 1) {
     
     
     
-    
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;">Carga de <?php echo $lblTituloplural; ?> del Predio</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<div class="help-block">
-            	* Recuerde que para agregar un salto de linea o enter debe ingresar la palabra "<span><</span>br>"
-            </div>
-        	<form class="form-inline formulario2" role="form">
-        	<?php echo $formulario2; ?>
-            
-            
-            
-            <div class='row'>
-                <div class='alert'>
-                
-                </div>
-                <div id='load'>
-                
-                </div>
-            </div>
-			
-            
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar2" style="margin-left:0px;">Guardar</button>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            </form>
-    	</div>
-    </div>
-    
-    <div class="boxInfoLargo">
-        <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Predio Cargadas</p>
-        	
-        </div>
-    	<div class="cuerpoBox">
-        	<?php echo $lstCargados2; ?>
-    	</div>
-    </div>
-    
-    
-
     
     
    
@@ -418,7 +355,15 @@ $('.form_date').datetimepicker({
 	format: 'dd/mm/yyyy'
 });
 </script>
-
+<script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'noticiaprincipal', {
+									language: 'es',
+									uiColor: '#9AB8F3'
+									
+								} );
+            </script>
 
 <?php } ?>
 </body>

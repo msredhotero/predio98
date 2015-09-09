@@ -130,8 +130,8 @@ class ServiciosJ {
 	}
 	
 	
-	function TraerJugadoresPorEquipoPlanillas($idequipo,$reffecha) {
-		$sql = "
+	function TraerJugadoresPorEquipoPlanillas($idequipo,$reffecha, $idTorneo) {
+		/*$sql = "
 					select
 					*
 					from
@@ -169,7 +169,79 @@ class ServiciosJ {
 					where j.idequipo = ".$idequipo." and j.expulsado = 1
 					) as f
 					
-					order by f.apyn";
+					order by f.apyn";*/
+		$sql = "select 
+					*
+				from
+					(select 
+						j.idjugador,
+							j.apyn,
+							j.dni,
+							j.invitado,
+							(case
+								when s.refjugador is null then '0'
+								else '1'
+							end) as suspendido
+					from
+						dbjugadores j
+					left join (select distinct
+						sf.refjugador
+					from
+						dbsuspendidosfechas sf
+						inner join tbsuspendidos ss on ss.idsuspendido = sf.refsuspendido
+						inner join (select distinct
+										ff.idfixture
+									from
+										dbfixture ff
+									inner join dbtorneoge tge ON tge.idtorneoge = ff.reftorneoge_a
+										or tge.idtorneoge = ff.reftorneoge_b
+									inner join dbtorneos t ON tge.reftorneo = t.idtorneo
+									inner join tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+									where
+										t.activo = 1 and t.reftipotorneo in (".$idTorneo.")) d
+						on			d.idfixture = ss.reffixture
+					where
+						reffecha = ".$reffecha.") s ON j.idjugador = s.refjugador
+					where
+						j.idequipo = ".$idequipo." and j.invitado = 0
+							and j.expulsado = 0 union all select 
+						j.idjugador,
+							j.apyn,
+							j.dni,
+							j.invitado,
+							(case
+								when s.refjugador is null then '0'
+								else '1'
+							end) as suspendido
+					from
+						dbjugadores j
+					inner join (select distinct
+						sf.refjugador
+					from
+						dbsuspendidosfechas sf
+						inner join tbsuspendidos ss on ss.idsuspendido = sf.refsuspendido
+						inner join (select distinct
+										ff.idfixture
+									from
+										dbfixture ff
+									inner join dbtorneoge tge ON tge.idtorneoge = ff.reftorneoge_a
+										or tge.idtorneoge = ff.reftorneoge_b
+									inner join dbtorneos t ON tge.reftorneo = t.idtorneo
+									inner join tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+									where
+										t.activo = 1 and t.reftipotorneo in (".$idTorneo.")) d
+						on			d.idfixture = ss.reffixture
+					where
+						reffecha = ".$reffecha.") s ON j.idjugador = s.refjugador
+					where
+						j.idequipo = ".$idequipo." and j.invitado = 1
+							and j.expulsado = 0 union all select 
+						j.idjugador, j.apyn, j.dni, j.invitado, 1 as suspendido
+					from
+						dbjugadores j
+					where
+						j.idequipo = ".$idequipo." and j.expulsado = 1) as f
+				order by f.apyn";
 		return $this->query($sql,0);
 	}
 

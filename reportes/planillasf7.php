@@ -143,8 +143,9 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 	$pdf->SetX(5);
 	$pdf->Cell(200,5,'JUGADORES',1,0,'C',false);
 	$pdf->SetFont('Arial','',9);
-	$resJugadores = $serviciosJugadores->TraerJugadoresPorEquipoPlanillas($rowE['idequipo'],$reffecha);
-	
+	$resJugadores = $serviciosJugadores->TraerJugadoresPorEquipoPlanillas($rowE['idequipo'],$reffecha, $idtorneo);
+	//echo $resJugadores;
+	//die();
 	$pdf->Ln();
 	$pdf->SetX(5);
 	$pdf->Cell(49.5,5,'APELLIDO Y NOMBRE',1,0,'C',true);

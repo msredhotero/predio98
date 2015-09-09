@@ -279,16 +279,20 @@ class Servicios {
 										';
 										
 									} else {
-										if ((integer)(str_replace('varchar(','',$row[1])) > 200) {
+										if ($row[1] == 'MEDIUMTEXT') {
 											$label = ucwords($label);
 											$campo = strtolower($row[0]);
 											
 											$form	=	$form.'
 											
-											<div class="form-group col-md-6">
+											<div class="form-group col-md-12">
 												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 												<div class="input-group col-md-12">
-													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required></textarea>
+													<textarea name="'.$campo.'" id="'.$campo.'" rows="200" cols="160">
+														Ingrese la noticia.
+													</textarea>
+													
+													
 												</div>
 												
 											</div>
@@ -296,19 +300,38 @@ class Servicios {
 											';
 											
 										} else {
-											$label = ucwords($label);
-											$campo = strtolower($row[0]);
 											
-											$form	=	$form.'
-											
-											<div class="form-group col-md-6">
-												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
-												<div class="input-group col-md-12">
-													<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+											if ((integer)(str_replace('varchar(','',$row[1])) > 200) {
+												$label = ucwords($label);
+												$campo = strtolower($row[0]);
+												
+												$form	=	$form.'
+												
+												<div class="form-group col-md-6">
+													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+													<div class="input-group col-md-12">
+														<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required></textarea>
+													</div>
+													
 												</div>
-											</div>
-											
-											';
+												
+												';
+												
+												} else {
+												$label = ucwords($label);
+												$campo = strtolower($row[0]);
+												
+												$form	=	$form.'
+												
+												<div class="form-group col-md-6">
+													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+													<div class="input-group col-md-12">
+														<input type="text" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+													</div>
+												</div>
+												
+												';
+											}
 										}
 									}
 								}
