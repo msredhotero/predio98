@@ -20,7 +20,7 @@ $serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Noticias",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Noticias Generales",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 /////////////////////// Opciones de la pagina  ////////////////////
@@ -34,10 +34,10 @@ $accionEliminar		= "eliminarNoticias";
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbnoticiaprincipal";
+$tabla 			= "dbnoticias";
 
-$lblCambio	 	= array("titulo","noticiaprincipal","fechacreacion");
-$lblreemplazo	= array("Título","Noticia Principal","Fecha Creación");
+$lblCambio	 	= array("titulo","parrafo","fechacreacion");
+$lblreemplazo	= array("Título","Noticia","Fecha Creación");
 
 
 $cadRef = '';
@@ -52,7 +52,8 @@ $refCampo[] 	= "";
 /////////////////////// Opciones para la creacion del view  /////////////////////
 $cabeceras 		= "	<th>Título</th>
 				<th>Noticia Principal</th>
-				<th>Fecha Creación</th>";
+				<th>Fecha Creación</th>
+				<th>Es Galeria</th>";
 				
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
@@ -60,9 +61,9 @@ $cabeceras 		= "	<th>Título</th>
 
 
 
-$formulario 	= $serviciosFunciones->camposTabla("insertarNoticiasPrincipales",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
+$formulario 	= $serviciosFunciones->camposTabla("insertarNoticias",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosNoticias->traerNoticiaPrincipal(),3);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosNoticias->traerNoticias(),4);
 
 
 
@@ -126,7 +127,7 @@ if ($_SESSION['refroll_predio'] != 1) {
     </script>
     
     <script src="../../ckeditor/ckeditor.js"></script>
-	<script src="js/sample.js"></script>
+
 </head>
 
 <body>
@@ -145,38 +146,152 @@ if ($_SESSION['refroll_predio'] != 1) {
         	
         </div>
     	<div class="cuerpoBox">
-
-        	<form class="form-inline formulario" role="form">
-        	<?php echo $formulario; ?>
-            
-            
-            
-            <div class='row'>
-                <div class='alert'>
-                
-                </div>
-                <div id='load'>
-                
-                </div>
-            </div>
 			
-            
-            <div class="row">
-                <div class="col-md-12">
-                <ul class="list-inline" style="margin-top:15px;">
-                    <li>
-                        <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
-                    </li>
-                </ul>
+        	<form class="form-inline formulario" role="form">
+	        	<div class="row" style="margin-left:25px; margin-right:25px;">
+				<?php echo $formulario; ?>
+            	</div>
+                
+                <div class="row" style="margin-left:25px; margin-right:25px;">
+                	<h4>Agregar Imagenes</h4>
+                        <p style=" color: #999;">30 fotos disponibles (no más de 1 mb por foto)</p>
+                        <div style="height:auto; 
+                    			width:100%; 
+                                background-color:#FFF;
+                                -webkit-border-radius: 13px; 
+                            	-moz-border-radius: 13px;
+                            	border-radius: 13px;
+                                margin-left:-20px;
+                                padding-left:20px;">
+
+                            
+			<ul class="list-inline">
+                            <li style="margin-top:14px;">
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen1" id="imagen1">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                
+                                <img id="vistaPrevia1" name="vistaPrevia1" width="50" height="50"/>
+                            </div>
+                            <div style="height:14px;">
+                                
+                            </div>
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen2" id="imagen2">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia2" name="vistaPrevia2" width="50" height="50"/>
+                            </div>
+                            
+                                
+                            </li>
+                            <li style="margin-top:14px;">
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen3" id="imagen3">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia3" name="vistaPrevia3" width="50" height="50"/>
+                            </div>
+                            <div style="height:14px;">
+                                
+                            </div>
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen4" id="imagen4">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia4" name="vistaPrevia4" width="50" height="50"/>
+                            </div>
+                            </li>
+                            <li style="margin-top:14px;">
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen5" id="imagen5">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia5" name="vistaPrevia5" width="50" height="50"/>
+                            </div>
+                            <div style="height:14px;">
+                            
+                            </div>
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen6" id="imagen6">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia6" name="vistaPrevia6" width="50" height="50"/>
+                            </div>
+                            </li>
+                            
+                            <li style="margin-top:14px;">
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen7" id="imagen7">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia7" name="vistaPrevia7" width="50" height="50"/>
+                            </div>
+                            <div style="height:14px;">
+                            
+                            </div>
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen8" id="imagen8">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia8" name="vistaPrevia8" width="50" height="50"/>
+                            </div>
+                            </li>
+                            
+                            </ul>
+                            
+                            
+                            
+                            
+                            
+                            
+                           
                 </div>
-            </div>
+            
+            
+                <div class='row'>
+                    <div class='alert'>
+                    
+                    </div>
+                    <div id='load'>
+                    
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                    <div class="col-md-12">
+                    <ul class="list-inline" style="margin-top:15px;">
+                        <li>
+                            <button type="button" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
             </form>
     	</div>
     </div>
     
     <div class="boxInfoLargo">
         <div id="headBoxInfo">
-        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?> Principales Cargadas</p>
+        	<p style="color: #fff; font-size:18px; height:16px;"><?php echo $lblTituloplural; ?></p>
         	
         </div>
     	<div class="cuerpoBox">
@@ -283,6 +398,11 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
+		var contenido = CKEDITOR.instances['parrafo'].getData();
+		
+		//alert(contenido);
+		
+		$('#parrafo').val(contenido);
 		
 		if (validador() == "")
         {
@@ -339,6 +459,136 @@ $(document).ready(function(){
 		}
     });
 
+$('#imagen1').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia1').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen2').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia2').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen3').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia3').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen4').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia4').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen5').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia5').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen6').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia6').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen7').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia7').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+
+$('#imagen8').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia8').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+
 });
 </script>
 
@@ -356,14 +606,14 @@ $('.form_date').datetimepicker({
 });
 </script>
 <script>
-                // Replace the <textarea id="editor1"> with a CKEditor
-                // instance, using default configuration.
-                CKEDITOR.replace( 'noticiaprincipal', {
-									language: 'es',
-									uiColor: '#9AB8F3'
-									
-								} );
-            </script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'parrafo', {
+						language: 'es',
+						uiColor: '#9AB8F3'
+						
+					} );
+</script>
 
 <?php } ?>
 </body>

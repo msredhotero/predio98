@@ -296,6 +296,9 @@ break;
 	case 'eliminarNoticias':
 		eliminarNoticias($serviciosNoticias);
 		break; 
+	case 'eliminarFoto':
+		eliminarFoto($serviciosNoticias);
+		break;
 	/* fin noticias */
 	
 	/* Reportes */
@@ -1342,44 +1345,91 @@ function FairPlayPagina($serviciosDatos) {
 
 
 function insertarNoticias($serviciosNoticias) {
-$titulo = $_POST['titulo'];
-$parrafo = $_POST['parrafo'];
-$fechacreacion = $_POST['fechacreacion'];
-if (isset($_POST['galeria'])) {
-$galeria = 1;
-} else {
-$galeria = 0;
-}
-$res = $serviciosNoticias->insertarNoticias($titulo,$parrafo,$fechacreacion,$galeria);
-if ((integer)$res > 0) {
-echo '';
-} else {
-echo 'Huvo un error al insertar datos';
-}
+	$titulo = $_POST['titulo'];
+	$parrafo = $_POST['parrafo'];
+	$fechacreacion = $_POST['fechacreacion'];
+	if (isset($_POST['galeria'])) {
+		$galeria = 1;
+	} else {
+		$galeria = 0;
+	}
+
+	$res = $serviciosNoticias->insertarNoticias($titulo,$parrafo,$fechacreacion,$galeria);
+	if ((integer)$res > 0) {
+		$imagenes = array("imagen1" => 'imagen1',
+						  "imagen2" => 'imagen2',
+						  "imagen3" => 'imagen3',
+						  "imagen4" => 'imagen4',
+						  "imagen5" => 'imagen5',
+						  "imagen6" => 'imagen6',
+						  "imagen7" => 'imagen7',
+						  "imagen8" => 'imagen8');
+	
+		foreach ($imagenes as $valor) {
+			$serviciosNoticias->subirArchivo($valor,'galeria',$res);
+		}
+		echo '';
+	} else {
+		echo 'Huvo un error al insertar datos';
+	}
 }
 function modificarNoticias($serviciosNoticias) {
-$id = $_POST['id'];
-$titulo = $_POST['titulo'];
-$parrafo = $_POST['parrafo'];
-$fechacreacion = $_POST['fechacreacion'];
-if (isset($_POST['galeria'])) {
-$galeria = 1;
-} else {
-$galeria = 0;
-}
-$res = $serviciosNoticias->modificarNoticias($id,$titulo,$parrafo,$fechacreacion,$galeria);
-if ($res == true) {
+	
+	$id = $_POST['id'];
+	$titulo = $_POST['titulo'];
+	$parrafo = $_POST['parrafo'];
+	$fechacreacion = $_POST['fechacreacion'];
+	if (isset($_POST['galeria'])) {
+		$galeria = 1;
+	} else {
+		$galeria = 0;
+	}
+	
+	$cantImagenes		=	$_POST['cantidadImagenes'];
+	
+	$cantImagenes		= 8 - (integer)$cantImagenes;
+	
+	
+	$res = $serviciosNoticias->modificarNoticias($id,$titulo,$parrafo,$fechacreacion);
+	if ($res == true) {
+		$imagenes = array("imagen1" => 'imagen1',
+						  "imagen2" => 'imagen2',
+						  "imagen3" => 'imagen3',
+						  "imagen4" => 'imagen4',
+						  "imagen5" => 'imagen5',
+						  "imagen6" => 'imagen6',
+						  "imagen7" => 'imagen7',
+						  "imagen8" => 'imagen8');
+	
+		for ($i=1;$i<=$cantImagenes;$i++) {
+			$valor = "imagen".$i;
+			$serviciosNoticias->subirArchivo($valor,'galeria',$id);
+		}
 		echo '';
 	} else {
 		echo 'Huvo un error al modificar datos';
 	}
 }
 function eliminarNoticias($serviciosNoticias) {
-$id = $_POST['id'];
-$res = $serviciosNoticias->eliminarNoticias($id);
-echo $res;
+	$id = $_POST['id'];
+
+	//**** Debo eliminar todas las imagenes que hay en la noticias y la carpeta tambien *//////////
+	$resT = $serviciosNoticias->TraerFotosNoticias($id);
+	
+	while ($resT = mysql_fetch_array($resT)) {
+		$serviciosNoticias->eliminarFoto($resT['idfoto']);	
+	}
+	
+	
+	$res = $serviciosNoticias->eliminarNoticias($id);
+
+	echo $res;
 } 
 
+function eliminarFoto($serviciosNoticias) {
+	$id			=	$_POST['id'];
+	echo $serviciosNoticias->eliminarFoto($id);
+}
 
 
 function insertarNoticiasPrincipales($serviciosNoticias) {
@@ -1394,11 +1444,12 @@ echo 'Huvo un error al insertar datos';
 }
 }
 function modificarNoticiasPrincipales($serviciosNoticias) {
-$id = $_POST['id'];
-$titulo = $_POST['titulo'];
-$noticiaprincipal = $_POST['noticiaprincipal'];
-$fechacreacion = $_POST['fechacreacion'];
-$res = $serviciosNoticias->modificarNoticiasPrincipales($id,$titulo,$noticiaprincipal,$fechacreacion);
+	$id = $_POST['id'];
+	$titulo = $_POST['titulo'];
+	$noticiaprincipal = $_POST['noticiaprincipal'];
+	$fechacreacion = $_POST['fechacreacion'];
+	
+	$res = $serviciosNoticias->modificarNoticiasPrincipales($id,$titulo,$noticiaprincipal,$fechacreacion);
 	if ($res == true) {
 		echo '';
 	} else {

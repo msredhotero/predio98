@@ -78,7 +78,7 @@ class Servicios {
 			
 			for ($i=1;$i<=$cantidad;$i++) {
 				
-				$cadsubRows = $cadsubRows.'<td>'.$row[$i].'</td>';	
+				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.$row[$i].'</div></td>';	
 			}
 			
 			
@@ -563,19 +563,42 @@ class Servicios {
 											';
 											
 										} else {
+											
+											if ($row[1] == 'MEDIUMTEXT') {
 											$label = ucwords($label);
 											$campo = strtolower($row[0]);
 											
 											$form	=	$form.'
 											
-											<div class="form-group col-md-6">
+											<div class="form-group col-md-12">
 												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 												<div class="input-group col-md-12">
-													<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+													<textarea name="'.$campo.'" id="'.$campo.'" rows="200" cols="160">
+														Ingrese la noticia.
+													</textarea>
+													
+													
 												</div>
+												
 											</div>
 											
 											';
+											
+											} else {
+												$label = ucwords($label);
+												$campo = strtolower($row[0]);
+												
+												$form	=	$form.'
+												
+												<div class="form-group col-md-6">
+													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+													<div class="input-group col-md-12">
+														<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+													</div>
+												</div>
+												
+												';
+											}
 										}
 									}
 								}

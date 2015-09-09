@@ -27,7 +27,7 @@ $resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Equipos
 
 $id = $_GET['id'];
 
-$resResultado = $serviciosEquipos->TraerIdEquipo($id);;
+$resResultado = $serviciosEquipos->TraerIdEquipo($id);
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
 $tabla 			= "dbequipos";

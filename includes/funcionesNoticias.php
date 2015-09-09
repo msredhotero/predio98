@@ -9,6 +9,126 @@ date_default_timezone_set('America/Buenos_Aires');
 
 class ServiciosNoticias {
 	
+	
+	///**********  PARA SUBIR ARCHIVOS  ***********************//////////////////////////
+	function borrarDirecctorio($dir) {
+		array_map('unlink', glob($dir."/*.*"));	
+	
+	}
+	
+	function borrarArchivo($id,$archivo) {
+		$sql	=	"delete from dbfotos where idfoto =".$id;
+		
+		$res =  unlink("./../archivos/".$archivo);
+		if ($res)
+		{
+			$this->query($sql,0);	
+		}
+		return $res;
+	}
+	
+	
+	function existeArchivo($refinmueble,$nombre,$type) {
+		$sql		=	"select * from dbfotos where refnoticia =".$refinmueble." and imagen = '".$nombre."' and type = '".$type."'";
+		$resultado  =   $this->query($sql,0);
+			   
+			   if(mysql_num_rows($resultado)>0){
+	
+				   return mysql_result($resultado,0,0);
+	
+			   }
+	
+			   return 0;	
+	}
+
+
+	function subirArchivo($file,$carpeta,$idInmueble) {
+		$dir_destino = '../archivos/'.$carpeta.'/'.$idInmueble.'/';
+		$imagen_subida = $dir_destino . utf8_decode(str_replace(' ','',basename($_FILES[$file]['name'])));
+		
+		$noentrar = '../imagenes/index.php';
+		$nuevo_noentrar = '../archivos/'.$carpeta.'/'.$idInmueble.'/'.'index.php';
+		
+		if (!file_exists($dir_destino)) {
+			mkdir($dir_destino, 0777);
+		}
+		
+		 
+		if(!is_writable($dir_destino)){
+			
+			echo "no tiene permisos";
+			
+		}	else	{
+			if ($_FILES[$file]['tmp_name'] != '') {
+				if(is_uploaded_file($_FILES[$file]['tmp_name'])){
+					/*echo "Archivo ". $_FILES['foto']['name'] ." subido con éxtio.\n";
+					echo "Mostrar contenido\n";
+					echo $imagen_subida;*/
+					if (move_uploaded_file($_FILES[$file]['tmp_name'], $imagen_subida)) {
+						
+						$archivo = utf8_decode($_FILES[$file]["name"]);
+						$tipoarchivo = $_FILES[$file]["type"];
+						
+						if ($this->existeArchivo($idInmueble,$archivo,$tipoarchivo) == 0) {
+							$sql	=	"insert into dbfotos(idfoto,refnoticia,imagen,type) values ('',".$idInmueble.",'".str_replace(' ','',$archivo)."','".$tipoarchivo."')";
+							$this->query($sql,1);
+						}
+						echo "";
+						
+						copy($noentrar, $nuevo_noentrar);
+		
+					} else {
+						echo "Posible ataque de carga de archivos!\n";
+					}
+				}else{
+					echo "Posible ataque del archivo subido: ";
+					echo "nombre del archivo '". $_FILES[$file]['tmp_name'] . "'.";
+				}
+			}
+		}	
+	}
+
+
+	
+	function TraerFotosNoticias($idNoticia) {
+		$sql    =   "select 'galeria',i.idnoticia,f.imagen,f.idfoto
+							from dbnoticias i
+							
+							inner
+							join dbfotos f
+							on	i.idnoticia = f.refnoticia
+
+							where i.idnoticia = ".$idNoticia;
+		$result =   $this->query($sql, 0);
+		return $result;
+	}
+	
+	
+	function eliminarFoto($id)
+	{
+		
+		$sql		=	"select concat('galeria','/',i.idnoticia,'/',f.imagen) as archivo
+							from dbnoticias i
+							
+							inner
+							join dbfotos f
+							on	i.idnoticia = f.refnoticia
+
+							where f.idfoto =".$id;
+		$resImg		=	$this->query($sql,0);
+		
+		$res 		=	$this->borrarArchivo($id,mysql_result($resImg,0,0));
+		
+		if ($res == false) {
+			return 'Error al eliminar datos';
+		} else {
+			return '';
+		}
+	}
+
+/* fin archivos */
+
+
 	function insertarNoticiasPrincipales($titulo,$noticiaprincipal,$fechacreacion) {
 	$sql = "insert into dbnoticiaprincipal(idnoticiaprincipal,titulo,noticiaprincipal,fechacreacion)
 	values ('','".utf8_decode($titulo)."','".utf8_decode($noticiaprincipal)."','".utf8_decode($fechacreacion)."')";
@@ -67,6 +187,7 @@ set
 titulo = '".utf8_decode($titulo)."',noticiapredio = '".utf8_decode($noticiapredio)."',fechacreacion = '".utf8_decode($fechacreacion)."'
 where idnoticiapredio =".$id;
 $res = $this->query($sql,0);
+
 return $res;
 }
 
@@ -101,6 +222,7 @@ return $res;
 function insertarNoticias($titulo,$parrafo,$fechacreacion,$galeria) {
 $sql = "insert into dbnoticias(idnoticia,titulo,parrafo,fechacreacion,galeria)
 values ('','".utf8_decode($titulo)."','".utf8_decode($parrafo)."','".utf8_decode($fechacreacion)."',".$galeria.")";
+//return $sql;
 $res = $this->query($sql,1);
 return $res;
 }

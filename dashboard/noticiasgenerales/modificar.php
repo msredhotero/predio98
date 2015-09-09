@@ -7,72 +7,56 @@ if (!isset($_SESSION['usua_predio']))
 	header('Location: ../../error.php');
 } else {
 
-
 include ('../../includes/funciones.php');
 include ('../../includes/funcionesUsuarios.php');
 include ('../../includes/funcionesHTML.php');
+include ('../../includes/funcionesNoticias.php');
 
 $serviciosFunciones = new Servicios();
 $serviciosUsuario = new ServiciosUsuarios();
 $serviciosHTML = new ServiciosHTML();
+$serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
-
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Noticias Generales",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 $id = $_GET['id'];
 
-$resResultado = $serviciosFunciones->TraerIdTorneos($id);
+$resResultado = $serviciosNoticias->traerNoticiasPorId($id);
+
 
 /////////////////////// Opciones de la pagina  ////////////////////
 
-$lblTitulosingular	= "Torneo";
-$lblTituloplural	= "Torneos";
-$lblEliminarObs		= "Si elimina el torneo se eliminara todo el contenido de este";
-$accionEliminar		= "eliminarTorneo";
+$lblTitulosingular	= "Noticia General";
+$lblTituloplural	= "Noticias Generales";
+$lblEliminarObs		= "";
+$accionEliminar		= "eliminarNoticias";
 
 /////////////////////// Fin de las opciones /////////////////////
 
 
 /////////////////////// Opciones para la creacion del formulario  /////////////////////
-$tabla 			= "dbtorneos";
+$tabla 			= "dbnoticias";
 
-$lblCambio	 	= array("reftipotorneo","FechaCreacion");
-$lblreemplazo	= array("Tipo Torneo","Fecha Creación");
+$lblCambio	 	= array("titulo","parrafo","fechacreacion");
+$lblreemplazo	= array("Título","Noticia","Fecha Creación");
 
-$resTipoTorneo 	= $serviciosFunciones->traerTipoTorneo();
 
 $cadRef = '';
-while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
-	if (mysql_result($resResultado,0,'reftipotorneo') == $rowTT[0]) {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).'</option>';
-	} else {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
-	}
-}
 
-$refdescripcion = array(0 => $cadRef);
-$refCampo[] 	= "reftipotorneo"; 
+$refdescripcion[] = "";
+$refCampo[] 	= ""; 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
+$resNoticiasFotos = $serviciosNoticias->TraerFotosNoticias($id);
 
+$cantidadImagenes = 0;
+$cantidadImagenes = mysql_num_rows($resNoticiasFotos);
 
+$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idnoticia","modificarNoticias",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-/////////////////////// Opciones para la creacion del view  /////////////////////
-$cabeceras 		= "	<th>Nombre</th>
-				<th>Fecha Creación</th>
-				<th>Activo</th>
-				<th>Tipo Torneo</th>";
-
-//////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
-
-$formulario 	= $serviciosFunciones->camposTablaModificar($id, "idtorneo","modificarTorneo",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
-
-
+$parrafo = mysql_result($resResultado,0,'parrafo');
 
 if ($_SESSION['refroll_predio'] != 1) {
 
@@ -131,6 +115,8 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
+    
+    <script src="../../ckeditor/ckeditor.js"></script>
 </head>
 
 <body>
@@ -155,7 +141,81 @@ if ($_SESSION['refroll_predio'] != 1) {
 			<?php echo $formulario; ?>
             </div>
             
+            <div class="row" style="margin-left:25px; margin-right:25px;">
+                <h3>Imagenes Cargadas</h3>
+                    <ul class="list-inline">
+                        <?php while ($rowImg = mysql_fetch_array($resNoticiasFotos)) { ?>
+                        <li>
+                            
+                            <div class="col-md-4" align="center">
+                            <div id="img<?php echo $rowImg[3]; ?>">
+                                <img src="<?php echo '../../archivos/'.$rowImg[0].'/'.$rowImg[1].'/'.utf8_encode($rowImg[2]) ?>" width="100" height="100">
+                            </div>
+                            <input type="button" name="eliminar" id="<?php echo $rowImg[3]; ?>" class="btn btn-danger eliminar" value="Eliminar">
+                            </div>
+                            
+                        </li>
+                        <?php } ?>
+                    </ul>
+            </div>
             
+            
+            <div class="row" style="margin-left:25px; margin-right:25px;">
+                	<h4>Agregar Imagenes</h4>
+                        <p style=" color: #999;">30 fotos disponibles (no más de 1 mb por foto)</p>
+                        <div style="height:auto; 
+                    			width:100%; 
+                                background-color:#FFF;
+                                -webkit-border-radius: 13px; 
+                            	-moz-border-radius: 13px;
+                            	border-radius: 13px;
+                                margin-left:-20px;
+                                padding-left:20px;">
+
+                            
+			<ul class="list-inline">
+                            <?php for($i=1;$i<=8-$cantidadImagenes;$i=$i+2) { ?>
+                            <li style="margin-top:14px;">
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen<?php echo $i; ?>" id="imagen<?php echo $i; ?>">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                
+                                <img id="vistaPrevia<?php echo $i; ?>" name="vistaPrevia<?php echo $i; ?>" width="50" height="50"/>
+                            </div>
+                            <div style="height:14px;">
+                                
+                            </div>
+                            <?php if ($i<8-$cantidadImagenes) { ?>
+                            <div style=" height:110px; width:140px; border:2px dashed #CCC; text-align:center; overflow: auto;">
+                                <div class='custom-input-file'>
+                                    <input type="file" name="imagen<?php echo $i+1; ?>" id="imagen<?php echo $i+1; ?>">
+                                    <img src="../../imagenes/clip20.jpg">
+                                    <div class="files">...</div>
+                                </div>
+                                <img id="vistaPrevia<?php echo $i+1; ?>" name="vistaPrevia<?php echo $i+1; ?>" width="50" height="50"/>
+                            </div>
+                            <?php } ?>
+                                
+                            </li>
+                            <?php } ?>
+                           
+                            
+                            
+                            
+                            </ul>
+                            
+                            
+                            
+                            
+                            
+                            
+                           
+                </div>
+                
+            <input type="hidden" id="cantidadImagenes" name="cantidadImagenes" value="<?php echo $cantidadImagenes; ?>">    
             <div class='row' style="margin-left:25px; margin-right:25px;">
                 <div class='alert'>
                 
@@ -206,6 +266,8 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	CKEDITOR.instances['parrafo'].setData('<?php echo $parrafo; ?>');
 	
 	$('.volver').click(function(event){
 		 
@@ -327,6 +389,195 @@ $(document).ready(function(){
 			});
 		}
     });
+	
+	
+	$('.eliminar').click(function(event){
+                
+			  usersid =  $(this).attr("id");
+			  imagenId = 'img'+usersid;
+			  
+			  if (!isNaN(usersid)) {
+				$("#idAgente").val(usersid);
+                                //$('#vistaPrevia30').attr('src', e.target.result);
+				$("#auxImg").html($('#'+imagenId).html());
+				$("#dialog3").dialog("open");
+				//url = "../clienteseleccionado/index.php?idcliente=" + usersid;
+				//$(location).attr('href',url);
+			  } else {
+				alert("Error, vuelva a realizar la acción.");	
+			  }
+			  
+			  //post code
+	});
+	
+	$( "#dialog3" ).dialog({
+		 	
+			    autoOpen: false,
+			 	resizable: false,
+				width:600,
+				height:340,
+				modal: true,
+				buttons: {
+				    "Eliminar": function() {
+	
+						$.ajax({
+									data:  {id: $("#idAgente").val(), accion: 'eliminarFoto'},
+									url:   '../../ajax/ajax.php',
+									type:  'post',
+									beforeSend: function () {
+											
+									},
+									success:  function (response) {
+											url = "modificar.php?id=<? echo $id; ?>";
+											$(location).attr('href',url);
+											
+									}
+							});
+						$( this ).dialog( "close" );
+						$( this ).dialog( "close" );
+							$('html, body').animate({
+	           					scrollTop: '1000px'
+	       					},
+	       					1500);
+				    },
+				    Cancelar: function() {
+						$( this ).dialog( "close" );
+				    }
+				}
+		 
+		 
+	});
+	
+	$('#imagen1').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia1').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen2').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia2').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen3').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia3').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen4').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia4').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen5').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia5').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen6').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia6').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+$('#imagen7').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia7').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+
+$('#imagen8').on('change', function(e) {
+  var Lector,
+      oFileInput = this;
+ 
+  if (oFileInput.files.length === 0) {
+    return;
+  };
+ 
+  Lector = new FileReader();
+  Lector.onloadend = function(e) {
+    $('#vistaPrevia8').attr('src', e.target.result);         
+  };
+  Lector.readAsDataURL(oFileInput.files[0]);
+ 
+});
+
+
 
 });
 </script>
@@ -344,7 +595,25 @@ $('.form_date').datetimepicker({
 	format: 'dd/mm/yyyy'
 });
 </script>
-
+<script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'parrafo', {
+						language: 'es',
+						uiColor: '#9AB8F3'
+						
+					} );
+</script>
+<div id="dialog3" title="Eliminar Imagen">
+    	<p>
+        	<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+            ¿Esta seguro que desea eliminar la imagen?.
+        </p>
+        <div id="auxImg">
+        
+        </div>
+        <input type="hidden" value="" id="idAgente" name="idAgente">
+</div>
 
 <?php } ?>
 </body>
