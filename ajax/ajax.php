@@ -1390,7 +1390,7 @@ function modificarNoticias($serviciosNoticias) {
 	$cantImagenes		= 8 - (integer)$cantImagenes;
 	
 	
-	$res = $serviciosNoticias->modificarNoticias($id,$titulo,$parrafo,$fechacreacion);
+	$res = $serviciosNoticias->modificarNoticias($id,$titulo,$parrafo,$fechacreacion,$galeria);
 	if ($res == true) {
 		$imagenes = array("imagen1" => 'imagen1',
 						  "imagen2" => 'imagen2',
