@@ -268,7 +268,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 $(document).ready(function(){
 	
 	CKEDITOR.instances['parrafo'].setData('<?php echo $parrafo; ?>');
-	
+
 	$('.volver').click(function(event){
 		 
 		url = "index.php";
@@ -335,7 +335,7 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
-		
+		var contenido = CKEDITOR.instances['parrafo'].getData();
 		if (validador() == "")
         {
 			//información del formulario
