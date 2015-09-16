@@ -261,6 +261,24 @@ return $res;
 		return $res;
 	}
 	
+	function traerUltimaNoticias() {
+		$sql = "select * from dbnoticias order by fechacreacion limit 1";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	function traerNoticiasMenos($idnoticia) {
+		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion";
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
+	function traerNoticiasMenosHasta($idnoticia, $hasta) {
+		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion limit 0,".$hasta;
+		$res = $this->query($sql,0);
+		return $res;
+	}
+	
 	
 	function traerNoticiasPorId($id) {
 		$sql = "select * from dbnoticias where idnoticia =".$id;

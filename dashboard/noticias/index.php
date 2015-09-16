@@ -138,6 +138,8 @@ if ($_SESSION['refroll_predio'] != 1) {
         $('#navigation').perfectScrollbar();
       });
     </script>
+    
+    <script src="../../ckeditor/ckeditor.js"></script>
 </head>
 
 <body>
@@ -415,7 +417,9 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar').click(function(){
+		var contenido = CKEDITOR.instances['noticiaprincipal'].getData();
 		
+		$('#noticiaprincipal').val(contenido);
 		if (validador() == "")
         {
 			//información del formulario
@@ -474,8 +478,9 @@ $(document).ready(function(){
 	
 	//al enviar el formulario
     $('#cargar2').click(function(){
+		var contenido = CKEDITOR.instances['noticiapredio'].getData();
 		
-
+		$('#noticiapredio').val(contenido);
 			//información del formulario
 			var formData = new FormData($(".formulario2")[0]);
 			var message = "";
@@ -545,7 +550,24 @@ $('.form_date').datetimepicker({
 	format: 'dd/mm/yyyy'
 });
 </script>
-
+<script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'noticiapredio', {
+						language: 'es',
+						uiColor: '#9AB8F3'
+						
+					} );
+</script>
+<script>
+	// Replace the <textarea id="editor1"> with a CKEditor
+	// instance, using default configuration.
+	CKEDITOR.replace( 'noticiaprincipal', {
+						language: 'es',
+						uiColor: '#9AB8F3'
+						
+					} );
+</script>
 
 <?php } ?>
 </body>

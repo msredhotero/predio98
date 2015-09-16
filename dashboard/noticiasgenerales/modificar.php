@@ -336,6 +336,9 @@ $(document).ready(function(){
 	//al enviar el formulario
     $('#cargar').click(function(){
 		var contenido = CKEDITOR.instances['parrafo'].getData();
+		
+		$('#parrafo').val(contenido);
+		
 		if (validador() == "")
         {
 			//información del formulario

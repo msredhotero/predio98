@@ -17,6 +17,8 @@ $serviciosZonas = new ServiciosG();
 $serviciosDatos = new ServiciosDatos();
 $serviciosNoticias = new ServiciosNoticias();
 
+date_default_timezone_set('America/Buenos_Aires');
+
 $fecha = date('Y-m-d');
 
 $resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
@@ -66,7 +68,7 @@ if (mysql_num_rows($resNuevaFehca)>0) {
 $resNoticiaPrincipal 	= $serviciosNoticias->traerUltimaNoticiaPrincipal();
 
 if (mysql_num_rows($resNoticiaPrincipal)>0) {
-	$Principal = utf8_encode(mysql_result($resNoticiaPrincipal,0,2));	
+	$Principal = (mysql_result($resNoticiaPrincipal,0,3));	
 } else {
 	$Principal = '';
 }
@@ -74,10 +76,28 @@ if (mysql_num_rows($resNoticiaPrincipal)>0) {
 $resNoticiaPredio		= $serviciosNoticias->traerUltimaNoticiaPredio();
 
 if (mysql_num_rows($resNoticiaPredio)>0) {
-	$Predio = utf8_encode(mysql_result($resNoticiaPredio,0,2));	
+	$Predio = (mysql_result($resNoticiaPredio,0,3));	
 } else {
 	$Predio = '';
 }
+
+$resNoticia				= $serviciosNoticias->traerUltimaNoticias();
+
+if (mysql_num_rows($resNoticia)>0) {
+	
+	$TituloNoticia 	= (mysql_result($resNoticia,0,'titulo'));	
+	$CuerpoNoticia 	= (mysql_result($resNoticia,0,'parrafo'));	
+	$FechaNoticia 	= (mysql_result($resNoticia,0,'fechacreacion'));
+	$GaleriaNoticia = (mysql_result($resNoticia,0,'galeria'));
+	
+	$resLstNoticia		= $serviciosNoticias->traerNoticiasMenosHasta(mysql_result($resNoticia,0,0),5);
+} else {
+	$CuerpoNoticia 	= '<h3>No hay noticias cargadas!!</h3>';
+	$TituloNoticia 	= '';	
+	$FechaNoticia 	= '';
+	$GaleriaNoticia = '';
+}
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +207,10 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
         padding-bottom:6px;
 		padding-top:6px;
     }
+	
+	.panel-body-predio ul {
+		margin-left:15px;
+	}
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
@@ -385,15 +409,25 @@ $(document).ready(function(){
                               </div>
                               <div class="panel-body-predio" style="padding:5px 10px; ">
                               		<div align="center">
-                                    	<h4>Fin de Semana!!</h4>
+                                    	<h4><?php echo $TituloNoticia; ?></h4>
                                     </div>
-                              		<p>/ Jugadores, les dejamos los horarios de este sábado 8.</p>
-                                    <p>/ Por cualquier inconveniente por favor avisar con tiempo.</p>
-                                    <p>/ Recuerden llegar temprano para comenzar a horario, a los 10min. de demora se descuenta un punto y traer DNI o cualquier otro documento de identidad.</p>
-                                    <p>/ Notaran en algunas partes de varias canchas pedazos con tierra negra que fue tirada en las canchas los días lunes 20/7 y martes 21/7 luego de la 1er fecha para nivelar algunas zonas desparejas. La idea es que el césped en esas partes termine de agarrar bien con el comienzo de la primavera siempre que el clima ayude.</p>
-                                    <p>Este año viene muy difícil a comparación de otros años con ese tema.</p>
-                                    
-                                    <p>Buena semana!</p>
+                              		<p style="color:#999; font-size:12px;">
+                                    	<i>
+										<?php 
+											$date = new DateTime($FechaNoticia);
+											echo $date->format('jS F Y');
+											//echo $FechaNoticia; 
+										?>
+                                        </i>
+                                    </p>
+                                    <?php echo $CuerpoNoticia; ?>
+                                    <?php if ($GaleriaNoticia == 1) { ?>
+                                    	<div align="center">
+                                    	<div style=" background-color:#333; opacity:0.7; width:175px; border:1px solid #000;" align="center">
+                                        	<p style="color:#FFF; opacity:1; font-size:1.3em;padding-top:10px; font-weight:bold;">Galeria de Fotos</p>
+                                        </div>
+                                        </div>
+                                    <?php } ?>
                               </div>  
                             </div>
                             
@@ -431,11 +465,10 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Noticias de Predio</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
                               </div>
-                              <div class="panel-body-predio" style="line-height:16px;">
+                              <div class="panel-body-predio" style="line-height:16px; padding-left:10px; padding-top:10px;">
                                 <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Lunes 9 de Marzo, 12:00:41</h6>-->
-                                <br>
-                                <p><?php echo $Predio; ?></p>
+                                <?php echo $Predio; ?>
                               </div>
                             </div>
                             
@@ -444,11 +477,10 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <h3 class="panel-title">Ultimo Momento</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
-                              <div class="panel-body-predio" style="line-height:16px;">
+                              <div class="panel-body-predio" style="line-height:16px; padding-left:10px; padding-top:10px;">
                                 <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
                                 <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Domingo 8 de Marzo, 10:34:43</h6>-->
-                                <br>
-                                <p><?php echo $Principal; ?></p>
+                                <?php echo $Principal; ?>
                               </div>
                             </div>
                             
