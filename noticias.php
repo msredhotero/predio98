@@ -21,20 +21,27 @@ $fecha = date('Y-m-d');
 
 /////////////////////////////////////////////////***    NOTICIAS   *******////////////////////////////////////////////////
 
-$resNoticiaPrincipal 	= $serviciosNoticias->traerNoticias();
-
-if (mysql_num_rows($resNoticiaPrincipal)>0) {
-	$Principal = utf8_encode(mysql_result($resNoticiaPrincipal,0,3));	
+if (isset($_GET['id'])) {
+	$id = $_GET['id'];	
 } else {
-	$Principal = '';
+	$id = 0;
 }
 
-$resNoticiaPredio		= $serviciosNoticias->traerUltimaNoticiaPredio();
-
-if (mysql_num_rows($resNoticiaPredio)>0) {
-	$Predio = utf8_encode(mysql_result($resNoticiaPredio,0,3));	
+if ($id == 0) {
+	
+	$resNoticia = $serviciosNoticias->traerNoticias();
+		
 } else {
-	$Predio = '';
+	$resNoticia = $serviciosNoticias->traerNoticiasPorId($id);
+
+	$TituloNoticia 	= (mysql_result($resNoticia,0,'titulo'));	
+	$CuerpoNoticia 	= (mysql_result($resNoticia,0,'parrafo'));	
+	$FechaNoticia 	= (mysql_result($resNoticia,0,'fechacreacion'));
+	$GaleriaNoticia = (mysql_result($resNoticia,0,'galeria'));
+	$idNoticia		= (mysql_result($resNoticia,0,'idnoticia'));
+	
+	$resLstNoticia		= $serviciosNoticias->traerNoticiasMenosHasta(mysql_result($resNoticia,0,0),5);
+	
 }
 
 
@@ -114,15 +121,38 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
 		padding-top:6px;
     }
 	
-	#reglamento h1,h2,h3,h4,p {
-		text-align:center;
-	}
 	
 
 	
 	#foot p {
 		text-align:center;	
 	}
+	
+	#content {
+	float: left; width: 526px;
+	margin: 0 98px 0 0;
+}
+
+	#content2 article {
+		margin: 0 0 67px 0;
+		border-bottom:4px solid #CCC;	
+	}
+		#content2 article h2 {
+			font-size: 30px; margin: 0 0 29px 0;
+			font-weight: normal;
+		}
+
+		#content2 p {
+			margin: 0 0 24px 0;
+		}
+		
+		#content2 .postinfo {
+			list-style: none; overflow: hidden;
+		} 
+			#content2 .postinfo li {
+				float: left; width: 136px; margin: 0 20px 0 0;
+				font-style: italic; color: #a2a2a2;
+			}
 	
 </style>
 
@@ -328,161 +358,110 @@ if (mysql_num_rows($resNoticiaPredio)>0) {
         
         <div class="main-container">
             <div class="main wrapper clearfix">
-
-                <article>
                     <div class="row" align="center" style="margin-top:20px;">
-                    	<img src="imagenes/pagina/1438221505_Camera-Front.png"/>
+                    	<img src="imagenes/pagina/noticias.png"/>
                     </div>
                     
-                    <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
-                    	<h1>PREDIO 98</h1>
-                        <h3>Fotos</h3>
-                        
-                        
-                        <!-- Least Gallery -->
-                        <section id="least">
-                            
-                            <!-- Least Gallery: Fullscreen Preview -->
-                            <div class="least-preview"></div>
-                            
-                            <!-- Least Gallery: Thumbnails -->
-                            <ul class="least-gallery">
-                                <!-- 1 || Element with data-caption ||-->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/1.jpg" title="Pelotas" data-subtitle="Ver Foto" data-caption="<strong>Pelota Oficial</strong>">
-                                        <img src="imagenes/fotos/chicas/1.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 2 || Element with data-caption as href-attribute ||-->-->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/2.jpg" title="Pelotas" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/2.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 3 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/3.jpg" title="Jugadores" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/3.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 4 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/4.jpg" title="Jugadores" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/4.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 5 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/5.jpg" title="Centro" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/5.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 6 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/6.jpg" title="Corner" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/6.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 7 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/7.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/7.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 8 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/8.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/8.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 9 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/9.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/9.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                
-                                <!-- 10 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/10.jpg" title="Jugadores" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/10.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 11 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/11.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/11.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 12 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/12.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/12.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 13 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/13.jpg" title="Ambulancia" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/13.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 14 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/14.jpg" title="Jugadores" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/14.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 15 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/15.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/15.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 16 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/16.jpg" title="Campo de Juego" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/16.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 17 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/17.jpg" title="Estacionamiento" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/17.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                                
-                                <!-- 18 -->
-                                <li>
-                                    <a href="imagenes/fotos/grandes/18.jpg" title="Ambulancia" data-subtitle="Ver Foto">
-                                        <img src="imagenes/fotos/chicas/18.jpg" alt="Alt Image Text" />
-                                    </a>
-                                </li>
-                            </ul>
-                
-                        </section>
-                        <!-- Least Gallery end -->
-                        <div style="height:100px;">
-                        
+                    <div class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
+                    	<div align="center">
+                        	<h1>PREDIO 98</h1>
+                        	<h3>Noticias</h3>
                         </div>
+                        
+                        
+                        <?php 
+							if (mysql_num_rows($resNoticia)>0) {
+								if ($id != 0) {
+						?>
+                        		
+                                <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
+                                    <h1><?php echo $TituloNoticia; ?></h1>
+                                    <h3><?php 
+											$date = new DateTime($FechaNoticia);
+											$date->setTimezone( new \DateTimeZone( 'America/Buenos_Aires' ) );
+											echo "Publicado: ".$date->format('Y-m-d');
+											//echo $FechaNoticia; 
+										?></h3>
+                                    <div style="text-align:justify">
+                                    	<?php echo $CuerpoNoticia; ?>
+                                    </div>
+                                </div>
+							
+                            <!-- Least Gallery -->
+                            <section id="least">
+                                
+                                <!-- Least Gallery: Fullscreen Preview -->
+                                <div class="least-preview"></div>
+                                
+                                <!-- Least Gallery: Thumbnails -->
+                                <ul class="least-gallery">
+                                <?php 
+									///////*****   PARA LA GALERIA DE LA NOTICIAS  *******/////////////////
+									if ($GaleriaNoticia == 1) {
+										$resImagenes = $serviciosNoticias->TraerFotosNoticias($idNoticia);
+										
+										while ($rowGaleria = mysql_fetch_array($resImagenes)) {
+								?>
+                                    <!-- 1 || Element with data-caption ||-->
+                                    <li>
+                                        <a href="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" title="Pelotas" data-subtitle="Ver Foto" data-caption="<strong>Predio98</strong>">
+                                            <img src="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" alt="Alt Image Text" />
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                                    
+                                </ul>
+                    
+                            </section>
+                            <!-- Least Gallery end -->
+                        
+                        	<?php 
+								} 
+							?>
+                            
+                        <?php } else {  ///*** If de si hay una solo noticia  ******/////////?>
+                            
+                            <?php
+								while ($rowLstNoticias = mysql_fetch_array($resNoticia)) {
+							?>
+                            <div id="content2" role="main">
+                            	<article>
+                                    <h2><?php echo $rowLstNoticias['titulo']; ?></h2>
+                                    
+                                    <div style="max-height:220px; overflow:hidden;"><?php echo $rowLstNoticias['parrafo']; ?></div>
+                                    
+                                    <ul class="postinfo">
+                                        <li><?php 
+											$date2 = new DateTime($rowLstNoticias['fechacreacion']);
+											$date2->setTimezone( new \DateTimeZone( 'America/Buenos_Aires' ) );
+											echo "Publicado: ".$date2->format('Y-m-d');
+											//echo $FechaNoticia; 
+										?></li>
+                                        <li><a href="noticias.php?id=<?php echo $rowLstNoticias['idnoticia']; ?>">Continuar leyendo.</a></li>
+                                    </ul>
+                                </article>
+                            </div>
+                            <?php
+								}
+							?>
+                            
+                        <?php 
+							} 
+						?>
+                        
+                        <?php } else { ///*** If de si hay noticias  ******/////////?>
+                        	<h4><span class="glyphicon glyphicon-exclamation-sign"></span> No hay noticias cargadas!!</h4>
+                        <?php 
+							} 
+						?>
+                    
+                    <div align="center">
+                    	<button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em; text-shadow:1px 1px 1px #A68502;" id="noticiasanteriores"><span class="glyphicon glyphicon-th-list"></span> Ver Noticias Anteriores</button>
                     </div>
+                    <div style="height:100px;">
                     
-                    
-                </article>
+                    </div>
+                </div>
 
                 
 
@@ -564,6 +543,11 @@ $(document).ready(function(){
         $('#submenu').show(600);
 		$('.torneoMenu').addClass('cambioT');
     });
+	
+	$('#noticiasanteriores').click(function() {
+		url = "noticias.php";
+		$(location).attr('href',url);
+	});
 	
 	$('#submenu').mouseover(function(e) {
         

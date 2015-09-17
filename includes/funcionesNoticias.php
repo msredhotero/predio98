@@ -262,19 +262,32 @@ return $res;
 	}
 	
 	function traerUltimaNoticias() {
-		$sql = "select * from dbnoticias order by fechacreacion limit 1";
+		$sql = "select * from dbnoticias order by fechacreacion desc limit 1";
 		$res = $this->query($sql,0);
 		return $res;
 	}
 	
 	function traerNoticiasMenos($idnoticia) {
-		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion";
+		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc";
 		$res = $this->query($sql,0);
 		return $res;
 	}
 	
+	function traerPrimerImagenNoticiaPorId($idNoticia) {
+		$sql    =   "select 'galeria',i.idnoticia,f.imagen,f.idfoto
+							from dbnoticias i
+							
+							inner
+							join dbfotos f
+							on	i.idnoticia = f.refnoticia
+
+							where i.idnoticia = ".$idNoticia." limit 1";
+		$result =   $this->query($sql, 0);
+		return $result;
+	}
+	
 	function traerNoticiasMenosHasta($idnoticia, $hasta) {
-		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion limit 0,".$hasta;
+		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc limit 0,".$hasta;
 		$res = $this->query($sql,0);
 		return $res;
 	}

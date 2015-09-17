@@ -8,7 +8,7 @@
 <body>
 
 <?php
-	header('Location: http://localhost/carnesvictoriaweb/');
+	header('Location: http://www.predio98.com.ar');
 ?>
 </body>
 </html>

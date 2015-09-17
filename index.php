@@ -89,6 +89,7 @@ if (mysql_num_rows($resNoticia)>0) {
 	$CuerpoNoticia 	= (mysql_result($resNoticia,0,'parrafo'));	
 	$FechaNoticia 	= (mysql_result($resNoticia,0,'fechacreacion'));
 	$GaleriaNoticia = (mysql_result($resNoticia,0,'galeria'));
+	$idNoticia		= (mysql_result($resNoticia,0,'idnoticia'));
 	
 	$resLstNoticia		= $serviciosNoticias->traerNoticiasMenosHasta(mysql_result($resNoticia,0,0),5);
 } else {
@@ -407,51 +408,98 @@ $(document).ready(function(){
                                 <h3 class="panel-title">Noticias</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px; ">
                               </div>
-                              <div class="panel-body-predio" style="padding:5px 10px; ">
-                              		<div align="center">
+                              <div class="panel-body-predio" style="padding:5px 10px; max-height:350px; overflow:hidden;line-height:1.5em; text-align:justify;">
+                              			
+                                    <div align="center">
                                     	<h4><?php echo $TituloNoticia; ?></h4>
                                     </div>
                               		<p style="color:#999; font-size:12px;">
                                     	<i>
 										<?php 
 											$date = new DateTime($FechaNoticia);
-											echo $date->format('jS F Y');
+											$date->setTimezone( new \DateTimeZone( 'America/Buenos_Aires' ) );
+											echo "Publicado: ".$date->format('Y-m-d');
 											//echo $FechaNoticia; 
 										?>
                                         </i>
                                     </p>
                                     <?php echo $CuerpoNoticia; ?>
                                     <?php if ($GaleriaNoticia == 1) { ?>
-                                    	<div align="center">
-                                    	<div style=" background-color:#333; opacity:0.7; width:175px; border:1px solid #000;" align="center">
-                                        	<p style="color:#FFF; opacity:1; font-size:1.3em;padding-top:10px; font-weight:bold;">Galeria de Fotos</p>
+                                    	<div align="center" style="position:absolute; top:320px; width:93%; height:54px; display:inline-block;">
+                                        <ul class="list-inline">
+                                        <li>
+                                    	
+											<button type="button" style="padding:10px 10%;background-color: #0890a8;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #054955 inset; -webkit-box-shadow: 0 -4px 0 #054955 inset; -moz-box-shadow: 0 -4px 0 #054955 inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #047093;" id="noticiagaleria"><span class="glyphicon glyphicon-picture"></span> Galeria de Fotos</button>
+                                        	
+                                        
+                                        </li>
+                                        <li>
+                                        
+											<button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
+                                        </li>
+                                        </ul>
                                         </div>
+                                    <?php } else { if ($TituloNoticia != '') {?>
+                                    	<div align="center" style="position:absolute; bottom:0; width:93%; height:54px; display:inline-block; z-index:8; margin-bottom:222px;">
+                                        
+											<button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
+
                                         </div>
-                                    <?php } ?>
+                                    <?php }
+										} ?>
                               </div>  
                             </div>
                             
+                            <?php
+							
+							
+								if (($TituloNoticia!='') && (mysql_num_rows($resLstNoticia)>0)) {
+								
+									while ($rowLstNoticias = mysql_fetch_array($resLstNoticia)) {
+							?>
                             <div id="noticias">
-                            	<img src="imagenes/tarjeta-2013-ano-nuevo.jpg">
+                            	<?php if ($rowLstNoticias['galeria'] == 0) { ?>
+                                <img src="imagenes/sin_img.jpg">
+                                <?php 
+									} else { 
+										$resPrimerImg = $serviciosNoticias->traerPrimerImagenNoticiaPorId($rowLstNoticias['idnoticia']);
+										if (mysql_num_rows($resPrimerImg)>0) {
+								?>
+                                
+                                			<img src="<?php echo "archivos/".mysql_result($resPrimerImg,0,0)."/".mysql_result($resPrimerImg,0,1)."/".mysql_result($resPrimerImg,0,2); ?>">
+										<?php } else { ?>
+                                        	<img src="imagenes/sin_img.jpg">
+                                		<?php } ?>        
+                                <?php } ?>
                                 <div class="textoTrazoTitulosN">
-                                	FELIZ AÑO NUEVO
+                                	<?php echo $rowLstNoticias['titulo']; ?>
                                 </div>
-                                <h6 style=" font-family:RobotoThin; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; height:8px; margin-bottom:10px; ">Lunes 9 de Marzo, 12:00:41</h6>
+                                <h6 style=" font-family:RobotoThin; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff; height:8px; margin-bottom:10px; ">Publicado: <?php 
+											$dateA = new DateTime($rowLstNoticias['fechacreacion']);
+											$dateA->setTimezone( new \DateTimeZone( 'America/Buenos_Aires' ) );
+											echo "Publicado: ".$dateA->format('Y-m-d');
+											//echo $FechaNoticia; 
+										?></h6>
                                 <div id="parrafo">
-                                	Estimados jugadores
-Les queremos agradecer por cumplir con nosotros nuestro primer año completo de trayectoria como organización de torneos. (Si bien el predio tiene 15 años, desde agosto del 2013 nos animamos a la organización).
-Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como somos nuevos tenemos miles de cosas que mejorar pero por otro lado sabemos que, con mucha buena onda, estamos marcando y vamos a seguir marcando una diferencia en la Ciudad de La Plata por la cantidad de cosas que nos diferencian del resto, con árbitros con mucha experiencia, que van a tener sus errores como todos, pero que no dejan de dar lo mejor de ellos en cada partido, con dos pelotas de Primera División de A.F.A
+                                	<?php echo $rowLstNoticias['parrafo']; ?>
                                 </div>
                               
-                            <div class="abajo">
+                            	<div class="abajo">
                                 <div align="right" class="abajo_text">
-                                    <a href="#">Continuar leyendo</a>
+                                    <a href="noticias.php?id=<?php echo $rowLstNoticias['idnoticia']; ?>">Continuar leyendo</a>
                                 </div>
                                 <div class="abajo_bg"></div>
-                            </div>  
+                            	</div>  
                             </div>
+                            <br>
                             
-                            
+                            <?php
+								
+									}
+								}
+							
+							?>
+                            <button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em; text-shadow:1px 1px 1px #A68502;" id="noticiasanteriores"><span class="glyphicon glyphicon-th-list"></span> Ver Noticias Anteriores</button>
                             
                             <div class="help-block events">
                             	
@@ -571,7 +619,7 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 </button>
                                 <ul class="list-inline" style="margin-top:15px;">
                                 	<li>
-                                    	<button type="button" class="btn btn-success" aria-label="Left Align">
+                                    	<button id="btnposiciones" type="button" class="btn btn-success" aria-label="Left Align">
                                             <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Posiciones
                                         </button>
                                     </li>
@@ -580,11 +628,11 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Fixture
                                         </button>
                                     </li>
-                                    <li>
+                                    <!--<li>
                                         <button type="button" class="btn btn-success" aria-label="Left Align">
                                             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Datos
                                         </button>
-                                    </li>
+                                    </li>-->
                                 </ul>
                               </div>
                             </div>
@@ -595,7 +643,6 @@ Muchas gracias a todos los que confían y siguen con nosotros, sabemos que como 
                                 <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
                               </div>
                               <div class="panel-body-predio">
-                                <h5>In semper consequat</h5>
                                 <div align="center">
                                 <div id="calendario" align="center">
                                 	<h4><?php echo $mes; ?></h4>
@@ -705,6 +752,34 @@ $(document).ready(function(){
 	
 	$('#btnfixture').click(function() {
 		url = "fixture.php";
+		$(location).attr('href',url);
+	});
+	
+	$('#btnposiciones').click(function() {
+		url = "posiciones.php";
+		$(location).attr('href',url);
+	});
+	
+	$('#noticiauno').click(function() {
+		<?php if ($TituloNoticia != '') { ?>
+		url = "noticias.php?id="+<?php echo $idNoticia; ?>;
+		<?php } else { ?>
+		url = "noticias.php";
+		<?php } ?>
+		$(location).attr('href',url);
+	});
+	
+	$('#noticiasanteriores').click(function() {
+		url = "noticias.php";
+		$(location).attr('href',url);
+	});
+	
+	$('#noticiagaleria').click(function() {
+		<?php if ($TituloNoticia != '') { ?>
+		url = "noticias.php?id="+<?php echo $idNoticia; ?>;
+		<?php } else { ?>
+		url = "noticias.php";
+		<?php } ?>
 		$(location).attr('href',url);
 	});
 	
