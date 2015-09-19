@@ -1077,6 +1077,7 @@ function traerZonaPorTorneos($refTorneo) {
 		return $this-> query($sql,0);		
 	}
 	
+	
 	function TraerUltimaFechaActivo() {
 		$sql = "select
 					distinct f.reffecha 

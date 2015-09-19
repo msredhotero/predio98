@@ -153,7 +153,84 @@ return $res;
 	
 	
 	
+	function TraerUltimaFechaPorEquipo($idEquipo) {
+		$sql = "select 
+					(select 
+							ee.nombre
+						from
+							dbequipos ee
+								inner join
+							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+						where
+							tgee.idtorneoge = f.reftorneoge_a) as equipoa,
+					f.resultado_a,
+					(select 
+							ee.nombre
+						from
+							dbequipos ee
+								inner join
+							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+						where
+							tgee.idtorneoge = f.reftorneoge_b) as equipob,
+					f.resultado_b,
+					f.fechajuego,
+					ff.tipofecha,
+					f.hora
+				from
+					dbfixture f
+						inner join
+					dbtorneoge tge ON tge.idtorneoge = f.reftorneoge_a
+						or tge.idtorneoge = f.reftorneoge_b
+						inner join
+					dbtorneos t ON tge.reftorneo = t.idtorneo
+						inner join
+					tbfechas ff ON ff.idfecha = f.reffecha
+				where
+					f.chequeado = 1 and tge.refequipo = ".$idEquipo."
+						and t.activo = 1
+				order by f.idfixture desc
+				limit 1";
+		return $this-> query($sql,0);		
+	}
 	
+	
+	function TraerFechasPorEquipo($idEquipo) {
+		$sql = "select 
+					(select 
+							ee.nombre
+						from
+							dbequipos ee
+								inner join
+							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+						where
+							tgee.idtorneoge = f.reftorneoge_a) as equipoa,
+					f.resultado_a,
+					(select 
+							ee.nombre
+						from
+							dbequipos ee
+								inner join
+							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+						where
+							tgee.idtorneoge = f.reftorneoge_b) as equipob,
+					f.resultado_b,
+					f.fechajuego,
+					ff.tipofecha,
+					f.hora
+				from
+					dbfixture f
+						inner join
+					dbtorneoge tge ON tge.idtorneoge = f.reftorneoge_a
+						or tge.idtorneoge = f.reftorneoge_b
+						inner join
+					dbtorneos t ON tge.reftorneo = t.idtorneo
+						inner join
+					tbfechas ff ON ff.idfecha = f.reffecha
+				where
+					f.chequeado = 1 and tge.refequipo = ".$idEquipo."
+				order by f.idfixture desc";
+		return $this-> query($sql,0);		
+	}	
 	
 	function query($sql,$accion) {
 		

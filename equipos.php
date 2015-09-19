@@ -2,65 +2,70 @@
 
 
 include ('includes/funcionesUsuarios.php');
-include ('includes/funcionesHTML.php');
-include ('includes/funcionesFUNC.php');
 include ('includes/funciones.php');
+include ('includes/funcionesHTML.php');
+include ('includes/funcionesJugadores.php');
+include ('includes/funcionesEquipos.php');
 include ('includes/funcionesGrupos.php');
+include ('includes/funcionesZonasEquipos.php');
+include ('includes/funcionesNoticias.php');
 include ('includes/funcionesDATOS.php');
 
-$serviciosUsuario = new ServiciosUsuarios();
-$serviciosHTML = new ServiciosHTML();
-$serviciosFUNC = new ServiciosFUNC();
+
+$serviciosUsuarios  = new ServiciosUsuarios();
 $serviciosFunciones = new Servicios();
-$serviciosZonas = new ServiciosG();
+$serviciosHTML		= new ServiciosHTML();
+$serviciosJugadores = new ServiciosJ();
+$serviciosEquipos	= new ServiciosE();
+$serviciosGrupos	= new ServiciosG();
+$serviciosZonasEquipos	= new ServiciosZonasEquipos();
+$serviciosNoticias = new ServiciosNoticias();
 $serviciosDatos = new ServiciosDatos();
+
 
 $fecha = date('Y-m-d');
 
-
-$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
-$resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
-$resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
-
-if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
-	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
-} else {
-	$UltimaFecha = "Fecha 1";
-	$IdUltimaFecha = 23;
-}
+$id = $_GET['id'];
 
 
-if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
-	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
-	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
-} else {
-	$UltimaFechaB = "Fecha 1";
-	$IdUltimaFechaB = 23;
-}
+///******   DATOS DEL EQUIPO *****////////////////////////////////////
+
+$resEquipo = $serviciosEquipos->TraerIdEquipo($id);
 
 
-if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
-	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
-	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
-} else {
-	$UltimaFechaC = "Fecha 1";
-	$IdUltimaFechaC = 23;
-}
+//////////////////////////////////////////////////////////////////////
+
+///******   PROXIMO PARTIDO *****////////////////////////////////////
+
+$resProximoPartido = $serviciosEquipos->TraerUltimaFechaPorEquipo($id);
 
 
-$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha );
+//////////////////////////////////////////////////////////////////////
 
-if (mysql_num_rows($resNuevaFehca)>0) {
-	$dia = mysql_result($resNuevaFehca,0,1);
-	$mes = mysql_result($resNuevaFehca,0,0);
-} else {
-	$dia = "0";
-	$mes = "------";
-}
+
+///******   PARTIDOS JUGADOS *****////////////////////////////////////
+
+$resPartidos = $serviciosEquipos->TraerFechasPorEquipo($id);
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+///******   HISTORICO DEL EQUIPO *****////////////////////////////////////
 
 
 
+
+//////////////////////////////////////////////////////////////////////
+
+
+///******   JUGADORES DEL EQUIPO *****////////////////////////////////////
+
+$resJugadores = $serviciosJugadores->TraerJugadoresPorEquipo($id);
+
+
+
+//////////////////////////////////////////////////////////////////////
 ?>
 
 <!DOCTYPE HTML>
