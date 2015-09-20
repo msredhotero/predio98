@@ -129,6 +129,35 @@ class ServiciosJ {
 		return $this->query($sql,0);
 	}
 	
+	function TraerJugadoresGolesPorEquipo($idEquipo) {
+		$sql = "select 
+					f.idjugador, f.apyn, f.dni, f.invitado, f.expulsado, f.goles
+				from
+					(select 
+						j.idjugador,
+						j.apyn,
+						j.dni,
+						(case
+							when j.invitado = '0' then 'No'
+							else 'Si'
+						end) as invitado,
+						j.invitado as invitado2,
+						(case
+							when j.expulsado = '0' then 'No'
+							else 'Si'
+						end) as expulsado,
+						COALESCE(sum(g.goles), 0) as goles
+					from
+						dbjugadores j
+						left join
+						tbgoleadores g on j.idjugador = g.refjugador
+					where
+						j.idequipo = ".$idEquipo."
+					group by j.idjugador, j.apyn, j.dni, j.invitado, j.expulsado) as f
+				order by f.goles desc,f.apyn";	
+		return $this->query($sql,0);
+	}
+	
 	
 	function TraerJugadoresPorEquipoPlanillas($idequipo,$reffecha, $idTorneo) {
 		/*$sql = "

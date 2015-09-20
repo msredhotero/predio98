@@ -195,42 +195,185 @@ return $res;
 	
 	
 	function TraerFechasPorEquipo($idEquipo) {
-		$sql = "select 
-					(select 
-							ee.nombre
+		$sql = "select
+					t.equipoa,
+					COALESCE((select sum(gg.goles) 
+							from
+								dbequipos ee
+									inner join
+								dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									inner join
+								dbfixture fff ON tgee.idtorneoge = fff.reftorneoge_a
+									inner join
+								tbgoleadores gg ON gg.refequipo = ee.idequipo and gg.reffixture = fff.idfixture
+							where
+								fff.Idfixture = t.idfixture),0) as resultado_a,
+					
+					t.equipob,
+					COALESCE((select sum(gg.goles) 
+							from
+								dbequipos ee
+									inner join
+								dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									inner join
+								dbfixture fff ON tgee.idtorneoge = fff.reftorneoge_b
+									inner join
+								tbgoleadores gg ON gg.refequipo = ee.idequipo and gg.reffixture = fff.idfixture
+							where
+								fff.Idfixture = t.idfixture),0) as resultado_b,
+					t.fechajuego,
+							t.tipofecha,
+							t.hora
+					from (
+						select 
+							(select 
+									ee.nombre
+								from
+									dbequipos ee
+										inner join
+									dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+								where
+									tgee.idtorneoge = f.reftorneoge_a) as equipoa,
+					
+							(select 
+									ee.nombre
+								from
+									dbequipos ee
+										inner join
+									dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+								where
+									tgee.idtorneoge = f.reftorneoge_b) as equipob,
+							f.idfixture,
+							f.reftorneoge_a,
+							f.reftorneoge_b,
+							f.fechajuego,
+							ff.tipofecha,
+							f.hora
 						from
-							dbequipos ee
+							dbfixture f
 								inner join
-							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
-						where
-							tgee.idtorneoge = f.reftorneoge_a) as equipoa,
-					f.resultado_a,
-					(select 
-							ee.nombre
-						from
-							dbequipos ee
+							dbtorneoge tge ON tge.idtorneoge = f.reftorneoge_a
+								or tge.idtorneoge = f.reftorneoge_b
 								inner join
-							dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+							dbtorneos t ON tge.reftorneo = t.idtorneo
+								inner join
+							tbfechas ff ON ff.idfecha = f.reffecha
 						where
-							tgee.idtorneoge = f.reftorneoge_b) as equipob,
-					f.resultado_b,
-					f.fechajuego,
-					ff.tipofecha,
-					f.hora
-				from
-					dbfixture f
-						inner join
-					dbtorneoge tge ON tge.idtorneoge = f.reftorneoge_a
-						or tge.idtorneoge = f.reftorneoge_b
-						inner join
-					dbtorneos t ON tge.reftorneo = t.idtorneo
-						inner join
-					tbfechas ff ON ff.idfecha = f.reffecha
-				where
-					f.chequeado = 1 and tge.refequipo = ".$idEquipo."
-				order by f.idfixture desc";
+							f.chequeado = 1 and tge.refequipo = ".$idEquipo."
+							  
+						order by f.fechajuego desc
+					) as t";
 		return $this-> query($sql,0);		
 	}	
+	
+	function traerResultadoPorEquipo($idEquipo) {
+		$sql = "select
+								count(*) as partidos,
+							   sum(case when s.resultado_a > s.resultado_b then 1 else 0 end) as ganados, 
+							   sum(case when s.resultado_a = s.resultado_b then 1 else 0 end) as empatados,
+							   sum(case when s.resultado_a < s.resultado_b then 1 else 0 end) as perdidos,
+							   sum(s.resultado_a) as golesafavor,
+							   sum(s.resultado_b) as golesencontra,
+							   (sum(s.resultado_a) - sum(s.resultado_b)) as diferencia,
+							   ((sum(case when s.resultado_a > s.resultado_b then 1 else 0 end) * 3) +
+								(sum(case when s.resultado_a = s.resultado_b then 1 else 0 end) * 1)) as pts
+				from
+				(
+					select
+					(case when r.idequipoa = ".$idEquipo." then r.resultado_a else r.resultado_b end) as resultado_a,
+					(case when r.idequipob <> ".$idEquipo." then r.resultado_b else r.resultado_a end) as resultado_b
+					from
+					(
+						select
+						t.equipoa,
+						COALESCE((select sum(gg.goles) 
+								from
+									dbequipos ee
+										inner join
+									dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+										inner join
+									dbfixture fff ON tgee.idtorneoge = fff.reftorneoge_a
+										inner join
+									tbgoleadores gg ON gg.refequipo = ee.idequipo and gg.reffixture = fff.idfixture
+								where
+									fff.Idfixture = t.idfixture),0) as resultado_a,
+				
+						t.equipob,
+						COALESCE((select sum(gg.goles) 
+								from
+									dbequipos ee
+										inner join
+									dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+										inner join
+									dbfixture fff ON tgee.idtorneoge = fff.reftorneoge_b
+										inner join
+									tbgoleadores gg ON gg.refequipo = ee.idequipo and gg.reffixture = fff.idfixture
+								where
+									fff.Idfixture = t.idfixture),0) as resultado_b,
+						t.fechajuego,
+								t.tipofecha,
+								t.hora,
+								t.idequipoa,
+								t.idequipob
+						from (
+							select 
+								(select 
+										ee.nombre
+									from
+										dbequipos ee
+											inner join
+										dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									where
+										tgee.idtorneoge = f.reftorneoge_a) as equipoa,
+								(select 
+										ee.idequipo
+									from
+										dbequipos ee
+											inner join
+										dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									where
+										tgee.idtorneoge = f.reftorneoge_a) as idequipoa,
+								(select 
+										ee.nombre
+									from
+										dbequipos ee
+											inner join
+										dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									where
+										tgee.idtorneoge = f.reftorneoge_b) as equipob,
+								(select 
+										ee.idequipo
+									from
+										dbequipos ee
+											inner join
+										dbtorneoge tgee ON ee.idequipo = tgee.refequipo
+									where
+										tgee.idtorneoge = f.reftorneoge_b) as idequipob,
+								f.idfixture,
+								f.reftorneoge_a,
+								f.reftorneoge_b,
+								f.fechajuego,
+								
+								ff.tipofecha,
+								f.hora
+							from
+								dbfixture f
+									inner join
+								dbtorneoge tge ON tge.idtorneoge = f.reftorneoge_a
+									or tge.idtorneoge = f.reftorneoge_b
+									inner join
+								dbtorneos t ON tge.reftorneo = t.idtorneo
+									inner join
+								tbfechas ff ON ff.idfecha = f.reffecha
+							where
+								f.chequeado = 1 and tge.refequipo = ".$idEquipo."
+								  
+							order by f.idfixture desc
+						) as t
+					) as r
+				) as s";	
+		return $this-> query($sql,0);
+	}
 	
 	function query($sql,$accion) {
 		

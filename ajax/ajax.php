@@ -948,7 +948,7 @@ function GoleadoresPagina($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res3)) {
 						if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['volvio'] == '1'))) {
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
@@ -1116,7 +1116,7 @@ function SuspendidosPagina($serviciosDatos) {
 							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
 							if ($restantes != 0) { 
 								$cad3 = $cad3.'<tr>
-									<td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+									<td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
 									<td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
 									<td align="left" style="padding:1px;">'.utf8_encode($row1['motivos']).'</td>
 									<td align="center" style="padding:1px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
@@ -1183,7 +1183,7 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 						$i =1;
 						while ($row1 = mysql_fetch_array($res3)) {
                         $cad3 = $cad3.'<tr>
-                            <td align="left" style="padding:1px;"><a href="jugador.php?jug='.$row1['refjugador'].'">'.strtoupper(utf8_encode($row1['apyn'])).'</a></td>
+                            <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
                             <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
