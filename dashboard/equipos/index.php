@@ -90,24 +90,23 @@ if ($_SESSION['refroll_predio'] != 1) {
 
 <link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">
     
+<script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
 
-    
-    <script type="text/javascript" src="../../js/jquery-1.8.3.min.js"></script>
     <link rel="stylesheet" href="../../css/jquery-ui.css">
 
     <script src="../../js/jquery-ui.js"></script>
-    
-	<!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css"/>
-	<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="../../css/bootstrap-datetimepicker.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    
 
-	<style type="text/css">
-		
-  
-		
-	</style>
     
    
    <link href="../../css/perfect-scrollbar.css" rel="stylesheet">

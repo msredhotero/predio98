@@ -369,7 +369,50 @@ function traerGoleadores() {
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
 			inner join dbfixture f on f.idfixture = g.reffixture
-			inner join tbfechas ff on f.reffecha = ff.idfecha";
+			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			order by e.nombre, f.idfixture desc, j.apyn";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+
+function traerGoleadoresPorEquipo($equipo) {
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+			from tbgoleadores g 
+			inner join dbequipos e on g.refequipo = e.idequipo 
+			inner join dbjugadores j on g.refjugador = j.idjugador 
+			inner join dbfixture f on f.idfixture = g.reffixture
+			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			where e.nombre like '%".$equipo."%' 
+			order by e.nombre, f.idfixture desc, j.apyn";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+
+function traerGoleadoresPorApyn($apyn) {
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+			from tbgoleadores g 
+			inner join dbequipos e on g.refequipo = e.idequipo 
+			inner join dbjugadores j on g.refjugador = j.idjugador 
+			inner join dbfixture f on f.idfixture = g.reffixture
+			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			where j.apyn like '%".$apyn."%' 
+			order by e.nombre, f.idfixture desc, j.apyn";
+	$res = $this->query($sql,0);
+	return $res;
+}
+
+
+function traerGoleadoresPorDNI($apyn) {
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+			from tbgoleadores g 
+			inner join dbequipos e on g.refequipo = e.idequipo 
+			inner join dbjugadores j on g.refjugador = j.idjugador 
+			inner join dbfixture f on f.idfixture = g.reffixture
+			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			where j.dni like '%".$apyn."%' 
+			order by e.nombre, f.idfixture desc, j.apyn";
 	$res = $this->query($sql,0);
 	return $res;
 }
@@ -382,10 +425,27 @@ function traerGoleadoresPorFecha($fecha) {
 			inner join dbjugadores j on g.refjugador = j.idjugador 
 			inner join dbfixture f on f.idfixture = g.reffixture
 			inner join tbfechas ff on f.reffecha = ff.idfecha 
-			where ff.idfecha in (".$fecha.") ";
+			where ff.idfecha in (".$fecha.") 
+			order by e.nombre, f.idfixture desc, j.apyn";
 	$res = $this->query($sql,0);
 	return $res;
 }
+
+
+function buscarGoleadores($tipobusqueda,$busqueda) {
+		switch ($tipobusqueda) {
+			case '1':
+				return $this->traerGoleadoresPorEquipo($busqueda);
+				break;
+			case '2':
+				return $this->traerGoleadoresPorApyn($busqueda);
+				break;
+			case '3':
+				return $this->traerGoleadoresPorDNI($busqueda);
+				break;
+		}
+
+	}
 
 function traerEstadisticas() {
 	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles , (case when a.amarillas is null then 0 else a.amarillas end) as amarillas

@@ -146,6 +146,9 @@ break;
 	case 'buscarJugadores':
 		buscarJugadores($serviciosJugadores);
 		break;
+	case 'buscarGoleadores':
+		buscarGoleadores($serviciosJugadores);
+		break;
 	case 'insertarJugadores':
 		insertarJugadores($serviciosJugadores);
 		break;
@@ -1691,6 +1694,75 @@ function eliminarConducta($serviciosFunciones) {
 
 
 /* para los jugadores */
+
+function buscarGoleadores($serviciosJugadores) {
+	$tipobusqueda	= $_POST['tipobusqueda'];
+	$busqueda		= $_POST['busqueda'];
+	
+	$res = $serviciosJugadores->buscarGoleadores($tipobusqueda,$busqueda);
+	
+	$cad3 = '';
+	//////////////////////////////////////////////////////busquedajugadores/////////////////////
+	$cad3 = $cad3.'
+				<div class="col-md-12">
+				<div class="panel panel-info">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">Resultado de la Busqueda</h3>
+                                	<img src="../../imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table id="example" class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+						<thead>
+                        <tr>
+                        	
+                            <th align="left">Jugador</th>
+                            <th align="center">DNI</th>
+							<th align="left">Equipo</th>
+							<th align="center">Fecha</th>
+							<th align="center">Goles</th>
+							<th>Acciones</th>
+                        </tr>
+						</thead>
+						<tbody>';
+	while ($rowJ = mysql_fetch_array($res)) {
+		$cad3 .= '<tr>
+					<td>'.utf8_encode($rowJ[1]).'</td>
+					<td>'.utf8_encode($rowJ[2]).'</td>
+					<td>'.utf8_encode($rowJ[3]).'</td>
+					<td>'.utf8_encode($rowJ[4]).'</td>
+					<td>'.utf8_encode($rowJ[5]).'</td>
+					<td>
+								
+							<div class="btn-group">
+								<button class="btn btn-success" type="button">Acciones</button>
+								
+								<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" type="button">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								
+								<ul class="dropdown-menu" role="menu">
+									<li>
+									<a href="modificargoleadores.php?id='.$rowJ[0].'" class="varmodificar" id="'.$rowJ[0].'">Modificar</a>
+									</li>
+
+									
+								</ul>
+							</div>
+						</td>';
+	}
+	
+	$cad3 = $cad3.'</tbody>
+                                </table></div>
+                            </div>
+						</div>';
+						
+	echo $cad3;
+}
+
 
 function buscarJugadores($serviciosJugadores) {
 	$tipobusqueda	= $_POST['tipobusqueda'];

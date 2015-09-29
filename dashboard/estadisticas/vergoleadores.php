@@ -50,10 +50,6 @@ $cabeceras 		= "<th>Nombre</th>
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
-
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->traerGoleadores(),99);
-
-
 if ($_SESSION['refroll_predio'] != 1) {
 
 } else {
@@ -130,7 +126,57 @@ if ($_SESSION['refroll_predio'] != 1) {
         	
         </div>
     	<div class="cuerpoBox">
-        	<?php echo $lstCargados; ?>
+        	<form class="form-inline formulario2" role="form">
+            	
+                <div class="row">
+                    
+                    
+                    <div class="form-group col-md-6">
+                     <label class="control-label" style="text-align:left" for="torneo">Tipo de Busqueda</label>
+                        <div class="input-group col-md-12">
+                            <select id="tipobusqueda" class="form-control" name="tipobusqueda">
+                                <option value="0">--Seleccione--</option>
+                                <option value="1">Equipo</option>
+                                <option value="2">Apyn</option>
+                                <option value="3">DNI</option>
+                                
+                            </select>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="form-group col-md-6">
+                     <label class="control-label" style="text-align:left" for="torneo">Busqueda</label>
+                        <div class="input-group col-md-12">
+                            <input type="text" name="busqueda" id="busqueda" class="form-control">
+                        </div>
+
+                    </div>
+                    
+                    <div class="form-group col-md-12">
+                    	 <ul class="list-inline" style="margin-top:15px;">
+                            <li>
+                             <button id="buscar" class="btn btn-primary" style="margin-left:0px;" type="button">Buscar</button>
+                            </li>
+                        </ul>
+
+                    </div>
+                    
+                    <div class="form-group col-md-12">
+                    	<div class="cuerpoBox" id="resultados">
+        
+       		 			</div>
+					</div>
+                
+                </div>
+                
+                <div class="row">
+                    <div class="alert"> </div>
+                    <div id="load"> </div>
+                </div>
+
+            
+            </form>
        
     	</div>
     </div>
@@ -167,9 +213,23 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$('#example').dataTable({
-		"order": [[ 1, "asc" ]]
-	} );
+	$('#buscar').click(function(e) {
+        $.ajax({
+				data:  {busqueda: $('#busqueda').val(),
+						tipobusqueda: $('#tipobusqueda').val(),
+						accion: 'buscarGoleadores'},
+				url:   '../../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#resultados').html(response);
+						
+				}
+		});
+		
+	});
 	
 	 $('#refequipo').change(function() {
 		$.ajax({
