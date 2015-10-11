@@ -187,7 +187,7 @@ while ($rowE = mysql_fetch_array($resEquipos)) {
 			$pdf->Cell(20,5,'',1,0,'C',true);
 			$pdf->Cell(13,5,'(Susp.)',1,0,'C',true);	
 		}
-		if ($i == 24) {
+		if ($i == 28) {
 			break;	
 		}
 	}
