@@ -207,7 +207,11 @@ class ServiciosDatos {
 			(select count(*) from tbsuspendidos where refequipo = fix.idequipo and (motivos = "Roja Directa" or motivos = "Doble Amarilla")) as rojas,
 			(select sum(amarillas) from tbamonestados where refequipo = fix.idequipo and amarillas <> 2) as amarillas,
 			(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
-(case when rrr.idreemplazo is null then 0 else 1 end) as volvio
+(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+	(case
+        when rv.idreemplazovolvio is null then 0
+        else 1
+    end) as reemplzadovolvio
 			from
 			(
 				select 
@@ -348,6 +352,8 @@ class ServiciosDatos {
 
 left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffecha <= '.$idfecha.' and rr.reftorneo = fix.idtorneo
 left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = fix.idtorneo
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.'
 				order by (case when rr.idreemplazo is null then fix.pts + COALESCE(rrr.puntos,0) else fix.pts + rr.puntos end) desc, fix.puntos,
 	  fix.golesafavor - (case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end) desc,
 	  fix.golesafavor desc,
