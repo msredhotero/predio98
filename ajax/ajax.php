@@ -808,7 +808,7 @@ function TraerFixturePorZonaTorneo($serviciosDatos) {
 						while ($row1 = mysql_fetch_array($res2)) {
 						
 							
-							if (($row1['reemplzado'] == '0') || (($row1['reemplzado'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
 							$cad2 = $cad2.'<tr style="font-size:1.5em;">
 								<td align="right" style="padding:1px 6px;">'.$i.'</td>
 								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
