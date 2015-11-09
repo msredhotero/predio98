@@ -70,7 +70,7 @@ $resTorneo 	= $serviciosFunciones->TraerTorneos();
 
 $cadTorneo = '';
 while ($rowTO = mysql_fetch_array($resTorneo)) {
-	if (mysql_result($resResultado,0,'reffecha')==$rowTO[0]) {
+	if (mysql_result($resResultado,0,'reftorneo')==$rowTO[0]) {
 		$cadTorneo = $cadTorneo.'<option value="'.$rowTO[0].'" selected>'.$rowTO[1].' - '.$rowTO[4].'</option>';
 	} else {
 		$cadTorneo = $cadTorneo.'<option value="'.$rowTO[0].'">'.$rowTO[1].' - '.$rowTO[4].'</option>';

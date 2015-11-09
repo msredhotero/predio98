@@ -402,8 +402,8 @@ left join
 					join tbtipotorneo tp
 					on t.reftipotorneo = tp.idtipotorneo
 					
-left join dbreemplazo rr on rr.refequiporeemplazado = a.refequipo and rr.reffecha <= '.$idfecha.'
-left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.'
+left join dbreemplazo rr on rr.refequiporeemplazado = a.refequipo and rr.reffecha <= '.$idfecha.' and rr.reftorneo = t.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = t.idtorneo
 					
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.' and fi.reffecha <= '.$idfecha.'
 
@@ -460,8 +460,8 @@ left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$
 					join tbtipotorneo tp
 					on t.reftipotorneo = tp.idtipotorneo
 
-left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffecha <= '.$idfecha.'
-left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.'
+left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffecha <= '.$idfecha.' and rr.reftorneo = t.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = t.idtorneo
 					
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
 
@@ -533,15 +533,15 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				inner
 				join	dbequipos e
 				on		e.idequipo = ss.refequipo
-				inner join (select distinct ff.Idfixture from dbfixture ff
+				inner join (select distinct ff.Idfixture,t.idtorneo from dbfixture ff
 				inner join dbtorneoge tge ON tge.idtorneoge = ff.reftorneoge_a or tge.idtorneoge = ff.reftorneoge_b
 				inner join dbtorneos t ON tge.reftorneo = t.idtorneo
 				inner join tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
 				where t.activo = 1 and t.reftipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.') d
 				on			d.idfixture = ss.reffixture
 									
-left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= '.$reffecha.'
-left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = '.$idtorneo.'									
+left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= '.$reffecha.' and rr.reftorneo = d.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = d.idtorneo								
 									
 				where	sp.reffecha <= '.$reffecha.' +1
 				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo,sp.refsuspendido,j.expulsado
@@ -1082,7 +1082,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					join		dbfixture fi
 					on			fi.idfixture = a.reffixture*/
 					inner 
-					join 		(select idfixture,reffecha from dbfixture fix
+					join 		(select fix.idfixture,fix.reffecha,tt.idtorneo from dbfixture fix
 									inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
 									or fix.reftorneoge_b = tge.idtorneoge
 									inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
@@ -1094,8 +1094,8 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					join		tbfechas ff
 					on			ff.idfecha = fi.reffecha
 					
-left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= ".$idfecha."
-left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = ".$idtipoTorneo."
+left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= ".$idfecha." and rr.reftorneo = fi.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = ".$idtipoTorneo." and rrr.reftorneo = fi.idtorneo
 					
 					where	a.refequipo in (select
 											distinct e.idequipo

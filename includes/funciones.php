@@ -375,6 +375,13 @@ class Servicios {
 				where idfixture = ".$id;
 		return $this->query($sql,0);	
 	}
+	
+	function traerNoticiasPorId($id) {
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria from dbnoticias where idnoticia =".$id;
+		$res = $this->query($sql,0);
+		return $res;
+	}
 
 
 
@@ -387,6 +394,9 @@ class Servicios {
 			case 'dbfixture':
 				$resMod = $this->TraerFixturePorId($id);
 				break;	
+			case 'dbnoticias':
+				$resMod = $this->traerNoticiasPorId($id);
+				break;
 			default:
 				$sqlMod = "select * from ".$tabla." where ".$lblid." = ".$id;
 				$resMod = $this->query($sqlMod,0);
@@ -1142,7 +1152,7 @@ function modificarConductaPorEquipo($refequipo,$puntos,$reffecha,$reftorneo) {
 		$sql = "update tbconducta
 		set
 		puntos = puntos + ".$puntos."
-		where refequipo =".$refequipo." and reftorneo =".$reftorneo;
+		where refequipo =".$refequipo." and reftorneo =".$reftorneo." and reffecha = ".$reffecha;
 		$res = $this->query($sql,0);
 		
 	} else {

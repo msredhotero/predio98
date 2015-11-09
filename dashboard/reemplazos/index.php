@@ -39,7 +39,7 @@ $tabla 			= "dbreemplazo";
 $lblCambio	 	= array("refequipo","refequiporeemplazado","reffecha","reftorneo","golesencontra");
 $lblreemplazo	= array("Equipo - Entra","Equipo - Sale","Fecha","Tipo Torneo","Goles en contra");
 
-$resTipoTorneo 	= $serviciosFunciones->traerTipoTorneo();
+$resTipoTorneo 	= $serviciosFunciones->TraerTorneos();
 
 $cadRef = '';
 $idtorneo = 0;

@@ -399,6 +399,8 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                             <th><div align="center">Fecha</div></th>
                                             <th><div align="center">Fecha de Juego</div></th>
                                             <th><div align="center">hora</div></th>
+                                            <th>Torneo</th>
+                                            
                                         </tr>
                                         <?php if (mysql_num_rows($resPartidos)>0) { ?>
                                         <?php while ($rowP = mysql_fetch_array($resPartidos)) { ?>
@@ -411,6 +413,7 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                             <td align="center"><?php echo $rowP['tipofecha']; ?></td>
                                             <td align="center"><?php echo $rowP['fechajuego']; ?></td>
                                             <td align="center"><?php echo $rowP['hora']; ?></td>
+                                            <td><?php echo $rowP['nombre'].' - '.$rowP['descripciontorneo']; ?></td>
                                         </tr>
                                         <?php } ?>
                                         <?php } else { ?>

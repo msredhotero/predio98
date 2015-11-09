@@ -223,7 +223,9 @@ return $res;
 								fff.Idfixture = t.idfixture),0) as resultado_b,
 					t.fechajuego,
 							t.tipofecha,
-							t.hora
+							t.hora,
+							t.nombre,
+							t.descripciontorneo
 					from (
 						select 
 							(select 
@@ -248,7 +250,9 @@ return $res;
 							f.reftorneoge_b,
 							f.fechajuego,
 							ff.tipofecha,
-							f.hora
+							f.hora,
+							t.nombre,
+							tp.descripciontorneo
 						from
 							dbfixture f
 								inner join
@@ -256,6 +260,8 @@ return $res;
 								or tge.idtorneoge = f.reftorneoge_b
 								inner join
 							dbtorneos t ON tge.reftorneo = t.idtorneo
+								inner join
+							tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
 								inner join
 							tbfechas ff ON ff.idfecha = f.reffecha
 						where

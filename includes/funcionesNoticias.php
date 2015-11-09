@@ -256,19 +256,23 @@ return $res;
 } 
 
 	function traerNoticias() {
-		$sql = "select * from dbnoticias order by fechacreacion";
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria
+					from dbnoticias order by fechacreacion";
 		$res = $this->query($sql,0);
 		return $res;
 	}
 	
 	function traerUltimaNoticias() {
-		$sql = "select * from dbnoticias order by fechacreacion desc limit 1";
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria from dbnoticias order by fechacreacion desc limit 1";
 		$res = $this->query($sql,0);
 		return $res;
 	}
 	
 	function traerNoticiasMenos($idnoticia) {
-		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc";
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc";
 		$res = $this->query($sql,0);
 		return $res;
 	}
@@ -287,14 +291,16 @@ return $res;
 	}
 	
 	function traerNoticiasMenosHasta($idnoticia, $hasta) {
-		$sql = "select * from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc limit 0,".$hasta;
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria from dbnoticias where idnoticia <> ".$idnoticia." order by fechacreacion desc limit 0,".$hasta;
 		$res = $this->query($sql,0);
 		return $res;
 	}
 	
 	
 	function traerNoticiasPorId($id) {
-		$sql = "select * from dbnoticias where idnoticia =".$id;
+		$sql = "select idnoticia,titulo,fechacreacion,parrafo, 
+						(case when galeria = 1 then '1' else '0' end) as galeria from dbnoticias where idnoticia =".$id;
 		$res = $this->query($sql,0);
 		return $res;
 	}
