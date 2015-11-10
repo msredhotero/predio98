@@ -91,6 +91,10 @@ if (mysql_num_rows($resNoticia)>0) {
 	$GaleriaNoticia = (mysql_result($resNoticia,0,'galeria'));
 	$idNoticia		= (mysql_result($resNoticia,0,'idnoticia'));
 	
+	if ($GaleriaNoticia == 1) {
+		$resImagenesGaleria = $serviciosNoticias->TraerFotosNoticias((mysql_result($resNoticia,0,'idnoticia')));	
+	}
+	
 	$resLstNoticia		= $serviciosNoticias->traerNoticiasMenosHasta(mysql_result($resNoticia,0,0),5);
 } else {
 	$CuerpoNoticia 	= '<h3>No hay noticias cargadas!!</h3>';
@@ -351,6 +355,10 @@ $(document).ready(function(){
 
 });
 </script> 
+
+<script type="text/javascript" src="source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
 </head>
 
 
@@ -408,7 +416,7 @@ $(document).ready(function(){
                                 <h3 class="panel-title">Noticias</h3>
                                 <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px; ">
                               </div>
-                              <div class="panel-body-predio" style="padding:5px 10px; max-height:350px; overflow:hidden;line-height:1.5em; text-align:justify;">
+                              <div class="panel-body-predio" style="padding:5px 10px; max-height:auto; overflow:hidden;line-height:1.5em; text-align:justify;">
                               			
                                     <div align="center">
                                     	<h4><?php echo $TituloNoticia; ?></h4>
@@ -426,33 +434,35 @@ $(document).ready(function(){
                                     <?php echo $CuerpoNoticia; ?>
                                     
                               </div>  
+                              
+                              <div class="row">
+									<?php if ($GaleriaNoticia == 1) { ?>
+                                            <div align="center" style=" margin-top:-45px;width:93%; height:58px; display:inline-block;">
+                                            <ul class="list-inline">
+                                            <li>
+                                            
+                                                <button type="button" style="padding:10px 10px;background-color: #0890a8;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #054955 inset; -webkit-box-shadow: 0 -4px 0 #054955 inset; -moz-box-shadow: 0 -4px 0 #054955 inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #047093;" id="noticiagaleria"><span class="glyphicon glyphicon-picture"></span> Galeria de Fotos</button>
+                                                
+                                            
+                                            </li>
+                                            <li>
+                                            
+                                                <button type="button" style="padding:10px 10px;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
+                                            </li>
+                                            </ul>
+                                            </div>
+                                        <?php } else { if ($TituloNoticia != '') {?>
+                                            <div align="center" style=" margin-top:-45px;width:93%; height:54px; display:inline-block; z-index:8; margin-bottom:222px;">
+                                            
+                                                <button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
+    
+                                            </div>
+                                        <?php }
+                                            } ?>
+                                </div><!-- fin del row de las images -->
                             </div>
                             
-                            <div class="row">
-                            	<?php if ($GaleriaNoticia == 1) { ?>
-                                    	<div align="center" style=" margin-top:-45px;width:93%; height:58px; display:inline-block;">
-                                        <ul class="list-inline">
-                                        <li>
-                                    	
-											<button type="button" style="padding:10px 10px;background-color: #0890a8;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #054955 inset; -webkit-box-shadow: 0 -4px 0 #054955 inset; -moz-box-shadow: 0 -4px 0 #054955 inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #047093;" id="noticiagaleria"><span class="glyphicon glyphicon-picture"></span> Galeria de Fotos</button>
-                                        	
-                                        
-                                        </li>
-                                        <li>
-                                        
-											<button type="button" style="padding:10px 10px;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
-                                        </li>
-                                        </ul>
-                                        </div>
-                                    <?php } else { if ($TituloNoticia != '') {?>
-                                    	<div align="center" style=" margin-top:-45px;width:93%; height:54px; display:inline-block; z-index:8; margin-bottom:222px;">
-                                        
-											<button type="button" style="padding:10px 10%;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
-
-                                        </div>
-                                    <?php }
-										} ?>
-                            </div>
+                            
                             <?php
 							
 							
