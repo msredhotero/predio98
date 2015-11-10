@@ -39,7 +39,8 @@ class ServiciosDatos {
 		       t.fechajuego,
 		       t.fecha,
 		       t.hora,
-			   t.idfixture
+			   t.idfixture,
+			   t.cancha
 		 
 				from (
 				select 
@@ -141,7 +142,8 @@ class ServiciosDatos {
 				        
 				fi.fechajuego,
 				f.idfecha as fecha,
-				DATE_FORMAT(fi.hora,'%k:%i') as hora
+				DATE_FORMAT(fi.hora,'%k:%i') as hora,
+				fi.cancha
 				
 				
 				from dbfixture as fi

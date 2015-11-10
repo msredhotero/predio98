@@ -249,13 +249,13 @@ if (!isset($_GET['idtorneo'])) {
                             
                         </div>
                         
-                    <div class="row">
-                        <div class="col-md-8" id="resultados" style="margin:0; padding:0;">
+                    <div class="row" style="margin:0; padding:0;">
+                        <div id="resultados" class="col-md-8" style="margin:0; padding-left:10px; padding-right:5px;">
                         	
                             
                         </div>
                         
-                        <div class="col-md-4" id="resultadosFixture" style="margin:0; padding:0;">
+                        <div id="resultadosFixture" class="col-md-4" style="margin:0; padding-left:5px; padding-right:10px;">
                         	
                             
                         </div>
@@ -263,7 +263,7 @@ if (!isset($_GET['idtorneo'])) {
                         
                         
                         <div class="row" style="margin:0; padding:0;">
-                        	<div class="col-md-4" id="resultadosAmarillas" style="margin:0; padding:0;">
+                        	<div class="col-md-4" id="resultadosAmarillas" style="margin:0; padding-left:10px; padding-right:5px;">
                         	
                             
                         	</div>
@@ -273,12 +273,12 @@ if (!isset($_GET['idtorneo'])) {
                             
                         	</div>-->
                             
-                            <div class="col-md-4" id="resultadosGoles" style="margin:0; padding:0;">
+                            <div class="col-md-4" id="resultadosGoles" style="margin:0; padding-left:5px; padding-right:5px;">
                         	
                             
                         	</div>
                             
-                            <div class="col-md-4" id="resultadosSuspendidos" style="margin:0; padding:0;">
+                            <div class="col-md-4" id="resultadosSuspendidos" style="margin:0; padding-left:5px; padding-right:10px;">
                         	
                             
                         	</div>
@@ -348,7 +348,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
             <div class="modal-body">
             	<div class="row">
             	<div class="col-md-6">
-				<table class="table table-responsive table-striped">
+				<table class="table table-responsive table-striped table-bordered">
                 	<thead>
                     	<tr>
                         	<th><img src="imagenes/icoRoja.png"></th>
@@ -365,7 +365,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
                 </table>
 				</div>
                 <div class="col-md-6">
-				<table class="table table-responsive table-striped">
+				<table class="table table-responsive table-striped table-bordered">
                 	<thead>
                     	<tr>
 

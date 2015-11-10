@@ -352,7 +352,7 @@ $(document).ready(function(){
 		}
 	});
 	
-
+	$('.fancybox').fancybox();
 });
 </script> 
 
@@ -438,18 +438,34 @@ $(document).ready(function(){
                               <div class="row">
 									<?php if ($GaleriaNoticia == 1) { ?>
                                             <div align="center" style=" margin-top:-45px;width:93%; height:58px; display:inline-block;">
+                                            	
+                                                <p style="margin-top:30px;">
+                                                	<?php
+														$cantImg = 0;
+														while ($rowImg = mysql_fetch_array($resImagenesGaleria)) {
+															
+															$cantImg += 1;	
+													?>
+                                                    <a style="padding:7px;" class="fancybox" href="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" data-fancybox-group="gallery" title="<?php echo $TituloNoticia; ?>"><img src="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" alt="" width="70" height="50" /></a>
+                                                    
+                                                    <?php
+															if ($cantImg == 5) {
+																break;		
+															}
+														}
+													?>
+                                            
+                                                    
+                                                </p>
                                             <ul class="list-inline">
-                                            <li>
                                             
-                                                <button type="button" style="padding:10px 10px;background-color: #0890a8;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #054955 inset; -webkit-box-shadow: 0 -4px 0 #054955 inset; -moz-box-shadow: 0 -4px 0 #054955 inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #047093;" id="noticiagaleria"><span class="glyphicon glyphicon-picture"></span> Galeria de Fotos</button>
-                                                
-                                            
-                                            </li>
                                             <li>
                                             
                                                 <button type="button" style="padding:10px 10px;background-color: #ffab23;border-radius: 7px 7px 7px 7px;display: inline-block;margin-bottom: 0px!important; box-shadow: 0 -4px 0 #bd750a inset; -webkit-box-shadow: 0 -4px 0 #bd750a inset; -moz-box-shadow: 0 -4px 0 #bd750a inset; border:none; color:#fff; font-size:1.2em;text-shadow:1px 1px 1px #A68502;" id="noticiauno"><span class="glyphicon glyphicon-search"></span> Ver Noticia</button>
                                             </li>
                                             </ul>
+                                            <br>
+                                           
                                             </div>
                                         <?php } else { if ($TituloNoticia != '') {?>
                                             <div align="center" style=" margin-top:-45px;width:93%; height:54px; display:inline-block; z-index:8; margin-bottom:222px;">
@@ -546,109 +562,7 @@ $(document).ready(function(){
                             </div>
                             
                             
-                            <div class="panel panel-predio" style="margin-top:5px;">
-                              <div class="panel-heading">
-                                <h3 class="panel-title">Fixture</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
-                              </div>
-                              <div class="panel-body-predio">
-                                <!--<h5 style="font-weight:900; font-family:Tahoma, Geneva, sans-serif; font-size:1.1em; text-decoration:underline;">In semper consequat</h5>
-                                <h6 style=" font-family:Tahoma, Geneva, sans-serif; font-size:0.9em; color:#00F; text-shadow:1px 1px 1px #fff;">Jueves 5 de Marzo, 19:20:23</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.</p>-->
-                                
-                                
-								<div align="center">
-                                <ul class="nav nav-pills">
                             
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 c/Off-Side <b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoA" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoA" class="zona">Zona B</li>
-                                            
-                                            <li id="zonaCtoneoA" class="zona">Zona C</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 11 s/Off-Side <b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoB" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoB" class="zona">Zona B</li>
-                                            
-                                            <li id="zonaCtoneoB" class="zona">Zona C</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                    <li class="dropdown">
-                            
-                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="padding:3px;">Fútbol 7<b class="caret"></b></a>
-                            
-                                        <ul class="dropdown-menu">
-                            
-                                            <li id="zonaAtoneoC" class="zona">Zona A</li>
-                            
-                                            <li id="zonaBtoneoC" class="zona">Zona B</li>
-                                            
-                                            <li id="zonaCtoneoC" class="zona">Zona C</li>
-                            
-                                        </ul>
-                            
-                                    </li>
-                            
-                                </ul>
-                            	</div>
-                                <table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
-                                	<caption id="zonaExp" style="font-size:1.2em; color:#333; font-weight:bold; padding:3px;">Zona A</caption>
-                                	<thead>
-                                    	<tr>
-                                        	<th style="text-align:center; font-size:1.3em;">Result. A</th>
-                                            <th style="text-align:center; font-size:1.3em;">Equipo A</th>
-                                            <th style="text-align:center; font-size:1.3em;">Horario</th>
-                                            <th style="text-align:center; font-size:1.3em;">Equipo B</th>
-                                            <th style="text-align:center; font-size:1.3em;">Result. B</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody id="resultados" style="padding:2px;">
-                                    	
-
-                                    </tbody>
-                                </table>
-								<button type="button" class="btn btn-info btn-lg" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <?php echo $UltimaFecha; ?>
-                                </button>
-                                <ul class="list-inline" style="margin-top:15px;">
-                                	<li>
-                                    	<button id="btnposiciones" type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Posiciones
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button id="btnfixture" type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Fixture
-                                        </button>
-                                    </li>
-                                    <!--<li>
-                                        <button type="button" class="btn btn-success" aria-label="Left Align">
-                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Datos
-                                        </button>
-                                    </li>-->
-                                </ul>
-                              </div>
-                            </div>
                             
                             <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">

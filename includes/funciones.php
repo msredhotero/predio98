@@ -121,7 +121,7 @@ class Servicios {
                 </thead>
                 <tbody id="'.$idresultados.'">
 
-                	'.utf8_encode($cadRows).'
+                	'.$cadRows.'
                 </tbody>
             </table>
 			<div style="margin-bottom:85px; margin-right:60px;"></div>
@@ -919,6 +919,15 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 				inner join
 				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
 				where tt.descripciontorneo = '".$tipotorneo."' and t.activo = 1";
+		return $this-> query($sql,0);
+	}
+	
+	
+	function TraerTorneosActivoTodos() {
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
+				inner join
+				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
+				where t.activo = 1";
 		return $this-> query($sql,0);
 	}
 	

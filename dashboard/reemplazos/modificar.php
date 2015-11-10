@@ -43,15 +43,15 @@ $tabla 			= "dbreemplazo";
 $lblCambio	 	= array("refequipo","refequiporeemplazado","reffecha","reftorneo","golesencontra");
 $lblreemplazo	= array("Equipo - Entra","Equipo - Sale","Fecha","Tipo Torneo","Goles en contra");
 
-$resTipoTorneo 	= $serviciosFunciones->traerTipoTorneo();
+$resTipoTorneo 	= $serviciosFunciones->TraerTorneosActivoTodos();
 
 $cadRef = '';
 $idtorneo = 0;
 while ($rowTT = mysql_fetch_array($resTipoTorneo)) {
 	if (mysql_result($resResultado,0,'reftorneo') == $rowTT[0]) {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.utf8_encode($rowTT[1]).'</option>';
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'" selected>'.$rowTT[1]." - ".$rowTT[4].'</option>';
 	} else {
-		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';
+		$cadRef = $cadRef.'<option value="'.$rowTT[0].'">'.$rowTT[1]." - ".$rowTT[4].'</option>';
 	}
 	
 }

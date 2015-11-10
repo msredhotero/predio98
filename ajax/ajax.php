@@ -305,14 +305,19 @@ break;
 	/* fin noticias */
 	
 	/* Reportes */
+		  
 	case 'traerResultadosPorTorneoZonaFecha':
 		traerResultadosPorTorneoZonaFecha($serviciosDatos);
 		break;
 	case 'traerResultadosPorTorneoZonaFechaPagina':
 		traerResultadosPorTorneoZonaFechaPagina($serviciosDatos);
 		break;
+		  
 	case 'TraerFixturePorZonaTorneo':
 		TraerFixturePorZonaTorneo($serviciosDatos);
+		break;
+	case 'TraerFixturePorZonaPorTorneo':
+		TraerFixturePorZonaPorTorneo($serviciosDatos, $serviciosFunciones);
 		break;
 	case 'Goleadores':
 		Goleadores($serviciosDatos);
@@ -726,7 +731,7 @@ function FixturePaginaChicoDos($serviciosDatos) {
 	
 	for ($i=$idfecha;$i>=$idfecha-$menos;$i--) {
 		$cad = $cad.'
-				<div class="col-md-12">
+				<!--<div class="col-md-4">-->
 				<div class="panel panel-predio" style="margin-top:0;">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
@@ -741,11 +746,11 @@ function FixturePaginaChicoDos($serviciosDatos) {
                                 	
                                 	<thead>
                                     	<tr>
-                                        	<th style="text-align:center;padding:3px;">Result. A</th>
+                                        	<th style="text-align:center;padding:3px;"></th>
                                             <th style="text-align:center;padding:3px;">Equipo A</th>
                                             <th style="text-align:center;padding:3px;">Horario</th>
                                             <th style="text-align:center;padding:3px;">Equipo B</th>
-                                            <th style="text-align:center;padding:3px;">Result. B</th>
+                                            <th style="text-align:center;padding:3px;"></th>
                                             <th style="text-align:center;padding:3px;">Ver</th>
                                         </tr>
                                     </thead>
@@ -755,7 +760,7 @@ function FixturePaginaChicoDos($serviciosDatos) {
                         	$cad = $cad.'<tr>
                         	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
                             <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
-                            <td align="center" style="padding:3px;">'.$row['hora'].'</td>
+                            <td align="center" style="padding:3px;">'.$row['hora']."/".$row['cancha'].'</td>
                             <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
                             <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
 							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
@@ -765,7 +770,7 @@ function FixturePaginaChicoDos($serviciosDatos) {
         $cad = $cad.'</tbody>
                                 </table></div>
                             </div>
-						</div>';	
+						<!--</div>-->';	
 		
 		
 	}
@@ -806,7 +811,68 @@ function TraerFixturePorZonaTorneo($serviciosDatos) {
 						$i =1;
 						$puntos = 0;
 						while ($row1 = mysql_fetch_array($res2)) {
-							$cad2 = $cad2.$row1['volvio'].$row1['reemplzadovolvio'];
+							
+							
+							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+							$cad2 = $cad2.'<tr style="font-size:1.5em;">
+								<td align="right" style="padding:1px 6px;">'.$i.'</td>
+								<td align="left" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['pts'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['partidos'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['ganados'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['empatados'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['perdidos'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['golesafavor'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['golesencontra'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['diferencia'].'</td>
+								<td align="right" style="padding:1px 6px;">'.$row1['puntos'].'</td>
+							</tr>';
+					
+							$i = $i + 1;
+							}
+						}
+                    $cad2 = $cad2.'</table>
+                
+                </div>';
+	echo $cad2;
+}
+
+
+function TraerFixturePorZonaPorTorneo($serviciosDatos, $serviciosFunciones) {
+	
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$idTipoTorneo = mysql_result($serviciosFunciones->TraerIdTorneos($idtorneo),0,'reftipotorneo');
+	
+	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idTipoTorneo,$idzona,$idfecha);
+	
+	$cad2 = '
+	<div class="row">
+                	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:5px;">
+                    	<tr bgcolor="#bfbfbf">
+                        	<td colspan="11" align="center" style="font-size:1.9em;">RESULTADOS '.$zona.'</td>
+                        </tr>
+                        <tr style="font-size:1.5em;">
+                        	<td align="center" style="padding:1px 6px;">POSICION</td>
+                            <td align="center" style="padding:1px 6px;">EQUIPO</td>
+                            <td align="center" style="padding:1px 6px;">PTS</td>
+                            <td align="center" style="padding:1px 6px;">PJ</td>
+                            <td align="center" style="padding:1px 6px;">PG</td>
+                            <td align="center" style="padding:1px 6px;">PE</td>
+                            <td align="center" style="padding:1px 6px;">PP</td>
+                            <td align="center" style="padding:1px 6px;">GF</td>
+                            <td align="center" style="padding:1px 6px;">GC</td>
+                            <td align="center" style="padding:1px 6px;">DIF</td>
+                            <td align="center" style="padding:1px 6px;">F.P.</td>
+                        </tr>';
+
+						$i =1;
+						$puntos = 0;
+						while ($row1 = mysql_fetch_array($res2)) {
+							
 							
 							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
 							$cad2 = $cad2.'<tr style="font-size:1.5em;">
@@ -846,7 +912,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona,$idfecha);
 	$cad2 = '';
 	$cad2 = $cad2.'
-				<div class="col-md-12">
+				<!--<div class="col-md-8">-->
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.$zona.'</h3>
@@ -912,7 +978,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 								</div>
 								</div>
                             </div>
-						</div>';
+						<!--</div>-->';
 	echo $cad2;
 }
 
@@ -927,7 +993,7 @@ function GoleadoresPagina($serviciosDatos) {
 	$res3 = $serviciosDatos->Goleadores($idtorneo,$idzona,$idfecha);
 	$cad3 = '';
 	$cad3 = $cad3.'
-				<div class="col-md-12">
+				<!--<div class="col-md-12">-->
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.$zona.' - Goleadores</h3>
@@ -965,7 +1031,7 @@ function GoleadoresPagina($serviciosDatos) {
 								</div>
 								</div>
                             </div>
-						</div>';
+						<!--</div>-->';
 	echo $cad3;
 }
 
@@ -1088,7 +1154,7 @@ function SuspendidosPagina($serviciosDatos) {
 	$res5 = $serviciosDatos->SuspendidosPorSiempre($idtorneo,$idzona,$idfecha);
 	$cad3 = '';
 	$cad3 = $cad3.'
-				<div class="col-md-12">
+				<!--<div class="col-md-12">-->
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.$zona.' - Suspendidos</h3>
@@ -1104,7 +1170,7 @@ function SuspendidosPagina($serviciosDatos) {
                         	<th align="left">Nombre y Apellido</th>
                             <th align="left">Equipo</th>
                             <th align="center">Amarillas</th>
-							<th align="center">Cant.</th>
+							<th align="center">Cant.Fechas</th>
                         </tr>
 						</thead>
 						<tbody>';
@@ -1149,7 +1215,7 @@ function SuspendidosPagina($serviciosDatos) {
 								</div>
 								</div>
                             </div>
-						</div>';
+						<!--</div>-->';
 	echo $cad3;
 }
 
@@ -1163,7 +1229,7 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 	$res3 = $serviciosDatos->traerAcumuladosAmarillasPorTorneoZona($idtorneo,$idzona,$idfecha);
 	$cad3 = '';
 	$cad3 = $cad3.'
-				<div class="col-md-12">
+				<!--<div class="col-md-12">-->
 				<div class="panel panel-predio">
                                 <div class="panel-heading">
                                 	<h3 class="panel-title">'.$zona.' - Amarillas</h3>
@@ -1199,7 +1265,7 @@ function AmarillasAcumuladasPagina($serviciosDatos) {
 								</div>
 								</div>
                             </div>
-						</div>';
+						<!--</div>-->';
 	echo $cad3;
 }
 

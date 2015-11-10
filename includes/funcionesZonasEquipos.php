@@ -1249,7 +1249,7 @@ $res = $this->query($sql,1);
 						inner
 						join		dbtorneos t
 						on			t.idtorneo = tge.reftorneo
-						where		t.activo = 1 and f.reffecha >= ".$reffecha." and tge.refequipo = ".$refequiporeemplazado." and t.reftipotorneo =".$reftorneo;
+						where		t.activo = 1 and f.reffecha >= ".$reffecha." and tge.refequipo = ".$refequiporeemplazado." and t.idtorneo =".$reftorneo;
 		$resFixA = $this->query($sqlFixA,0);
 		
 		$sqlFixB = "select
@@ -1261,7 +1261,7 @@ $res = $this->query($sql,1);
 						inner
 						join		dbtorneos t
 						on			t.idtorneo = tge.reftorneo
-						where		t.activo = 1 and f.reffecha >= ".$reffecha." and tge.refequipo = ".$refequiporeemplazado." and t.reftipotorneo =".$reftorneo;
+						where		t.activo = 1 and f.reffecha >= ".$reffecha." and tge.refequipo = ".$refequiporeemplazado." and t.idtorneo =".$reftorneo;
 		$resFixB = $this->query($sqlFixB,0);
 		
 		$sqlTGE = "select tge.refgrupo,tge.reftorneo 
@@ -1269,7 +1269,7 @@ $res = $this->query($sql,1);
 					inner
 					join		dbtorneos t
 					on			t.idtorneo = tge.reftorneo
-					where 		t.activo = 1 and tge.refequipo = ".$refequiporeemplazado." and t.reftipotorneo =".$reftorneo;
+					where 		t.activo = 1 and tge.refequipo = ".$refequiporeemplazado." and t.idtorneo =".$reftorneo;
 		$resTGE = $this->query($sqlTGE,0);
 		
 	
@@ -1495,13 +1495,14 @@ $sql = "select
 			r.puntos,
 			r.golesencontra,
 			f.tipofecha,
-			tt.descripciontorneo,
+			concat(tt.nombre,' - ',ttt.descripciontorneo) as descripciontorneo,
 			r.refequipo,
 			r.refequiporeemplazado,
 			r.reffecha,
 			r.reftorneo 
 			from dbreemplazo r 
-			left join tbtipotorneo tt on tt.idtipotorneo = r.reftorneo
+			left join dbtorneos tt on tt.idtorneo = r.reftorneo
+			inner join tbtipotorneo ttt on ttt.idtipotorneo = tt.reftipotorneo
 			left join tbfechas f on f.idfecha = r.reffecha
 			order by 1 desc";
 $res = $this->query($sql,0);
