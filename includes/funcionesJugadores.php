@@ -131,7 +131,7 @@ class ServiciosJ {
 	
 	function TraerJugadoresGolesPorEquipo($idEquipo) {
 		$sql = "select 
-					f.idjugador, f.apyn, f.dni, f.invitado, f.expulsado, f.goles
+					f.idjugador, f.apyn, f.dni, f.invitado, f.expulsado, f.goles, f.amarillas, f.rojas
 				from
 					(select 
 						j.idjugador,
@@ -146,14 +146,26 @@ class ServiciosJ {
 							when j.expulsado = '0' then 'No'
 							else 'Si'
 						end) as expulsado,
-						COALESCE(sum(g.goles), 0) as goles
+						COALESCE(sum(g.goles), 0) as goles,
+						COALESCE(aa.amarillas, 0) as amarillas,
+						COALESCE(ss.rojas, 0) as rojas
 					from
 						dbjugadores j
 						left join
 						tbgoleadores g on j.idjugador = g.refjugador
+						left join
+						(select ta.refjugador, count(ta.amarillas) as amarillas
+							from tbamonestados ta 
+							where ta.refequipo = ".$idEquipo." and ta.amarillas <> 2
+							group by ta.refjugador) aa on aa.refjugador = j.idjugador
+						left join
+						(select ts.refjugador, count(ts.idsuspendido) as rojas
+							from tbsuspendidos ts 
+							where ts.refequipo = ".$idEquipo."
+							group by ts.refjugador) ss on ss.refjugador = j.idjugador
 					where
 						j.idequipo = ".$idEquipo."
-					group by j.idjugador, j.apyn, j.dni, j.invitado, j.expulsado) as f
+					group by j.idjugador, j.apyn, j.dni, j.invitado, j.expulsado,aa.amarillas,ss.rojas) as f
 				order by f.goles desc,f.apyn";	
 		return $this->query($sql,0);
 	}

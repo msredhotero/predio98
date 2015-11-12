@@ -243,6 +243,12 @@ if (!isset($_GET['idtorneo'])) {
                             
                         </div>
                         
+                        <div class="col-md-12" align="center" style="text-align:center;">
+                        	<ul class="list-inline" id="lstFechas">
+                            	
+                            </ul>
+                        </div>
+                        
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	
@@ -407,6 +413,25 @@ border-radius: 0em 0em 0.6em 0.6em;">
 	</footer>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	function traerFechas(reftorneo, refzona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						accion: 'TraerFechasPorTorneoZona'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+					
+					$("#load").html('<img src="imagenes/LoadingWheel.gif" />');  	
+				},
+				success:  function (response) {
+						$('#lstFechas').html(response);
+						$("#load").html('');
+				}
+		});	
+	}
+	
 	
 	function TraerResultados(reftorneo, refzona, reffecha, zona) {
 		switch(reftorneo) {

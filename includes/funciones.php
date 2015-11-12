@@ -1096,6 +1096,26 @@ function traerZonaPorTorneos($refTorneo) {
 		return $this-> query($sql,0);		
 	}
 	
+	function TraerUltimaFechaPorTorneoInactiva($idTipoTorneo) {
+		$sql = "select
+					distinct f.reffecha , ff.tipofecha
+				from		dbfixture f
+				inner
+				join		dbtorneoge tge
+				on			tge.idtorneoge = f.reftorneoge_a or tge.idtorneoge = f.reftorneoge_b
+				inner
+				join		dbtorneos t
+				on			tge.reftorneo = t.idtorneo
+				inner
+				join		tbfechas ff
+				on			ff.idfecha = f.reffecha
+				where		f.chequeado = 0 and t.reftipotorneo = ".$idTipoTorneo." and t.activo = 1
+				
+				order by	f.refFecha desc
+				limit 1";
+		return $this-> query($sql,0);		
+	}
+	
 	
 	function TraerUltimaFechaActivo() {
 		$sql = "select

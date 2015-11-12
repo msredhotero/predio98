@@ -20,7 +20,7 @@ $serviciosNoticias = new ServiciosNoticias();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Noticias",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Ultimas/Predio Noticias",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
 
 
 /////////////////////// Opciones de la pagina  ////////////////////

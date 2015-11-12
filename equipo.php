@@ -542,8 +542,8 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                         	<th>Apellido y Nombre</th>
                                             <th>NroDocumento</th>
                                             <th><div align="center">Goles</div></th>
-                                            <th><div align="center">Invitado</div></th>
-                                            <th><div align="center">Expulsado</div></th>
+                                            <th><div align="center">Rojas</div></th>
+                                            <th><div align="center">Amarillas</div></th>
 											
                                         </tr>
                                         <?php if (mysql_num_rows($resJugadores)>0) { ?>
@@ -559,15 +559,15 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                             </td>
                                             <td><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['dni'].'</div>'; ?></td>
                                             <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['goles'].'</div>'; ?></td>
-                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['invitado'].'</div>'; ?></td>
-                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['expulsado'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['amarillas'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['rojas'].'</div>'; ?></td>
                                         
                                         <?php } else { ?>
                                             <td><?php echo $rowJ['apyn']; ?></td>
                                             <td><?php echo $rowJ['dni']; ?></td>
                                             <td align="center"><?php echo $rowJ['goles']; ?></td>
-                                            <td align="center"><?php echo $rowJ['invitado']; ?></td>
-                                            <td align="center"><?php echo $rowJ['expulsado']; ?></td>
+                                            <td align="center"><?php echo $rowJ['amarillas']; ?></td>
+                                            <td align="center"><?php echo $rowJ['rojas']; ?></td>
 			
 										<?php } ?>
                                         </tr>
