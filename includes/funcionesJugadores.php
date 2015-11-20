@@ -222,7 +222,11 @@ class ServiciosJ {
 							(case
 								when s.refjugador is null then '0'
 								else '1'
-							end) as suspendido
+							end) as suspendido,
+							(case
+								when s.refjugador is null then 2
+								else 1
+							end) as orden
 					from
 						dbjugadores j
 					left join (select distinct
@@ -253,7 +257,11 @@ class ServiciosJ {
 							(case
 								when s.refjugador is null then '0'
 								else '1'
-							end) as suspendido
+							end) as suspendido,
+							(case
+								when s.refjugador is null then 4
+								else 1
+							end) as orden
 					from
 						dbjugadores j
 					inner join (select distinct
@@ -277,12 +285,12 @@ class ServiciosJ {
 					where
 						j.idequipo = ".$idequipo." and j.invitado = 1
 							and j.expulsado = 0 union all select 
-						j.idjugador, j.apyn, j.dni, j.invitado, 1 as suspendido
+						j.idjugador, j.apyn, j.dni, j.invitado, 1 as suspendido,1 as orden
 					from
 						dbjugadores j
 					where
 						j.idequipo = ".$idequipo." and j.expulsado = 1) as f
-				order by f.apyn";
+				order by f.orden,f.apyn";
 		return $this->query($sql,0);
 	}
 
@@ -389,42 +397,69 @@ function traerGoleadores() {
 
 
 function traerGoleadoresPorEquipo($equipo) {
-	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles, concat(d.nombre,'-',d.descripciontorneo) as torneo
 			from tbgoleadores g 
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
-			inner join dbfixture f on f.idfixture = g.reffixture
-			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			inner join
+				(select fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha from dbfixture fix inner join dbtorneoge tge
+							on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+							inner
+							join		dbtorneos t
+							on			t.idtorneo = tge.reftorneo and t.activo = 1
+							inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = t.reftipotorneo
+				group by fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha) d ON d.idfixture = g.reffixture
+			inner join tbfechas ff on d.reffecha = ff.idfecha 
 			where e.nombre like '%".$equipo."%' 
-			order by e.nombre, f.idfixture desc, j.apyn";
+			order by e.nombre, d.idfixture desc, j.apyn";
 	$res = $this->query($sql,0);
 	return $res;
 }
 
 
 function traerGoleadoresPorApyn($apyn) {
-	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles ,concat(d.nombre,'-',d.descripciontorneo) as torneo
 			from tbgoleadores g 
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
-			inner join dbfixture f on f.idfixture = g.reffixture
-			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			inner join
+				(select fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha from dbfixture fix inner join dbtorneoge tge
+							on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+							inner
+							join		dbtorneos t
+							on			t.idtorneo = tge.reftorneo and t.activo = 1
+							inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = t.reftipotorneo
+				group by fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha) d ON d.idfixture = g.reffixture
+			inner join tbfechas ff on d.reffecha = ff.idfecha 
 			where j.apyn like '%".$apyn."%' 
-			order by e.nombre, f.idfixture desc, j.apyn";
+			order by e.nombre, d.idfixture desc, j.apyn";
 	$res = $this->query($sql,0);
 	return $res;
 }
 
 
 function traerGoleadoresPorDNI($apyn) {
-	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles 
+	$sql = "select g.idgoleador,j.apyn, j.dni, e.nombre, ff.tipofecha, g.goles, concat(d.nombre,'-',d.descripciontorneo) as torneo 
 			from tbgoleadores g 
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
-			inner join dbfixture f on f.idfixture = g.reffixture
-			inner join tbfechas ff on f.reffecha = ff.idfecha 
+			inner join
+				(select fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha from dbfixture fix inner join dbtorneoge tge
+							on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+							inner
+							join		dbtorneos t
+							on			t.idtorneo = tge.reftorneo and t.activo = 1
+							inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = t.reftipotorneo
+				group by fix.idfixture,t.nombre, tp.descripciontorneo, fix.reffecha) d ON d.idfixture = g.reffixture
+			inner join tbfechas ff on d.reffecha = ff.idfecha 
 			where j.dni like '%".$apyn."%' 
-			order by e.nombre, f.idfixture desc, j.apyn";
+			order by e.nombre, d.idfixture desc, j.apyn";
 	$res = $this->query($sql,0);
 	return $res;
 }
@@ -687,18 +722,21 @@ return $res;
 } 
 
 function traerAmonestados($idtipoTorneo) {
-	$sql = "select g.idamonestado,j.apyn, j.dni, e.nombre, ff.tipofecha, g.amarillas 
+	$sql = "select g.idamonestado,j.apyn, j.dni, e.nombre, ff.tipofecha, g.amarillas, concat(f.nombre,'-',f.descripciontorneo) as torneo
 			from tbamonestados g 
 			inner join dbequipos e on g.refequipo = e.idequipo 
 			inner join dbjugadores j on g.refjugador = j.idjugador 
 			inner 
-			join 		(select idfixture,reffecha from dbfixture fix
+			join 		(select fix.idfixture,fix.reffecha, tt.nombre, tp.descripciontorneo from dbfixture fix
 							inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
 							or fix.reftorneoge_b = tge.idtorneoge
 							inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
+							inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = tt.reftipotorneo
 							and tt.reftipotorneo in (".$idtipoTorneo.")
 							and tt.activo = 1
-							group by idfixture,reffecha) f
+							group by fix.idfixture,fix.reffecha, tt.nombre, tp.descripciontorneo) f
 			on f.idfixture = g.reffixture
 			inner join tbfechas ff on f.reffecha = ff.idfecha";
 	$res = $this->query($sql,0);
@@ -817,10 +855,32 @@ return $res;
 } 
 
 function traerSuspendidos() {
-	$sql = "select idsuspendido,e.nombre,j.apyn,motivos,cantidadfechas,fechacreacion,c.reffixture from tbsuspendidos c
-			inner join dbjugadores j on j.idjugador = c.refjugador 
-			inner join dbequipos e on e.idequipo = c.refequipo
-			order by e.nombre";
+	$sql = "select 
+    idsuspendido,
+    e.nombre,
+    j.apyn,
+    motivos,
+    cantidadfechas,
+    fechacreacion,
+    concat(d.nombre,'-',d.descripciontorneo) as torneo,
+	c.reffixture
+from
+    tbsuspendidos c
+        inner join
+    dbjugadores j ON j.idjugador = c.refjugador
+        inner join
+    dbequipos e ON e.idequipo = c.refequipo
+		inner join
+	(select fix.idfixture,t.nombre, tp.descripciontorneo from dbfixture fix inner join dbtorneoge tge
+							on			fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
+							inner
+							join		dbtorneos t
+							on			t.idtorneo = tge.reftorneo and t.activo = 1
+							inner
+							join		tbtipotorneo tp
+							on			tp.idtipotorneo = t.reftipotorneo
+				group by fix.idfixture,t.nombre, tp.descripciontorneo) d ON d.idfixture = c.reffixture
+order by e.nombre";
 	$res = $this->query($sql,0);
 	return $res;
 }

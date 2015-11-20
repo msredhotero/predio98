@@ -74,13 +74,14 @@ $cabeceras 		= "	<th>Equipo</th>
 				<th>Jugador</th>
 				<th>Motivos</th>
 				<th>Cant.Fechas</th>
-				<th>Fecha Creación</th>";
+				<th>Fecha Creación</th>
+				<th>Torneo</th>";
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
 
-$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->traerSuspendidos(),5);
+$lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosJugadores->traerSuspendidos(),6);
 
 
 

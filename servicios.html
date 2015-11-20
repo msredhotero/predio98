@@ -313,7 +313,8 @@
                         </ul>
                         </div>
                         <div style="margin-left:33%; font-size:1.3em;">
-                        <ul>
+                        <div id="datos"></div>
+                        <!--<ul>
                         	<li>A solo 10 minutos del centro. (Calle 98 y 16)</li>
                             <li>10 Canchas de Fútbol 11</li>
                             <li>2 Canchas de Fútbol 7</li>
@@ -329,7 +330,7 @@
                             <li>Vestuarios.</li>
                             <li>Buffet con parrilla.</li>
                             <li>Baños dama y caballero.</li>
-                        </ul>
+                        </ul>-->
                         </div>
 <br>
 
@@ -456,7 +457,22 @@ $(document).ready(function(){
 		$('#futbolco').css('opacity','1');
     });
 	
+	function datos() {
+		$.ajax({
+				data:  {idseccion: 4, accion: 'TraerContenidoPorSeccion'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#datos').html(response);
+						
+				}
+		});	
+	}
 	
+	datos();
 });
 </script>
 

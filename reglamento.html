@@ -296,8 +296,8 @@
                     <div class="row" align="center" style="margin-top:20px;">
                     	<img src="imagenes/pagina/1438221081_Checklist.png" />
                     </div>
-                    
-                    <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
+                    <div id="datos"></div>
+                    <!--<div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
                     	<h1>PREDIO 98</h1>
                         <h3>REGLAMENTO TORNEO PREDIO 98</h3>
                         <h4>TORNEO APERTURA 2015</h4>
@@ -390,7 +390,7 @@ Advertencia Preliminar: Las disposiciones del presente Reglamento son de aplicac
 <h5>Queremos darle las gracias por interpretar nuestros objetivos y fomentar entre todos el <strong>BUEN AMBIENTE EN EL PREDIO!</strong></h5>
 <br>
 <h4>Atte. La Organización.</h4>
-                    </div>
+                    </div>-->
                     
                     
                 </article>
@@ -513,6 +513,22 @@ $(document).ready(function(){
 		$('#futbolco').css('opacity','1');
     });
 	
+	function datos() {
+		$.ajax({
+				data:  {idseccion: 2, accion: 'TraerContenidoPorSeccion'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#datos').html(response);
+						
+				}
+		});	
+	}
+	
+	datos();
 	
 });
 </script>

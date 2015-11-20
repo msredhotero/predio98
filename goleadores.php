@@ -416,10 +416,10 @@ $(document).ready(function(){
 	function TraerResultadosGoles(reftorneo, refzona, reffecha, zona) {
 		switch(reftorneo) {
 			case 1:
-				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
 				break;
 			case 2:
-				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
 				break;
 			case 3:
 				$('.lbltorneo').html('Torneo Fútbol 7');

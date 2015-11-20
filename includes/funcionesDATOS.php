@@ -170,7 +170,7 @@ class ServiciosDatos {
 				where g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo."
 				order by fecha desc
 				) as t
-				where t.fecha = '".$idfecha."'";
+				where t.fecha = ".$idfecha;
 		$res = $this->query($sql,0);
 		return $res;
 	}
@@ -190,6 +190,10 @@ class ServiciosDatos {
 	}
 	
 	function TraerFixturePorZonaTorneo($idtorneo,$zona,$idfecha) {
+		
+		$sqlTorneo = "select idtorneo from dbtorneos where reftipotorneo = ".$idtorneo." and activo = 1";
+		$refTorneo = mysql_result($this->query($sqlTorneo,0),0,0);
+		
 		$sql = '
 			select
 			fix.nombre,
@@ -206,8 +210,10 @@ class ServiciosDatos {
 			fix.equipoactivo,
 			cast((fix.golesafavor / fix.partidos) as decimal(4,2)) as porcentajegoles,
 			round((fix.pts * 100) / (fix.partidos * 3)) as efectividad,
-			(select count(*) from tbsuspendidos where refequipo = fix.idequipo and (motivos = "Roja Directa" or motivos = "Doble Amarilla")) as rojas,
-			(select sum(amarillas) from tbamonestados where refequipo = fix.idequipo and amarillas <> 2) as amarillas,
+			/*(select count(*) from tbsuspendidos where refequipo = fix.idequipo and (motivos = "Roja Directa" or motivos = "Doble Amarilla")) as rojas,*/
+			coalesce(ro.rojas,0) as rojas,
+			/*(select sum(amarillas) from tbamonestados where refequipo = fix.idequipo and amarillas <> 2) as amarillas,*/
+			coalesce(aaa.amarillas,0) as amarillas,
 			(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
 (case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
 	(case
@@ -356,6 +362,113 @@ left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffec
 left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = fix.idtorneo
 left join
 	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.'
+	
+	left join
+	(select
+
+	sa.nombre,
+	sum(sa.puntos) as amarillas,
+	sa.idequipo
+from (
+select 
+					f.tipofecha,
+						e.nombre,
+						count(a.amarillas) as puntos,
+						f.idfecha,
+						e.idequipo
+				from
+					tbamonestados a
+				inner join dbequipos e ON e.idequipo = a.refequipo
+				inner join dbfixture fix ON fix.idfixture = a.reffixture
+				inner join tbfechas f ON f.idfecha = fix.reffecha
+				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
+					and fix.reftorneoge_a = tge.idtorneoge
+				where
+					a.amarillas = 1 and tge.reftorneo = '.$refTorneo.'
+						and fix.reffecha <= '.$idfecha.'
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+				
+				union all 
+				
+				select 
+					f.tipofecha,
+						e.nombre,
+						count(a.amarillas) as puntos,
+						f.idfecha,
+						e.idequipo
+				from
+					tbamonestados a
+				inner join dbequipos e ON e.idequipo = a.refequipo
+				inner join dbfixture fix ON fix.idfixture = a.reffixture
+				inner join tbfechas f ON f.idfecha = fix.reffecha
+				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
+					and fix.reftorneoge_b = tge.idtorneoge
+				where
+					a.amarillas = 1 and tge.reftorneo = '.$refTorneo.'
+						and fix.reffecha <= '.$idfecha.'
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo) sa
+			group by 
+			sa.nombre,
+			sa.idequipo) aaa ON aaa.idequipo = fix.idequipo
+			
+			
+	left join
+	(select
+
+	sa.nombre,
+	sum(sa.puntos) as rojas,
+	sa.idequipo
+from (
+select 
+					f.tipofecha,
+						e.nombre,
+						sum(1) as puntos,
+						f.idfecha,
+						e.idequipo
+				from
+					tbsuspendidos a
+				inner join dbequipos e ON e.idequipo = a.refequipo
+				inner join (select 
+					refsuspendido, min(reffecha) as idfecha
+				from
+					dbsuspendidosfechas
+				group by refsuspendido) sp ON sp.refsuspendido = a.idsuspendido
+				inner join tbfechas f ON f.idfecha = sp.idfecha - 1
+				inner join dbfixture fix ON fix.idfixture = a.reffixture
+				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
+					and fix.reftorneoge_a = tge.idtorneoge
+				where
+					tge.reftorneo = '.$refTorneo.' and fix.reffecha <= '.$idfecha.' and (a.motivos like "%Roja Directa%" or a.motivos like "%Doble Amarilla%") 
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+				
+				union all 
+				
+				select 
+					f.tipofecha,
+						e.nombre,
+						sum(1) as puntos,
+						f.idfecha,
+						e.idequipo
+				from
+					tbsuspendidos a
+				inner join dbequipos e ON e.idequipo = a.refequipo
+				inner join (select 
+					refsuspendido, min(reffecha) as idfecha
+				from
+					dbsuspendidosfechas
+				group by refsuspendido) sp ON sp.refsuspendido = a.idsuspendido
+				inner join tbfechas f ON f.idfecha = sp.idfecha - 1
+				inner join dbfixture fix ON fix.idfixture = a.reffixture
+				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
+					and fix.reftorneoge_b = tge.idtorneoge
+				where
+					tge.reftorneo = '.$refTorneo.' and fix.reffecha <= '.$idfecha.' and (a.motivos like "%Roja Directa%" or a.motivos like "%Doble Amarilla%") 
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo) sa
+			group by 
+			sa.nombre,
+			sa.idequipo) ro ON ro.idequipo = fix.idequipo
+	
+	
 				order by (case when rr.idreemplazo is null then fix.pts + COALESCE(rrr.puntos,0) else fix.pts + rr.puntos end) desc, fix.puntos,
 	  fix.golesafavor - (case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end) desc,
 	  fix.golesafavor desc,

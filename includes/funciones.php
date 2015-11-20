@@ -78,7 +78,7 @@ class Servicios {
 			
 			for ($i=1;$i<=$cantidad;$i++) {
 				
-				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.$row[$i].'</div></td>';	
+				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.htmlspecialchars($row[$i],ENT_HTML5).'</div></td>';	
 			}
 			
 			
@@ -279,9 +279,10 @@ class Servicios {
 										';
 										
 									} else {
-										if ($row[1] == 'MEDIUMTEXT') {
+										if (strtolower($row[1]) == 'mediumtext') {
 											$label = ucwords($label);
 											$campo = strtolower($row[0]);
+											
 											
 											$form	=	$form.'
 											
@@ -298,6 +299,7 @@ class Servicios {
 											</div>
 											
 											';
+											
 											
 										} else {
 											
@@ -565,7 +567,7 @@ class Servicios {
 											<div class="form-group col-md-6">
 												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 												<div class="input-group col-md-12">
-													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.utf8_encode(mysql_result($resMod,0,$row[0])).'</textarea>
+													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.htmlspecialchars(utf8_encode(mysql_result($resMod,0,$row[0])),ENT_HTML5).'</textarea>
 												</div>
 												
 											</div>
@@ -574,25 +576,44 @@ class Servicios {
 											
 										} else {
 											
-											if ($row[1] == 'MEDIUMTEXT') {
+											if (strtolower($row[1]) == 'mediumtext') {
 											$label = ucwords($label);
 											$campo = strtolower($row[0]);
 											
-											$form	=	$form.'
 											
-											<div class="form-group col-md-12">
-												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
-												<div class="input-group col-md-12">
-													<textarea name="'.$campo.'" id="'.$campo.'" rows="200" cols="160">
-														Ingrese la noticia.
-													</textarea>
-													
+											if ($campo == 'texto') {
+												$form	=	$form.'
+												
+												<div class="form-group col-md-12">
+													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+													<div class="input-group col-md-12">
+														<textarea type="text" rows="110" cols="160" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.htmlspecialchars(utf8_encode(mysql_result($resMod,0,$row[0])),ENT_HTML5).'</textarea>
+														
+														
+													</div>
 													
 												</div>
 												
-											</div>
-											
-											';
+												';
+
+											} else {
+												
+												$form	=	$form.'
+												
+												<div class="form-group col-md-12">
+													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
+													<div class="input-group col-md-12">
+														<textarea name="'.$campo.'" id="'.$campo.'" rows="200" cols="160">
+															Ingrese la noticia.
+														</textarea>
+														
+														
+													</div>
+													
+												</div>
+												
+												';
+											}
 											
 											} else {
 												$label = ucwords($label);
@@ -603,7 +624,8 @@ class Servicios {
 												<div class="form-group col-md-6">
 													<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 													<div class="input-group col-md-12">
-														<input type="text" value="'.utf8_encode(mysql_result($resMod,0,$row[0])).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
+														
+														<input type="text" value="'.htmlspecialchars(utf8_encode(mysql_result($resMod,0,$row[0])),ENT_HTML5).'" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>
 													</div>
 												</div>
 												
@@ -1115,7 +1137,26 @@ function traerZonaPorTorneos($refTorneo) {
 				limit 1";
 		return $this-> query($sql,0);		
 	}
-	
+
+	function TraerFechasPorTorneoZona($idTorneo, $idZona) {
+		$sql = "select
+					distinct f.reffecha , ff.tipofecha
+				from		dbfixture f
+				inner
+				join		dbtorneoge tge
+				on			tge.idtorneoge = f.reftorneoge_a or tge.idtorneoge = f.reftorneoge_b
+				inner
+				join		dbtorneos t
+				on			tge.reftorneo = t.idtorneo
+				inner
+				join		tbfechas ff
+				on			ff.idfecha = f.reffecha
+				where		f.chequeado = 1 and t.reftipotorneo = ".$idTorneo." and t.activo = 1 and tge.refgrupo = ".$idZona."
+				
+				order by	f.refFecha desc
+				";
+		return $this-> query($sql,0);	
+	}
 	
 	function TraerUltimaFechaActivo() {
 		$sql = "select

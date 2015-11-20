@@ -294,7 +294,8 @@
                     	<img src="imagenes/pagina/1438221519_Medal-2.png"/>
                     </div>
                     
-                    <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
+                    <div id="datos"></div>
+                    <!--<div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
                     	<h1>PREDIO 98</h1>
                         <h3>Premios</h3>
                         
@@ -313,7 +314,7 @@
                         <div style="height:100px;">
                         
                         </div>
-                    </div>
+                    </div>-->
                     
                     
                 </article>
@@ -436,6 +437,22 @@ $(document).ready(function(){
 		$('#futbolco').css('opacity','1');
     });
 	
+	function datos() {
+		$.ajax({
+				data:  {idseccion: 3, accion: 'TraerContenidoPorSeccion'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#datos').html(response);
+						
+				}
+		});	
+	}
+	
+	datos();
 	
 });
 </script>

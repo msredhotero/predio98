@@ -17,41 +17,57 @@ $serviciosDatos = new ServiciosDatos();
 
 $fecha = date('Y-m-d');
 
-$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo(1);
+if (!isset($_GET['idtorneo'])) {
+	$idTorneo = 1;
+} else {
+	$idTorneo = $_GET['idtorneo'];
+}
+
+$resUltimaFechaTorneoA = $serviciosFunciones->TraerUltimaFechaPorTorneo($idTorneo);
 $resUltimaFechaTorneoB = $serviciosFunciones->TraerUltimaFechaPorTorneo(2);
 $resUltimaFechaTorneoC = $serviciosFunciones->TraerUltimaFechaPorTorneo(3);
 
-if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
-	$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
-	$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
+if (!isset($_GET['fecha'])) {
+	if (mysql_num_rows($resUltimaFechaTorneoA)>0) {
+		$UltimaFecha = mysql_result($resUltimaFechaTorneoA,0,1);
+		$IdUltimaFecha = mysql_result($resUltimaFechaTorneoA,0,0);
+	} else {
+		$UltimaFecha = "Fecha 1";
+		$IdUltimaFecha = 23;
+	}
+	
+	if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
+		$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
+		$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
+	} else {
+		$UltimaFechaB = "Fecha 1";
+		$IdUltimaFechaB = 23;
+	}
+	
+	
+	if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
+		$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
+		$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
+	} else {
+		$UltimaFechaC = "Fecha 1";
+		$IdUltimaFechaC = 23;
+	}
 } else {
 	$UltimaFecha = "Fecha 1";
-	$IdUltimaFecha = 23;
-}
-
-
-if (mysql_num_rows($resUltimaFechaTorneoB)>0) {
-	$UltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,1);
-	$IdUltimaFechaB = mysql_result($resUltimaFechaTorneoB,0,0);
-} else {
+	$IdUltimaFecha = $_GET['fecha'];
 	$UltimaFechaB = "Fecha 1";
-	$IdUltimaFechaB = 23;
-}
-
-
-if (mysql_num_rows($resUltimaFechaTorneoC)>0) {
-	$UltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,1);
-	$IdUltimaFechaC = mysql_result($resUltimaFechaTorneoC,0,0);
-} else {
+	$IdUltimaFechaB = $_GET['fecha'];
 	$UltimaFechaC = "Fecha 1";
-	$IdUltimaFechaC = 23;
+	$IdUltimaFechaC = $_GET['fecha'];
 }
 
-$resNuevaFehca = $serviciosFunciones->NuevaFecha($IdUltimaFecha + 1);
 
-if (mysql_num_rows($resNuevaFehca)>0) {
-	$dia = mysql_result($resNuevaFehca,0,1);
-	$mes = mysql_result($resNuevaFehca,0,0);
+
+$resNuevaFecha = $serviciosFunciones->NuevaFecha($IdUltimaFecha + 1);
+
+if (mysql_num_rows($resNuevaFecha)>0) {
+	$dia = mysql_result($resNuevaFecha,0,1);
+	$mes = mysql_result($resNuevaFecha,0,0);
 } else {
 	$dia = "0";
 	$mes = "------";
@@ -63,13 +79,17 @@ if (!isset($_GET['zona'])) {
 	$idZona = $_GET['zona'];
 }
 
-if (!isset($_GET['idtorneo'])) {
-	$idTorneo = 1;
+
+
+$resProximaFecha = $serviciosFunciones->TraerUltimaFechaPorTorneoInactiva($idTorneo);
+
+if (mysql_num_rows($resProximaFecha)>0) {
+	$idProximaFecha	= mysql_result($resProximaFecha,0,0);	
 } else {
-	$idTorneo = $_GET['idtorneo'];
+	$idProximaFecha	= 0;
 }
 
-
+$lstFechas = $serviciosFunciones->TraerFechasPorTorneoZona($idTorneo,$idZona);
 
 ?>
 
@@ -245,10 +265,14 @@ if (!isset($_GET['idtorneo'])) {
                         
                         <div class="col-md-12" align="center" style="text-align:center;">
                         	<ul class="list-inline" id="lstFechas">
-                            	
+                            	<?php while ($row = mysql_fetch_array($lstFechas)) { ?>
+                                <li style="padding-bottom:8px;">
+                                    <a href="zonas.php?idtorneo=<?php echo $idTorneo; ?>&zona=<?php echo $idZona; ?>&fecha=<?php echo $row[0]; ?>"><button type="button" class="btn btn-info" style="margin-left:0px;"><?php echo $row[1]; ?></button></a>
+                                </li>
+                                <?php } ?>
                             </ul>
                         </div>
-                        
+                       
                         
                         <div class="col-md-12" id="load" align="center" style="text-align:center;">
                         	
@@ -261,9 +285,13 @@ if (!isset($_GET['idtorneo'])) {
                             
                         </div>
                         
-                        <div id="resultadosFixture" class="col-md-4" style="margin:0; padding-left:5px; padding-right:10px;">
-                        	
+                        <div class="col-md-4" style="margin:0; padding-left:5px; padding-right:10px;">
+                        	<div id="resultadosFixture">
                             
+                            </div>
+                            <div id="resultadosFixture2">
+                            
+                            </div>
                         </div>
 					</div>
                         
@@ -436,10 +464,10 @@ $(document).ready(function(){
 	function TraerResultados(reftorneo, refzona, reffecha, zona) {
 		switch(reftorneo) {
 			case 1:
-				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
+				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
 				break;
 			case 2:
-				$('.lbltorneo').html('Torneo Fútbol 11 con Off-Side');
+				$('.lbltorneo').html('Torneo Fútbol 11 sin Off-Side');
 				break;
 			case 3:
 				$('.lbltorneo').html('Torneo Fútbol 7');
@@ -492,6 +520,25 @@ $(document).ready(function(){
 						
 				},
 				success:  function (response) {
+						$('#resultadosFixture2').html(response);
+						
+				}
+		});
+	}
+	
+	function TraerResultadosFixtureProximo(reftorneo, refzona, reffecha, zona) {
+		$.ajax({
+				data:  {reftorneo: reftorneo,
+						refzona: refzona,
+						reffecha: reffecha,
+						zona: zona,
+						accion: 'FixturePaginaChicoDosInactivo'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
 						$('#resultadosFixture').html(response);
 						
 				}
@@ -499,7 +546,7 @@ $(document).ready(function(){
 	}
 	
 	TraerResultadosFixture(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
-	
+	TraerResultadosFixtureProximo(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $idProximaFecha; ?>,'Zona A');
 	
 	function TraerResultadosGoles(reftorneo, refzona, reffecha, zona) {
 		$.ajax({
@@ -628,7 +675,7 @@ $(document).ready(function(){
     });
 	
 	
-	$("#resultadosFixture").on("click",'.varModificar', function(){
+	$("#resultadosFixture2").on("click",'.varModificar', function(){
 
 		idfixture =  $(this).attr("id");
 		$.ajax({

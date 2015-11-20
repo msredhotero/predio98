@@ -288,7 +288,9 @@
                     <div class="row" align="center" style="margin-top:20px;">
                     	<img src="imagenes/pagina/1438221086_Settings-5.png"/>
                     </div>
-                    <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;" align="center">
+                    
+                    <div id="datos"></div>
+                    <!--<div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;" align="center">
                     	<h1>PREDIO 98</h1>
                     	<h3>Desarrollo</h3>
                     </div>
@@ -397,7 +399,7 @@
                             </div>
                            
                         </div>
-                    </section>
+                    </section>-->
                     
                     
                 </article>
@@ -520,7 +522,22 @@ $(document).ready(function(){
 		$('#futbolco').css('opacity','1');
     });
 	
+	function datos() {
+		$.ajax({
+				data:  {idseccion: 1, accion: 'TraerContenidoPorSeccion'},
+				url:   'ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						$('#datos').html(response);
+						
+				}
+		});	
+	}
 	
+	datos();
 });
 </script>
 

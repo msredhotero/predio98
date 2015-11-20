@@ -10,17 +10,19 @@ include ('../includes/funcionesZonasEquipos.php');
 include ('../includes/funcionesNoticias.php');
 include ('../includes/funcionesDATOS.php');
 include ('../includes/funcionesPlayoff.php');
+include ('../includes/funcionesContenido.php');
 
-$serviciosUsuarios  = new ServiciosUsuarios();
-$serviciosFunciones = new Servicios();
-$serviciosHTML		= new ServiciosHTML();
-$serviciosJugadores = new ServiciosJ();
-$serviciosEquipos	= new ServiciosE();
-$serviciosGrupos	= new ServiciosG();
+$serviciosUsuarios  	= new ServiciosUsuarios();
+$serviciosFunciones 	= new Servicios();
+$serviciosHTML			= new ServiciosHTML();
+$serviciosJugadores 	= new ServiciosJ();
+$serviciosEquipos		= new ServiciosE();
+$serviciosGrupos		= new ServiciosG();
 $serviciosZonasEquipos	= new ServiciosZonasEquipos();
-$serviciosNoticias = new ServiciosNoticias();
-$serviciosDatos = new ServiciosDatos();
-$serviciosPlayOff = new ServiciosPlayOff();
+$serviciosNoticias 		= new ServiciosNoticias();
+$serviciosDatos 		= new ServiciosDatos();
+$serviciosPlayOff 		= new ServiciosPlayOff();
+$serviciosContenido		= new ServiciosContenido();
 
 $accion = $_POST['accion'];
 
@@ -46,6 +48,35 @@ switch ($accion) {
 	case 'modificarCliente':
 		modificarCliente($serviciosUsuarios);
 		break;
+
+/* PARA Contenido */
+case 'insertarContenido':
+insertarContenido($serviciosContenido);
+break;
+case 'modificarContenido':
+modificarContenido($serviciosContenido);
+break;
+case 'eliminarContenido':
+eliminarContenido($serviciosContenido);
+break;
+case 'TraerContenidoPorSeccion':
+TraerContenidoPorSeccion($serviciosContenido);
+break;
+
+/* Fin */
+
+/* PARA Secciones */
+case 'insertarSecciones':
+insertarSecciones($serviciosContenido);
+break;
+case 'modificarSecciones':
+modificarSecciones($serviciosContenido);
+break;
+case 'eliminarSecciones':
+eliminarSecciones($serviciosContenido);
+break;
+
+/* Fin */
 
 /* PARA PlayOff */
 case 'insertarPlayOff':
@@ -340,7 +371,9 @@ break;
 	case 'FixturePaginaChicoDos':
 		FixturePaginaChicoDos($serviciosDatos);
 		break;
-		
+	case 'FixturePaginaChicoDosInactivo':
+		FixturePaginaChicoDosInactivo($serviciosDatos);
+		break;	
 	case 'TraerJugadoresFixtureA':
 		TraerJugadoresFixtureA($serviciosDatos);
 		break;
@@ -376,6 +409,72 @@ function toArray($query)
     return $res;
 }
 
+/* PARA Contenido */
+function insertarContenido($serviciosContenido) {
+$texto = $_POST['texto'];
+$refseccion = $_POST['refseccion'];
+$res = $serviciosContenido->insertarContenido($texto,$refseccion);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarContenido($serviciosContenido) {
+$id = $_POST['id'];
+$texto = $_POST['texto'];
+$refseccion = $_POST['refseccion'];
+$res = $serviciosContenido->modificarContenido($id,$texto,$refseccion);
+if ($res == true) {
+echo '';
+} else {
+echo 'Huvo un error al modificar datos';
+}
+}
+function eliminarContenido($serviciosContenido) {
+$id = $_POST['id'];
+$res = $serviciosContenido->eliminarContenido($id);
+echo $res;
+}
+
+function TraerContenidoPorSeccion($serviciosContenido) {
+$seccion = $_POST['idseccion'];
+
+$res = $serviciosContenido->TraerContenidoPorSeccion($seccion);
+
+echo $res;
+}
+
+/* Fin */ 
+
+
+/* PARA Secciones */
+function insertarSecciones($serviciosContenido) {
+$seccion = $_POST['seccion'];
+$res = $serviciosContenido->insertarSecciones($seccion);
+if ((integer)$res > 0) {
+echo '';
+} else {
+echo 'Huvo un error al insertar datos';
+}
+}
+function modificarSecciones($serviciosContenido) {
+$id = $_POST['id'];
+$seccion = $_POST['seccion'];
+$res = $serviciosContenido->modificarSecciones($id,$seccion);
+if ($res == true) {
+echo '';
+} else {
+echo 'Huvo un error al modificar datos';
+}
+}
+function eliminarSecciones($serviciosContenido) {
+$id = $_POST['id'];
+$res = $serviciosContenido->eliminarSecciones($id);
+echo $res;
+}
+
+/* Fin */ 
 
 /* PARA PlayOff */
 function insertarPlayOff($serviciosPlayOff) {
@@ -568,7 +667,7 @@ function TraerJugadoresFixtureA($serviciosDatos) {
                         	<td align="center">'.$row['RojasA'].'</td>
                             <td align="center">'.$row['amarillasA'].'</td>
                             <td align="center">'.$row['golesA'].'</td>
-                            <td align="right" style="font-size:0.9em;">'.(substr(utf8_encode($row['apynA']),0,17)).'</td>
+                            <td align="right" style="font-size:0.9em;">'.strtoupper((substr($row['apynA'],0,17))).'</td>
 							<td></td>
                         </tr>';
                     	}
@@ -587,7 +686,7 @@ function TraerJugadoresFixtureB($serviciosDatos) {
                         while ($row = mysql_fetch_array($res)) {
                         	$cad = $cad.'<tr>
 							<td></td>
-                            <td align="left" style="font-size:0.9em;">'.(substr(utf8_encode($row['apynB']),0,17)).'</td>
+                            <td align="left" style="font-size:0.9em;">'.strtoupper((substr($row['apynB'],0,17))).'</td>
 							<td align="center">'.$row['golesB'].'</td>
 							<td align="center">'.$row['amarillasB'].'</td>
 							<td align="center">'.$row['RojasB'].'</td>
@@ -726,7 +825,7 @@ function FixturePaginaChicoDos($serviciosDatos) {
 	if ($idfecha == 23) {
 		$menos = 0;	
 	} else {
-		$menos = 1;	
+		$menos = 0;	
 	}
 	
 	for ($i=$idfecha;$i>=$idfecha-$menos;$i--) {
@@ -774,6 +873,71 @@ function FixturePaginaChicoDos($serviciosDatos) {
 		
 		
 	}
+
+
+	echo $cad;
+}
+
+
+function FixturePaginaChicoDosInactivo($serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	$cad = '';
+	
+	if ($idfecha == 23) {
+		$menos = 0;	
+	} else {
+		$menos = 0;	
+	}
+	
+	$res = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$idfecha);
+	
+	if (mysql_num_rows($res)>0) {
+		$cad = $cad.'
+				<!--<div class="col-md-4">-->
+				<div class="panel panel-predio" style="margin-top:0;">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">Proxima Fecha: '.mysql_result($serviciosDatos->TraerFechaPorId($idfecha),0,1).'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding-bottom:0px;">
+                                	';
+									
+		
+		
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.9em; padding:0 2px;">
+                                	
+                                	<thead>
+                                    	<tr>
+                                        	<th style="text-align:center;padding:3px;"></th>
+                                            <th style="text-align:center;padding:3px;">Equipo A</th>
+                                            <th style="text-align:center;padding:3px;">Horario</th>
+                                            <th style="text-align:center;padding:3px;">Equipo B</th>
+                                            <th style="text-align:center;padding:3px;"></th>
+                                            <th style="text-align:center;padding:3px;">Ver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+	
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center" style="padding:3px;">'.$row['hora']."/".$row['cancha'].'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
+							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                        </tr>';
+                    	}
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						<!--</div>-->';	
+	}
+		
 
 
 	echo $cad;
@@ -1789,6 +1953,7 @@ function buscarGoleadores($serviciosJugadores) {
 							<th align="left">Equipo</th>
 							<th align="center">Fecha</th>
 							<th align="center">Goles</th>
+							<th align="left">Torneo</th>
 							<th>Acciones</th>
                         </tr>
 						</thead>
@@ -1800,6 +1965,7 @@ function buscarGoleadores($serviciosJugadores) {
 					<td>'.utf8_encode($rowJ[3]).'</td>
 					<td>'.utf8_encode($rowJ[4]).'</td>
 					<td>'.utf8_encode($rowJ[5]).'</td>
+					<td>'.utf8_encode($rowJ[6]).'</td>
 					<td>
 								
 							<div class="btn-group">

@@ -44,7 +44,8 @@ $cabeceras 		= "<th>Nombre</th>
 				<th>DNI</th>
 				<th>Equipo</th>
 				<th>Fecha</th>
-				<th>Goles</th>";
+				<th>Goles</th>
+				<th>Torneo</th>";
 
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////

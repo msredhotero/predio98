@@ -901,7 +901,11 @@ function traerCalculoPorFechaTorneoEquipo($refequipo,$reffecha,$idtorneo) {
 				where
 					a.amarillas = 1 and tge.reftorneo = ".$idtorneo."
 						and fix.reffecha = ".$reffecha."
-				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo union all select 
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+				
+				union all 
+				
+				select 
 					f.tipofecha,
 						e.nombre,
 						count(a.amarillas) as puntos,
@@ -917,7 +921,11 @@ function traerCalculoPorFechaTorneoEquipo($refequipo,$reffecha,$idtorneo) {
 				where
 					a.amarillas = 1 and tge.reftorneo = ".$idtorneo."
 						and fix.reffecha = ".$reffecha."
-				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo union all select 
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+				
+				union all 
+				
+				select 
 					f.tipofecha,
 						e.nombre,
 						sum(3) as puntos,
@@ -937,7 +945,11 @@ function traerCalculoPorFechaTorneoEquipo($refequipo,$reffecha,$idtorneo) {
 					and fix.reftorneoge_a = tge.idtorneoge
 				where
 					tge.reftorneo = ".$idtorneo." and fix.reffecha = ".$reffecha." and (a.motivos like '%Roja Directa%' or a.motivos like '%Doble Amarilla%') 
-				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo union all select 
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+				
+				union all 
+				
+				select 
 					f.tipofecha,
 						e.nombre,
 						sum(3) as puntos,
