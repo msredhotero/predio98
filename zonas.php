@@ -79,6 +79,17 @@ if (!isset($_GET['zona'])) {
 	$idZona = $_GET['zona'];
 }
 
+switch ($idZona) {
+	case 19:
+		$zona = "'Zona A'";
+		break;
+	case 20:
+		$zona = "'Zona B'";
+		break;
+	case 21:
+		$zona = "'Zona C'";
+		break;	
+}
 
 
 $resProximaFecha = $serviciosFunciones->TraerUltimaFechaPorTorneoInactiva($idTorneo);
@@ -505,7 +516,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultados(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultados(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,<?php echo $zona; ?>);
 	
 	function TraerResultadosFixture(reftorneo, refzona, reffecha, zona) {
 		$.ajax({
@@ -545,8 +556,8 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultadosFixture(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
-	TraerResultadosFixtureProximo(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $idProximaFecha; ?>,'Zona A');
+	TraerResultadosFixture(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,<?php echo $zona; ?>);
+	TraerResultadosFixtureProximo(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $idProximaFecha; ?>,<?php echo $zona; ?>);
 	
 	function TraerResultadosGoles(reftorneo, refzona, reffecha, zona) {
 		$.ajax({
@@ -567,7 +578,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultadosGoles(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultadosGoles(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,<?php echo $zona; ?>);
 	
 	
 	
@@ -590,7 +601,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultadosAmarillasAcumuladas(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultadosAmarillasAcumuladas(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,<?php echo $zona; ?>);
 	
 	
 	function TraerResultadosSuspendidos(reftorneo, refzona, reffecha, zona) {
@@ -612,7 +623,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	TraerResultadosSuspendidos(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,'Zona A');
+	TraerResultadosSuspendidos(<?php echo $idTorneo; ?>,<?php echo $idZona; ?>,<?php echo $IdUltimaFecha; ?>,<?php echo $zona; ?>);
 	
 	
 	$('#zonaAtoneoA').click(function() {
@@ -624,6 +635,11 @@ $(document).ready(function(){
 	$('#zonaBtoneoA').click(function() {
 		TraerResultados(1,20,<?php echo $IdUltimaFecha; ?>,'Zona B');
 		$('#zonaExp').html('Zona B');
+	});
+	
+	$('#zonaCtoneoA').click(function() {
+		TraerResultados(1,21,<?php echo $IdUltimaFecha; ?>,'Zona C');
+		$('#zonaExp').html('Zona C');
 	});
 	
 	

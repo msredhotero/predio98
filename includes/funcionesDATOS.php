@@ -475,7 +475,8 @@ select
 	  (case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end),
 	  fix.ganados desc';
 		$res = $this->query($sql,0);
-		return $res;	
+		//return $res;	
+		return $sql;	
 	}
 	
 	
@@ -1175,17 +1176,21 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 		return $this-> query($sql,0);
 	}
 	
-	
+	//amarillas de la pagina
 	function traerAcumuladosAmarillasPorTorneoZona($idtipoTorneo,$idzona,$idfecha) {
 		$sql = "select
-				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio, t.refjugador
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio, t.refjugador, t.reemplzadovolvio
 				from
 				(
 				select
 					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
 					, (case when rr.idreemplazo is null then false else true end) as reemplzado
 					, (case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
-					a.refjugador
+					a.refjugador,
+					(case
+						when rv.idreemplazovolvio is null then 0
+						else 1
+					end) as reemplzadovolvio
 					from		tbamonestados a
 					inner
 					join		dbequipos e
@@ -1208,9 +1213,10 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 					inner
 					join		tbfechas ff
 					on			ff.idfecha = fi.reffecha
-					
 left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= ".$idfecha." and rr.reftorneo = fi.idtorneo
-left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = ".$idtipoTorneo." and rrr.reftorneo = fi.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = fi.idtorneo
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = ".$idzona."
 					
 					where	a.refequipo in (select
 											distinct e.idequipo

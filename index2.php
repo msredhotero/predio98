@@ -576,28 +576,6 @@ $(document).ready(function(){
                             
                         </div>
                         
-                        <div class="col-md-5">
-                        	<div class="panel panel-predio" style="margin-top:5px;">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Facebook</h3>
-                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
-                              </div>
-                            <div class="panel-body-predio" style="line-height:16px; padding-left:10px; padding-top:10px;">
-                            	<div align="center">
-                                <div id="fb-root"></div>
-                                <script>(function(d, s, id) {
-                                  var js, fjs = d.getElementsByTagName(s)[0];
-                                  if (d.getElementById(id)) return;
-                                  js = d.createElement(s); js.id = id;
-                                  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.5&appId=729527633821576";
-                                  fjs.parentNode.insertBefore(js, fjs);
-                                }(document, 'script', 'facebook-jssdk'));</script>
-                                <div class="fb-page" data-href="https://www.facebook.com/Predio-98-1632540740308138/" data-small-header="false" data-height="350" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"></div>
-                                </div>
-                            </div>
-                            </div>
-                        
-                        </div>
                         
                         
                         <div class="col-md-5">
@@ -645,6 +623,27 @@ $(document).ready(function(){
                               </div>
                             </div>
                             
+                            
+                            
+                            <div class="panel panel-predio" style="margin-top:5px;">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Facebook</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                              </div>
+                            <div class="panel-body-predio" style="line-height:16px; padding-left:10px; padding-top:10px;">
+                            	<div align="center">
+                                <div id="fb-root"></div>
+                                <script>(function(d, s, id) {
+                                  var js, fjs = d.getElementsByTagName(s)[0];
+                                  if (d.getElementById(id)) return;
+                                  js = d.createElement(s); js.id = id;
+                                  js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.5&appId=729527633821576";
+                                  fjs.parentNode.insertBefore(js, fjs);
+                                }(document, 'script', 'facebook-jssdk'));</script>
+                                <div class="fb-page" data-href="https://www.facebook.com/Predio-98-1632540740308138/" data-small-header="false" data-height="350" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"></div>
+                                </div>
+                            </div>
+                            </div>
                             
                             <div class="panel panel-predio" style="margin-top:5px;">
                               <div class="panel-heading">
