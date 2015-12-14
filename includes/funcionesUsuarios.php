@@ -231,15 +231,19 @@ function enviarEmail($destinatario,$asunto,$cuerpo) {
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 	
 	//dirección del remitente
-	$headers .= "From: Daniel Eduardo Duranti <info@carnesacasa.com.ar>\r\n";
+	$headers .= "From: Predio 98 <predio.98@hotmail.com>\r\n";
 	
 	//ruta del mensaje desde origen a destino
 	$headers .= "Return-path: ".$destinatario."\r\n";
-	
 	//direcciones que recibirán copia oculta
-	$headers .= "Bcc: info@carnesacasa.com.ar,msredhotero@msn.com\r\n";
-	
+	$headers .= "Bcc: msredhotero@msn.com\r\n";
 	mail($destinatario,$asunto,$cuerpo,$headers); 	
+}
+
+function contacto($nombre,$email,$mensaje) {
+	$this->enviarEmail('predio.98@hotmail.com','Consulta','De:'.$nombre."\r\n\r\n\r\n".'Email: '.$email."\r\n".'Mensaje: '.$mensaje);
+	
+	return 'Email enviado correctamente';
 }
 
 

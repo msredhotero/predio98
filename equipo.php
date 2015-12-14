@@ -101,9 +101,14 @@ $resResultados = $serviciosEquipos->traerResultadoPorEquipo($id);
 
 ///******   JUGADORES DEL EQUIPO *****////////////////////////////////////
 
+//Panilla
 $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 
+//invitados
+$resJugadoresInvitados = $serviciosJugadores->TraerJugadoresGolesPorEquipoFiltro($id,1,0);
 
+//expulsados
+$resJugadoresExpulsados = $serviciosJugadores->TraerJugadoresGolesPorEquipoFiltro($id,0,1);
 
 //////////////////////////////////////////////////////////////////////
 ?>
@@ -247,9 +252,9 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                         <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
-                        <li class="menuA"><a href="premios.html">Premios</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>                        
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li class="menuA"><a href="servicios.html">Servicios</a></li>
                         <li class="menuA"><a href="fotos.html">Fotos</a></li>
                         <li class="menuA"><a href="contacto.html">Contacto</a></li>
@@ -469,10 +474,10 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 									$porcGanados 	= round((mysql_result($resResultados,0,'ganados')*100)/$partidos,2);
 									switch ($porcGanados) {
 										case $porcGanados >= 0 && $porcGanados < 34:
-											$labelGanados = "progress-bar-danger";
+											$labelGanados = "progress-bar-success";
 											break;
 										case $porcGanados >= 34 && $porcGanados < 67:
-											$labelGanados = "progress-bar-warning";
+											$labelGanados = "progress-bar-success";
 											break;
 										case $porcGanados >= 67 && $porcGanados <= 100:
 											$labelGanados = "progress-bar-success";
@@ -484,13 +489,13 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 									$porcEmpatados 	= round((mysql_result($resResultados,0,'empatados')*100)/$partidos,2);
 									switch ($porcEmpatados) {
 										case $porcEmpatados >= 0 && $porcEmpatados < 34:
-											$labelEmpatados = "progress-bar-success";
+											$labelEmpatados = "progress-bar-warning";
 											break;
 										case $porcEmpatados >= 34 && $porcEmpatados < 67:
 											$labelEmpatados = "progress-bar-warning";
 											break;
 										case $porcEmpatados >= 67 && $porcEmpatados <= 100:
-											$labelEmpatados = "progress-bar-danger";
+											$labelEmpatados = "progress-bar-warning";
 											break;
 										default:
 											$labelEmpatados = "";
@@ -499,10 +504,10 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 									$porcPerdidos 	= round((mysql_result($resResultados,0,'perdidos')*100)/$partidos,2);
 									switch ($porcPerdidos) {
 										case $porcPerdidos >= 0 && $porcPerdidos < 34:
-											$labelPerdidos = "progress-bar-success";
+											$labelPerdidos = "progress-bar-danger";
 											break;
 										case $porcPerdidos >= 34 && $porcPerdidos < 67:
-											$labelPerdidos = "progress-bar-warning";
+											$labelPerdidos = "progress-bar-danger";
 											break;
 										case $porcPerdidos >= 67 && $porcPerdidos <= 100:
 											$labelPerdidos = "progress-bar-danger";
@@ -514,19 +519,19 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 								
 								?>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped <?php echo $labelGanados; ?>" role="progressbar" aria-valuenow="<?php echo $porcGanados; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcGanados; ?>%;">
+                                    <div class="progress-bar progress-bar-striped <?php echo $labelGanados; ?>" role="progressbar" aria-valuenow="<?php echo $porcGanados; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcGanados; ?>%; font-family:Verdana, Geneva, sans-serif;">
                                     <?php echo $porcGanados; ?>%
                                     </div>
                                 </div>
                                 <h5>% Empatados</h5>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped <?php echo $labelEmpatados; ?>" role="progressbar" aria-valuenow="<?php echo $porcEmpatados; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcEmpatados; ?>%;">
+                                    <div class="progress-bar progress-bar-striped <?php echo $labelEmpatados; ?>" role="progressbar" aria-valuenow="<?php echo $porcEmpatados; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcEmpatados; ?>%; font-family:Verdana, Geneva, sans-serif;">
                                     <?php echo $porcEmpatados; ?>%
                                     </div>
                                 </div>
                                 <h5>% Perdidos</h5>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped <?php echo $labelPerdidos; ?>" role="progressbar" aria-valuenow="<?php echo $porcPerdidos; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcPerdidos; ?>%;">
+                                    <div class="progress-bar progress-bar-striped <?php echo $labelPerdidos; ?>" role="progressbar" aria-valuenow="<?php echo $porcPerdidos; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $porcPerdidos; ?>%; font-family:Verdana, Geneva, sans-serif;">
                                     <?php echo $porcPerdidos; ?>%
                                     </div>
                                 </div> 
@@ -534,7 +539,7 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                             </div>
                             
                             <div class="row" style="padding-left:20px; padding-right:20px;">
-                            	<h3 style="padding:15px; background-color:#CCC; text-shadow:1px 1px 1px #FFFFFF;">Jugadores</h3>
+                            	<h3 style="padding:15px; background-color:#CCC; text-shadow:1px 1px 1px #FFFFFF;">Histórico Jugadores - Planilla</h3>
                                 <h4>*  <span class="glyphicon glyphicon-star" style="color:#FF0;"></span> Mayor Artillero</h4>
                                 <table class="table table-responsive table-striped table-bordered">
                                 	<tbody>
@@ -542,8 +547,8 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                         	<th>Apellido y Nombre</th>
                                             <th>NroDocumento</th>
                                             <th><div align="center">Goles</div></th>
-                                            <th><div align="center">Rojas</div></th>
                                             <th><div align="center">Amarillas</div></th>
+                                            <th><div align="center">Rojas</div></th>
 											
                                         </tr>
                                         <?php if (mysql_num_rows($resJugadores)>0) { ?>
@@ -553,7 +558,7 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
 										?>
                                         <?php if ($cant == 1) { ?>
                                         <tr>
-											<td><?php echo '<div style="font-size:1.8em;"><img src="imagenes/botin.gif" width="50" height="72">'.$rowJ['apyn'].'<span class="glyphicon glyphicon-star" style="color:#FF0;"></span></div>'; 
+											<td><?php echo '<div style="font-size:1.8em;"><img src="imagenes/botin.gif" width="50" height="72">'.strtoupper($rowJ['apyn']).'<span class="glyphicon glyphicon-star" style="color:#FF0;"></span></div>'; 
 													
 												?>
                                             </td>
@@ -563,7 +568,113 @@ $resJugadores = $serviciosJugadores->TraerJugadoresGolesPorEquipo($id);
                                             <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['rojas'].'</div>'; ?></td>
                                         
                                         <?php } else { ?>
-                                            <td><?php echo $rowJ['apyn']; ?></td>
+                                            <td><?php echo strtoupper($rowJ['apyn']); ?></td>
+                                            <td><?php echo $rowJ['dni']; ?></td>
+                                            <td align="center"><?php echo $rowJ['goles']; ?></td>
+                                            <td align="center"><?php echo $rowJ['amarillas']; ?></td>
+                                            <td align="center"><?php echo $rowJ['rojas']; ?></td>
+			
+										<?php } ?>
+                                        </tr>
+                                        <?php $cant += 1; } ?>
+                                        <?php } else { ?>
+                                        <tr colspan='5'>
+                                        	<td>No hay jugadores cargados.</td>
+                                        </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            	
+                                
+                                
+                            </div>
+                            
+                            
+                            <div class="row" style="padding-left:20px; padding-right:20px;">
+                            	<h3 style="padding:15px; background-color:#CCC; text-shadow:1px 1px 1px #FFFFFF;">Histórico Jugadores - Invitados</h3>
+                                <h4>*  <span class="glyphicon glyphicon-star" style="color:#FF0;"></span> Mayor Artillero</h4>
+                                <table class="table table-responsive table-striped table-bordered">
+                                	<tbody>
+                                		<tr>
+                                        	<th>Apellido y Nombre</th>
+                                            <th>NroDocumento</th>
+                                            <th><div align="center">Goles</div></th>
+                                            <th><div align="center">Amarillas</div></th>
+                                            <th><div align="center">Rojas</div></th>
+											
+                                        </tr>
+                                        <?php if (mysql_num_rows($resJugadoresInvitados)>0) { ?>
+                                        <?php 
+											$cant = 1;
+											while ($rowJ = mysql_fetch_array($resJugadoresInvitados)) { 
+										?>
+                                        <?php if ($cant == 1) { ?>
+                                        <tr>
+											<td><?php echo '<div style="font-size:1.8em;"><img src="imagenes/botin.gif" width="50" height="72">'.strtoupper($rowJ['apyn']).'<span class="glyphicon glyphicon-star" style="color:#FF0;"></span></div>'; 
+													
+												?>
+                                            </td>
+                                            <td><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['dni'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['goles'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['amarillas'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['rojas'].'</div>'; ?></td>
+                                        
+                                        <?php } else { ?>
+                                            <td><?php echo strtoupper($rowJ['apyn']); ?></td>
+                                            <td><?php echo $rowJ['dni']; ?></td>
+                                            <td align="center"><?php echo $rowJ['goles']; ?></td>
+                                            <td align="center"><?php echo $rowJ['amarillas']; ?></td>
+                                            <td align="center"><?php echo $rowJ['rojas']; ?></td>
+			
+										<?php } ?>
+                                        </tr>
+                                        <?php $cant += 1; } ?>
+                                        <?php } else { ?>
+                                        <tr colspan='5'>
+                                        	<td>No hay jugadores cargados.</td>
+                                        </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            	
+                                
+                                
+                            </div>
+                            
+                            
+                            
+                            
+                            <div class="row" style="padding-left:20px; padding-right:20px;">
+                            	<h3 style="padding:15px; background-color:#CCC; text-shadow:1px 1px 1px #FFFFFF;">Histórico Jugadores - Expulsados</h3>
+                                <h4>*  <span class="glyphicon glyphicon-star" style="color:#FF0;"></span> Mayor Artillero</h4>
+                                <table class="table table-responsive table-striped table-bordered">
+                                	<tbody>
+                                		<tr>
+                                        	<th>Apellido y Nombre</th>
+                                            <th>NroDocumento</th>
+                                            <th><div align="center">Goles</div></th>
+                                            <th><div align="center">Amarillas</div></th>
+                                            <th><div align="center">Rojas</div></th>
+											
+                                        </tr>
+                                        <?php if (mysql_num_rows($resJugadoresExpulsados)>0) { ?>
+                                        <?php 
+											$cant = 1;
+											while ($rowJ = mysql_fetch_array($resJugadoresExpulsados)) { 
+										?>
+                                        <?php if ($cant == 1) { ?>
+                                        <tr>
+											<td><?php echo '<div style="font-size:1.8em;"><img src="imagenes/botin.gif" width="50" height="72">'.strtoupper($rowJ['apyn']).'<span class="glyphicon glyphicon-star" style="color:#FF0;"></span></div>'; 
+													
+												?>
+                                            </td>
+                                            <td><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['dni'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['goles'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['amarillas'].'</div>'; ?></td>
+                                            <td align="center"><?php echo '<div style="font-size:1.8em; margin-top:20px;">'.$rowJ['rojas'].'</div>'; ?></td>
+                                        
+                                        <?php } else { ?>
+                                            <td><?php echo strtoupper($rowJ['apyn']); ?></td>
                                             <td><?php echo $rowJ['dni']; ?></td>
                                             <td align="center"><?php echo $rowJ['goles']; ?></td>
                                             <td align="center"><?php echo $rowJ['amarillas']; ?></td>

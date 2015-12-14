@@ -134,9 +134,9 @@
                         <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
-                        <li class="menuA"><a href="premios.html">Premios</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>                        
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li class="menuA"><a href="servicios.html">Servicios</a></li>
                         <li class="menuA"><a href="fotos.html">Fotos</a></li>
                         <li class="menuA"><a href="contacto.html">Contacto</a></li>
@@ -160,7 +160,7 @@
                     	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
-                <div class="col-md-4 foncecoE" style="display:none;">
+                <!--<div class="col-md-4 foncecoE" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
@@ -207,7 +207,7 @@
                             <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-md-4 foncecoI" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
@@ -216,6 +216,9 @@
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
+                        </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=1">Historial</a></li>
                         </ul>
                     </div>
                     <br>
@@ -240,6 +243,9 @@
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=2">Historial</a></li>
+                        </ul>
                     </div>
                     <br>
                     <div class="col-md-6" align="center" style="margin-top:15px;">
@@ -262,6 +268,9 @@
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
+                        </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=3">Historial</a></li>
                         </ul>
                     </div>
                     
@@ -318,6 +327,45 @@
                         <h4><strong>CEL:</strong> 221-15-6258871 – Nicolas (Solo sms y llamadas)</h4>
                         <h4><strong>FACEBOOK:</strong> Predio La Plata - www.facebook.com/predio.98</h4>
                         <h4><strong>MAIL:</strong> predio.98@hotmail.com</h4>
+                        
+                        <div class="row" align="center">
+                                <div class="col-md-2">
+                                
+                                </div>
+                                <div class="col-md-7">
+                                <form class="form-horizontal" role="form" method="post">
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-2 control-label">Nombre</label>
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Nombre & Apellido" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="col-sm-2 control-label">Email</label>
+                                        <div class="col-md-10">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@dominio.com" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message" class="col-sm-2 control-label">Mensaje</label>
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" rows="4" name="message" id="message"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-sm-10 col-sm-offset-2">
+                                            <input id="enviar" name="enviar" type="button" value="Enviar" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-10 col-sm-offset-2" id="error">
+                                            
+                                        </div>
+                                    </div>
+                                </form>	
+                            </div>
+                        </div>
                         <div style="height:100px;">
                         
                         </div>
@@ -325,7 +373,7 @@
                     
                     
                 </article>
-
+				
                 
 
             </div> <!-- #main -->
@@ -471,7 +519,109 @@ $(document).ready(function(){
 	
 });
 </script>
+<script type="text/javascript">
+		
+			$(document).ready(function(){
+				
+				
+					$("#email").click(function(event) {
+        			$("#email").removeClass("alert alert-danger");
+					$("#email").attr('placeholder','Ingrese el email');
+					$("#error").removeClass("alert alert-danger");
+					$("#error").text('');
+        			});
 
+        			$("#email").change(function(event) {
+        			$("#email").removeClass("alert alert-danger");
+        			$("#email").attr('placeholder','Ingrese el email');
+        			});
+					
+					
+					$("#name").click(function(event) {
+        			$("#name").removeClass("alert alert-danger");
+					$("#name").attr('placeholder','Ingrese el Nombre & Apellido');
+        			});
+
+        			$("#name").change(function(event) {
+        			$("#name").removeClass("alert alert-danger");
+        			$("#name").attr('placeholder','Ingrese el Nombre & Apellido');
+        			});
+					
+				
+				function validador(){
+
+        				$error = "";
+		
+        				if ($("#email").val() == "") {
+        					$error = "Es obligatorio el campo E-Mail.";
+
+        					$("#email").addClass("alert-danger");
+        					$("#email").attr('placeholder',$error);
+        				}
+						
+						if ($("#name").val() == "") {
+        					$error = "Es obligatorio el campo Nombre & Apellido.";
+
+        					$("#name").addClass("alert-danger");
+        					$("#name").attr('placeholder',$error);
+        				}
+						
+
+						
+						
+						var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+						
+						if( !emailReg.test( $("#email").val() ) ) {
+							$error = "El E-Mail ingresado es inválido.";
+
+        					$("#error").addClass("alert alert-danger");
+        					$("#error").text($error);
+						  }
+
+        				return $error;
+        		}
+				
+				
+				$("#enviar").click(function(event) {
+        			
+						if (validador() == "")
+        				{
+        						$.ajax({
+                                data:  {email:		$("#email").val(),
+										nombre:		$("#name").val(),
+										mensaje:	$('#message').val(),
+										accion:		'contacto'},
+                                url:   'ajax/ajax.php',
+                                type:  'post',
+                                beforeSend: function () {
+                                        $("#load").html('<img src="imagenes/load13.gif" width="50" height="50" />');
+                                },
+                                success:  function (response) {
+      									
+                                        if (response == '') {
+                                            
+                                            $("#error").removeClass("alert alert-danger");
+											$("#error").removeClass("alert alert-success");
+											
+                                            $("#error").addClass("alert alert-danger");
+                                            $("#error").html('<strong>Error!</strong> '+response);
+                                            $("#load").html('');
+
+                                        } else {
+											$("#error").removeClass("alert alert-danger");
+
+                                            $("#error").addClass("alert alert-success");
+                                            $("#error").html('<strong>Perfecto!</strong> '+response);
+										}
+                                        
+                                }
+                        });
+        				}
+        		});
+				
+			});/* fin del document ready */
+		
+		</script>
 
 </body>
 

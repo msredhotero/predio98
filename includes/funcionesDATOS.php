@@ -475,19 +475,19 @@ select
 	  (case when rr.idreemplazo is null then fix.golesencontra + COALESCE(rrr.golesencontra,0) else fix.golesencontra + rr.golesencontra end),
 	  fix.ganados desc';
 		$res = $this->query($sql,0);
-		//return $res;	
-		return $sql;	
+		return $res;	
+		//return $sql;	
 	}
 	
 	
 	
 	function Goleadores($idtorneo,$zona,$idfecha) {
 		$sql = 'select
-				t.apyn,t.nombre,t.cantidad,t.reemplzado, t.volvio, t.refequipo, t.refjugador
+				t.apyn,t.nombre,t.cantidad,t.reemplzado, t.volvio, t.refequipo, t.refjugador, t.reemplzadovolvio
 				from
 				(
 				select
-				r.apyn, r.nombre, sum(r.goles) as cantidad,r.reemplzado, r.volvio,r.refequipo, r.refjugador
+				r.apyn, r.nombre, sum(r.goles) as cantidad,r.reemplzado, r.volvio,r.refequipo, r.refjugador,r.reemplzadovolvio
 				from
 				(
 					select
@@ -495,7 +495,11 @@ select
 					(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
 					(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
 					a.refequipo,
-					a.refjugador
+					a.refjugador,
+					(case
+						when rv.idreemplazovolvio is null then 0
+						else 1
+					end) as reemplzadovolvio
 					from	tbgoleadores a
 					inner
 					join	dbfixture fi
@@ -519,12 +523,13 @@ select
 					on t.reftipotorneo = tp.idtipotorneo
 					
 left join dbreemplazo rr on rr.refequiporeemplazado = a.refequipo and rr.reffecha <= '.$idfecha.' and rr.reftorneo = t.idtorneo
-left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = t.idtorneo
-					
+left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = t.idtorneo
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.'			
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.' and fi.reffecha <= '.$idfecha.'
 
 				) r
-				group by r.apyn, r.nombre,r.reemplzado, r.volvio,r.refequipo, r.refjugador
+				group by r.apyn, r.nombre,r.reemplzado, r.volvio,r.refequipo, r.refjugador, r.reemplzadovolvio
 				) t
 				order by t.cantidad desc';
 			return $this-> query($sql,0);
@@ -536,13 +541,17 @@ left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$
 		$sql = 'select
 				t.apyn,t.nombre, t.motivos,t.cantidad,t.reffecha, t.refjugador, t.refequipo
 				, t.equipoactivo
-				, t.volvio
+				, t.volvio, r.reemplzadovolvio
 				from
 				(
 				select
 				r.apyn, r.nombre, r.motivos, r.cantidadfechas as cantidad,r.reffecha, r.refjugador, r.refequipo
 				, r.equipoactivo
-				, r.volvio
+				, r.volvio,
+	(case
+        when rv.idreemplazovolvio is null then 0
+        else 1
+    end) as reemplzadovolvio
 				from
 				(
 					select
@@ -578,7 +587,8 @@ left join dbreemplazo rrr on rrr.refequipo = a.refequipo and rrr.reffecha <= '.$
 
 left join dbreemplazo rr on rr.refequiporeemplazado = fix.idequipo and rr.reffecha <= '.$idfecha.' and rr.reftorneo = t.idtorneo
 left join dbreemplazo rrr on rrr.refequipo = fix.idequipo and rrr.reffecha <= '.$idfecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = t.idtorneo
-					
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.'					
 					where	tp.idtipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.'
 
 				) r
@@ -631,14 +641,18 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				order by r.cantidadfechas desc';*/
 				$sql = 'select
 				r.apyn, r.nombre, r.motivos, r.cantidadfechas as cantidad,r.reffecha, r.refjugador, r.refequipo
-				, r.refsuspendido ,r.reemplzado , r.volvio
+				, r.refsuspendido ,r.reemplzado , r.volvio, r.reemplzadovolvio
 
 				from
 				(
 				select
 				j.apyn, e.nombre, ss.motivos, ss.cantidadfechas,min(sp.reffecha) - 1 as reffecha, ss.refjugador, ss.refequipo,sp.refsuspendido,
 (case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
-(case when rrr.idreemplazo is null then 0 else 1 end) as volvio
+(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+	(case
+        when rv.idreemplazovolvio is null then 0
+        else 1
+    end) as reemplzadovolvio
 				from		tbsuspendidos ss
 				inner
 				join		dbsuspendidosfechas sp
@@ -657,18 +671,73 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				on			d.idfixture = ss.reffixture
 									
 left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= '.$reffecha.' and rr.reftorneo = d.idtorneo
-left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = '.$idtorneo.' and rrr.reftorneo = d.idtorneo								
-									
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = d.idtorneo								
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.' 
+										
 				where	sp.reffecha <= '.$reffecha.' +1
 				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo,sp.refsuspendido,j.expulsado
 				) r
 				
-				order by r.cantidadfechas desc';
+				order by r.nombre, r.apyn,r.cantidadfechas desc';
 			return $this-> query($sql,0);
+			//return $sql;
+	}
+	
+	
+	function SuspendidosUltimaFecha($idtorneo,$zona,$reffecha) {
+		$resCantDeEquipos = $this->traerResultadosPorTorneoZonaFecha($idtorneo,$zona,$reffecha);
+		
+		$cantEquipos = (mysql_num_rows($resCantDeEquipos)*4) + 20;
+		
+		
+				$sql = 'select
+				r.apyn, r.nombre, r.motivos, r.cantidadfechas as cantidad,r.reffecha, r.refjugador, r.refequipo
+				, r.refsuspendido ,r.reemplzado , r.volvio, r.reemplzadovolvio
+
+				from
+				(
+				select
+				j.apyn, e.nombre, ss.motivos, ss.cantidadfechas,min(sp.reffecha) as reffecha, ss.refjugador, ss.refequipo,sp.refsuspendido,
+(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
+(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+	(case
+        when rv.idreemplazovolvio is null then 0
+        else 1
+    end) as reemplzadovolvio
+				from		tbsuspendidos ss
+				inner
+				join		dbsuspendidosfechas sp
+				on			ss.refjugador = sp.refjugador and ss.refequipo = sp.refequipo and ss.idsuspendido = sp.refsuspendido
+				inner
+				join	dbjugadores j
+				on		j.idjugador = ss.refjugador and j.expulsado <> 1
+				inner
+				join	dbequipos e
+				on		e.idequipo = ss.refequipo
+				inner join (select distinct ff.Idfixture,t.idtorneo, ff.reffecha from dbfixture ff
+				inner join dbtorneoge tge ON tge.idtorneoge = ff.reftorneoge_a or tge.idtorneoge = ff.reftorneoge_b
+				inner join dbtorneos t ON tge.reftorneo = t.idtorneo
+				inner join tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+				where t.activo = 1 and t.reftipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.') d
+				on			d.idfixture = ss.reffixture
+									
+left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= '.$reffecha.' and rr.reftorneo = d.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = d.idtorneo								
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.' 
+										
+				where	d.reffecha = '.$cantEquipos.'
+				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo,sp.refsuspendido,j.expulsado
+				) r
+				
+				order by r.nombre, r.apyn,r.cantidadfechas desc';
+			return $this-> query($sql,0);
+			//return $sql;
 	}
 	
 	function SuspendidosPorSiempre($idtorneo,$zona,$reffecha) {
-		$sql = 'select
+		/*$sql = 'select
 				r.apyn, r.nombre, r.motivos, "Todas" as cantidad,r.reffecha, r.refjugador, r.refequipo
 				, r.refsuspendido
 
@@ -703,7 +772,48 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo,sp.refsuspendido
 				) r
 				
-				order by r.cantidadfechas desc';
+				order by r.cantidadfechas desc';*/
+			$sql = 'select
+				r.apyn, r.nombre, r.motivos, r.cantidadfechas as cantidad,r.reffecha, r.refjugador, r.refequipo
+				, r.refsuspendido ,r.reemplzado , r.volvio, r.reemplzadovolvio
+
+				from
+				(
+				select
+				j.apyn, e.nombre, ss.motivos, ss.cantidadfechas,min(sp.reffecha) - 1 as reffecha, ss.refjugador, ss.refequipo,sp.refsuspendido,
+(case when rr.idreemplazo is null then 0 else 1 end) as reemplzado,
+(case when rrr.idreemplazo is null then 0 else 1 end) as volvio,
+	(case
+        when rv.idreemplazovolvio is null then 0
+        else 1
+    end) as reemplzadovolvio
+				from		tbsuspendidos ss
+				inner
+				join		dbsuspendidosfechas sp
+				on			ss.refjugador = sp.refjugador and ss.refequipo = sp.refequipo and ss.idsuspendido = sp.refsuspendido
+				inner
+				join	dbjugadores j
+				on		j.idjugador = ss.refjugador and j.expulsado = 1
+				inner
+				join	dbequipos e
+				on		e.idequipo = ss.refequipo
+				inner join (select distinct ff.Idfixture,t.idtorneo from dbfixture ff
+				inner join dbtorneoge tge ON tge.idtorneoge = ff.reftorneoge_a or tge.idtorneoge = ff.reftorneoge_b
+				inner join dbtorneos t ON tge.reftorneo = t.idtorneo
+				inner join tbtipotorneo tp ON t.reftipotorneo = tp.idtipotorneo
+				where t.activo = 1 and t.reftipotorneo = '.$idtorneo.' and tge.refgrupo = '.$zona.') d
+				on			d.idfixture = ss.reffixture
+									
+left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= '.$reffecha.' and rr.reftorneo = d.idtorneo
+left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$reffecha.' and rrr.reftorneo = d.idtorneo								
+left join
+	dbreemplazovolvio rv ON rv.refreemplazo = rrr.idreemplazo and rv.refzona = '.$zona.' 
+										
+				where	sp.reffecha <= '.$reffecha.' +1
+				group by j.apyn, e.nombre, ss.motivos, ss.cantidadfechas, ss.refjugador, ss.refequipo,sp.refsuspendido,j.expulsado
+				) r
+				
+				order by r.nombre, r.apyn,r.cantidadfechas desc';
 			return $this-> query($sql,0);
 	}
 	
@@ -748,7 +858,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				
 				left
 				join		tbsuspendidos ss
-				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos = 'Roja Directa' or ss.motivos = 'Doble Amarilla')
+				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos like '%Roja Directa%' or ss.motivos like '%Doble Amarilla%')
 				
 				where		fi.idfixture = ".$idfixture;
 		return $this-> query($sql,0);	
@@ -784,7 +894,7 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= '.$r
 				
 				left
 				join		tbsuspendidos ss
-				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos = 'Roja Directa' or ss.motivos = 'Doble Amarilla')
+				on			ss.refjugador = j.idjugador and ss.refequipo = j.idequipo and ss.reffixture = fi.idfixture and (ss.motivos like '%Roja Directa%' or ss.motivos like '%Doble Amarilla%')
 				
 				where		fi.idfixture = ".$idfixture;
 		return $this-> query($sql,0);	

@@ -875,6 +875,8 @@ class ServiciosZonasEquipos {
 
 
 function traerCalculoPorFechaTorneoEquipo($refequipo,$reffecha,$idtorneo) {
+	
+	
 	$sql = "select 
 				*
 			from
@@ -927,48 +929,52 @@ function traerCalculoPorFechaTorneoEquipo($refequipo,$reffecha,$idtorneo) {
 				
 				select 
 					f.tipofecha,
-						e.nombre,
-						sum(3) as puntos,
-						f.idfecha,
-						e.idequipo
+					e.nombre,
+					sum(3) as puntos,
+					f.idfecha,
+					e.idequipo
 				from
 					tbsuspendidos a
-				inner join dbequipos e ON e.idequipo = a.refequipo
-				inner join (select 
-					refsuspendido, min(reffecha) as idfecha
-				from
-					dbsuspendidosfechas
-				group by refsuspendido) sp ON sp.refsuspendido = a.idsuspendido
-				inner join tbfechas f ON f.idfecha = sp.idfecha - 1
-				inner join dbfixture fix ON fix.idfixture = a.reffixture
-				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
-					and fix.reftorneoge_a = tge.idtorneoge
+						inner join
+					dbequipos e ON e.idequipo = a.refequipo
+					   
+						inner join
+					dbfixture fix ON fix.idfixture = a.reffixture
+						inner join
+					tbfechas f ON f.idfecha = fix.reffecha
+						inner join
+					dbtorneoge tge ON tge.refequipo = e.idequipo
+						and fix.reftorneoge_b = tge.idtorneoge
 				where
-					tge.reftorneo = ".$idtorneo." and fix.reffecha = ".$reffecha." and (a.motivos like '%Roja Directa%' or a.motivos like '%Doble Amarilla%') 
-				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo 
+					tge.reftorneo = ".$idtorneo." and fix.reffecha = ".$reffecha."
+						and (a.motivos like '%Roja Directa%'
+						or a.motivos like '%Doble Amarilla%')
+				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo
 				
-				union all 
+				union all
 				
 				select 
 					f.tipofecha,
-						e.nombre,
-						sum(3) as puntos,
-						f.idfecha,
-						e.idequipo
+					e.nombre,
+					sum(3) as puntos,
+					f.idfecha,
+					e.idequipo
 				from
 					tbsuspendidos a
-				inner join dbequipos e ON e.idequipo = a.refequipo
-				inner join (select 
-					refsuspendido, min(reffecha) as idfecha
-				from
-					dbsuspendidosfechas
-				group by refsuspendido) sp ON sp.refsuspendido = a.idsuspendido
-				inner join tbfechas f ON f.idfecha = sp.idfecha - 1
-				inner join dbfixture fix ON fix.idfixture = a.reffixture
-				inner join dbtorneoge tge ON tge.refequipo = e.idequipo
-					and fix.reftorneoge_b = tge.idtorneoge
+						inner join
+					dbequipos e ON e.idequipo = a.refequipo
+					   
+						inner join
+					dbfixture fix ON fix.idfixture = a.reffixture
+						inner join
+					tbfechas f ON f.idfecha = fix.reffecha
+						inner join
+					dbtorneoge tge ON tge.refequipo = e.idequipo
+						and fix.reftorneoge_a = tge.idtorneoge
 				where
-					tge.reftorneo = ".$idtorneo." and fix.reffecha = ".$reffecha." and (a.motivos like '%Roja Directa%' or a.motivos like '%Doble Amarilla%') 
+					tge.reftorneo = ".$idtorneo." and fix.reffecha = ".$reffecha."
+						and (a.motivos like '%Roja Directa%'
+						or a.motivos like '%Doble Amarilla%')
 				group by f.tipofecha , e.nombre , f.idfecha , e.idequipo) as t
 				group by t.tipofecha , t.nombre , t.idequipo , t.idfecha) as tt
 					inner join

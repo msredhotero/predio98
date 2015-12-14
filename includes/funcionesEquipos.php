@@ -186,7 +186,7 @@ return $res;
 						inner join
 					tbfechas ff ON ff.idfecha = f.reffecha
 				where
-					f.chequeado = 1 and tge.refequipo = ".$idEquipo."
+					f.chequeado = 0 and tge.refequipo = ".$idEquipo."
 						and t.activo = 1
 				order by f.idfixture desc
 				limit 1";
@@ -267,7 +267,7 @@ return $res;
 						where
 							f.chequeado = 1 and tge.refequipo = ".$idEquipo."
 							  
-						order by f.fechajuego desc
+						order by t.idtorneo desc,ff.idfecha desc
 					) as t";
 		return $this-> query($sql,0);		
 	}	

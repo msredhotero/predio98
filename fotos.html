@@ -61,9 +61,8 @@
      
 <link rel="stylesheet" href="css/normalize.min.css">   
 
-<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>  
-   
-<script src="js/jssor.slider.mini.js"></script>
+<script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>     
+
 <style>
     label {
         padding-bottom:6px;
@@ -79,6 +78,24 @@
 	#foot p {
 		text-align:center;	
 	}
+
+    ul li { display: inline; }
+            
+            .wide {
+                border-bottom: 1px #000 solid;
+                width: 4000px;
+            }
+            
+            .fleft { float: left; margin: 20px; }
+            
+            .cboth { clear: both; }
+            
+            #main {
+                background: #fff;
+                margin: 0 auto;
+                padding: 30px;
+                width: 1000px;
+            }
 	
 </style>
 
@@ -110,186 +127,9 @@
      
      
      
-<link href="css/galeria/least.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+<script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
 
-<!-- use jssor.slider.debug.js instead for debug -->
-    <script>
-        jQuery(document).ready(function ($) {
-            
-            var jssor_1_SlideshowTransitions = [
-              {$Duration:1200,x:0.3,$During:{$Left:[0.3,0.7]},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:-0.3,$SlideOut:true,$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:-0.3,$During:{$Left:[0.3,0.7]},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,$SlideOut:true,$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:0.3,$During:{$Top:[0.3,0.7]},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:-0.3,$SlideOut:true,$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:-0.3,$During:{$Top:[0.3,0.7]},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:0.3,$SlideOut:true,$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,$Cols:2,$During:{$Left:[0.3,0.7]},$ChessMode:{$Column:3},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,$Cols:2,$SlideOut:true,$ChessMode:{$Column:3},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:0.3,$Rows:2,$During:{$Top:[0.3,0.7]},$ChessMode:{$Row:12},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:0.3,$Rows:2,$SlideOut:true,$ChessMode:{$Row:12},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:0.3,$Cols:2,$During:{$Top:[0.3,0.7]},$ChessMode:{$Column:12},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,y:-0.3,$Cols:2,$SlideOut:true,$ChessMode:{$Column:12},$Easing:{$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,$Rows:2,$During:{$Left:[0.3,0.7]},$ChessMode:{$Row:3},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:-0.3,$Rows:2,$SlideOut:true,$ChessMode:{$Row:3},$Easing:{$Left:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,y:0.3,$Cols:2,$Rows:2,$During:{$Left:[0.3,0.7],$Top:[0.3,0.7]},$ChessMode:{$Column:3,$Row:12},$Easing:{$Left:$Jease$.$InCubic,$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,x:0.3,y:0.3,$Cols:2,$Rows:2,$During:{$Left:[0.3,0.7],$Top:[0.3,0.7]},$SlideOut:true,$ChessMode:{$Column:3,$Row:12},$Easing:{$Left:$Jease$.$InCubic,$Top:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,$Delay:20,$Clip:3,$Assembly:260,$Easing:{$Clip:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,$Delay:20,$Clip:3,$SlideOut:true,$Assembly:260,$Easing:{$Clip:$Jease$.$OutCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,$Delay:20,$Clip:12,$Assembly:260,$Easing:{$Clip:$Jease$.$InCubic,$Opacity:$Jease$.$Linear},$Opacity:2},
-              {$Duration:1200,$Delay:20,$Clip:12,$SlideOut:true,$Assembly:260,$Easing:{$Clip:$Jease$.$OutCubic,$Opacity:$Jease$.$Linear},$Opacity:2}
-            ];
-            
-            var jssor_1_options = {
-              $AutoPlay: true,
-              $SlideshowOptions: {
-                $Class: $JssorSlideshowRunner$,
-                $Transitions: jssor_1_SlideshowTransitions,
-                $TransitionsOrder: 1
-              },
-              $ArrowNavigatorOptions: {
-                $Class: $JssorArrowNavigator$
-              },
-              $ThumbnailNavigatorOptions: {
-                $Class: $JssorThumbnailNavigator$,
-                $Cols: 10,
-                $SpacingX: 8,
-                $SpacingY: 8,
-                $Align: 360
-              }
-            };
-            
-            var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
-            
-            //responsive code begin
-            //you can remove responsive code if you don't want the slider scales while window resizes
-            function ScaleSlider() {
-                var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
-                if (refSize) {
-                    refSize = Math.min(refSize, 800);
-                    jssor_1_slider.$ScaleWidth(refSize);
-                }
-                else {
-                    window.setTimeout(ScaleSlider, 30);
-                }
-            }
-            ScaleSlider();
-            $(window).bind("load", ScaleSlider);
-            $(window).bind("resize", ScaleSlider);
-            $(window).bind("orientationchange", ScaleSlider);
-            //responsive code end
-        });
-    </script>
-
-    <style>
-        
-        /* jssor slider arrow navigator skin 05 css */
-        /*
-        .jssora05l                  (normal)
-        .jssora05r                  (normal)
-        .jssora05l:hover            (normal mouseover)
-        .jssora05r:hover            (normal mouseover)
-        .jssora05l.jssora05ldn      (mousedown)
-        .jssora05r.jssora05rdn      (mousedown)
-        */
-        .jssora05l, .jssora05r {
-            display: block;
-            position: absolute;
-            /* size of arrow element */
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            background: url('img/a17.png') no-repeat;
-            overflow: hidden;
-        }
-        .jssora05l { background-position: -10px -40px; }
-        .jssora05r { background-position: -70px -40px; }
-        .jssora05l:hover { background-position: -130px -40px; }
-        .jssora05r:hover { background-position: -190px -40px; }
-        .jssora05l.jssora05ldn { background-position: -250px -40px; }
-        .jssora05r.jssora05rdn { background-position: -310px -40px; }
-
-        /* jssor slider thumbnail navigator skin 01 css */
-        /*
-        .jssort01 .p            (normal)
-        .jssort01 .p:hover      (normal mouseover)
-        .jssort01 .p.pav        (active)
-        .jssort01 .p.pdn        (mousedown)
-        */
-        .jssort01 .p {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 72px;
-            height: 72px;
-        }
-        
-        .jssort01 .t {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .jssort01 .w {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .jssort01 .c {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 68px;
-            height: 68px;
-            border: #000 2px solid;
-            box-sizing: content-box;
-            background: url('img/t01.png') -800px -800px no-repeat;
-            _background: none;
-        }
-        
-        .jssort01 .pav .c {
-            top: 2px;
-            _top: 0px;
-            left: 2px;
-            _left: 0px;
-            width: 68px;
-            height: 68px;
-            border: #000 0px solid;
-            _border: #fff 2px solid;
-            background-position: 50% 50%;
-        }
-        
-        .jssort01 .p:hover .c {
-            top: 0px;
-            left: 0px;
-            width: 70px;
-            height: 70px;
-            border: #fff 1px solid;
-            background-position: 50% 50%;
-        }
-        
-        .jssort01 .p.pdn .c {
-            background-position: 50% 50%;
-            width: 68px;
-            height: 68px;
-            border: #000 2px solid;
-        }
-        
-        * html .jssort01 .c, * html .jssort01 .pdn .c, * html .jssort01 .pav .c {
-            /* ie quirks mode adjust */
-            width /**/: 72px;
-            height /**/: 72px;
-        }
-        
-    </style>
-    
 <link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 </head>
 
@@ -339,7 +179,7 @@
                     	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
-                <div class="col-md-4 foncecoE" style="display:none;">
+                <!--<div class="col-md-4 foncecoE" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
@@ -386,7 +226,7 @@
                             <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-md-4 foncecoI" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
@@ -395,6 +235,9 @@
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
+                        </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=1">Historial</a></li>
                         </ul>
                     </div>
                     <br>
@@ -419,6 +262,9 @@
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=2">Historial</a></li>
+                        </ul>
                     </div>
                     <br>
                     <div class="col-md-6" align="center" style="margin-top:15px;">
@@ -441,6 +287,9 @@
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
+                        </ul>
+                        <ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=3">Historial</a></li>
                         </ul>
                     </div>
                     
@@ -472,115 +321,41 @@
                     <div id="reglamento" class="row" style="margin-top:20px; padding-left:40px; padding-right:40px;">
                     	<h1>PREDIO 98</h1>
                         <h3>Fotos</h3>
-                        
-                        
-                        <!-- Least Gallery -->
-                        <section id="least">
-                            
-                            <!-- Least Gallery: Fullscreen Preview -->
-                            <div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 900px; height: 700px; overflow: hidden; visibility: hidden; background-color: #24262e;">
-                            <!-- Loading Screen -->
-                            <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
-                                <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
-                                <div style="position:absolute;display:block;background:url('img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
-                            </div>
-                            <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 900px; height: 600px; overflow: hidden;">
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/1.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/1.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/2.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/2.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/3.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/3.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/4.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/4.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/5.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/5.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/6.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/6.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/7.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/7.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/8.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/8.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/9.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/9.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/10.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/10.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/11.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/11.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/12.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/12.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/13.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/13.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/14.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/14.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/15.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/15.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/16.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/16.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/17.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/17.jpg" />
-                                </div>
-                                <div data-p="144.50" style="display: none;">
-                                    <img data-u="image" src="imagenes/fotos/grandes/18.jpg" />
-                                    <img data-u="thumb" src="imagenes/fotos/thumbs/18.jpg" />
-                                </div>
-                            </div>
-                            <!-- Thumbnail Navigator -->
-                            <div data-u="thumbnavigator" class="jssort01" style="position:absolute;left:0px;bottom:0px;width:800px;height:100px;" data-autocenter="1">
-                                <!-- Thumbnail Item Skin Begin -->
-                                <div data-u="slides" style="cursor: default;">
-                                    <div data-u="prototype" class="p">
-                                        <div class="w">
-                                            <div data-u="thumbnailtemplate" class="t"></div>
-                                        </div>
-                                        <div class="c"></div>
-                                    </div>
-                                </div>
-                                <!-- Thumbnail Item Skin End -->
-                            </div>
-                            <!-- Arrow Navigator -->
-                            <span data-u="arrowleft" class="jssora05l" style="top:158px;left:8px;width:40px;height:40px;"></span>
-                            <span data-u="arrowright" class="jssora05r" style="top:158px;right:8px;width:40px;height:40px;"></span>
-                            
+                        <div class="col-md-1">
+
                         </div>
+                        <div class="col-md-11">
+                        <ul class="gallery clearfix">
+
+                            <li><a href="imagenes/fotos/grandes/1.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/1.jpg" width="20%" height="220" alt="Pelota Oficial" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/2.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/2.jpg" width="20%" height="220" alt="Pelotas" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/3.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/3.jpg" width="20%" height="220" alt="Jugadores" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/4.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/4.jpg" width="20%" height="220" alt="Jugadores" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/5.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/5.jpg" width="20%" height="220" alt="Centro" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/6.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/6.jpg" width="20%" height="220" alt="Corner" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/7.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/7.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/8.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/8.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/9.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/9.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/10.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/10.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/11.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/11.jpg" width="20%" height="220" alt="Jugadores" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/12.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/12.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/13.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/13.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/14.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/14.jpg" width="20%" height="220" alt="Jugadores" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/15.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/15.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/16.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/16.jpg" width="20%" height="220" alt="Campo Juego" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/17.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/17.jpg" width="20%" height="220" alt="Estacionamiento" /></a></li>
+                            <li><a href="imagenes/fotos/grandes/18.jpg" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="imagenes/fotos/grandes/18.jpg" width="20%" height="220" alt="Ambulancia" /></a></li>
+                            
+                        </ul>
+
+                        </div>
+                        <div class="col-md-1">
+
+                        </div>
+                                
+                   
                 
                         </section>
-                        
-                        
-                        
                         <!-- Least Gallery end -->
                         <div style="height:100px;">
                         
@@ -634,27 +409,24 @@ border-radius: 0em 0em 0.6em 0.6em;">
 	</footer>
 <!-- jQuery library 
         <script src="src/js/libs/jquery/2.0.2/jquery.min.js"></script>-->
-        <!-- least.js library -->
-        <script src="js/galeria/least.min.js"></script>
-
-        <script>
+<script type="text/javascript" charset="utf-8">
             $(document).ready(function(){
-                $('.least-gallery').least();
-            });
-        </script>
+                $("area[rel^='prettyPhoto']").prettyPhoto();
+                
+                $(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'normal',theme:'light_square',slideshow:3000, autoplay_slideshow: true});
+                $(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
         
-        <!-- &&& START CODE &&& ONLY FOR PERSONAL USE: PLEASE DON'T EMBED THIS CODE INTO YOUR PAGE -->
-        <script>
-            /* Google Analytics */
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+                $("#custom_content a[rel^='prettyPhoto']:first").prettyPhoto({
+                    custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
+                    changepicturecallback: function(){ initialize(); }
+                });
 
-            ga('create', 'UA-16040332-11', 'leastjs.com');
-            ga('set', 'anonymizeIp', true);
-            ga('send', 'pageview');
-        </script>
+                $("#custom_content a[rel^='prettyPhoto']:last").prettyPhoto({
+                    custom_markup: '<div id="bsap_1259344" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div><div id="bsap_1237859" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6" style="height:260px"></div><div id="bsap_1251710" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div>',
+                    changepicturecallback: function(){ _bsap.exec(); }
+                });
+            });
+            </script>
         
 <script type="text/javascript">
 $(document).ready(function(){

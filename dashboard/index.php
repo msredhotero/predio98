@@ -25,7 +25,7 @@ $serviciosDatos = new ServiciosDatos();
 $fecha = date('Y-m-d');
 
 //$resProductos = $serviciosProductos->traerProductosLimite(6);
-$resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Dashboard",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Dashboard",$_SESSION['refroll_predio'],$_SESSION['torneo_predio']);
 
 
 
@@ -34,7 +34,7 @@ $resMenu = $serviciosHTML->menu(utf8_encode($_SESSION['nombre_predio']),"Dashboa
 $cadTT = '';
 $resTorneos = $serviciosFunciones->traerTipoTorneo();
 while ($rowTT = mysql_fetch_array($resTorneos)) {
-	$cadTT = $cadTT.'<option value="'.$rowTT[0].'">'.utf8_encode($rowTT[1]).'</option>';	
+	$cadTT = $cadTT.'<option value="'.$rowTT[0].'">'.($rowTT[1]).'</option>';	
 }
 
 ///////////////////////////////////////////////////
@@ -105,7 +105,7 @@ $goleadores7c = $serviciosFUNC->Amarillas(3,21);
 
 
 
-<title>Gestión: Predio 98</title>
+<title>Gesti&oacute;n: Predio 98</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 

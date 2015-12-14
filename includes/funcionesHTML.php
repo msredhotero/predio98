@@ -20,7 +20,7 @@ function menuHTML() {
                     	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
-                <div class="col-md-4 foncecoE" style="display:none;">
+                <!--<div class="col-md-4 foncecoE" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
@@ -67,7 +67,7 @@ function menuHTML() {
                             <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-md-4 foncecoI" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
@@ -77,6 +77,10 @@ function menuHTML() {
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
+						<ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=1">Historial</a></li>
+                        </ul>
+						
                     </div>
                     <br>
                     <div class="col-md-6" align="center" style="margin-top:15px;">
@@ -100,6 +104,9 @@ function menuHTML() {
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
                         </ul>
+						<ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=2">Historial</a></li>
+                        </ul>
                     </div>
                     <br>
                     <div class="col-md-6" align="center" style="margin-top:15px;">
@@ -122,6 +129,9 @@ function menuHTML() {
                     <div class="col-md-6" style="border-left:1px dashed #333;" id="submenuestadisticas">
                     	<ul>
                         	<li><span class="glyphicon glyphicon-calendar"></span> <a href="fixture.php">Fixture</a></li>
+                        </ul>
+						<ul>
+                        	<li><span class="glyphicon glyphicon-time"></span> <a href="historial.php?idtorneo=3">Historial</a></li>
                         </ul>
                     </div>
                     

@@ -153,6 +153,23 @@ if ($id == 0) {
 				float: left; width: 136px; margin: 0 20px 0 0;
 				font-style: italic; color: #a2a2a2;
 			}
+		#least ul li { display: inline; }
+            
+            .wide {
+                border-bottom: 1px #000 solid;
+                width: 4000px;
+            }
+            
+            .fleft { float: left; margin: 20px; }
+            
+            .cboth { clear: both; }
+            
+            #main {
+                background: #fff;
+                margin: 0 auto;
+                padding: 30px;
+                width: 1000px;
+            }
 	
 </style>
 
@@ -183,8 +200,9 @@ if ($id == 0) {
   </script>
      
      
-     
-<link href="css/galeria/least.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+<script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+
 <link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 </head>
 
@@ -208,9 +226,9 @@ if ($id == 0) {
                         <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
-                        <li class="menuA"><a href="premios.html">Premios</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>                        
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li class="menuA"><a href="servicios.html">Servicios</a></li>
                         <li class="menuA"><a href="fotos.html">Fotos</a></li>
                         <li class="menuA"><a href="contacto.html">Contacto</a></li>
@@ -234,7 +252,7 @@ if ($id == 0) {
                     	<p style="font-size:1.3em; cursor:pointer;"> Torneo de Fútbol 7</p> 
                     </div>
                 </div>
-                <div class="col-md-4 foncecoE" style="display:none;">
+                <!--<div class="col-md-4 foncecoE" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
                         <h4 class="textoTrazoTitulos"> Estadísticas</h4>
@@ -281,7 +299,7 @@ if ($id == 0) {
                             <li><span class="glyphicon glyphicon-plus-sign"></span> <a href="amonestados.php?idtorneo=1">Amonestados</a></li>
                         </ul>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-md-4 foncecoI" style="display:none;">
                 	<div class="col-md-6" align="center">
                     	
@@ -388,13 +406,15 @@ if ($id == 0) {
                                 </div>
 							
                             <!-- Least Gallery -->
+                            <div class="col-md-1">
+
+                            </div>
+                            <div class="col-md-11" align="center">
                             <section id="least">
                                 
-                                <!-- Least Gallery: Fullscreen Preview -->
-                                <div class="least-preview"></div>
+
                                 
-                                <!-- Least Gallery: Thumbnails -->
-                                <ul class="least-gallery">
+                                <ul class="gallery clearfix">
                                 <?php 
 									///////*****   PARA LA GALERIA DE LA NOTICIAS  *******/////////////////
 									if ($GaleriaNoticia == 1) {
@@ -402,17 +422,20 @@ if ($id == 0) {
 										
 										while ($rowGaleria = mysql_fetch_array($resImagenes)) {
 								?>
-                                    <!-- 1 || Element with data-caption ||-->
-                                    <li>
-                                        <a href="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" title="Pelotas" data-subtitle="Ver Foto" data-caption="<strong>Predio98</strong>">
-                                            <img src="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" alt="Alt Image Text" />
-                                        </a>
-                                    </li>
+                                    <!-- 1 || Imagenes ||-->
+                                     <li>
+                                     	<a href="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="archivos/<?php echo $rowGaleria[0]."/".$rowGaleria[1]."/".$rowGaleria[2]; ?>" width="20%" height="20%" alt="Pelota Oficial" /></a>
+                                     </li>
+                                    
                                 <?php } ?>
                                     
                                 </ul>
                     
                             </section>
+                            </div>
+                            <div class="col-md-1">
+
+                            </div>
                             <!-- Least Gallery end -->
                         
                         	<?php 
@@ -505,29 +528,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
 
 
 	</footer>
-<!-- jQuery library 
-        <script src="src/js/libs/jquery/2.0.2/jquery.min.js"></script>-->
-        <!-- least.js library -->
-        <script src="js/galeria/least.min.js"></script>
 
-        <script>
-            $(document).ready(function(){
-                $('.least-gallery').least();
-            });
-        </script>
-        
-        <!-- &&& START CODE &&& ONLY FOR PERSONAL USE: PLEASE DON'T EMBED THIS CODE INTO YOUR PAGE -->
-        <script>
-            /* Google Analytics */
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-16040332-11', 'leastjs.com');
-            ga('set', 'anonymizeIp', true);
-            ga('send', 'pageview');
-        </script>
         
 <script type="text/javascript">
 $(document).ready(function(){
@@ -613,7 +614,24 @@ $(document).ready(function(){
 	
 });
 </script>
+<script type="text/javascript" charset="utf-8">
+            $(document).ready(function(){
+                $("area[rel^='prettyPhoto']").prettyPhoto();
+                
+                $(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'normal',theme:'light_square',slideshow:3000, autoplay_slideshow: true});
+                $(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+        
+                $("#custom_content a[rel^='prettyPhoto']:first").prettyPhoto({
+                    custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
+                    changepicturecallback: function(){ initialize(); }
+                });
 
+                $("#custom_content a[rel^='prettyPhoto']:last").prettyPhoto({
+                    custom_markup: '<div id="bsap_1259344" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div><div id="bsap_1237859" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6" style="height:260px"></div><div id="bsap_1251710" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div>',
+                    changepicturecallback: function(){ _bsap.exec(); }
+                });
+            });
+            </script>
 
 </body>
 

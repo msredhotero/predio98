@@ -293,9 +293,9 @@ $(document).ready(function(){
                         <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
-                        <li class="menuA"><a href="premios.html">Premios</a></li>
+                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>                        
                         <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
-                        <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li class="menuA"><a href="servicios.html">Servicios</a></li>
                         <li class="menuA"><a href="fotos.html">Fotos</a></li>
                         <li class="menuA"><a href="contacto.html">Contacto</a></li>
@@ -433,7 +433,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
             <div class="modal-body">
             	<div class="row">
             	<div class="col-md-6">
-				<table class="table table-responsive table-striped">
+				<table class="table table-responsive table-striped table-bordered">
                 	<thead>
                     	<tr>
                         	<th><img src="imagenes/icoRoja.png"></th>
@@ -450,7 +450,7 @@ border-radius: 0em 0em 0.6em 0.6em;">
                 </table>
 				</div>
                 <div class="col-md-6">
-				<table class="table table-responsive table-striped">
+				<table class="table table-responsive table-striped table-bordered">
                 	<thead>
                     	<tr>
 

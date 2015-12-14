@@ -55,7 +55,7 @@ $refCampo 	=  array("refseccion");
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
 
-$parrafo = htmlspecialchars(mysql_result($resResultado,0,1),ENT_HTML5);
+//$parrafo = htmlspecialchars(mysql_result($resResultado,0,1),ENT_HTML5);
 
 $formulario 	= $serviciosFunciones->camposTablaModificar($id, "idcontenido", "modificarContenido",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 

@@ -466,12 +466,7 @@ $(document).ready(function(){
 											$(".alert").removeClass("alert-info");
                                             $(".alert").addClass("alert-success");
                                             $(".alert").html('<strong>Ok!</strong> Se cargo exitosamente el <strong><?php echo $lblTitulosingular; ?></strong>. ');
-											$(".alert").delay(3000).queue(function(){
-												/*aca lo que quiero hacer 
-												  después de los 2 segundos de retraso*/
-												$(this).dequeue(); //continúo con el siguiente ítem en la cola
-												
-											});
+											
 											$("#load").html('');
 											url = "index.php";
 											$(location).attr('href',url);

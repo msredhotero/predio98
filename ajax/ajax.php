@@ -11,6 +11,7 @@ include ('../includes/funcionesNoticias.php');
 include ('../includes/funcionesDATOS.php');
 include ('../includes/funcionesPlayoff.php');
 include ('../includes/funcionesContenido.php');
+include ('../includes/funcionesHistorial.php');
 
 $serviciosUsuarios  	= new ServiciosUsuarios();
 $serviciosFunciones 	= new Servicios();
@@ -23,6 +24,7 @@ $serviciosNoticias 		= new ServiciosNoticias();
 $serviciosDatos 		= new ServiciosDatos();
 $serviciosPlayOff 		= new ServiciosPlayOff();
 $serviciosContenido		= new ServiciosContenido();
+$serviciosHistorial		= new ServiciosHistorial();
 
 $accion = $_POST['accion'];
 
@@ -43,7 +45,9 @@ switch ($accion) {
 	case 'registrar':
 		registrar($serviciosUsuarios);
         break;
-		
+	case 'contacto':
+		contacto($serviciosUsuarios);
+		break;
 
 	case 'modificarCliente':
 		modificarCliente($serviciosUsuarios);
@@ -396,6 +400,28 @@ break;
 		FairPlayPagina($serviciosDatos);
 		break;
 	/* Fin reportes */
+	
+	/* Historial */
+	case 'TraerFechasPorTorneoZona':
+		TraerFechasPorTorneoZona($serviciosHistorial);
+		break;
+	case 'TraerFixturePorZonaTorneoHistorial':
+		TraerFixturePorZonaTorneoHistorial($serviciosHistorial);
+		break;
+	case 'FixturePaginaChicoDosHistorial':
+		FixturePaginaChicoDosHistorial($serviciosHistorial, $serviciosDatos);
+		break;
+	case 'GoleadoresHistorial':
+		GoleadoresHistorial($serviciosHistorial);
+		break;
+	case 'AmarillasAcumuladasHistorial':
+		AmarillasAcumuladasHistorial($serviciosHistorial);
+		break;
+	case 'SuspendidosHistorial':
+		SuspendidosHistorial($serviciosHistorial);
+		break;
+	
+	/* Fin Historial */
 }
 
 //////////////////////////Traer datos */
@@ -408,6 +434,27 @@ function toArray($query)
     }
     return $res;
 }
+
+
+/* Para el Historial */
+function TraerFechasPorTorneoZona($serviciosHistorial) {
+	$refIdTorneo	=	$_POST['reftipotorneo'];
+	$refTorneo		=	$_POST['reftorneo'];
+	$refZona		=	$_POST['refzona'];
+	
+	$res	=	$serviciosHistorial->TraerFechasPorTorneoZona($refTorneo,$refZona);
+	$cad = '';
+	while ($rowF = mysql_fetch_array($res)) {
+		$cad	.=	'<li style="padding-bottom:8px;">
+                                    <a href="historial.php?idtorneo='.$refIdTorneo.'&torneo='.$refTorneo.'&zona='.$refZona.'&fecha='.$rowF[0].'"><button type="button" class="btn btn-info" style="margin-left:0px;">'.$rowF[1].'</button></a>
+                                </li>';
+	}
+	
+	echo $cad;
+}
+
+
+/* Fin Historial */
 
 /* PARA Contenido */
 function insertarContenido($serviciosContenido) {
@@ -642,9 +689,9 @@ function traerResultadosPorTorneoZonaFechaPagina($serviciosDatos) {
                         while ($row = mysql_fetch_array($res)) {
                         	$cad = $cad.'<tr>
                         	<td align="center">'.$row['resultadoa'].'</td>
-                            <td align="center">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center">'.(utf8_encode($row['equipo1'])).'</td>
                             <td align="center">'.$row['hora'].'</td>
-                            <td align="center">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center">'.(utf8_encode($row['equipo2'])).'</td>
                             <td align="center">'.$row['resultadob'].'</td>
                         </tr>';
                     	}
@@ -667,7 +714,7 @@ function TraerJugadoresFixtureA($serviciosDatos) {
                         	<td align="center">'.$row['RojasA'].'</td>
                             <td align="center">'.$row['amarillasA'].'</td>
                             <td align="center">'.$row['golesA'].'</td>
-                            <td align="right" style="font-size:0.9em;">'.strtoupper((substr($row['apynA'],0,17))).'</td>
+                            <td align="right" style="font-size:0.9em;">'.strtoupper(($row['apynA'])).'</td>
 							<td></td>
                         </tr>';
                     	}
@@ -686,7 +733,7 @@ function TraerJugadoresFixtureB($serviciosDatos) {
                         while ($row = mysql_fetch_array($res)) {
                         	$cad = $cad.'<tr>
 							<td></td>
-                            <td align="left" style="font-size:0.9em;">'.strtoupper((substr($row['apynB'],0,17))).'</td>
+                            <td align="left" style="font-size:0.9em;">'.strtoupper(($row['apynB'])).'</td>
 							<td align="center">'.$row['golesB'].'</td>
 							<td align="center">'.$row['amarillasB'].'</td>
 							<td align="center">'.$row['RojasB'].'</td>
@@ -858,9 +905,9 @@ function FixturePaginaChicoDos($serviciosDatos) {
                         while ($row = mysql_fetch_array($res)) {
                         	$cad = $cad.'<tr>
                         	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
-                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo1'])).'</td>
                             <td align="center" style="padding:3px;">'.$row['hora']."/".$row['cancha'].'</td>
-                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo2'])).'</td>
                             <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
 							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
                         </tr>';
@@ -924,9 +971,9 @@ function FixturePaginaChicoDosInactivo($serviciosDatos) {
                         while ($row = mysql_fetch_array($res)) {
                         	$cad = $cad.'<tr>
                         	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
-                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo1'])).'</td>
                             <td align="center" style="padding:3px;">'.$row['hora']."/".$row['cancha'].'</td>
-                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo2'])).'</td>
                             <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
 							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
                         </tr>';
@@ -1074,7 +1121,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
 	$idfecha	= $_POST['reffecha'];
 	
 	$res2 = $serviciosDatos->TraerFixturePorZonaTorneo($idtorneo,$idzona,$idfecha);
-	echo $res2;
+	//echo $res2;
 	$cad2 = '';
 	$cad2 = $cad2.'
 				<!--<div class="col-md-8">-->
@@ -1183,7 +1230,7 @@ function GoleadoresPagina($serviciosDatos) {
 						if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
                         $cad3 = $cad3.'<tr>
                             <td align="left" style="padding:1px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
-                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
+                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.strtoupper(utf8_encode($row1['nombre'] )).'</a></td>
                             <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
  
                         </tr>';
@@ -1209,7 +1256,7 @@ function Goleadores($serviciosDatos) {
 	$idfecha	= $_POST['reffecha'];
 	
 	$res3 = $serviciosDatos->Goleadores($idtorneo,$idzona,$idfecha);
-	
+	//echo $res3;
 	$cad3 = '
 	<div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
@@ -1252,6 +1299,16 @@ function Suspendidos($serviciosDatos) {
 	
 	$res5 = $serviciosDatos->SuspendidosPorSiempre($idtorneo,$idzona,$idfecha);
 	
+	$resCantDeEquipos = $serviciosDatos->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$idfecha);
+		
+	$cantEquipos = (mysql_num_rows($resCantDeEquipos)*4) + 20;
+	
+	$ultimaFecha = 0;
+	if ($cantEquipos == $idfecha) {
+		$res6 = $serviciosDatos->SuspendidosUltimaFecha($idtorneo,$idzona,$idfecha);
+		$ultimaFecha = 1;
+	}
+	
 	$cad4 = '
 	<div class="row" style="margin-top:20px;">
                 	<table cellpadding="0" cellspacing="0" border="2" bordercolor="#FF0000" style="width:auto; margin-left:20px; font-weight:bold; margin-right:20px;">
@@ -1275,9 +1332,9 @@ function Suspendidos($serviciosDatos) {
 							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
 							if ($restantes != 0) { 
 								$cad4 = $cad4.'<tr style="font-size:1.5em;">
-									<td align="left" style="padding:1px 6px;">'.strtoupper(utf8_encode($row1['apyn'])).'</td>
-									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['nombre']).'</td>
-									<td align="right" style="padding:1px 6px;">'.utf8_encode($row1['motivos']).'</td>
+									<td align="left" style="padding:1px 6px;">'.strtoupper($row1['apyn']).'</td>
+									<td align="right" style="padding:1px 6px;">'.$row1['nombre'].'</td>
+									<td align="right" style="padding:1px 6px;">'.$row1['motivos'].'</td>
 									<td align="right" style="padding:1px 6px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
 								</tr>';
 								
@@ -1286,14 +1343,28 @@ function Suspendidos($serviciosDatos) {
 							}
 						}
 						
-						
+						if ($ultimaFecha == 1) {
+							while ($row7 = mysql_fetch_array($res6)) {
+	
+	
+									$cad4 = $cad4.'<tr style="font-size:1.5em;">
+										<td align="left" style="padding:1px 6px;">'.strtoupper($row7['apyn']).'</td>
+										<td align="right" style="padding:1px 6px;">'.($row7['nombre']).'</td>
+										<td align="right" style="padding:1px 6px;">'.$row7['motivos'].'</td>
+										<td align="right" style="padding:1px 6px;">'.$row7['cantidad'].'(Resta '.$row7['cantidad'].')'.'</td>
+									</tr>';
+									
+									$i = $i + 1;
+	
+							}
+						}
 						while ($row2 = mysql_fetch_array($res5)) {
 
 
 								$cad4 = $cad4.'<tr style="font-size:1.5em;">
-									<td align="left" style="padding:1px 6px;">'.strtoupper(utf8_encode($row2['apyn'])).'</td>
-									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['nombre']).'</td>
-									<td align="right" style="padding:1px 6px;">'.utf8_encode($row2['motivos']).'</td>
+									<td align="left" style="padding:1px 6px;">'.strtoupper(($row2['apyn'])).'</td>
+									<td align="right" style="padding:1px 6px;">'.($row2['nombre']).'</td>
+									<td align="right" style="padding:1px 6px;">'.$row2['motivos'].'</td>
 									<td align="right" style="padding:1px 6px;">Todas</td>
 								</tr>';
 								
@@ -2768,5 +2839,346 @@ function devolverImagen($nroInput) {
 	return array('tfoto' => $tfoto, 'type' => $type);	
 }
 
+function contacto($serviciosUsuarios) {
+	$nombre		=	$_POST['nombre'];
+	$email		=	$_POST['email'];
+	$mensaje	=	$_POST['mensaje'];
+	
+	echo $serviciosUsuarios->contacto($nombre, $email, $mensaje);	
+}
+
+
+
+/////////* PARA EL HISTORIAL *////////////////////////////////////////
+
+function TraerFixturePorZonaTorneoHistorial($serviciosHistorial) {
+	
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	$res2 = $serviciosHistorial->TraerFixturePorZonaTorneo($idtorneo,$idzona,$idfecha);
+	
+	$cad2 = '';
+	$cad2 = $cad2.'
+				<!--<div class="col-md-8">-->
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad2 = $cad2.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:1em; padding:0px;">
+
+                        <thead>
+							<tr>
+								<th align="center">POS.</th>
+								<th align="center">EQUIPO</th>
+								<th align="center">PTS</th>
+								<th align="center">PJ</th>
+								<th align="center">PG</th>
+								<th align="center">PE</th>
+								<th align="center">PP</th>
+								<th align="center">GF</th>
+								<th align="center">GC</th>
+								<th align="center">DIF</th>
+								<th align="center">F.P.</th>
+								<th align="center">% Goles</th>
+								<th align="center">EFECT.</th>
+								<th align="center"><img src="imagenes/icoRoja.png"></th>
+                            	<th align="center"><img src="imagenes/icoAmarilla.png"></th>
+							</tr>
+						</thead>
+						<tbody>';
+
+						$i =1;
+						$puntos = 0;
+						while ($row1 = mysql_fetch_array($res2)) {
+						
+							
+							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+							$cad2 = $cad2.'
+							<tr>
+								<td align="center">'.$i.'</td>
+								<td align="left"><a href="equipo.php?eq='.$row1['idequipo'].'">'.utf8_encode($row1['nombre']).'</a></td>
+								<td align="center">'.$row1['pts'].'</td>
+								<td align="center">'.$row1['partidos'].'</td>
+								<td align="center">'.$row1['ganados'].'</td>
+								<td align="center">'.$row1['empatados'].'</td>
+								<td align="center">'.$row1['perdidos'].'</td>
+								<td align="center">'.$row1['golesafavor'].'</td>
+								<td align="center">'.$row1['golesencontra'].'</td>
+								<td align="center">'.$row1['diferencia'].'</td>
+								<td align="center">'.$row1['puntos'].'</td>
+								<td align="center">'.$row1['porcentajegoles'].'%</td>
+								<td align="center">'.$row1['efectividad'].'%</td>
+								<td align="center">'.$row1['rojas'].'</td>
+								<td align="center">'.$row1['amarillas'].'</td>
+							</tr>';
+					
+							$i = $i + 1;
+							}
+						}
+                    $cad2 = $cad2.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						<!--</div>-->';
+	echo $cad2;
+}
+
+
+function FixturePaginaChicoDosHistorial($serviciosHistorial, $serviciosDatos) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	$cad = '';
+	
+	if ($idfecha == 23) {
+		$menos = 0;	
+	} else {
+		$menos = 0;	
+	}
+	
+	for ($i=$idfecha;$i>=$idfecha-$menos;$i--) {
+		$cad = $cad.'
+				<!--<div class="col-md-4">-->
+				<div class="panel panel-predio" style="margin-top:0;">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.mysql_result($serviciosDatos->TraerFechaPorId($i),0,1).'</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right; margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding-bottom:0px;">
+                                	';
+									
+		$res = $serviciosHistorial->traerResultadosPorTorneoZonaFecha($idtorneo,$idzona,$i);
+		
+		$cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.9em; padding:0 2px;">
+                                	
+                                	<thead>
+                                    	<tr>
+                                        	<th style="text-align:center;padding:3px;"></th>
+                                            <th style="text-align:center;padding:3px;">Equipo A</th>
+                                            <th style="text-align:center;padding:3px;">Horario</th>
+                                            <th style="text-align:center;padding:3px;">Equipo B</th>
+                                            <th style="text-align:center;padding:3px;"></th>
+                                            <th style="text-align:center;padding:3px;">Ver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+	
+                        while ($row = mysql_fetch_array($res)) {
+                        	$cad = $cad.'<tr>
+                        	<td align="center" id="resA'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadoa'].'</td>
+                            <td align="center" id="equipoA'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo1'])).'</td>
+                            <td align="center" style="padding:3px;">'.$row['hora']."/".$row['cancha'].'</td>
+                            <td align="center" id="equipoB'.$row['idfixture'].'" style="padding:3px;">'.(utf8_encode($row['equipo2'])).'</td>
+                            <td align="center" id="resB'.$row['idfixture'].'" style="padding:3px;">'.$row['resultadob'].'</td>
+							<td style="padding:3px;"><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                        </tr>';
+                    	}
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						<!--</div>-->';	
+		
+		
+	}
+
+
+	echo $cad;
+}
+
+
+
+function GoleadoresHistorial($serviciosHistorial) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res3 = $serviciosHistorial->Goleadores($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<!--<div class="col-md-12">-->
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - Goleadores</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Goles</th>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						while ($row1 = mysql_fetch_array($res3)) {
+						if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+                        $cad3 = $cad3.'<tr>
+                            <td align="left" style="padding:1px;">'.strtoupper(($row1['apyn'])).'</td>
+                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.strtoupper(utf8_encode($row1['nombre'] )).'</a></td>
+                            <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
+ 
+                        </tr>';
+         
+						$i = $i + 1;
+						}
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						<!--</div>-->';
+	echo $cad3;
+}
+
+
+function AmarillasAcumuladasHistorial($serviciosHistorial) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$zona		= $_POST['zona'];
+	$idfecha	= $_POST['reffecha'];
+	
+	$res3 = $serviciosHistorial->traerAcumuladosAmarillasPorTorneoZona($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<!--<div class="col-md-12">-->
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - Amarillas</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Amarillas</th>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						while ($row1 = mysql_fetch_array($res3)) {
+							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+                        	$cad3 = $cad3.'<tr>
+                            <td align="left" style="padding:1px;">'.strtoupper(($row1['apyn'])).'</td>
+                            <td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.($row1['nombre']).'</a></td>
+                            <td align="center" style="padding:1px;">'.$row1['cantidad'].'</td>
+ 
+                        </tr>';
+         
+							$i = $i + 1;
+							}
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						<!--</div>-->';
+	echo $cad3;
+}
+
+
+
+
+
+function SuspendidosHistorial($serviciosHistorial) {
+	$idtorneo	= $_POST['reftorneo'];
+	$idzona		= $_POST['refzona'];
+	$idfecha	= $_POST['reffecha'];
+	$zona		= $_POST['zona'];
+	
+	$res4 = $serviciosHistorial->SuspendidosNuevo($idtorneo,$idzona,$idfecha);
+	
+	$res5 = $serviciosHistorial->SuspendidosPorSiempre($idtorneo,$idzona,$idfecha);
+	$cad3 = '';
+	$cad3 = $cad3.'
+				<!--<div class="col-md-12">-->
+				<div class="panel panel-predio">
+                                <div class="panel-heading">
+                                	<h3 class="panel-title">'.$zona.' - Suspendidos</h3>
+                                	<img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                                </div>
+                                <div class="panel-body-predio" style="padding:5px 20px;">
+                                	';
+	$cad3 = $cad3.'
+	<div class="row">
+                	<table class="table table-responsive table-striped" style="font-size:0.9em; padding:2px;">
+						<thead>
+                        <tr>
+                        	<th align="left">Nombre y Apellido</th>
+                            <th align="left">Equipo</th>
+                            <th align="center">Amarillas</th>
+							<th align="center">Cant.Fechas</th>
+                        </tr>
+						</thead>
+						<tbody>';
+                        
+						$i =1;
+						$restantes = 0;
+						while ($row1 = mysql_fetch_array($res4)) {
+							
+							if (($row1['reemplzado'] == '0') || (($row1['volvio'] == '1') && ($row1['reemplzadovolvio'] == '1'))) {	
+							$restantes = $serviciosHistorial->traerFechasRestantes($idfecha,$row1['refjugador'],$row1['refequipo'],$row1['refsuspendido']);
+							//echo $restantes;
+							$restantes = (integer)$row1['cantidad'] - (integer)$restantes;
+							if ($restantes != 0) { 
+								$cad3 = $cad3.'<tr>
+									<td align="left" style="padding:1px;">'.strtoupper(($row1['apyn'])).'</td>
+									<td align="left" style="padding:1px;"><a href="equipo.php?eq='.$row1['refequipo'].'">'.($row1['nombre']).'</a></td>
+									<td align="left" style="padding:1px;">'.($row1['motivos']).'</td>
+									<td align="center" style="padding:1px;">'.$row1['cantidad'].'(Resta '.$restantes.')'.'</td>
+								</tr>';
+								
+								$i = $i + 1;
+							}
+							}
+						}
+						
+						
+						while ($row2 = mysql_fetch_array($res5)) {
+
+
+								$cad3 = $cad3.'<tr>
+									<td align="left" style="padding:1px ;">'.strtoupper(($row2['apyn'])).'</td>
+									<td align="left" style="padding:1px ;">'.($row2['nombre']).'</td>
+									<td align="left" style="padding:1px ;">'.($row2['motivos']).'</td>
+									<td align="center" style="padding:1px ;">Todas</td>
+								</tr>';
+								
+								$i = $i + 1;
+
+						}
+                    $cad3 = $cad3.'</tbody>
+                                </table>
+								</div>
+								</div>
+                            </div>
+						<!--</div>-->';
+	echo $cad3;
+}
+////////////////// FIN DEL HISTORIAL ///////////////////////////////////////////////////////////////////////////////////
 
 ?>

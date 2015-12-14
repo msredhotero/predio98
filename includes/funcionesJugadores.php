@@ -164,7 +164,49 @@ class ServiciosJ {
 							where ts.refequipo = ".$idEquipo."
 							group by ts.refjugador) ss on ss.refjugador = j.idjugador
 					where
-						j.idequipo = ".$idEquipo."
+						j.idequipo = ".$idEquipo." and j.expulsado = '0' and j.invitado = '0'
+					group by j.idjugador, j.apyn, j.dni, j.invitado, j.expulsado,aa.amarillas,ss.rojas) as f
+				order by f.goles desc,f.apyn";	
+		return $this->query($sql,0);
+	}
+	
+	
+	function TraerJugadoresGolesPorEquipoFiltro($idEquipo, $invitado, $expulsado) {
+		$sql = "select 
+					f.idjugador, f.apyn, f.dni, f.invitado, f.expulsado, f.goles, f.amarillas, f.rojas
+				from
+					(select 
+						j.idjugador,
+						j.apyn,
+						j.dni,
+						(case
+							when j.invitado = '0' then 'No'
+							else 'Si'
+						end) as invitado,
+						j.invitado as invitado2,
+						(case
+							when j.expulsado = '0' then 'No'
+							else 'Si'
+						end) as expulsado,
+						COALESCE(sum(g.goles), 0) as goles,
+						COALESCE(aa.amarillas, 0) as amarillas,
+						COALESCE(ss.rojas, 0) as rojas
+					from
+						dbjugadores j
+						left join
+						tbgoleadores g on j.idjugador = g.refjugador
+						left join
+						(select ta.refjugador, count(ta.amarillas) as amarillas
+							from tbamonestados ta 
+							where ta.refequipo = ".$idEquipo." and ta.amarillas <> 2
+							group by ta.refjugador) aa on aa.refjugador = j.idjugador
+						left join
+						(select ts.refjugador, count(ts.idsuspendido) as rojas
+							from tbsuspendidos ts 
+							where ts.refequipo = ".$idEquipo."
+							group by ts.refjugador) ss on ss.refjugador = j.idjugador
+					where
+						j.idequipo = ".$idEquipo." and j.expulsado = '".$expulsado."' and j.invitado = '".$invitado."'
 					group by j.idjugador, j.apyn, j.dni, j.invitado, j.expulsado,aa.amarillas,ss.rojas) as f
 				order by f.goles desc,f.apyn";	
 		return $this->query($sql,0);
@@ -834,15 +876,24 @@ $resS = $this->traerSuspendidosPorId($id);
 					where fix.idfixture = ".mysql_result($resS,0,8)."
 					group by fix.reffecha, tge.reftorneo, t.reftipotorneo";
 	$resFixFecha = $this->query($sqlFixFecha,0);
+	
+	$motivos = mysql_result($resS,0,3);
 		
 	$fechaJuego = mysql_result($resFixFecha,0,0);
 	$refTorneo = mysql_result($resFixFecha,0,1);
 	$refTipoTorneo = mysql_result($resFixFecha,0,2);
 
-	$sqlFP = "update tbconducta
+	if (strpos($motivos,'Amarillas') !== false) {
+		$sqlFP = "update tbconducta
+					set
+					puntos = puntos - 1
+					where refequipo =".mysql_result($resS,0,'refequipo')." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
+	} else {
+		$sqlFP = "update tbconducta
 					set
 					puntos = puntos - 3
 					where refequipo =".mysql_result($resS,0,'refequipo')." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
+	}
 	$this->query($sqlFP,0);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -880,7 +931,7 @@ from
 							join		tbtipotorneo tp
 							on			tp.idtipotorneo = t.reftipotorneo
 				group by fix.idfixture,t.nombre, tp.descripciontorneo) d ON d.idfixture = c.reffixture
-order by e.nombre";
+order by e.nombre,j.apyn,cantidadfechas desc";
 	$res = $this->query($sql,0);
 	return $res;
 }

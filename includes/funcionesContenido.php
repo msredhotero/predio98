@@ -56,7 +56,7 @@ class ServiciosContenido {
 
 	function insertarContenido($texto,$refseccion) {
 	$sql = "insert into tbcontenidos(idcontenido,texto,refseccion)
-	values ('','".str_replace("'","''",$texto)."',".$refseccion.")";
+	values ('','".utf8_decode(str_replace("'","''",$texto))."',".$refseccion.")";
 	$res = $this->query($sql,1);
 	return $res;
 	}
@@ -103,7 +103,7 @@ class ServiciosContenido {
 				where c.refseccion = ".$idseccion."
 				order by 1 desc";
 	$res = $this->query($sql,0);
-	return utf8_decode(mysql_result($res,0,1));
+	return html_entity_decode(mysql_result($res,0,1));
 	}
 	
 	

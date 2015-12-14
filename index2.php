@@ -214,6 +214,10 @@ if (mysql_num_rows($resNoticia)>0) {
 <link rel="stylesheet" href="css/normalize.min.css">   
 
 <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>     
+
+<link rel="stylesheet" href="css/prettyPhoto.css" type="text/css" media="screen" title="prettyPhoto main stylesheet" charset="utf-8" />
+<script src="js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
+
 <link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 <style>
 	body {
@@ -255,6 +259,24 @@ if (mysql_num_rows($resNoticia)>0) {
 	.panel-body-predio ul {
 		margin-left:15px;
 	}
+	
+	#least ul li { display: inline; }
+            
+            .wide {
+                border-bottom: 1px #000 solid;
+                width: 4000px;
+            }
+            
+            .fleft { float: left; margin: 20px; }
+            
+            .cboth { clear: both; }
+            
+            #main {
+                background: #fff;
+                margin: 0 auto;
+                padding: 30px;
+                width: 1000px;
+            }
 </style>
 
 <link rel="stylesheet" href="css/responsiveslides.css">
@@ -427,9 +449,9 @@ $(document).ready(function(){
                         <li class="menuA"><a href="index.php">Inicio</a></li>
                         <li class="torneoMenu"><a href="#">Torneos</a></li>
                         <li class="menuA"><a href="reglamento.html">Reglamento</a></li>
-                        <li class="menuA"><a href="premios.html">Premios</a></li>
-                        <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
                         <li class="menuA"><a href="desarrollo.html">Desarrollo</a></li>
+                        <li id="separar" style="margin-right:60px; padding-right:60px; display:block;"> </li>
+                        <li class="menuA"><a href="premios.html">Premios</a></li>
                         <li class="menuA"><a href="servicios.html">Servicios</a></li>
                         <li class="menuA"><a href="fotos.html">Fotos</a></li>
                         <li class="menuA"><a href="contacto.html">Contacto</a></li>
@@ -478,14 +500,19 @@ $(document).ready(function(){
 									<?php if ($GaleriaNoticia == 1) { ?>
                                             <div align="center" style=" margin-top:-45px;width:93%; height:58px; display:inline-block;">
                                             	
-                                                <p style="margin-top:30px;">
+                                                <div style="margin-top:30px;" id="least">
+                                                	<ul class="gallery clearfix">
+
+                            
                                                 	<?php
 														$cantImg = 0;
 														while ($rowImg = mysql_fetch_array($resImagenesGaleria)) {
 															
 															$cantImg += 1;	
 													?>
-                                                    <a style="padding:7px;" class="fancybox" href="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" data-fancybox-group="gallery" title="<?php echo $TituloNoticia; ?>"><img src="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" alt="" width="70" height="50" /></a>
+                                                    <li><a href="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" rel="prettyPhoto[gallery1]"><img style="margin:20px;" src="<?php echo "archivos/".$rowImg[0]."/".$rowImg[1]."/".$rowImg[2]; ?>" width="60" height="60" /></a></li>
+                                                    
+                                                    
                                                     
                                                     <?php
 															if ($cantImg == 5) {
@@ -494,8 +521,8 @@ $(document).ready(function(){
 														}
 													?>
                                             
-                                                    
-                                                </p>
+                                                    </ul>
+                                                </div>
                                             <ul class="list-inline">
                                             
                                             <li>
@@ -892,7 +919,24 @@ $(document).ready(function(){
 	
 });
 </script>
+<script type="text/javascript" charset="utf-8">
+            $(document).ready(function(){
+                $("area[rel^='prettyPhoto']").prettyPhoto();
+                
+                $(".gallery:first a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'normal',theme:'light_square',slideshow:3000, autoplay_slideshow: true});
+                $(".gallery:gt(0) a[rel^='prettyPhoto']").prettyPhoto({animation_speed:'fast',slideshow:10000, hideflash: true});
+        
+                $("#custom_content a[rel^='prettyPhoto']:first").prettyPhoto({
+                    custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
+                    changepicturecallback: function(){ initialize(); }
+                });
 
+                $("#custom_content a[rel^='prettyPhoto']:last").prettyPhoto({
+                    custom_markup: '<div id="bsap_1259344" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div><div id="bsap_1237859" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6" style="height:260px"></div><div id="bsap_1251710" class="bsarocks bsap_d49a0984d0f377271ccbf01a33f2b6d6"></div>',
+                    changepicturecallback: function(){ _bsap.exec(); }
+                });
+            });
+            </script>
 
 </body>
 
