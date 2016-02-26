@@ -63,18 +63,20 @@ $resCanchas 	= $serviciosFunciones->TraerCanchas();
 $cadRef3 = '';
 while ($rowC = mysql_fetch_array($resCanchas)) {
 	$cadRef3 = $cadRef3.'<option value="'.$rowC[0].'">'.$rowC[1].'</option>';
-	
+	$cadArC[] = $rowC;
 }
 
 
 $resHorarios 	= $serviciosFunciones->TraerHorarios($_SESSION['torneo_predio']);
 
 $cadRef4 = '';
+
 while ($rowH = mysql_fetch_array($resHorarios)) {
 	$cadRef4 = $cadRef4.'<option value="'.$rowH[0].'">'.$rowH[1].'</option>';
-	
+		
 }
 
+//die(var_dump($cadArC[0][0]));
 
 $refdescripcion = array(0 => $cadRef,1=>$cadRef,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
 $refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","Hora"); 
@@ -109,17 +111,17 @@ $cantFechas = mysql_num_rows($resZonasEquipos) - 1;
 
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF8" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 
 
-<title>Gesti&oacute;n: Tres Sesenta F&uacute;tbol</title>
+<title>Gesti&oacute;n: Predio 98</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">
+<!--<link href="../../css/estiloDash.css" rel="stylesheet" type="text/css">-->
     
 
     
@@ -137,6 +139,547 @@ $cantFechas = mysql_num_rows($resZonasEquipos) - 1;
     <link rel="stylesheet" href="../../css/bootstrap-timepicker.css">-->
     <script src="../../js/bootstrap-timepicker.min.js"></script>
 	<style type="text/css">
+* {
+  margin:0;
+  padding:0;
+}
+
+body {
+
+	background:url(../../imagenes/bgdash.jpg) repeat;
+
+/*background:#FFF;*/
+}
+
+#content {
+	margin-left:21%;
+}
+
+body > h3 {
+	border-bottom:1px solid #000;
+	margin-left:100px;
+	margin-right:80px;
+	padding-top:10px;
+	padding-left:15px;
+	padding-bottom:16px;
+	font-weight: bold;
+	font-size:1.9em;
+	color:#000;
+}
+
+h5 {
+	margin-left:100px;
+	margin-right:80px;
+	padding-top:10px;
+	padding-left:15px;
+	padding-bottom:16px;
+	font-weight: bold;
+}
+
+.fdizquierda {float: left; width: 29%;}
+
+.fdderecha {float: right; width: 68%; }
+
+
+header {
+    background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0, #454A4E),
+	color-stop(1, #464F52)
+);
+background-image: -o-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -moz-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -webkit-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -ms-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: linear-gradient(to bottom, #454A4E 0%, #464F52 100%);
+	background-color:#454A4E;
+	height:100px;
+	margin:0;
+	padding-left:100px;
+}
+
+#header {
+    background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0, #454A4E),
+	color-stop(1, #464F52)
+);
+background-image: -o-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -moz-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -webkit-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: -ms-linear-gradient(bottom, #454A4E 0%, #464F52 100%);
+background-image: linear-gradient(to bottom, #454A4E 0%, #464F52 100%);
+	background-color:#454A4E;
+	height:100px;
+	margin:0;
+	padding-left:100px;
+}
+
+.logueo {
+	background-color:#2b2f32;
+	height:800px;
+	padding-left:100px;
+}
+
+
+
+body > footer{
+background: url(../../imagenes/bg-bueno.jpg) repeat; text-align:center; font-family: "Prestige Elite Std"; font-size:0.9em; height:30px;
+border-top:2px solid #085878;
+width:100%;
+padding-top:10px;
+bottom: 0px;
+font-size:1.1em;
+padding-bottom: 10px;
+}
+
+.content {
+    height: 100%;
+    margin: 20px auto;
+    padding: 16px;
+    width: 1050px;
+}
+
+.donde {
+    width: 700px;
+    margin-left: 100px;
+    margin-top: 20px;
+}
+
+#menu li.active a {
+	font-weight: bold;
+	color:#222;
+	text-shadow: 0 0 0.1em #F6CED8, 0 0 0.2em #F6CED8;
+}
+
+#menu li a {
+	color:#EBEBEB;
+	font-weight: bold;
+	text-shadow: 0.1em 0.1em 0.05em #333;
+}
+
+#menu li a:hover {
+	color:#656565;
+	font-weight: bold;
+	text-shadow: -1px -1px white, 1px 1px #fff;
+
+}
+
+
+
+#navigation {
+			height:100%;
+			background-color: #248dc1;
+			padding-top:15px;
+			overflow-y: auto;
+			position: fixed;
+			top: 0;
+			width: 20%;
+			z-index: 9999;
+			overflow: hidden;
+			
+		}
+		
+		#navigation #mobile-header {
+			text-align:center;
+			color: #7A0000;
+			font-size:2.0em;
+			font-family:Bebas;	
+		}
+		
+		#navigation #mobile-header p {
+			color: #fff;
+			font-size:1em;
+			font-family:  "Courier New", Courier, monospace;
+		}
+		
+		.todoMenu {
+
+		}
+		
+		.nav {
+			margin-top:-15px;
+			/*border-bottom:1px solid #FFD2D2;*/
+		}
+		.nav ul {
+			list-style:none;
+		}
+		.nav ul li {
+			padding-top:15px;
+			padding:8px;
+			width:100%;
+		}
+		
+		.nav ul li a {
+			color:#FFF;
+			font-family:Bebas;
+			font-size:1.4em;
+			text-decoration:none;
+			width:100%;
+		}
+		
+		.nav ul li:hover {
+			background: #0e6390; /* Old browsers */
+			text-indent:15px;
+			-webkit-transition:all 1s ease;
+		    -moz-transition:all 1s ease;
+		    -o-transition:all 1s ease;
+		    transition:all 1s ease;
+			text-shadow:1px 1px 1px #006;
+		}
+		
+		.triangulo {
+			 width: 0; 
+			 height: 0; 
+			 border-left: 100px solid #f0ad4e;
+			 border-top: 50px solid transparent;
+			 border-bottom: 50px solid transparent; 
+		}
+
+		.nav .arriba {
+			border-top:none;
+		}
+		.abajo {
+			padding-top:-8px;
+		}
+		
+		#infoMenu {
+			margin-top:15px;
+			padding:8px 2px 1px 10px;
+			/*background-color:#7A0000;*/
+			background-color: #248dc1; /* Old browsers */
+
+			border-bottom:1px solid #d60000;
+			border-top:1px solid #b20000;
+		}
+		
+		#infoMenu p {	
+			color: #000;
+			font-family: "Coolvetica Rg";
+			font-size:16px;
+		}
+		
+		#infoDescrMenu {
+			padding:8px;
+		}
+		
+		#infoDescrMenu p {
+			color:#FFF;
+		}
+		
+		.icodashboard {
+			background:url(../../imagenes/iconmenu/dashboard.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:9px;
+		}
+		
+		.icousuarios {
+			background:url(../../imagenes/iconmenu/usuarios.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icochart {
+			background:url(../../imagenes/iconmenu/chart.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icogoleadores {
+			background:url(../../imagenes/iconmenu/gym15.png) no-repeat;
+			background-position: center center;
+			width:25px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icosuspendidos {
+			background:url(../../imagenes/iconmenu/lightning38.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		.icojugadores {
+			background:url(../../imagenes/iconmenu/user82.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		.icoamonestados {
+			background:url(../../imagenes/iconmenu/user84.png) no-repeat;
+			background-position: center center;
+			width:25px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		.icoequipos {
+			background:url(../../imagenes/iconmenu/users6.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		.icozonasequipos {
+			background:url(../../imagenes/iconmenu/users7.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		.icotorneos {
+			background:url(../../imagenes/iconmenu/verification5.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icozonas {
+			background:url(../../imagenes/iconmenu/conceptos.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icofixture {
+			background:url(../../imagenes/iconmenu/novedades.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icofairplay {
+			background:url(../../imagenes/iconmenu/exportar.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		/*
+		gym15.png
+		lightning38.png
+		user82.png
+		user84.png
+		users6.png
+		users7.png
+		verification5.png
+		*/
+		.icoalquileres {
+			background:url(../../imagenes/iconmenu/alquiler.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoinmubles {
+			background:url(../../imagenes/iconmenu/inmueble.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoturnos {
+			background:url(../../imagenes/iconmenu/turnos.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoventas {
+			background:url(../../imagenes/iconmenu/compras.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoproductos {
+			background:url(../../imagenes/iconmenu/barras.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoreportes {
+			background:url(../../imagenes/iconmenu/reportes.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icocontratos {
+			background:url(../../imagenes/iconmenu/contratos.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icosalir {
+			background:url(../../imagenes/iconmenu/salir.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			float:left;
+			margin-right:10px;
+		}
+		
+		.icoproductos2 {
+			background:url(../../imagenes/iconmenu/barras.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:9px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icoventas2 {
+			background:url(../../imagenes/iconmenu/compras.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:9px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icochart2 {
+			background:url(../../imagenes/iconmenu/chart.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:9px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icoturnos2 {
+			background:url(../../imagenes/iconmenu/turnos.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:9px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icodashboard2 {
+			background:url(../../imagenes/iconmenu/dashboard.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:9px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icousuarios2 {
+			background:url(../../imagenes/iconmenu/usuarios.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icoalquileres2 {
+			background:url(../../imagenes/iconmenu/alquiler.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icoinmubles2 {
+			background:url(../../imagenes/iconmenu/inmueble.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		
+		.icoreportes2 {
+			background:url(../../imagenes/iconmenu/reportes.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icocontratos2 {
+			background:url(../../imagenes/iconmenu/contratos.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+		
+		.icosalir2 {
+			background:url(../../imagenes/iconmenu/salir.png) no-repeat;
+			background-position: center center;
+			width:40px;
+			height:25px;
+			margin-right:10px;
+			margin-bottom:25px;
+			cursor:pointer;
+		}
+
+
+
+
+		.letraChica {
+			font-size:12px;
+		}
 		
   
 		
@@ -220,75 +763,132 @@ $cantFechas = mysql_num_rows($resZonasEquipos) - 1;
         </div>
     	<div class="cuerpoBox">
     		<form class="form-inline formulario" role="form" method="post" action="finalizar.php">
-            <div class="row" style="margin-left:5px; margin-right:5px;">
+            <div class="row" style="margin-left:5px; margin-right:5px; min-width:800px;">
+            	<div class="form-group col-md-12">
+                	<label class="control-label">Seleccione si el tipo de campeonato es Ida o Ida/Vuelta: </label>
+                    <select id="idavuelta" name="idavuelta" class="form-control">
+                    	<option value="0">Ida</option>
+                        <option value="1">Ida - Vuelta
+                    </select>
+                    <bt>
+                    <hr>
+                </div>
     		<?php 
 			//die(var_dump($fixtureGenerardo));
 			$total = 1;
+			$lapso = 1;
+			$cantCanchas = 1;
 			if (count($fixtureGenerardo)>0) {
 			for ($i=0;$i<$cantFechas;$i++) {
 			echo '
 
-						<h3 class="panel-title">Fecha '.($i + 1).'</h3>
+						<h3>Fecha '.($i + 1).'</h3>
 
-					  <div class="form-group col-md-4">
+					  <div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212;">
 					  	<label>Equipo A</label>
 					  </div>
-					  <div class="form-group col-md-2">
+					  <div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212;">
 					  	<label>Horario</label>
 					  </div>
-					  <div class="form-group col-md-2">
+					  <div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212;">
 					  	<label>Cancha</label>
 					  </div>
-					  <div class="form-group col-md-4">
+					  <div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212;">
 					  	<label>Equipo B</label>
 					  </div>';
 			foreach ($fixtureGenerardo as $item) {
 				$lstEquipos = explode("***",$item[$i]);
-				
+				$idCanchas = 0;
+				switch ($cantCanchas) {
+					case $cantCanchas >= 1 and $cantCanchas <=4:
+						$idCanchas = 2;
+						$lblCanchas = 'Cancha 2';
+						break;
+					case $cantCanchas >= 5 and $cantCanchas <=8:
+						$idCanchas = 3;
+						$lblCanchas = 'Cancha 3';
+						break;
+					case $cantCanchas >= 9 and $cantCanchas <=12:
+						$idCanchas = 7;
+						$lblCanchas = 'Cancha 7';
+						break;
+					case $cantCanchas >= 13 and $cantCanchas <=16:
+						$idCanchas = 8;
+						$lblCanchas = 'Cancha 8';
+						break;	
+				}
 				echo '
-					  	<div class="form-group col-md-4">
-						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control">
+					  	<div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212; padding:5px;">
+						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control letraChica">
                                 
                                 <option value="'.$lstEquipos[2].'">'.$lstEquipos[0].'</option>
                                 '.$cadRef.'
                          </select>
 						 </div>
 						 
-						 <div class="form-group col-md-2">
-						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control">
+						 <div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212; padding:5px;">
+						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control letraChica">
                                 
                                 '.$cadRef4.'    
                          </select>
-						 </div>
+						 </div>';
 						 
 						 
-						  <div class="form-group col-md-2">
-						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control">
-                                '.$cadRef3.'
-                         </select>
-						 </div>
+				echo	'<div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212; padding:5px;">
+						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control letraChica">';
+				/*for ($i=0;count($cadArC)-1;$i++) {		 
+					if ($cadArC[$i][0] == $idCanchas) {
+						  
+                       echo '<option value="'.$cadArC[$i][0].'">'.$cadArC[0][1].'</option>';
+					}
+				}*/
+				echo	'<option value="'.$idCanchas.'">'.$lblCanchas.'('.$cantCanchas.')'.'('.$lapso.')'.'</option>';
+				echo '</select>
+						 </div>';
 						 
 						 
-						 <div class="form-group col-md-4">
-						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control">
+				echo '		 
+						 <div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212; padding:5px;">
+						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control letraChica">
                                 <option value="'.$lstEquipos[3].'">'.$lstEquipos[1].'</option>
                                 '.$cadRef.' 
                          </select>
 						 </div>';
 						 $total += 1;
+						 
+						 if (($lapso == 2) && ($cantCanchas == 4)) {
+							 $cantCanchas = 4;
+						 } else {
+							 if (($cantCanchas % 4)==0) {
+								 $cantCanchas = 0;
+								 
+								 if ($lapso == 4) {
+									$lapso = 1; 
+									$cantCanchas = 0;
+								 } else {
+									$cantCanchas += ($lapso * 4); 
+								 }
+							 }
+						 }
+						 
+						 $cantCanchas += 1;
+						 
 			}
+			$lapso += 1;
 			echo '
 				
 				
-				Fecha Juego '.($i + 1).' <input type="text" id="datepicker'.($i + 1).'" name="datepicker'.($i + 1).'" value="'.date('d/m/Y').'" />
+				Fecha Juego '.($i + 1).' <input type="text" class="form-control" id="datepicker'.($i + 1).'" name="datepicker'.($i + 1).'" value="'.date('d/m/Y').'" />
 				
 		
 					';
+				echo "<hr><br>";
 			}
 			echo '<input type="hidden" id="cantfechas" name="cantfechas" value="'.($i + 1).'" />';
 			echo '<input type="hidden" id="total" name="total" value="'.$total.'" />';
 			echo '<input type="hidden" id="idtorneo" name="idtorneo" value="'.$_GET['idtorneo'].'" />';
 			echo '<input type="hidden" id="idzona" name="idzona" value="'.$_GET['idzona'].'" />';
+	
 			} else {
 				echo '<h2>Ya fue Cargado el Fixture completo para este torneo';	
 			}

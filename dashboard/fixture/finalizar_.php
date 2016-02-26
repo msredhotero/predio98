@@ -95,13 +95,12 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-$idavuelta = $_POST['idavuelta'];
 
 
 
-$fixtureGenerardo = $Generar->Generar($_POST['idtorneo'],$_POST['idzona']);
+$fixtureGenerardo = $Generar->Generar(38,19);
 
-$array = $Generar->devolverCantFilas($_POST['idtorneo'],$_POST['idzona']);
+$array = $Generar->devolverCantFilas(38,19);
 
 $filas = $array["filas"] * $array["columnas"];
 
@@ -110,12 +109,9 @@ for ($i=1; $i<=$filas;$i++) {
 	
 	$date = explode("/",$_POST["datepicker".$fecha]);
 	$nuevaFecha = $date[2]."-".$date[1]."-".$date[0];
-	$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,22+$fecha,$_POST["cancha".$i],$_POST["horario".$i]);
-	if ($idavuelta == 1) {
-		$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,23+$fecha+(integer)$array["filas"],$_POST["cancha".$i],$_POST["horario".$i]);	
-	}
+	$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,22+$fecha,$_POST["horario".$i],$_POST["cancha".$i]);
 	//echo "aaaaaaaaaaaaaaaaaaaaaaa".$nuevaFecha;
-	if (($i % (integer)$array["filas"]) == 0) {
+	if (($i % 5) == 0) {
 		$fecha += 1;
 	}
 }

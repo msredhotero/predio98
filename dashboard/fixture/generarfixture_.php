@@ -41,7 +41,7 @@ $tabla 			= "dbfixture";
 $lblCambio	 	= array("reftorneoge_a","resultado_a","reftorneoge_b","resultado_b","fechajuego","refFecha","cancha");
 $lblreemplazo	= array("Zona-Equipo 1","Resultado 1","Zona-Equipo 2","Resultado 2","Fecha Juego","Fecha","Cancha");
 
-$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonas();
+$resZonasEquipos 	= $serviciosZonasEquipos->TraerEquiposZonasPorZonas($_GET['idzona']);
 
 $cadRef = '';
 while ($rowTT = mysql_fetch_array($resZonasEquipos)) {
@@ -95,34 +95,13 @@ $cabeceras 		= "	<th>Equipo 1</th>
 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
 
-$idavuelta = $_POST['idavuelta'];
-
-
-
-$fixtureGenerardo = $Generar->Generar($_POST['idtorneo'],$_POST['idzona']);
-
-$array = $Generar->devolverCantFilas($_POST['idtorneo'],$_POST['idzona']);
-
-$filas = $array["filas"] * $array["columnas"];
-
-$fecha = 1;
-for ($i=1; $i<=$filas;$i++) {
-	
-	$date = explode("/",$_POST["datepicker".$fecha]);
-	$nuevaFecha = $date[2]."-".$date[1]."-".$date[0];
-	$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,22+$fecha,$_POST["cancha".$i],$_POST["horario".$i]);
-	if ($idavuelta == 1) {
-		$serviciosZonasEquipos->insertarFixture($_POST["equipoa".$i],"",$_POST["equipob".$i],"",$nuevaFecha,23+$fecha+(integer)$array["filas"],$_POST["cancha".$i],$_POST["horario".$i]);	
-	}
-	//echo "aaaaaaaaaaaaaaaaaaaaaaa".$nuevaFecha;
-	if (($i % (integer)$array["filas"]) == 0) {
-		$fecha += 1;
-	}
-}
 
 $lstCargados 	= $serviciosFunciones->camposTablaView($cabeceras,$serviciosZonasEquipos->TraerTodoFixture(),8);
 
-header('Location: generarfixture.php?idtorneo='.$_POST['idtorneo'].'&idzona='.$_POST['idzona']);
+$fixtureGenerardo = $Generar->Generar($_GET['idtorneo'],$_GET['idzona']);
+
+$cantFechas = mysql_num_rows($resZonasEquipos) - 1;
+//die(var_dump($fixtureGenerardo));
 ?>
 
 <!DOCTYPE HTML>
@@ -214,6 +193,12 @@ header('Location: generarfixture.php?idtorneo='.$_POST['idtorneo'].'&idzona='.$_
 	$( "#datepicker12" ).datepicker({ minDate: "", maxDate: "+13M +10D" });
 	$( "#datepicker13" ).datepicker({ minDate: "", maxDate: "+14M +10D" });
 	$( "#datepicker14" ).datepicker({ minDate: "", maxDate: "+15M +10D" });
+	$( "#datepicker15" ).datepicker({ minDate: "", maxDate: "+16M +10D" });
+	$( "#datepicker16" ).datepicker({ minDate: "", maxDate: "+17M +10D" });
+	$( "#datepicker17" ).datepicker({ minDate: "", maxDate: "+18M +10D" });
+	$( "#datepicker18" ).datepicker({ minDate: "", maxDate: "+19M +10D" });
+	$( "#datepicker19" ).datepicker({ minDate: "", maxDate: "+20M +10D" });
+	$( "#datepicker20" ).datepicker({ minDate: "", maxDate: "+21M +10D" });
   });
   </script>
 
@@ -234,7 +219,100 @@ header('Location: generarfixture.php?idtorneo='.$_POST['idtorneo'].'&idzona='.$_
         	
         </div>
     	<div class="cuerpoBox">
-    		<h1>Fixture Generado Correctamente</h1>
+    		<form class="form-inline formulario" role="form" method="post" action="finalizar.php">
+            <div class="row" style="margin-left:5px; margin-right:5px;">
+    		<?php 
+			//die(var_dump($fixtureGenerardo));
+			$total = 1;
+			if (count($fixtureGenerardo)>0) {
+			for ($i=0;$i<$cantFechas;$i++) {
+			echo '
+
+						<h3 class="panel-title">Fecha '.($i + 1).'</h3>
+
+					  <div class="form-group col-md-4">
+					  	<label>Equipo A</label>
+					  </div>
+					  <div class="form-group col-md-2">
+					  	<label>Horario</label>
+					  </div>
+					  <div class="form-group col-md-2">
+					  	<label>Cancha</label>
+					  </div>
+					  <div class="form-group col-md-4">
+					  	<label>Equipo B</label>
+					  </div>';
+			foreach ($fixtureGenerardo as $item) {
+				$lstEquipos = explode("***",$item[$i]);
+				
+				echo '
+					  	<div class="form-group col-md-4">
+						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control">
+                                
+                                <option value="'.$lstEquipos[2].'">'.$lstEquipos[0].'</option>
+                                '.$cadRef.'
+                         </select>
+						 </div>
+						 
+						 <div class="form-group col-md-2">
+						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control">
+                                
+                                '.$cadRef4.'    
+                         </select>
+						 </div>
+						 
+						 
+						  <div class="form-group col-md-2">
+						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control">
+                                '.$cadRef3.'
+                         </select>
+						 </div>
+						 
+						 
+						 <div class="form-group col-md-4">
+						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control">
+                                <option value="'.$lstEquipos[3].'">'.$lstEquipos[1].'</option>
+                                '.$cadRef.' 
+                         </select>
+						 </div>';
+						 $total += 1;
+			}
+			echo '
+				
+				
+				Fecha Juego '.($i + 1).' <input type="text" id="datepicker'.($i + 1).'" name="datepicker'.($i + 1).'" value="'.date('d/m/Y').'" />
+				
+		
+					';
+			}
+			echo '<input type="hidden" id="cantfechas" name="cantfechas" value="'.($i + 1).'" />';
+			echo '<input type="hidden" id="total" name="total" value="'.$total.'" />';
+			echo '<input type="hidden" id="idtorneo" name="idtorneo" value="'.$_GET['idtorneo'].'" />';
+			echo '<input type="hidden" id="idzona" name="idzona" value="'.$_GET['idzona'].'" />';
+			} else {
+				echo '<h2>Ya fue Cargado el Fixture completo para este torneo';	
+			}
+			?>
+            </div>
+            
+            <div class="row" style="margin-left:25px; margin-right:25px;">
+                <div class="alert"> </div>
+                <div id="load"> </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <ul class="list-inline" style="margin-top:15px;">
+                    <li>
+                    	<?php if (count($fixtureGenerardo)>0) { ?>
+                        <button type="submit" class="btn btn-primary" id="cargar" style="margin-left:0px;">Guardar</button>
+                        <?php } ?>
+                        <button type="button" class="btn btn-default" id="volver" style="margin-left:0px;">Volver</button>
+                    </li>
+
+                </ul>
+                </div>
+            </div>
+            </form>
     	</div>
     </div>
 
@@ -282,6 +360,11 @@ $(document).ready(function(){
 	
 	$('#chequearF').click( function() {
 		url = "chequear.php";
+		$(location).attr('href',url);
+	});
+	
+	$('#volver').click( function() {
+		url = "index.php";
 		$(location).attr('href',url);
 	});
 	
@@ -355,7 +438,7 @@ $(document).ready(function(){
 	
 	
 	//al enviar el formulario
-    $('#cargar').click(function(){
+    $('#cargar2').click(function(){
 		
 		if (validador() == "")
         {
@@ -427,32 +510,7 @@ $(document).ready(function(){
 
 });
 </script>
-<script type="text/javascript">
-	$(".form_date1").datetimepicker({
-		language:  "es",
-		weekStart: 1,
-		todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0,
-		format: "dd/mm/yyyy"
-	});
-	</script>
-    <script type="text/javascript">
-	$(".form_date2").datetimepicker({
-		language:  "es",
-		weekStart: 1,
-		todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0,
-		format: "dd/mm/yyyy"
-	});
-	</script>
+
 
 
 <?php } ?>
