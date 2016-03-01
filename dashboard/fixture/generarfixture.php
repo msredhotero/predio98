@@ -782,49 +782,97 @@ padding-bottom: 10px;
 			$idturnousado = '';
 			$idtge = '';
 			
-			switch ($_GET['idzona']) {
-				case 19:
-					$pasador = 0;
-					$cantCanchas = 1;
-					/////////////// array canchas //////////////////////////////////////////////////
-					$cadArC[0][0] = "2";
-					$cadArC[0][1] = "Cancha 2";
-					$cadArC[1][0] = "3";
-					$cadArC[1][1] = "Cancha 3";
-					$cadArC[2][0] = "7";
-					$cadArC[2][1] = "Cancha 7";
-					$cadArC[3][0] = "8";
-					$cadArC[3][1] = "Cancha 8";
-					//////////////////////////////////////////////////////////////////////////////////////////
-					break;
-				case 20:
-					$pasador = 1;
-					$cantCanchas = 2;
-					/////////////// array canchas //////////////////////////////////////////////////
-					$cadArC[3][0] = "2";
-					$cadArC[3][1] = "Cancha 2";
-					$cadArC[0][0] = "3";
-					$cadArC[0][1] = "Cancha 3";
-					$cadArC[1][0] = "7";
-					$cadArC[1][1] = "Cancha 7";
-					$cadArC[2][0] = "8";
-					$cadArC[2][1] = "Cancha 8";
-					//////////////////////////////////////////////////////////////////////////////////////////
-					break;
-				case 21:
-					$pasador = 2;
-					$cantCanchas = 3;
-					/////////////// array canchas //////////////////////////////////////////////////
-					$cadArC[2][0] = "2";
-					$cadArC[2][1] = "Cancha 2";
-					$cadArC[3][0] = "3";
-					$cadArC[3][1] = "Cancha 3";
-					$cadArC[0][0] = "7";
-					$cadArC[0][1] = "Cancha 7";
-					$cadArC[1][0] = "8";
-					$cadArC[1][1] = "Cancha 8";
-					//////////////////////////////////////////////////////////////////////////////////////////
-					break;	
+			if ($_SESSION['idtorneo_predio'] == 2) {
+				switch ($_GET['idzona']) {
+					case 19:
+						$pasador = 0;
+						$cantCanchas = 1;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[0][0] = "2";
+						$cadArC[0][1] = "Cancha 2";
+						$cadArC[1][0] = "3";
+						$cadArC[1][1] = "Cancha 3";
+						$cadArC[2][0] = "7";
+						$cadArC[2][1] = "Cancha 7";
+						$cadArC[3][0] = "8";
+						$cadArC[3][1] = "Cancha 8";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;
+					case 20:
+						$pasador = 1;
+						$cantCanchas = 2;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[3][0] = "2";
+						$cadArC[3][1] = "Cancha 2";
+						$cadArC[0][0] = "3";
+						$cadArC[0][1] = "Cancha 3";
+						$cadArC[1][0] = "7";
+						$cadArC[1][1] = "Cancha 7";
+						$cadArC[2][0] = "8";
+						$cadArC[2][1] = "Cancha 8";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;
+					case 21:
+						$pasador = 2;
+						$cantCanchas = 3;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[2][0] = "2";
+						$cadArC[2][1] = "Cancha 2";
+						$cadArC[3][0] = "3";
+						$cadArC[3][1] = "Cancha 3";
+						$cadArC[0][0] = "7";
+						$cadArC[0][1] = "Cancha 7";
+						$cadArC[1][0] = "8";
+						$cadArC[1][1] = "Cancha 8";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;	
+				}
+			} else {
+								switch ($_GET['idzona']) {
+					case 19:
+						$pasador = 0;
+						$cantCanchas = 1;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[0][0] = "4";
+						$cadArC[0][1] = "Cancha 4";
+						$cadArC[1][0] = "5";
+						$cadArC[1][1] = "Cancha 5";
+						$cadArC[2][0] = "9";
+						$cadArC[2][1] = "Cancha 9";
+						$cadArC[3][0] = "10";
+						$cadArC[3][1] = "Cancha 10";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;
+					case 20:
+						$pasador = 1;
+						$cantCanchas = 2;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[3][0] = "4";
+						$cadArC[3][1] = "Cancha 4";
+						$cadArC[0][0] = "5";
+						$cadArC[0][1] = "Cancha 5";
+						$cadArC[1][0] = "9";
+						$cadArC[1][1] = "Cancha 9";
+						$cadArC[2][0] = "10";
+						$cadArC[2][1] = "Cancha 10";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;
+					case 21:
+						$pasador = 2;
+						$cantCanchas = 3;
+						/////////////// array canchas //////////////////////////////////////////////////
+						$cadArC[2][0] = "4";
+						$cadArC[2][1] = "Cancha 4";
+						$cadArC[3][0] = "5";
+						$cadArC[3][1] = "Cancha 5";
+						$cadArC[0][0] = "9";
+						$cadArC[0][1] = "Cancha 9";
+						$cadArC[1][0] = "10";
+						$cadArC[1][1] = "Cancha 10";
+						//////////////////////////////////////////////////////////////////////////////////////////
+						break;	
+				}
+
 			}
 			
 			if (count($fixtureGenerardo)>0) {
@@ -945,7 +993,7 @@ padding-bottom: 10px;
 					  	<div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212; padding:5px;">
 						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control letraChica">
                                 
-                                <option value="'.$lstEquipos[2].'">'.$lstEquipos[0].'</option>
+                                <option value="'.$lstEquipos[2].'">('.$lstEquipos[2].") ".$lstEquipos[0].'</option>
                                 '.$cadRef.'
                          </select>
 						 </div>
@@ -974,7 +1022,7 @@ padding-bottom: 10px;
 				echo '		 
 						 <div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212; padding:5px;">
 						<select id="equipob'.$total.'" name="equipob'.$total.'" class="form-control letraChica">
-                                <option value="'.$lstEquipos[3].'">'.$lstEquipos[1].'</option>
+                                <option value="'.$lstEquipos[3].'">('.$lstEquipos[3].") ".$lstEquipos[1].'</option>
                                 '.$cadRef.' 
                          </select>
 						 </div>';

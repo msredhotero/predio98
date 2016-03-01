@@ -567,7 +567,7 @@ class Servicios {
 											<div class="form-group col-md-6">
 												<label for="'.$campo.'" class="control-label" style="text-align:left">'.$label.'</label>
 												<div class="input-group col-md-12">
-													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.htmlspecialchars(utf8_encode(mysql_result($resMod,0,$row[0])),ENT_HTML5).'</textarea>
+													<textarea type="text" rows="10" cols="6" class="form-control" id="'.$campo.'" name="'.$campo.'" placeholder="Ingrese el '.$label.'..." required>'.htmlspecialchars(mysql_result($resMod,0,$row[0]),ENT_HTML5).'</textarea>
 												</div>
 												
 											</div>

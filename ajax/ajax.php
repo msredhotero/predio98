@@ -12,6 +12,7 @@ include ('../includes/funcionesDATOS.php');
 include ('../includes/funcionesPlayoff.php');
 include ('../includes/funcionesContenido.php');
 include ('../includes/funcionesHistorial.php');
+include ('../includes/generadorfixturefijo.php');
 
 $serviciosUsuarios  	= new ServiciosUsuarios();
 $serviciosFunciones 	= new Servicios();
@@ -25,6 +26,8 @@ $serviciosDatos 		= new ServiciosDatos();
 $serviciosPlayOff 		= new ServiciosPlayOff();
 $serviciosContenido		= new ServiciosContenido();
 $serviciosHistorial		= new ServiciosHistorial();
+$Generar 				= new GenerarFixture();
+
 
 $accion = $_POST['accion'];
 
@@ -301,6 +304,10 @@ break;
 		break; 
 	case 'traerFixturePorEquipo':
 		traerFixturePorEquipo($serviciosZonasEquipos);
+		break;
+		
+	case 'cargarHorariosFixture':
+		cargarHorariosFixture($Generar);
 		break;
 	/* fin fixture */
 	
