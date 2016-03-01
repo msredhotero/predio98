@@ -63,7 +63,7 @@ $resCanchas 	= $serviciosFunciones->TraerCanchas();
 $cadRef3 = '';
 while ($rowC = mysql_fetch_array($resCanchas)) {
 	$cadRef3 = $cadRef3.'<option value="'.$rowC[0].'">'.$rowC[1].'</option>';
-	$cadArC[] = $rowC;
+	//$cadArC[] = $rowC;
 }
 
 
@@ -81,9 +81,6 @@ while ($rowH = mysql_fetch_array($resHorarios)) {
 $refdescripcion = array(0 => $cadRef,1=>$cadRef,2=>$cadRef2,3=>$cadRef3,4=>$cadRef4);
 $refCampo	 	= array("reftorneoge_a","reftorneoge_b","refFecha","cancha","Hora"); 
 //////////////////////////////////////////////  FIN de los opciones //////////////////////////
-
-
-
 
 /////////////////////// Opciones para la creacion del view  /////////////////////
 $cabeceras 		= "	<th>Equipo 1</th>
@@ -757,11 +754,13 @@ padding-bottom: 10px;
 <h3>Fixture</h3>
 
     <div class="boxInfoLargo">
-        <div id="headBoxInfo">
+        <div id="headBoxInfo" style="background-color:#248dc1;
+		padding:6px; 
+		height:36px;">
         	<p style="color: #fff; font-size:18px; height:16px;">Carga del Fixture</p>
         	
         </div>
-    	<div class="cuerpoBox">
+    	<div class="cuerpoBox" style="background-color:#FFF;">
     		<form class="form-inline formulario" role="form" method="post" action="finalizar.php">
             <div class="row" style="margin-left:5px; margin-right:5px; min-width:800px;">
             	<div class="form-group col-md-12">
@@ -777,9 +776,60 @@ padding-bottom: 10px;
 			//die(var_dump($fixtureGenerardo));
 			$total = 1;
 			$lapso = 1;
-			$cantCanchas = 1;
+			
+			$lblControlCancha = '';
+			
+			$idturnousado = '';
+			$idtge = '';
+			
+			switch ($_GET['idzona']) {
+				case 19:
+					$pasador = 0;
+					$cantCanchas = 1;
+					/////////////// array canchas //////////////////////////////////////////////////
+					$cadArC[0][0] = "2";
+					$cadArC[0][1] = "Cancha 2";
+					$cadArC[1][0] = "3";
+					$cadArC[1][1] = "Cancha 3";
+					$cadArC[2][0] = "7";
+					$cadArC[2][1] = "Cancha 7";
+					$cadArC[3][0] = "8";
+					$cadArC[3][1] = "Cancha 8";
+					//////////////////////////////////////////////////////////////////////////////////////////
+					break;
+				case 20:
+					$pasador = 1;
+					$cantCanchas = 2;
+					/////////////// array canchas //////////////////////////////////////////////////
+					$cadArC[3][0] = "2";
+					$cadArC[3][1] = "Cancha 2";
+					$cadArC[0][0] = "3";
+					$cadArC[0][1] = "Cancha 3";
+					$cadArC[1][0] = "7";
+					$cadArC[1][1] = "Cancha 7";
+					$cadArC[2][0] = "8";
+					$cadArC[2][1] = "Cancha 8";
+					//////////////////////////////////////////////////////////////////////////////////////////
+					break;
+				case 21:
+					$pasador = 2;
+					$cantCanchas = 3;
+					/////////////// array canchas //////////////////////////////////////////////////
+					$cadArC[2][0] = "2";
+					$cadArC[2][1] = "Cancha 2";
+					$cadArC[3][0] = "3";
+					$cadArC[3][1] = "Cancha 3";
+					$cadArC[0][0] = "7";
+					$cadArC[0][1] = "Cancha 7";
+					$cadArC[1][0] = "8";
+					$cadArC[1][1] = "Cancha 8";
+					//////////////////////////////////////////////////////////////////////////////////////////
+					break;	
+			}
+			
 			if (count($fixtureGenerardo)>0) {
 			for ($i=0;$i<$cantFechas;$i++) {
+				
 			echo '
 
 						<h3>Fecha '.($i + 1).'</h3>
@@ -799,24 +849,98 @@ padding-bottom: 10px;
 			foreach ($fixtureGenerardo as $item) {
 				$lstEquipos = explode("***",$item[$i]);
 				$idCanchas = 0;
+				
+				
 				switch ($cantCanchas) {
 					case $cantCanchas >= 1 and $cantCanchas <=4:
-						$idCanchas = 2;
+						$idCanchas = 0;
 						$lblCanchas = 'Cancha 2';
 						break;
 					case $cantCanchas >= 5 and $cantCanchas <=8:
-						$idCanchas = 3;
+						$idCanchas = 1;
 						$lblCanchas = 'Cancha 3';
 						break;
 					case $cantCanchas >= 9 and $cantCanchas <=12:
-						$idCanchas = 7;
+						$idCanchas = 2;
 						$lblCanchas = 'Cancha 7';
 						break;
 					case $cantCanchas >= 13 and $cantCanchas <=16:
-						$idCanchas = 8;
+						$idCanchas = 3;
 						$lblCanchas = 'Cancha 8';
 						break;	
 				}
+
+
+				$idtge = $lstEquipos[2].",".$lstEquipos[3];
+				//$_GET['idtorneo'],$_GET['idzona']
+				
+				//$existeHorario = $Generar->existeTurno($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],$cadArC[$idCanchas][1],($i + 23));
+				
+				//echo $existeHorario;
+				
+				//$idturnousado = $existeHorario;
+				//$aca = $existeHorario;
+				$band1 = '';
+				if ($lblControlCancha != $cadArC[$idCanchas][1]) {
+					$lblControlCancha = $cadArC[$idCanchas][1];	
+					$idturnousado = '';
+					//die();
+				} 
+				
+				if ($idturnousado == '') {
+					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],'',$idtge,$cadArC[$idCanchas][1],($i + 23));
+
+				} else {
+					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],substr($idturnousado,0,strlen($idturnousado)-1),$idtge,$cadArC[$idCanchas][1],($i + 23));
+
+				}
+				
+				$idturnousado .= $idtur['id'].",";
+				$lst = explode(',',$idturnousado);
+				//echo "<br>Filas:".count($lst);
+				if (count($lst)>=5) {
+					$idturnousado = ''; 
+				}
+				
+				/*
+				if (($idCanchas+$pasador)>=4) {
+					$idCanchas = 0;	
+					$pasador = 0;	
+				} else if (($idCanchas+$pasador)<0) {
+					$idCanchas = 0;	
+					$pasador = 0;
+				} else {
+					$pasador = 1;		
+				}
+				
+				switch ($idCanchas+$pasador) {
+					case 2:
+						$lblCanchas = 'Cancha 2';
+						break;
+					case 3:
+						$lblCanchas = 'Cancha 3';
+						break;
+					case 4:
+						$lblCanchas = 'Cancha 4';
+						break;
+					case 5:
+						$lblCanchas = 'Cancha 5';
+						break;
+					case 7:
+						$lblCanchas = 'Cancha 7';
+						break;
+					case 8:
+						$lblCanchas = 'Cancha 8';
+						break;
+					case 9:
+						$lblCanchas = 'Cancha 9';
+						break;
+					case 10:
+						$lblCanchas = 'Cancha 10';
+						break;
+						
+				}
+				*/
 				echo '
 					  	<div class="form-group col-md-4 col-sm-4" style="border:1px solid #121212; padding:5px;">
 						<select id="equipoa'.$total.'" name="equipoa'.$total.'" class="form-control letraChica">
@@ -828,12 +952,11 @@ padding-bottom: 10px;
 						 
 						 <div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212; padding:5px;">
 						<select id="horario'.$total.'" name="horario'.$total.'" class="form-control letraChica">
-                                
+                                <option value="'.$idtur['id'].'">'.$idtur['horario'].'</option>
                                 '.$cadRef4.'    
                          </select>
 						 </div>';
-						 
-						 
+						 	 
 				echo	'<div class="form-group col-md-2 col-sm-2" style="border:1px solid #121212; padding:5px;">
 						<select id="cancha'.$total.'" name="cancha'.$total.'" class="form-control letraChica">';
 				/*for ($i=0;count($cadArC)-1;$i++) {		 
@@ -842,7 +965,8 @@ padding-bottom: 10px;
                        echo '<option value="'.$cadArC[$i][0].'">'.$cadArC[0][1].'</option>';
 					}
 				}*/
-				echo	'<option value="'.$idCanchas.'">'.$lblCanchas.'('.$cantCanchas.')'.'('.$lapso.')'.'</option>';
+				echo	'<option value="'.$cadArC[$idCanchas][0].'">'.$cadArC[$idCanchas][1].'</option>';
+				echo	$cadRef3;  
 				echo '</select>
 						 </div>';
 						 
@@ -855,18 +979,38 @@ padding-bottom: 10px;
                          </select>
 						 </div>';
 						 $total += 1;
-						 
-						 if (($lapso == 2) && ($cantCanchas == 4)) {
-							 $cantCanchas = 4;
+						 if (($lapso == 3) && ($cantCanchas == 16) && ($_GET['idzona'] == 21)) {
+							 $lapso = 1; 
+							 $cantCanchas = 0;
 						 } else {
-							 if (($cantCanchas % 4)==0) {
-								 $cantCanchas = 0;
-								 
-								 if ($lapso == 4) {
-									$lapso = 1; 
-									$cantCanchas = 0;
+							 if (($lapso == 3) && ($cantCanchas == 8) && ($_GET['idzona'] == 21)) {
+								 $lapso = 1; 
+								 $cantCanchas = 8;
+							 } else {
+								 if (($lapso == 2) && ($cantCanchas == 12) && ($_GET['idzona'] == 21)) {
+									 $lapso = 3; 
+									 $cantCanchas = 12;
 								 } else {
-									$cantCanchas += ($lapso * 4); 
+									 if (($lapso == 3) && ($cantCanchas == 16) && ($_GET['idzona'] == 20)) {
+										 $lapso = 0; 
+										 $cantCanchas = 0;
+									 } else {
+									 
+										 if (($lapso == 2) && ($cantCanchas == 4)) {
+											 $cantCanchas = 4;
+										 } else {
+											 if (($cantCanchas % 4)==0) {
+												 $cantCanchas = 0;
+												 
+												 if ($lapso == 4) {
+													$lapso = 1; 
+													$cantCanchas = 0;
+												 } else {
+													$cantCanchas += ($lapso * 4); 
+												 }
+											 }
+										 }
+									 }
 								 }
 							 }
 						 }
@@ -875,6 +1019,7 @@ padding-bottom: 10px;
 						 
 			}
 			$lapso += 1;
+			$idturnousado == '';
 			echo '
 				
 				
@@ -892,6 +1037,7 @@ padding-bottom: 10px;
 			} else {
 				echo '<h2>Ya fue Cargado el Fixture completo para este torneo';	
 			}
+			//echo $aca;
 			?>
             </div>
             

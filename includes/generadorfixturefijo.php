@@ -293,6 +293,141 @@ return $fixture;
 
 }
 
+function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge,$cancha,$fecha) {
+	
+	if ($idturnousado == '') {
+		$sql = "select 
+					e.nombre,e.idequipo,tep.valor,h.idhorario,h.horario
+				from
+					dbequipos e
+						inner join
+					dbtorneoge tge ON tge.refequipo = e.idequipo
+						inner join
+					dbgrupos g ON g.idgrupo = tge.refgrupo
+						inner join
+					dbtorneos t ON t.idtorneo = tge.reftorneo
+						inner join
+					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+						inner join
+					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.IdTorneoGE
+						inner join
+					tbhorarios h ON h.idhorario = tep.refturno
+
+				where
+					t.idtorneo = ".$idtorneo." and t.activo = 1 and tge.IdTorneoGE in (".$idtge.")
+						and tge.refgrupo = ".$idzona." and h.idhorario not in (select distinct
+																		h.idhorario
+																	from
+																		dbequipos e
+																			inner join
+																		dbtorneoge tge ON tge.refequipo = e.idequipo
+																			inner join
+																		dbgrupos g ON g.idgrupo = tge.refgrupo
+																			inner join
+																		dbtorneos t ON t.idtorneo = tge.reftorneo
+																			inner join
+																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+																			inner join
+																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
+																			or fix.reftorneoge_b = tge.idtorneoge
+																			inner join
+																		tbhorarios h ON h.horario = fix.hora
+																			and h.reftipotorneo = ".$idtipotorneo."
+																	where
+																		t.idtorneo = ".$idtorneo." and t.activo = 1
+																			and fix.cancha = '".$cancha."'
+																			and fix.reffecha = ".$fecha.")
+				order by tge.prioridad desc,tep.valor desc,h.idhorario
+				limit 1";	
+	} else {
+		$sql = "select 
+					e.nombre,e.idequipo,tep.valor,h.idhorario,h.horario
+				from
+					dbequipos e
+						inner join
+					dbtorneoge tge ON tge.refequipo = e.idequipo
+						inner join
+					dbgrupos g ON g.idgrupo = tge.refgrupo
+						inner join
+					dbtorneos t ON t.idtorneo = tge.reftorneo
+						inner join
+					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+						inner join
+					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.IdTorneoGE
+						inner join
+					tbhorarios h ON h.idhorario = tep.refturno
+				where
+					t.idtorneo = ".$idtorneo." and t.activo = 1 and tge.idtorneoge in (".$idtge.")
+						and tge.refgrupo = ".$idzona." and (h.idhorario not in (".$idturnousado.") and h.idhorario not in (select distinct
+																		h.idhorario
+																	from
+																		dbequipos e
+																			inner join
+																		dbtorneoge tge ON tge.refequipo = e.idequipo
+																			inner join
+																		dbgrupos g ON g.idgrupo = tge.refgrupo
+																			inner join
+																		dbtorneos t ON t.idtorneo = tge.reftorneo
+																			inner join
+																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+																			inner join
+																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
+																			or fix.reftorneoge_b = tge.idtorneoge
+																			inner join
+																		tbhorarios h ON h.horario = fix.hora
+																			and h.reftipotorneo = ".$idtipotorneo."
+																	where
+																		t.idtorneo = ".$idtorneo." and t.activo = 1
+																			and fix.cancha = '".$cancha."'
+																			and fix.reffecha = ".$fecha."))
+			order by tge.prioridad desc,tep.valor desc,h.idhorario
+			limit 1";	
+	}
+	//echo $sql;
+	//die();
+	$res = $this-> query($sql,0);
+	if (mysql_num_rows($res) >0) {
+		return array('id'=>mysql_result($res,0,3),'horario'=>mysql_result($res,0,4));	
+	}
+	return array('id'=>0,'horario'=>0);
+}
+
+function existeTurno($idzona,$idtorneo,$idtipotorneo,$cancha,$fecha) {
+	$sql = "select 
+				distinct h.idhorario, h.horario
+			from
+				dbequipos e
+					inner join
+				dbtorneoge tge ON tge.refequipo = e.idequipo
+					inner join
+				dbgrupos g ON g.idgrupo = tge.refgrupo
+					inner join
+				dbtorneos t ON t.idtorneo = tge.reftorneo
+					inner join
+				tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+					inner join
+				dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
+					or fix.reftorneoge_b = tge.idtorneoge
+					inner join
+				tbhorarios h on h.horario = fix.hora and h.reftipotorneo = 1
+			where
+				t.idtorneo = ".$idtorneo." and t.activo = 1
+					and fix.cancha = '".$cancha."'
+					and fix.reffecha = ".$fecha;
+	$res = $this-> query($sql,0);
+	
+	$cad = '';
+	if (mysql_num_rows($res) >0) {
+		while ($row = mysql_fetch_array($res)) {
+			$cad .= mysql_result($res,0,0).",";	
+		}
+		return $cad;
+	}
+	return $cad;
+	
+	//return $sql;
+}
+
 function query($sql,$accion) {
 	
 	require_once 'appconfig.php';
