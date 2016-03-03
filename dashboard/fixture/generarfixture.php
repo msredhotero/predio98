@@ -935,11 +935,12 @@ padding-bottom: 10px;
 					//die();
 				} 
 				
+				
 				if ($idturnousado == '') {
-					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],'',$idtge,$cadArC[$idCanchas][1],($i + 23));
+					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],'',$lstEquipos[2],$lstEquipos[3],$cadArC[$idCanchas][1],($i + 23));
 
 				} else {
-					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],substr($idturnousado,0,strlen($idturnousado)-1),$idtge,$cadArC[$idCanchas][1],($i + 23));
+					$idtur = $Generar->buscarHorario($_GET['idzona'],$_GET['idtorneo'],$_SESSION['idtorneo_predio'],substr($idturnousado,0,strlen($idturnousado)-1),$lstEquipos[2],$lstEquipos[3],$cadArC[$idCanchas][1],($i + 23));
 
 				}
 				

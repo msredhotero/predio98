@@ -24,17 +24,18 @@ function login($usuario,$pass,$torneo) {
 	
 	$sqlusu = "select * from se_usuarios where email = '".$usuario."'";
 
-
+$error = '';
 
 if (trim($usuario) != '' and trim($pass) != '') {
 
 $respusu = $this->query($sqlusu,0);
 
 if (mysql_num_rows($respusu) > 0) {
-	$error = '';
+	
 	
 	$idUsua = mysql_result($respusu,0,0);
-	$sqlpass = "select nombrecompleto,email,usuario,refroll from se_usuarios where password = '".$pass."' and IdUsuario = ".$idUsua;
+	$sqlpass = "select nombrecompleto,email,usuario,refroll from se_usuarios where password = '".$pass."' and idusuario = ".$idUsua;
+
 
 	$resppass = $this->query($sqlpass,0);
 	
@@ -52,6 +53,7 @@ if (mysql_num_rows($respusu) > 0) {
 	}
 	
 	if ($error == '') {
+		//die(var_dump($error));
 		session_start();
 		$_SESSION['usua_predio'] = $usuario;
 		$_SESSION['nombre_predio'] = mysql_result($resppass,0,0);
@@ -61,6 +63,7 @@ if (mysql_num_rows($respusu) > 0) {
 		$sqlTorneo = "select descripciontorneo,idtipotorneo from tbtipotorneo where idtipotorneo =".$torneo;
 		$_SESSION['torneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,0);
 		$_SESSION['idtorneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,1);
+		return '';
 	}
 	
 }	else {

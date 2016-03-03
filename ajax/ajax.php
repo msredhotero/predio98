@@ -2609,7 +2609,10 @@ function calcularTablaConducta($serviciosZonasEquipos) {
 
 
 /* para los fixture */
-
+function cargarHorariosFixture($Generar) {
+	
+	
+}
 
 function insertarFixture($serviciosZonasEquipos) {
 	$reftorneoge_a 	= $_POST['reftorneoge_a'];

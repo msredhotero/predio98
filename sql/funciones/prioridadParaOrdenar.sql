@@ -1,7 +1,11 @@
 select
-g.idfixture,g.equipoa,g.equipob,g.zona, g.avalor1 + g.bvalor1 as v1,g.avalor2 + g.bvalor2 as v2,
-g.avalor3 + g.bvalor3 as v3,g.avalor4 + g.bvalor4 as v4,g.ahorario1,g.ahorario2,g.ahorario3,g.ahorario4,g.fecha,
-g.reftorneoge_a,g.reftorneoge_b
+/*g.idfixture,g.equipoa,g.equipob,g.zona, */
+sum(g.avalor1 + g.bvalor1) as v1,
+sum(g.avalor2 + g.bvalor2) as v2,
+sum(g.avalor3 + g.bvalor3) as v3,
+sum(g.avalor4 + g.bvalor4) as v4,
+g.ahorario1,g.ahorario2,g.ahorario3,g.ahorario4,g.fecha
+/*,g.reftorneoge_a,g.reftorneoge_b*/
 from
  (
 	select 
@@ -453,5 +457,6 @@ from
 ) g
 
 where g.fecha = 'Fecha 1' 
-order by (g.avalor3 + g.bvalor3) desc,(g.avalor2 + g.bvalor2) desc,(g.avalor4 + g.bvalor4) desc,(g.avalor1 + g.bvalor1) desc
+group by g.ahorario1,g.ahorario2,g.ahorario3,g.ahorario4,g.fecha
+
 

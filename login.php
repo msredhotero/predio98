@@ -1,6 +1,8 @@
 <?php
 set_include_path("class");
 
+session_start();
+session_destroy();
 require 'includes/funcionesUsuarios.php';
 include ('includes/funciones.php');
 
@@ -121,7 +123,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
                                         $("#load").html('<img src="imagenes/load13.gif" width="50" height="50" />');
                                 },
                                 success:  function (response) {
-      									
+      									/*
                                         if (response != '') {
                                             
                                             $("#error").removeClass("alert alert-danger");
@@ -133,7 +135,9 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
                                         } else {
 											url = "dashboard/";
 											$(location).attr('href',url);
-										}
+										}*/
+										url = "dashboard/";
+											$(location).attr('href',url);
                                         
                                 }
                         });
