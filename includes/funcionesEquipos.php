@@ -225,7 +225,8 @@ return $res;
 							t.tipofecha,
 							t.hora,
 							t.nombre,
-							t.descripciontorneo
+							t.descripciontorneo,t.idtorneo,t.idfecha
+			
 					from (
 						select 
 							(select 
@@ -252,7 +253,9 @@ return $res;
 							ff.tipofecha,
 							f.hora,
 							t.nombre,
-							tp.descripciontorneo
+							tp.descripciontorneo,t.idtorneo,ff.idfecha
+			
+			
 						from
 							dbfixture f
 								inner join
@@ -267,8 +270,8 @@ return $res;
 						where
 							f.chequeado = 1 and tge.refequipo = ".$idEquipo."
 							  
-						order by t.idtorneo desc,ff.idfecha desc
-					) as t";
+						
+					) as t order by t.idtorneo ,t.idfecha";
 		return $this-> query($sql,0);		
 	}	
 	
