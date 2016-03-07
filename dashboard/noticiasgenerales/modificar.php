@@ -56,7 +56,7 @@ $cantidadImagenes = mysql_num_rows($resNoticiasFotos);
 
 $formulario 	= $serviciosFunciones->camposTablaModificar($id, "idnoticia","modificarNoticias",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
-$parrafo = mysql_result($resResultado,0,'parrafo');
+$parrafo = str_replace('<p>&nbsp;/// GENERAL ///</p>','',mysql_result($resResultado,0,'parrafo'));
 
 if ($_SESSION['refroll_predio'] != 1) {
 
