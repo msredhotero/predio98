@@ -78,7 +78,7 @@ class Servicios {
 			
 			for ($i=1;$i<=$cantidad;$i++) {
 				
-				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.htmlspecialchars($row[$i],ENT_HTML5).'</div></td>';	
+				$cadsubRows = $cadsubRows.'<td><div style="height:60px;overflow:auto;">'.($row[$i]).'</div></td>';	
 			}
 			
 			
@@ -940,7 +940,7 @@ function deshactivarTorneos($idtorneo,$idtipotorneo) {
 		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,t.activo,tt.descripciontorneo from dbtorneos t
 				inner join
 				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
-				where tt.descripciontorneo = '".$tipotorneo."' and t.activo = 1";
+				where tt.idtipotorneo = ".$tipotorneo." and t.activo = 1";
 		return $this-> query($sql,0);
 	}
 	
@@ -973,18 +973,38 @@ function traerZonaPorTorneos($refTorneo) {
 				where tt.idtipotorneo = ".$idtipotorneo;
 		$res = $this-> query($sql,0);
 
-			return $res;
+		return $res;
+	}
+        
+        
+        function TraerTorneoPorTipoTorneoActivo($idtipotorneo) {
+		$sql = "select t.idtorneo,t.nombre,t.fechacreacion,
+				(CASE WHEN t.activo =1
+				THEN  '1'
+				ELSE  '0'
+				END
+				) AS activo,tt.descripciontorneo from dbtorneos t
+				right join
+				tbtipotorneo tt on t.reftipotorneo = tt.idtipotorneo
+				where t.activo = 1 and tt.idtipotorneo = ".$idtipotorneo;
+		$res = $this-> query($sql,0);
+
+		return $res;
 	}
 	
 	function cambiarTorneo($idtipotorneo,$idtorneo) {
 	
-		$resTP = $this->TraerTorneoPorTipoTorneo($idtipotorneo);
-		session_start();
-		$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
+		$resTP = $this->TraerTorneoPorTipoTorneoActivo($idtipotorneo);
 		
-		$_SESSION['idtorneo_predio'] = $idtipotorneo;
+                
+                //session_start();
+		//$_SESSION['torneo_predio'] = mysql_result($resTP,0,4);
 		
-		return true;
+                //die(var_dump(mysql_result($resTP,0,4)));
+                
+		//$_SESSION['idtorneo_predio'] = $idtipotorneo;
+		
+		return '';
 	}
 	
 	

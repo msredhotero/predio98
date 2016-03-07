@@ -12,7 +12,7 @@ include ('../includes/funcionesDATOS.php');
 include ('../includes/funcionesPlayoff.php');
 include ('../includes/funcionesContenido.php');
 include ('../includes/funcionesHistorial.php');
-include ('../includes/generadorfixturefijo.php');
+
 
 $serviciosUsuarios  	= new ServiciosUsuarios();
 $serviciosFunciones 	= new Servicios();
@@ -26,7 +26,7 @@ $serviciosDatos 		= new ServiciosDatos();
 $serviciosPlayOff 		= new ServiciosPlayOff();
 $serviciosContenido		= new ServiciosContenido();
 $serviciosHistorial		= new ServiciosHistorial();
-$Generar 				= new GenerarFixture();
+
 
 
 $accion = $_POST['accion'];
@@ -306,9 +306,7 @@ break;
 		traerFixturePorEquipo($serviciosZonasEquipos);
 		break;
 		
-	case 'cargarHorariosFixture':
-		cargarHorariosFixture($Generar);
-		break;
+
 	/* fin fixture */
 	
 	/* para los noticias */
@@ -1902,11 +1900,7 @@ function cambiarTorneo($serviciosFunciones) {
 	
 	$res = $serviciosFunciones->cambiarTorneo($idtipotorneo,$idtorneo);
 	//echo $res;
-	if ($res == true) {
-		echo '';
-	} else {
-		echo 'Huvo un error al cambiar el torneo';
-	}
+	echo $res;
 }
 
 /* fin torneos */
@@ -2609,10 +2603,7 @@ function calcularTablaConducta($serviciosZonasEquipos) {
 
 
 /* para los fixture */
-function cargarHorariosFixture($Generar) {
-	
-	
-}
+
 
 function insertarFixture($serviciosZonasEquipos) {
 	$reftorneoge_a 	= $_POST['reftorneoge_a'];

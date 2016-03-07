@@ -1,5 +1,5 @@
 <?php
-set_include_path("class");
+
 
 session_start();
 session_destroy();
@@ -30,7 +30,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
 
 		<link rel="stylesheet" type="text/css" href="css/estilo.css"/>
 
-<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.10.2.js"></script>
 
          <link rel="stylesheet" href="css/jquery-ui.css">
 
@@ -110,39 +110,9 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
 				
 				$("#login").click(function(event) {
         			
-						if (validador() == "")
-        				{
-        						$.ajax({
-                                data:  {email:		$("#email").val(),
-										pass:		$("#pass").val(),
-										reftorneo:	$('#reftorneo').val(),
-										accion:		'login'},
-                                url:   'ajax/ajax.php',
-                                type:  'post',
-                                beforeSend: function () {
-                                        $("#load").html('<img src="imagenes/load13.gif" width="50" height="50" />');
-                                },
-                                success:  function (response) {
-      									/*
-                                        if (response != '') {
-                                            
-                                            $("#error").removeClass("alert alert-danger");
+					validador();
 
-                                            $("#error").addClass("alert alert-danger");
-                                            $("#error").html('<strong>Error!</strong> '+response);
-                                            $("#load").html('');
-
-                                        } else {
-											url = "dashboard/";
-											$(location).attr('href',url);
-										}*/
-										url = "dashboard/";
-											$(location).attr('href',url);
-                                        
-                                }
-                        });
-        				}
-        		});
+                                });
 				
 			});/* fin del document ready */
 		
@@ -181,7 +151,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
 				<div align="center"><p style="color:#E9E9E9; font-size:28px;">Acceso al panel de control</p></div>
                 <br>
             </div>
-			<form role="form" class="form-horizontal">
+            <form role="form" class="form-horizontal" method="POST" action="validar.php">
               
              <!--
                 <label for="usuario" class="col-md-2 control-label" style="color:#FFF">Usuario</label>
@@ -235,7 +205,7 @@ $resTipoTorneos = $servicios->traerTipoTorneo();
              
               <div class="form-group">
                 <div class="col-lg-offset-2 col-lg-10">
-                  <button type="button" class="btn btn-default" id="login">Login</button>
+                    <button type="submit" class="btn btn-default" id="login">Login</button>
                 </div>
               </div>
 				
