@@ -55,7 +55,11 @@ $refCampo[] 	= "";
 
 $formulario 	= $serviciosFunciones->camposTablaModificar($id, "idnoticiaprincipal","modificarNoticiasPrincipales",$tabla,$lblCambio,$lblreemplazo,$refdescripcion,$refCampo);
 
+$buscar=array(chr(13).chr(10), "\r\n", "\n", "\r");
+$reemplazar=array("", "", "", "");
+$parrafo=str_ireplace($buscar,$reemplazar,mysql_result($resResultado,0,'noticiaprincipal'));
 
+//$parrafo = trim(str_replace("\n","" ,mysql_result($resResultado,0,'noticiaprincipal')));
 
 if ($_SESSION['refroll_predio'] != 1) {
 
@@ -192,7 +196,7 @@ if ($_SESSION['refroll_predio'] != 1) {
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	CKEDITOR.instances['noticiaprincipal'].setData($('#noticiaprincipal').val());
+	CKEDITOR.instances['noticiaprincipal'].setData('<?php echo $parrafo; ?>');
 		
 	$('.volver').click(function(event){
 		 

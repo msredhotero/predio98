@@ -364,12 +364,81 @@ $(document).ready(function(){
 </div>
             
 <div style="background-color:#000; height:auto; margin-top:-20px; padding-top:20px;">
+
     <div class="clearfix content">
     	<div class="row">
         
         </div>
     	<div class="header-container">
-            <header class="wrapper clearfix">
+        	<div class="menuopo">
+            <div class="navbar-header page-scroll">
+                <button data-target="#navbar-collapse-4" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+
+                <a href="index.php"><img src="imagenes/logo.png" style="width:10%;"></a>
+            </div>
+            
+            <div class="collapse navbar-collapse" id="navbar-collapse-4">
+              <ul class="nav navbar-nav navbar-right">
+                
+                
+                    
+                <li class="dropdown">
+                
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Torneo de Fútbol 11 con Off-side <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="fixture.php">Fixture</a></li>
+                    <li><a href="historial.php?idtorneo=1">Historial</a></li>
+                    <li><a href="zonas.php?zona=19&idtorneo=1">Zona A</a></li>
+                    <li><a href="zonas.php?zona=20&idtorneo=1">Zona B</a></li>
+                    <li><a href="zonas.php?zona=21&idtorneo=1">Zona C</a></li>
+                  </ul>
+				</li>
+                
+                <li class="dropdown">
+                
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Torneo de Fútbol 11 sin Off-side <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="fixture.php">Fixture</a></li>
+                    <li><a href="historial.php?idtorneo=1">Historial</a></li>
+                    <li><a href="zonas.php?zona=19&idtorneo=2">Zona A</a></li>
+                    <li><a href="zonas.php?zona=20&idtorneo=2">Zona B</a></li>
+                    <li><a href="zonas.php?zona=21&idtorneo=2">Zona C</a></li>
+                  </ul>
+                </li>
+                  
+				<li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Torneo de Fútbol 7 <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="fixture.php">Fixture</a></li>
+                    <li><a href="historial.php?idtorneo=1">Historial</a></li>
+                    <li><a href="zonas.php?zona=19&idtorneo=3">Zona A</a></li>
+                    <li><a href="zonas.php?zona=20&idtorneo=3">Zona B</a></li>
+                    <li><a href="zonas.php?zona=21&idtorneo=3">Zona C</a></li>
+                  </ul>
+                </li>
+
+                <li><a href="reglamento.html">Reglamento</a></li>
+                <li><a href="premios.html">Premios</a></li>
+                <li><a href="desarrollo.html">Desarrollo</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="fotos.html">Fotos</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                
+              </ul>
+              
+            </div><!-- /.navbar-collapse -->
+            
+            
+            </div>
+            <header class="wrapper clearfix menuop">
+            	<!-- Brand and toggle get grouped for better mobile display -->
+            
+            	
                 <div align="center" style="margin-bottom:-55px; margin-left:-25px;">
                 <a href="index.php"><img src="imagenes/logo2.png"></a>
                 </div>

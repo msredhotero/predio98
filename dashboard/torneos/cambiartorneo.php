@@ -18,9 +18,9 @@ $serviciosHTML = new ServiciosHTML();
 
 $fecha = date('Y-m-d');
 
-$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],utf8_encode($_SESSION['torneo_predio']));
+$resMenu = $serviciosHTML->menu($_SESSION['nombre_predio'],"Torneos",$_SESSION['refroll_predio'],($_SESSION['torneo_predio']));
 
-$resTorneoActual = $serviciosFunciones->TraerTorneosActivo($_SESSION['torneo_predio']);
+$resTorneoActual = $serviciosFunciones->TraerTorneosActivo($_SESSION['idtorneo_predio']);
 
 $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
 
@@ -94,7 +94,7 @@ $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
         	<form class="form-inline formulario" role="form">
         	<div class="row">
             	<div class="col-md-11 alert-info" style="margin-left:20px;">
-                	<h4>Torneo Actual: <?php echo utf8_encode(mysql_result($resTorneoActual,0,1)); ?> - <?php echo utf8_encode(mysql_result($resTorneoActual,0,4)); ?></h4>
+                	<h4>Torneo Actual: <?php echo (mysql_result($resTorneoActual,0,1)); ?> - <?php echo (mysql_result($resTorneoActual,0,4)); ?></h4>
                 </div>
                 <div class="form-group col-md-6">
                	 <label class="control-label" style="text-align:left" for="reftorneo">Tipo de Torneo</label>
@@ -104,7 +104,7 @@ $resTipoTorneos = $serviciosFunciones->traerTipoTorneo();
                     		<?php
 								while ($row = mysql_fetch_array($resTipoTorneos)) {
 							?>
-                            		<option value="<?php echo $row[0]; ?>"><?php echo utf8_encode($row[1]); ?></option>
+                            		<option value="<?php echo $row[0]; ?>"><?php echo ($row[1]); ?></option>
                             <?php	
 								}
 							?>
@@ -181,8 +181,7 @@ $(document).ready(function(){
 	//al enviar el formulario
     $('#cargar').click(function(){
 		
-		/*if (validador() == "")
-        {*/
+
 			//información del formulario
 			var formData = new FormData($(".formulario")[0]);
 			var message = "";
@@ -205,19 +204,10 @@ $(document).ready(function(){
 				success: function(data){
 
 					if (data == '') {
-                                            $(".alert").removeClass("alert-danger");
-											$(".alert").removeClass("alert-info");
-                                            $(".alert").addClass("alert-success");
-                                            $(".alert").html('<strong>Ok!</strong> Se cambio exitosamente el <strong>Torneo</strong>. ');
-											$(".alert").delay(3000).queue(function(){
-												/*aca lo que quiero hacer 
-												  después de los 2 segundos de retraso*/
-												$(this).dequeue(); //continúo con el siguiente ítem en la cola
-												
-											});
-											$("#load").html('');
-											url = "index.php";
-											$(location).attr('href',url);
+
+					    $("#load").html('');
+                                            url = "index.php";
+                                            $(location).attr('href',url);
                                             
 											
                                         } else {
@@ -229,31 +219,18 @@ $(document).ready(function(){
 				},
 				//si ha ocurrido un error
 				error: function(){
-					$(".alert").html('<strong>Error!</strong> Actualice la pagina');
+					$(".alert").html('<strong>Error!</strong> Refresh the page');
                     $("#load").html('');
 				}
 			});
-		/*}*/
+
     });
 
 });
 </script>
 
-<script type="text/javascript">
-$('.form_date').datetimepicker({
-	language:  'es',
-	weekStart: 1,
-	todayBtn:  1,
-	autoclose: 1,
-	todayHighlight: 1,
-	startView: 2,
-	minView: 2,
-	forceParse: 0,
-	format: 'dd/mm/yyyy'
-});
-</script>
 
-
-<?php } ?>
 </body>
 </html>
+<?php } ?>
+

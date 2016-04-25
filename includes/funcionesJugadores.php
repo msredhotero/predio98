@@ -679,7 +679,7 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			
 			if ($cantidad == 3) {
 				$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
-				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulación de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
+				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
 				$res4 = $this->query($sqlSuspendido,1);
 				
 				$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)

@@ -174,6 +174,123 @@ class ServiciosDatos {
 		$res = $this->query($sql,0);
 		return $res;
 	}
+        
+        
+        function traerResultadosPorTorneoZonaProximaFecha($idtorneo,$idzona,$idfecha) {
+		$sql = "select 
+
+		       (select ea.nombre from dbequipos ea where ea.idequipo = t.equipoa) as equipo1,
+		       t.resultadoa,
+		       t.resultadob,
+		       (select ea.nombre from dbequipos ea where ea.idequipo = t.equipob) as equipo2, 
+		       t.fechajuego,
+		       t.fecha,
+		       t.hora,
+			   t.idfixture,
+			   t.cancha
+		 
+				from (
+				select 
+				fi.idfixture,
+				(select e.idequipo 
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_a and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as equipoa,
+				
+				'' as resultadoa,
+				
+				(select e.idequipo 
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_b and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as equipob,
+				
+				'' as resultadob,
+				
+				(select g.nombre
+				        from dbtorneoge tge
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbequipos e
+				        on e.idequipo = tge.refequipo
+				        
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				        where tge.idtorneoge = fi.reftorneoge_b and g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo.") as zona,
+				        
+				        
+				fi.fechajuego,
+				f.idfecha as fecha,
+				DATE_FORMAT(fi.hora,'%k:%i') as hora,
+				fi.cancha
+				
+				
+				from dbfixture as fi
+				        inner 
+				        join tbfechas AS f
+				        on fi.reffecha = f.idfecha
+				
+				        inner 
+				        join dbtorneoge tge
+				        on tge.idtorneoge = fi.reftorneoge_b
+
+				        inner 
+				        join dbtorneos t
+				        on tge.reftorneo = t.idtorneo and t.activo = 1
+				        
+						inner 
+				        join tbtipotorneo tp
+				        on t.reftipotorneo = tp.idtipotorneo
+
+				        inner 
+				        join dbgrupos g
+				        on g.idgrupo = tge.refgrupo
+				
+				where g.idgrupo=".$idzona." and tp.idtipotorneo = ".$idtorneo."
+				order by fecha desc
+				) as t
+				where t.fecha = ".$idfecha;
+		$res = $this->query($sql,0);
+		return $res;
+	}
 	
 	
 	

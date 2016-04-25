@@ -757,6 +757,48 @@ function FixturePagina($serviciosDatos) {
 	$zona		= $_POST['zona'];
 	$cad = '';
 	
+        $cad = $cad.'
+                        <div class="col-md-6">
+                        <div class="panel panel-predio" style="margin-top:20px;">
+                        <div class="panel-heading">
+                                <h3 class="panel-title">Proxima Fecha: '.mysql_result($serviciosDatos->TraerFechaPorId($idfecha+1),0,1).'</h3>
+                                <img src="imagenes/logo2-chico.png" style="float:right;margin-top:-21px; width:26px; height:24px;">
+                        </div>
+                        <div class="panel-body-predio">
+                                ';
+
+        $res = $serviciosDatos->traerResultadosPorTorneoZonaProximaFecha($idtorneo,$idzona,$idfecha+1);
+
+        $cad = $cad.'<table class="table table-responsive table-striped" style="font-size:0.8em; padding:2px;">
+
+                                <thead>
+                                <tr>
+                                        <th style="text-align:center">Result. A</th>
+                                    <th style="text-align:center">Equipo A</th>
+                                    <th style="text-align:center">Horario</th>
+                                    <th style="text-align:center">Equipo B</th>
+                                    <th style="text-align:center">Result. B</th>
+                                    <th style="text-align:center">Ver</th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+
+                while ($row = mysql_fetch_array($res)) {
+                        $cad = $cad.'<tr>
+                        <td align="center" id="resA'.$row['idfixture'].'">'.$row['resultadoa'].'</td>
+                    <td align="center" id="equipoA'.$row['idfixture'].'">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
+                    <td align="center">'.$row['hora']."/".$row['cancha'].'</td>
+                    <td align="center" id="equipoB'.$row['idfixture'].'">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
+                    <td align="center" id="resB'.$row['idfixture'].'">'.$row['resultadob'].'</td>
+                                                <td><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
+                </tr>';
+                }
+													
+        $cad = $cad.'</tbody>
+                                </table></div>
+                            </div>
+						</div>';
+        
 	for ($i=$idfecha;$i>=23;$i--) {
 		$cad = $cad.'
 				<div class="col-md-6">
@@ -788,7 +830,7 @@ function FixturePagina($serviciosDatos) {
                         	$cad = $cad.'<tr>
                         	<td align="center" id="resA'.$row['idfixture'].'">'.$row['resultadoa'].'</td>
                             <td align="center" id="equipoA'.$row['idfixture'].'">'.(substr(utf8_encode($row['equipo1']),0,17)).'</td>
-                            <td align="center">'.$row['hora'].'</td>
+                            <td align="center">'.$row['hora']."/".$row['cancha'].'</td>
                             <td align="center" id="equipoB'.$row['idfixture'].'">'.(substr(utf8_encode($row['equipo2']),0,17)).'</td>
                             <td align="center" id="resB'.$row['idfixture'].'">'.$row['resultadob'].'</td>
 							<td><img src="imagenes/verIco2.png" style="cursor:pointer;" id="'.$row['idfixture'].'" class="varModificar" data-target="#dialogModificar" data-toggle="modal"></td>
@@ -802,7 +844,14 @@ function FixturePagina($serviciosDatos) {
 		
 		
 	}
-
+        
+        
+        
+        	
+		
+		
+	
+        //traerResultadosPorTorneoZonaProximaFecha
 
 	echo $cad;
 }
