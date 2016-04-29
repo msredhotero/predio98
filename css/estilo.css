@@ -222,7 +222,7 @@ margin-right:6px;
 .textoTrazoTitulosN {
 	color:#333;
 	text-shadow:1px 1px 1px #fff;
-	font-size:1.5em;
+	font-size:1.2em;
 }
 
 .submenu {
@@ -532,6 +532,12 @@ margin-right:6px;
 	letter-spacing:1px;
 }
 
+#noticias #parrafo p {
+	font-size:0.9em;
+	padding-bottom:2px;
+	margin-bottom:2px;
+}
+
 #noticias .abajo {
 	position:absolute;
 	left:0;
@@ -539,6 +545,80 @@ margin-right:6px;
 	height:32px;
 	width:100%;
 }
+
+#noticias .preabajo {
+	position:absolute;
+	left:0;
+	top:157px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+
+#noticias .preabajo1 {
+	position:absolute;
+	left:0;
+	top:143px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+
+#noticias .preabajo2 {
+	position:absolute;
+	left:0;
+	top:145px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+#noticias .preabajo3 {
+	position:absolute;
+	left:0;
+	top:148px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+#noticias .preabajo4 {
+	position:absolute;
+	left:0;
+	top:151px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+#noticias .preabajo5 {
+	position:absolute;
+	left:0;
+	top:154px;
+	height:3px;
+	width:100%;
+	z-index:3;
+	background-color:#FFF;
+}
+
+.trans1 {
+    opacity: 0.8;
+}
+.trans2 {
+    opacity: 0.6;
+}
+.trans3 {
+    opacity: 0.4;
+}
+.trans4 {
+    opacity: 0.2;
+}
+.trans5 {
+    opacity: 0;
+}
+
 
 #noticias .abajo_bg {
 	position:absolute;

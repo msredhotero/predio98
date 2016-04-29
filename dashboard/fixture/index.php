@@ -215,6 +215,66 @@ $resZonasTorneos = $serviciosDatos->traerZonasPorTorneo($_SESSION['idtorneo_pred
 					<?php } ?>
                 </ul>
             </div>
+            <hr>
+            <div class="row" align="center">
+            	<ul class="list-inline">
+                	<li>
+                    	Seleccione una fecha y un nuevo dia de juego
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="row" align="center">
+                <ul class="list-inline">
+
+                    
+                    <div class="form-group col-md-4">
+                        <label for="nuevafecha" class="control-label" style="text-align:left">Nueva Fecha</label>
+                        <div class="input-group col-md-6">
+                            <input class="form-control" type="text" name="nuevafecha" id="nuevafecha" value="Date"/>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="form-group col-md-4">
+                        <label class="control-label" style="text-align:left" for="reffecha">Fecha a asignar</label>
+                        <div class="input-group col-md-12">
+                            <select id="reffechan" class="form-control" name="reffechan">
+                                <option value="23">Fecha 1</option>
+                                <option value="24">Fecha 2</option>
+                                <option value="25">Fecha 3</option>
+                                <option value="26">Fecha 4</option>
+                                <option value="27">Fecha 5</option>
+                                <option value="28">Fecha 6</option>
+                                <option value="29">Fecha 7</option>
+                                <option value="30">Fecha 8</option>
+                                <option value="31">Fecha 9</option>
+                                <option value="32">Fecha 10</option>
+                                <option value="33">Fecha 11</option>
+                                <option value="34">Fecha 12</option>
+                                <option value="35">Fecha 13</option>
+                                <option value="36">Fecha 14</option>
+                                <option value="37">Fecha 15</option>
+                                <option value="38">Fecha 16</option>
+                                <option value="39">Fecha 17</option>
+                                <option value="40">Fecha 18</option>
+                                <option value="41">Fecha 19</option>
+                                <option value="42">Fecha 20</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group col-md-4">
+                        <label class="control-label" style="text-align:left" for="reffecha">Accion</label>
+                        <div class="input-group col-md-12">
+                        	<div align="center">
+                            <button style="margin-left:0px;" id="modificarnuevafecha" class="btn btn-warning" type="button">Modificar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </ul>
+            </div>
             </form>
     	</div>
     </div>
@@ -288,6 +348,26 @@ $(document).ready(function(){
 		  } else {
 			alert("Error, vuelva a realizar la acción.");	
 		  }
+	});//fin del boton eliminar
+	
+	$('#modificarnuevafecha').click(function(event){
+		  $.ajax({
+				data:  {reffecha: $('#reffechan').val(), 
+						fechajuego: $( "#nuevafecha" ).datepicker().val(),
+						idtipotorneo: <?php echo $_SESSION['idtorneo_predio']; ?>,
+						accion: 'modificarnuevafecha'},
+				url:   '../../ajax/ajax.php',
+				type:  'post',
+				beforeSend: function () {
+						
+				},
+				success:  function (response) {
+						url = "index.php";
+						$(location).attr('href',url);
+						//$(".alert").html('<strong>Error!</strong> '+response);
+						
+				}
+		});
 	});//fin del boton eliminar
 	
 	
@@ -442,7 +522,32 @@ $('.form_date').datetimepicker({
 	format: 'dd/mm/yyyy'
 });
 </script>
+<script>
+  $(function() {
+	  $.datepicker.regional['es'] = {
+ closeText: 'Cerrar',
+ prevText: '<Ant',
+ nextText: 'Sig>',
+ currentText: 'Hoy',
+ monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+ monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+ dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+ dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+ dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+ weekHeader: 'Sm',
+ dateFormat: 'dd/mm/yy',
+ firstDay: 1,
+ isRTL: false,
+ showMonthAfterYear: false,
+ yearSuffix: ''
+ };
+ $.datepicker.setDefaults($.datepicker.regional['es']);
+ 
+    $( "#nuevafecha" ).datepicker();
 
+    $( "#nuevafecha" ).datepicker( "option", "dateFormat", "yy-mm-dd" );
+  });
+  </script>
 
 <?php } ?>
 </body>

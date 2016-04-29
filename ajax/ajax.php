@@ -306,6 +306,10 @@ break;
 		traerFixturePorEquipo($serviciosZonasEquipos);
 		break;
 		
+	case 'modificarnuevafecha':
+		modificarnuevafecha($serviciosZonasEquipos);
+		break;
+		
 
 	/* fin fixture */
 	
@@ -2653,6 +2657,19 @@ function calcularTablaConducta($serviciosZonasEquipos) {
 
 /* para los fixture */
 
+function modificarnuevafecha($serviciosZonasEquipos) {
+	$reffecha		= $_POST['reffecha'];
+	$fechajuego 	= $_POST['fechajuego'];
+	$idtipotorneo	= $_POST['idtipotorneo'];
+	$res = $serviciosZonasEquipos->modificarTodoFixturePorFecha($reffecha,$fechajuego,$idtipotorneo);
+	
+	if ($res == true) {
+		echo '';
+	} else {
+		echo 'Huvo un error al modificar datos';
+	}
+
+}
 
 function insertarFixture($serviciosZonasEquipos) {
 	$reftorneoge_a 	= $_POST['reftorneoge_a'];

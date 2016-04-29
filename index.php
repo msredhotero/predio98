@@ -550,9 +550,14 @@ $(document).ready(function(){
 											//echo $FechaNoticia; 
 										?></h6>
                                 <div id="parrafo">
-                                	<?php echo $rowLstNoticias['parrafo']; ?>
+                                	<?php echo str_replace("font-size:","",$rowLstNoticias['parrafo']); ?>
                                 </div>
-                              
+								<div class="preabajo"></div>
+                                <div class="preabajo1 trans5"></div>
+                                <div class="preabajo2 trans4"></div>
+                                <div class="preabajo3 trans3"></div>
+                                <div class="preabajo4 trans2"></div>
+                                <div class="preabajo5 trans1"></div>                              
                             	<div class="abajo">
                                 <div align="right" class="abajo_text">
                                     <a href="noticias.php?id=<?php echo $rowLstNoticias['idnoticia']; ?>">Continuar leyendo</a>
