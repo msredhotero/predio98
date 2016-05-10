@@ -677,15 +677,27 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 			$res2 = $this->query($sql,0);	
 			
-			if ($cantidad == 3) {
-				$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
-				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
-				$res4 = $this->query($sqlSuspendido,1);
-				
-				$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
-				values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
-				$res5 = $this->query($sql5,1);
-			}
+			if ($refTipoTorneo <> 3) {
+				if ($cantidad == 4) {
+					$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
+					values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 4 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
+					$res4 = $this->query($sqlSuspendido,1);
+					
+					$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
+					values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
+					$res5 = $this->query($sql5,1);
+				}
+							} else {
+							if ($cantidad == 3) {
+					$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
+					values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
+					$res4 = $this->query($sqlSuspendido,1);
+					
+					$sql5 = "insert into dbsuspendidosfechas(idsuspendidofecha,refjugador,refequipo,reffecha,refsuspendido)
+					values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
+					$res5 = $this->query($sql5,1);
+				}
+            }
 		}
 		
 		if ($amarillas == 2) {

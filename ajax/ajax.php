@@ -2731,7 +2731,7 @@ function traerFixturePorEquipo($serviciosZonasEquipos) {
 
 	$cad = '';
 	while ($row4 = mysql_fetch_array($res4)) {
-		$cad = $cad.'<option value="'.$row4[0].'">'.$row4[7].' - '.$row4[8].'</td>';	
+		$cad = $cad.'<option value="'.$row4[0].'">'.$row4[7].' - '.$row4[8]." - ".$row4['fechajuego'].'</td>';	
 	}
 	echo $cad;
 		
