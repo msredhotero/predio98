@@ -205,7 +205,7 @@ function menu($usuario,$titulo,$rol,$torneo) {
 		<div id="navigation" >
 			
 			
-				<nav class="nav">
+				<nav class="nav col-md-12 col-xs-12">
 					<ul>
 						'.$cadmenu.'
 					</ul>
