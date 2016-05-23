@@ -293,14 +293,11 @@ return $fixture;
 
 }
 
-function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge1,$idtge2,$cancha,$fecha) {
+function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge,$cancha,$fecha) {
 	
 	if ($idturnousado == '') {
-		$sql = "select
-					r.nombre, r.idequipo, (r.valor + t.valor) as valor, r.idhorario, r.horario
-				from (
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario
+		$sql = "select 
+					e.nombre,e.idequipo,tep.valor,h.idhorario,h.horario
 				from
 					dbequipos e
 						inner join
@@ -312,90 +309,39 @@ function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge1,$id
 						inner join
 					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
 						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
+					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.IdTorneoGE
 						inner join
 					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						and tge.idtorneoge in (".$idtge1.")
-						and tge.refgrupo = ".$idzona." and h.idhorario not in (select distinct
-																		h.idhorario
-																	from
-																		dbequipos e
-																			inner join
-																		dbtorneoge tge ON tge.refequipo = e.idequipo
-																			inner join
-																		dbgrupos g ON g.idgrupo = tge.refgrupo
-																			inner join
-																		dbtorneos t ON t.idtorneo = tge.reftorneo
-																			inner join
-																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-																			inner join
-																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
-																			or fix.reftorneoge_b = tge.idtorneoge
-																			inner join
-																		tbhorarios h ON h.horario = fix.hora
-																			and h.reftipotorneo = ".$idtipotorneo."
-																	where
-																		t.idtorneo = ".$idtorneo." and t.activo = 1
-																			and fix.cancha = '".$cancha."'
-																			and fix.reffecha = ".$fecha.")
-				) r
-				inner join
-				(
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario
-				from
-					dbequipos e
-						inner join
-					dbtorneoge tge ON tge.refequipo = e.idequipo
-						inner join
-					dbgrupos g ON g.idgrupo = tge.refgrupo
-						inner join
-					dbtorneos t ON t.idtorneo = tge.reftorneo
-						inner join
-					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						and tge.idtorneoge in (".$idtge2.")
-						and tge.refgrupo = ".$idzona." and h.idhorario not in (select distinct
-																		h.idhorario
-																	from
-																		dbequipos e
-																			inner join
-																		dbtorneoge tge ON tge.refequipo = e.idequipo
-																			inner join
-																		dbgrupos g ON g.idgrupo = tge.refgrupo
-																			inner join
-																		dbtorneos t ON t.idtorneo = tge.reftorneo
-																			inner join
-																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-																			inner join
-																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
-																			or fix.reftorneoge_b = tge.idtorneoge
-																			inner join
-																		tbhorarios h ON h.horario = fix.hora
-																			and h.reftipotorneo = ".$idtipotorneo."
-																	where
-																		t.idtorneo = ".$idtorneo." and t.activo = 1
-																			and fix.cancha = '".$cancha."'
-																			and fix.reffecha = ".$fecha.")
-					   ) t
-				on r.idhorario = t.idhorario
-				where r.valor <> 0 and t.valor <> 0
-				order by (r.valor + t.valor) desc , r.idhorario
-				limit 1";
 
+				where
+					t.idtorneo = ".$idtorneo." and t.activo = 1 and tge.IdTorneoGE in (".$idtge.")
+						and tge.refgrupo = ".$idzona." and h.idhorario not in (select distinct
+																		h.idhorario
+																	from
+																		dbequipos e
+																			inner join
+																		dbtorneoge tge ON tge.refequipo = e.idequipo
+																			inner join
+																		dbgrupos g ON g.idgrupo = tge.refgrupo
+																			inner join
+																		dbtorneos t ON t.idtorneo = tge.reftorneo
+																			inner join
+																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
+																			inner join
+																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
+																			or fix.reftorneoge_b = tge.idtorneoge
+																			inner join
+																		tbhorarios h ON h.horario = fix.hora
+																			and h.reftipotorneo = ".$idtipotorneo."
+																	where
+																		t.idtorneo = ".$idtorneo." and t.activo = 1
+																			and fix.cancha = '".$cancha."'
+																			and fix.reffecha = ".$fecha.")
+				order by tge.prioridad desc,tep.valor desc,h.idhorario
+				limit 1";	
 	} else {
-		$sql = "select
-					r.nombre, r.idequipo, (r.valor + t.valor) as valor, r.idhorario, r.horario
-				from (
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario
+		$sql = "select 
+					e.nombre,e.idequipo,tep.valor,h.idhorario,h.horario
 				from
 					dbequipos e
 						inner join
@@ -407,12 +353,11 @@ function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge1,$id
 						inner join
 					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
 						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
+					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.IdTorneoGE
 						inner join
 					tbhorarios h ON h.idhorario = tep.refturno
 				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						and tge.idtorneoge in (".$idtge1.")
+					t.idtorneo = ".$idtorneo." and t.activo = 1 and tge.idtorneoge in (".$idtge.")
 						and tge.refgrupo = ".$idzona." and (h.idhorario not in (".$idturnousado.") and h.idhorario not in (select distinct
 																		h.idhorario
 																	from
@@ -435,64 +380,12 @@ function buscarHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$idtge1,$id
 																		t.idtorneo = ".$idtorneo." and t.activo = 1
 																			and fix.cancha = '".$cancha."'
 																			and fix.reffecha = ".$fecha."))
-				) r
-				inner join
-				(
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario
-				from
-					dbequipos e
-						inner join
-					dbtorneoge tge ON tge.refequipo = e.idequipo
-						inner join
-					dbgrupos g ON g.idgrupo = tge.refgrupo
-						inner join
-					dbtorneos t ON t.idtorneo = tge.reftorneo
-						inner join
-					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						and tge.idtorneoge in (".$idtge2.")
-						and tge.refgrupo = ".$idzona." and (h.idhorario not in (".$idturnousado.") and h.idhorario not in (select distinct
-																		h.idhorario
-																	from
-																		dbequipos e
-																			inner join
-																		dbtorneoge tge ON tge.refequipo = e.idequipo
-																			inner join
-																		dbgrupos g ON g.idgrupo = tge.refgrupo
-																			inner join
-																		dbtorneos t ON t.idtorneo = tge.reftorneo
-																			inner join
-																		tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-																			inner join
-																		dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge
-																			or fix.reftorneoge_b = tge.idtorneoge
-																			inner join
-																		tbhorarios h ON h.horario = fix.hora
-																			and h.reftipotorneo = ".$idtipotorneo."
-																	where
-																		t.idtorneo = ".$idtorneo." and t.activo = 1
-																			and fix.cancha = '".$cancha."'
-																			and fix.reffecha = ".$fecha."))
-					   ) t
-				on r.idhorario = t.idhorario
-				where r.valor <> 0 and t.valor <> 0
-				order by (r.valor + t.valor) desc , r.idhorario
-				limit 1";
-
+			order by tge.prioridad desc,tep.valor desc,h.idhorario
+			limit 1";	
 	}
-	echo $sql."<br><br>";
+	//echo $sql;
 	//die();
-	$res = $this->query($sql,0);
-	/*if ($idtge2== 1379) {
-		die(var_dump($res));	
-	}*/
-	
+	$res = $this-> query($sql,0);
 	if (mysql_num_rows($res) >0) {
 		return array('id'=>mysql_result($res,0,3),'horario'=>mysql_result($res,0,4));	
 	}
@@ -521,7 +414,6 @@ function existeTurno($idzona,$idtorneo,$idtipotorneo,$cancha,$fecha) {
 				t.idtorneo = ".$idtorneo." and t.activo = 1
 					and fix.cancha = '".$cancha."'
 					and fix.reffecha = ".$fecha;
-	//$sql;
 	$res = $this-> query($sql,0);
 	
 	$cad = '';
@@ -535,641 +427,6 @@ function existeTurno($idzona,$idtorneo,$idtipotorneo,$cancha,$fecha) {
 	
 	//return $sql;
 }
-
-function DatosFixture($idTorneo) {
-	$sql = "select 
-			fi.idfixture,
-			(select e.nombre 
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_a) as equipoa,
-					(case when fi.resultado_a is null then (select
-												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
-												from		tbgoleadores gg
-												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
-																										from dbtorneoge tge
-																										inner 
-																										join dbtorneos t
-																										on tge.reftorneo = t.idtorneo and t.activo = true
-																										inner 
-																										join dbequipos e
-																										on e.idequipo = tge.refequipo
-																										inner 
-																										join dbgrupos g
-																										on g.idgrupo = tge.refgrupo
-																										where tge.idtorneoge = fi.reftorneoge_a))
-				else fi.resultado_a end) as resultadoa,
-					(case when fi.resultado_b is null then (select
-															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
-															from		tbgoleadores gg
-															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
-						from dbtorneoge tge
-						inner 
-						join dbtorneos t
-						on tge.reftorneo = t.idtorneo and t.activo = true
-						inner 
-						join dbequipos e
-						on e.idequipo = tge.refequipo
-						inner 
-						join dbgrupos g
-						on g.idgrupo = tge.refgrupo
-						where tge.idtorneoge = fi.reftorneoge_b))
-							else fi.resultado_b end) as resultadob,
-			(select e.nombre 
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_b) as equipob,
-			
-			(select g.nombre
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_b) as zona,   
-			fi.fechajuego,
-			f.tipofecha as fecha,
-			fi.hora,
-			g.nombre,
-			fi.cancha,
-			fi.reftorneoge_a,
-			fi.reftorneoge_b,
-			f.idfecha,
-			g.idgrupo
-					from dbfixture as fi
-					        inner 
-					        join tbfechas AS f
-					        on fi.reffecha = f.idfecha
-					        inner 
-					        join dbtorneoge tge
-					        on tge.idtorneoge = fi.reftorneoge_b
-					        inner 
-					        join dbtorneos t
-					        on tge.reftorneo = t.idtorneo and t.activo = true
-							inner
-							join		tbtipotorneo tp
-							on			tp.idtipotorneo = t.reftipotorneo
-					        inner 
-					        join dbgrupos g
-					        on g.idgrupo = tge.refgrupo
-							
-							where	t.idtorneo = ".$idTorneo."
-							
-					 order by f.idfecha,fi.cancha,g.nombre";	
-	$res = $this->query($sql,0);
-	return $res;
-}
-
-
-function traerTodos($fecha,$idfixture,$valor1,$valor2) {
-	$sql = "select
-g.idfixture,g.equipoa,g.equipob,g.zona, g.avalor1 + g.bvalor1 as v1,g.avalor2 + g.bvalor2 as v2,
-g.avalor3 + g.bvalor3 as v3,g.avalor4 + g.bvalor4 as v4,g.ahorario1,g.ahorario2,g.ahorario3,g.ahorario4,g.fecha,
-g.reftorneoge_a,g.reftorneoge_b
-from
- (
-	select 
-			fi.idfixture,
-			(select e.nombre 
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_a) as equipoa,
-					(case when fi.resultado_a is null then (select
-												(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
-												from		tbgoleadores gg
-												where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
-																										from dbtorneoge tge
-																										inner 
-																										join dbtorneos t
-																										on tge.reftorneo = t.idtorneo and t.activo = true
-																										inner 
-																										join dbequipos e
-																										on e.idequipo = tge.refequipo
-																										inner 
-																										join dbgrupos g
-																										on g.idgrupo = tge.refgrupo
-																										where tge.idtorneoge = fi.reftorneoge_a))
-				else fi.resultado_a end) as resultadoa,
-					(case when fi.resultado_b is null then (select
-															(case when sum(gg.goles) is null then (case when fi.chequeado = 1 then 0 else null end) else sum(gg.goles) end)
-															from		tbgoleadores gg
-															where gg.reffixture = fi.idfixture and gg.refequipo = (select tge.refequipo 
-						from dbtorneoge tge
-						inner 
-						join dbtorneos t
-						on tge.reftorneo = t.idtorneo and t.activo = true
-						inner 
-						join dbequipos e
-						on e.idequipo = tge.refequipo
-						inner 
-						join dbgrupos g
-						on g.idgrupo = tge.refgrupo
-						where tge.idtorneoge = fi.reftorneoge_b))
-							else fi.resultado_b end) as resultadob,
-			(select e.nombre 
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_b) as equipob,
-			
-			(select g.nombre
-			        from dbtorneoge tge
-			        inner 
-			        join dbtorneos t
-			        on tge.reftorneo = t.idtorneo and t.activo = true
-			        inner 
-			        join dbequipos e
-			        on e.idequipo = tge.refequipo
-			        inner 
-			        join dbgrupos g
-			        on g.idgrupo = tge.refgrupo
-			        where tge.idtorneoge = fi.reftorneoge_b) as zona,   
-			fi.fechajuego,
-
-
-
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 5
-				) as avalor1,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 6
-				) as avalor2,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 7
-				) as avalor3,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 8
-				) as avalor4,
-				(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 5
-				) as ahorario1,
-				(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 6
-				) as ahorario2,
-			(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 7
-				) as ahorario3,
-			(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_a
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 8
-				) as ahorario4,
-
-
-
-
-
-				(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 5
-				) as bvalor1,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 6
-				) as bvalor2,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 7
-				) as bvalor3,
-			(select 
-					tep.valor
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 8
-				) as bvalor4,
-				(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 5
-				) as bhorario1,
-				(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 6
-				) as bhorario2,
-			(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 7
-				) as bhorario3,
-			(select 
-					h.horario
-				from
-					dbequipos eee
-						inner join
-					dbtorneoge tgee ON tgee.refequipo = eee.idequipo
-						inner join
-					dbgrupos ggg ON ggg.idgrupo = tgee.refgrupo
-						inner join
-					dbtorneos ttt ON ttt.idtorneo = tgee.reftorneo
-						inner join
-					tbtipotorneo tpp ON tpp.idtipotorneo = ttt.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tgee.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-				where
-					ttt.idtorneo =42 and ttt.activo = 1
-						and tgee.idtorneoge =fi.reftorneoge_b
-						and tgee.refgrupo = g.idgrupo and tep.refturno = 8
-				) as bhorario4,
-
-
-
-			f.tipofecha as fecha,
-			fi.hora,
-			g.nombre,
-			fi.cancha,
-			fi.reftorneoge_a,
-			fi.reftorneoge_b
-
-
-					from dbfixture as fi
-					        inner 
-					        join tbfechas AS f
-					        on fi.reffecha = f.idfecha
-					        inner 
-					        join dbtorneoge tge
-					        on tge.idtorneoge = fi.reftorneoge_b
-					        inner 
-					        join dbtorneos t
-					        on tge.reftorneo = t.idtorneo and t.activo = true
-							inner
-							join		tbtipotorneo tp
-							on			tp.idtipotorneo = t.reftipotorneo
-					        inner 
-					        join dbgrupos g
-					        on g.idgrupo = tge.refgrupo
-							
-							where	t.idtorneo = 42
-							
-) g
-
-where g.fecha = '".$fecha."'  and g.idfixture = ".$idfixture." and (g.".$valor1." + g.".$valor2.")>9";	
-	$res = $this->query($sql,0);
-	if (mysql_num_rows($res)>0) {
-		return 1;		
-	}
-	return 0;
-}
-
-function buscarReemplazoHorario($idzona,$idtorneo,$idtipotorneo,$idturnousado,$hora,$fecha) {
-	$sql = "select
-					r.nombre, r.idequipo, (r.valor + t.valor) as valor, r.idhorario, r.horario, r.idfixture,fi.reftorneoge_a,fi.reftorneoge_b,fi.hora
-				from (
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario, fix.idfixture
-				from
-					dbequipos e
-						inner join
-					dbtorneoge tge ON tge.refequipo = e.idequipo
-						inner join
-					dbgrupos g ON g.idgrupo = tge.refgrupo
-						inner join
-					dbtorneos t ON t.idtorneo = tge.reftorneo
-						inner join
-					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-						inner join
-					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
-						
-
-				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						 and h.idhorario in (".$idturnousado.") and fix.reffecha = ".$fecha." and g.idgrupo <> ".$idzona." and fix.Hora <> '".$hora."'
-				) r
-				inner join
-				(
-				select 
-					e.nombre, e.idequipo, tep.valor, h.idhorario, h.horario, fix.idfixture
-				from
-					dbequipos e
-						inner join
-					dbtorneoge tge ON tge.refequipo = e.idequipo
-						inner join
-					dbgrupos g ON g.idgrupo = tge.refgrupo
-						inner join
-					dbtorneos t ON t.idtorneo = tge.reftorneo
-						inner join
-					tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo
-						inner join
-					dbturnosequiposprioridad tep ON tep.reftorneoge = tge.idtorneoge
-						inner join
-					tbhorarios h ON h.idhorario = tep.refturno
-						inner join
-					dbfixture fix ON fix.reftorneoge_a = tge.idtorneoge or fix.reftorneoge_b = tge.idtorneoge
-
-				where
-					t.idtorneo = ".$idtorneo." and t.activo = 1
-						 and h.idhorario in (".$idturnousado.") and fix.reffecha = ".$fecha." and g.idgrupo <> ".$idzona." and fix.Hora <> '".$hora."'
-					   ) t
-				on r.idhorario = t.idhorario
-				and (r.valor + t.valor) <> 0
-				inner join dbfixture fi on fi.idfixture = r.idfixture
-				order by (r.valor + t.valor) desc , r.idhorario,r.idfixture
-			limit 1";
-	$res = $this-> query($sql,0);
-	if (mysql_num_rows($res) >0) {
-		return array('idfixture'=>mysql_result($res,0,'idfixture'),'tge1'=>mysql_result($res,0,'reftorneoge_a'),'tge2'=>mysql_result($res,0,'reftorneoge_b'),'hora'=>mysql_result($res,0,'hora'));	
-	}
-	return array('idfixture'=>0,'tge1'=>0,'tge2'=>0,'hora'=>0);
-}
-
 
 function query($sql,$accion) {
 	

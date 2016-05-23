@@ -563,7 +563,34 @@ function traerGoleadoresPorId($id) {
 
 
 function traerAcumuladosAmarillasPorTorneoZonaJugador($idfecha,$idjugador,$idtipoTorneo) {
-
+		/*
+		$sql = "select
+				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha
+				from
+				(
+				select
+					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
+					from		tbamonestados a
+					inner
+					join		dbequipos e
+					on			e.idequipo = a.refequipo
+					inner
+					join		dbjugadores j
+					on			j.idjugador = a.refjugador
+					inner
+					join		dbfixture fi
+					on			fi.idfixture = a.reffixture
+					inner
+					join		tbfechas ff
+					on			ff.idfecha = fi.reffecha
+					where		j.idjugador = ".$idjugador."
+					and a.amarillas <> 2
+					group by a.refequipo, e.nombre, j.apyn, j.dni
+					
+				) t
+					where (cantidad <> 3 and ultimafecha < ".$idfecha.") or (cantidad = 3 and ultimafecha = ".$idfecha.") or (cantidad < 3 and ultimafecha = ".$idfecha.")
+					
+					order by t.nombre, t.apyn";	*/
 					
 		$sql = "select
 				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 3 then mod(t.cantidad,3) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio
@@ -616,60 +643,6 @@ left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$i
 	}
 	
 	
-function traerAcumuladosAmarillasPorTorneoZonaJugador4($idfecha,$idjugador,$idtipoTorneo) {
-
-					
-		$sql = "select
-				t.refequipo, t.nombre, t.apyn, t.dni, (case when t.cantidad > 4 then mod(t.cantidad,4) else t.cantidad end) as cantidad,ultimafecha,fecha,t.reemplzado, t.volvio
-				from
-				(
-				select
-					a.refequipo, e.nombre, j.apyn, j.dni, count(a.amarillas) as cantidad,max(fi.reffecha) as ultimafecha, max(ff.tipofecha) as fecha
-					, (case when rr.idreemplazo is null then false else true end) as reemplzado
-					, (case when rrr.idreemplazo is null then 0 else 1 end) as volvio
-					from		tbamonestados a
-					inner
-					join		dbequipos e
-					on			e.idequipo = a.refequipo
-					inner
-					join		dbjugadores j
-					on			j.idjugador = a.refjugador
-					/*inner
-					join		dbfixture fi
-					on			fi.idfixture = a.reffixture*/
-					inner 
-					join 		(select idfixture,reffecha from dbfixture fix
-									inner join dbtorneoge tge ON fix.reftorneoge_a = tge.idtorneoge
-									or fix.reftorneoge_b = tge.idtorneoge
-									inner join dbtorneos tt ON tt.idtorneo = tge.reftorneo
-									and tt.reftipotorneo = ".$idtipoTorneo."
-									and tt.activo = 1
-									group by idfixture,reffecha) fi
-					on			fi.idfixture = a.reffixture
-					inner
-					join		tbfechas ff
-					on			ff.idfecha = fi.reffecha
-					
-left join dbreemplazo rr on rr.refequiporeemplazado = e.idequipo and rr.reffecha <= ".$idfecha."
-left join dbreemplazo rrr on rrr.refequipo = e.idequipo and rrr.reffecha <= ".$idfecha." and rrr.reftorneo = ".$idtipoTorneo."
-					
-					where	j.idjugador = ".$idjugador."
-					and a.amarillas <> 2
-					and fi.reffecha <= ".$idfecha."
-					group by a.refequipo, e.nombre, j.apyn, j.dni
-				) t
-					where (cantidad <> 4 and ultimafecha < ".$idfecha.") or (cantidad = 4 and ultimafecha = ".$idfecha.") or (cantidad < 4 and ultimafecha = ".$idfecha.") or (cantidad > 4 and ultimafecha = ".$idfecha.")
-					
-					order by (case when t.cantidad > 4 then mod(t.cantidad,4) else t.cantidad end) desc,t.nombre, t.apyn";
-								
-		$res = $this-> query($sql,0);
-		if (mysql_num_rows($res)>0) {
-			return mysql_result($res,0,'cantidad');
-		}
-		return 0;
-	}
-	
-	
 function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 	$sql = "insert into tbamonestados(idamonestado,refjugador,refequipo,reffixture,amarillas)
 	values ('',".$refjugador.",".$refequipo.",".$reffixture.",".$amarillas.")";
@@ -695,11 +668,8 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 			
 			//// verificar que este en la tabla de conducta  ///
 			//// si esta modificar los puntos /////
-			if ($refTipoTorneo == 3) {
-				$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador($fechaJuego,$refjugador,$refTipoTorneo);
-			} else {
-				$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador4($fechaJuego,$refjugador,$refTipoTorneo);
-			}
+			
+			$cantidad = $this->traerAcumuladosAmarillasPorTorneoZonaJugador($fechaJuego,$refjugador,$refTipoTorneo);
 			
 			$sql = "update tbconducta
 					set
@@ -707,7 +677,7 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 					where refequipo =".$refequipo." and reffecha =".$fechaJuego." and reftorneo =".$refTorneo;
 			$res2 = $this->query($sql,0);	
 			
-			if ($refTipoTorneo <> 3) {
+            if ($refTipoTorneo <> 3) {
 			if ($cantidad == 4) {
 				$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
 				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 4 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
@@ -717,8 +687,8 @@ function insertarAmonestados($refjugador,$refequipo,$reffixture,$amarillas) {
 				values ('',".$refjugador.",".$refequipo.",".($fechaJuego + 1).",".$res4.")";
 				$res5 = $this->query($sql5,1);
 			}
-			} else {
-			if ($cantidad == 3) {
+            } else {
+            if ($cantidad == 3) {
 				$sqlSuspendido = "insert into tbsuspendidos(idsuspendido,refequipo,refjugador,motivos,cantidadfechas,fechacreacion,reffixture)
 				values ('',".$refequipo.",".$refjugador.",'".utf8_decode('Acumulacion de 3 Amarillas')."','1','".date('Y-m-d H:i:s')."',".$reffixture.")";
 				$res4 = $this->query($sqlSuspendido,1);
@@ -1019,4 +989,4 @@ function traerSuspendidosPorId($id) {
 	} //fin de servicios
 
 
-?>
+?>	

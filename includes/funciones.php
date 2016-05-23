@@ -1484,6 +1484,20 @@ function traerSuspendidosPorFechas($refjugador,$refequipo,$idSuspendido) {
 		return $this-> query($sql,0);
 	}
 	
+
+
+	function NoNuevaFecha($reffecha) {
+		$sql = "select month(fi.fechajuego) as mes,day(fi.fechajuego) as dia
+				from dbfixture fi
+				inner
+				join tbfechas ff
+				on	ff.idfecha = fi.reffecha 
+				where fi.chequeado = 1 and fi.reffecha = ".$reffecha."
+				group by fi.fechajuego 
+				limit 1";	
+		return $this-> query($sql,0);
+	}
+	
 	
 /* PARA Sedes */
 
