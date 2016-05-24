@@ -825,8 +825,7 @@ function traerAcumuladosAmarillasPorTorneoZonaJugador4($idfecha,$idjugador,$idti
 								and t.activo = 1                                                                              
 							inner join tbtipotorneo tp ON tp.idtipotorneo = t.reftipotorneo                                   
 							where                                                                                             
-								tp.idtipotorneo in (".$idtipoTorneo.")                                                                        
-									and tge.refgrupo = ".$idzona.")                                                                    
+								tp.idtipotorneo in (".$idtipoTorneo.")                                                                
 							and a.amarillas <> 2                                                                              
 							and fi.reffecha <= ".$idfecha." 
 							and a.refjugador =  ".$idjugador."                                                                           
