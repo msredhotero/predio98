@@ -1667,7 +1667,10 @@ left join
 					g.nombre,                                                                                                 
 					g.apyn,                                                                                                   
 					g.dni,                                                                                                    
-					sum(g.cantidad) as cantidad,                                                                              
+					(case                                                                                             
+								when sum(g.cantidad) > 4 then mod(sum(g.cantidad), 4)                 
+								else sum(g.cantidad)                                                                               
+							end) as cantidad,                                                                              
 					max(g.ultimafecha) as ultimafecha,                                                                        
 					max(g.fecha) as fecha,                                                                                    
 					g.reemplzado,                                                                                             
@@ -1894,7 +1897,10 @@ left join
 					and max(g.ultimafecha) = ".$idfecha.")
 					or (sum(g.cantidad) > 4
 					and max(g.ultimafecha) = ".$idfecha.")
-				order by sum(g.cantidad) desc ,g.nombre, g.apyn                                                                            
+				order by (case                                                                                             
+								when sum(g.cantidad) > 4 then mod(sum(g.cantidad), 4)                 
+								else sum(g.cantidad)                                                                               
+							end) desc ,g.nombre, g.apyn                                                                            
 			";
 				
 			} else {
