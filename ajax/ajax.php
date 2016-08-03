@@ -1192,7 +1192,7 @@ function TraerFixturePorZonaTorneoPagina($serviciosDatos) {
                                 	';
 	$cad2 = $cad2.'
 	<div class="row">
-                	<table class="table table-responsive table-striped" style="font-size:1em; padding:0px;">
+                	<table class="table table-responsive table-striped" style="padding:0px;">
 
                         <thead>
 							<tr>
