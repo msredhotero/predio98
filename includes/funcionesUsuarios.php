@@ -19,9 +19,35 @@ function GUID()
     return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 }
 
+function loginDni($usuario,$pass) {
+  $sqlUsuario = "select idjugador from dbjugadores where dni = ".$usuario." and expulsado = '0'";
+
+  $resUsuario = $this->query($sqlUsuario,0);
+
+  // si existe el dni entro
+  if (mysql_num_rows($resUsuario)>0) {
+    //id del jugador
+    $idjugador = mysql_result($resUsuario,0,0);
+
+    $sqlPassword = "select dni from dbjugadores where dni = ".$pass." and expulsado = '0' and idjugador = ".$idjugador;
+
+    $resPassword = $this->query($sqlPassword,0);
+
+    if (mysql_num_rows($resPassword)>0) {
+      session_start();
+  		$_SESSION['usua_predio_jugador'] = mysql_result($resPassword,0,0);
+      return true;
+    } else {
+      return false;
+    }
+
+  } else {
+    return false;
+  }
+}
 
 function login($usuario,$pass,$torneo) {
-	
+
 	$sqlusu = "select * from se_usuarios where email = '".$usuario."'";
 
 $error = '';
@@ -31,27 +57,27 @@ if (trim($usuario) != '' and trim($pass) != '') {
 $respusu = $this->query($sqlusu,0);
 
 if (mysql_num_rows($respusu) > 0) {
-	
-	
+
+
 	$idUsua = mysql_result($respusu,0,0);
 	$sqlpass = "select nombrecompleto,email,usuario,refroll from se_usuarios where password = '".$pass."' and idusuario = ".$idUsua;
 
 
 	$resppass = $this->query($sqlpass,0);
-	
+
 	if (mysql_num_rows($resppass) > 0) {
 		$error = '';
 		} else {
 			$error = 'Usuario o Password incorrecto';
 		}
-	
+
 	}
 	else
-	
+
 	{
-		$error = 'Usuario o Password incorrecto';	
+		$error = 'Usuario o Password incorrecto';
 	}
-	
+
 	if ($error == '') {
 		//die(var_dump($error));
 		session_start();
@@ -59,24 +85,24 @@ if (mysql_num_rows($respusu) > 0) {
 		$_SESSION['nombre_predio'] = mysql_result($resppass,0,0);
 		$_SESSION['email_predio'] = mysql_result($resppass,0,1);
 		$_SESSION['refroll_predio'] = mysql_result($resppass,0,3);
-		
+
 		$sqlTorneo = "select descripciontorneo,idtipotorneo from tbtipotorneo where idtipotorneo =".$torneo;
 		$_SESSION['torneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,0);
 		$_SESSION['idtorneo_predio'] = mysql_result($this->query($sqlTorneo,0),0,1);
 		return '';
 	}
-	
+
 }	else {
-	$error = 'Usuario y Password son campos obligatorios';	
+	$error = 'Usuario y Password son campos obligatorios';
 }
-	
-	
+
+
 	return $error;
-	
+
 }
 
 function loginFacebook($usuario) {
-	
+
 	$sqlusu = "select concat(apellido,' ',nombre),email,direccion,refroll from se_usuarios where email = '".$usuario."'";
 	$error = '';
 
@@ -86,8 +112,8 @@ if (trim($usuario) != '') {
 $respusu = $this->query($sqlusu,0);
 
 	if (mysql_num_rows($respusu) > 0) {
-		
-		
+
+
 		if ($error == '') {
 			session_start();
 			$_SESSION['usua_predio'] = $usuario;
@@ -96,22 +122,22 @@ $respusu = $this->query($sqlusu,0);
 			$_SESSION['refroll_predio'] = mysql_result($resppass,0,3);
 			//$error = 'andube por aca'-$sqlusu;
 		}
-		
+
 	}	else {
-		$error = 'Usuario y Password son campos obligatorios';	
+		$error = 'Usuario y Password son campos obligatorios';
 	}
 
 }
 
 	return $error;
-	
+
 }
 
 
 
 
 function loginUsuario($usuario,$pass) {
-	
+
 	$sqlusu = "select * from se_usuarios where email = '".$usuario."'";
 
 
@@ -119,15 +145,15 @@ function loginUsuario($usuario,$pass) {
 if (trim($usuario) != '' and trim($pass) != '') {
 
 	$respusu = $this->query($sqlusu,0);
-	
+
 	if (mysql_num_rows($respusu) > 0) {
 		$error = '';
-		
+
 		$idUsua = mysql_result($respusu,0,0);
 		$sqlpass = "select concat(apellido,' ',nombre),email,refroll from se_usuarios where password = '".$pass."' and IdUsuario = ".$idUsua;
-	
+
 		$resppass = $this->query($sqlpass,0);
-		
+
 			if (mysql_num_rows($resppass) > 0) {
 				$error = '';
 
@@ -139,14 +165,14 @@ if (trim($usuario) != '' and trim($pass) != '') {
 				}
 
 			}
-		
+
 		}
 		else
-		
+
 		{
-			$error = 'Usuario o Password incorrecto';	
+			$error = 'Usuario o Password incorrecto';
 		}
-		
+
 		if ($error == '') {
 			session_start();
 			$_SESSION['usua_predio'] = $usuario;
@@ -154,15 +180,15 @@ if (trim($usuario) != '' and trim($pass) != '') {
 			$_SESSION['email_predio'] = mysql_result($resppass,0,1);
 			$_SESSION['refroll_predio'] = mysql_result($resppass,0,3);
 		}
-	
-	
+
+
 	}	else {
-		$error = 'Usuario y Password son campos obligatorios';	
+		$error = 'Usuario y Password son campos obligatorios';
 	}
-	
-	
+
+
 	return $error;
-	
+
 }
 
 function traerUsuario($email) {
@@ -176,8 +202,8 @@ function traerUsuario($email) {
 }
 
 function traerUsuarios() {
-	$sql = "select idusuario,usuario,refroll,nombrecompleto,email,password 
-			from se_usuarios 
+	$sql = "select idusuario,usuario,refroll,nombrecompleto,email,password
+			from se_usuarios
 			order by concat(apellido,', ',nombre)";
 	$res = $this->query($sql,0);
 	if ($res == false) {
@@ -213,39 +239,39 @@ function existeUsuario($usuario) {
 	$sql = "select * from se_usuarios where email = '".$usuario."'";
 	$res = $this->query($sql,0);
 	if (mysql_num_rows($res)>0) {
-		return true;	
+		return true;
 	} else {
-		return false;	
+		return false;
 	}
 }
 
 function enviarEmail($destinatario,$asunto,$cuerpo) {
 
-	
+
 	# Defina el número de e-mails que desea enviar por periodo. Si es 0, el proceso por lotes
 	# se deshabilita y los mensajes son enviados tan rápido como sea posible.
 	define("MAILQUEUE_BATCH_SIZE",0);
 
 	//para el envío en formato HTML
 	//$headers = "MIME-Version: 1.0\r\n";
-	
+
 	// Cabecera que especifica que es un HMTL
 	$headers  = 'MIME-Version: 1.0' . "\r\n";
 	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-	
+
 	//dirección del remitente
 	$headers .= "From: Predio 98 <predio.98@hotmail.com>\r\n";
-	
+
 	//ruta del mensaje desde origen a destino
 	$headers .= "Return-path: ".$destinatario."\r\n";
 	//direcciones que recibirán copia oculta
 	$headers .= "Bcc: msredhotero@msn.com\r\n";
-	mail($destinatario,$asunto,$cuerpo,$headers); 	
+	mail($destinatario,$asunto,$cuerpo,$headers);
 }
 
 function contacto($nombre,$email,$mensaje) {
 	$this->enviarEmail('predio.98@hotmail.com','Consulta','De:'.$nombre."\r\n\r\n\r\n".'Email: '.$email."\r\n".'Mensaje: '.$mensaje);
-	
+
 	return 'Email enviado correctamente';
 }
 
@@ -266,13 +292,13 @@ function insertarUsuario($usuario,$password,$refroll,$email,$nombrecompleto) {
 				'".utf8_decode($email)."',
 				'".utf8_decode($nombrecompleto)."')";
 	if ($this->existeUsuario($email) == true) {
-		return "Ya existe el usuario";	
+		return "Ya existe el usuario";
 	}
 	$res = $this->query($sql,1);
 	if ($res == false) {
 		return 'Error al insertar datos';
 	} else {
-		
+
 		return $res;
 	}
 }
@@ -297,22 +323,22 @@ function modificarUsuario($id,$usuario,$password,$refroll,$email,$nombrecompleto
 
 
 function query($sql,$accion) {
-		
-		
-		
+
+
+
 		require_once 'appconfig.php';
 
 		$appconfig	= new appconfig();
-		$datos		= $appconfig->conexion();	
+		$datos		= $appconfig->conexion();
 		$hostname	= $datos['hostname'];
 		$database	= $datos['database'];
 		$username	= $datos['username'];
 		$password	= $datos['password'];
-		
+
 		$conex = mysql_connect($hostname,$username,$password) or die ("no se puede conectar".mysql_error());
-		
+
 		mysql_select_db($database);
-		
+
 		        $error = 0;
 		mysql_query("BEGIN");
 		$result=mysql_query($sql,$conex);
@@ -330,7 +356,7 @@ function query($sql,$accion) {
 			mysql_query("COMMIT");
 			return $result;
 		}
-		
+
 	}
 
 }
